@@ -1,5 +1,7 @@
 #include "sifrpc.h"
 
+#include <stdlib.h>
+
 void sceSifInitRpc(unsigned int mode)
 {
 }
@@ -7,6 +9,7 @@ void sceSifInitRpc(unsigned int mode)
 int sceSifBindRpc(sceSifClientData* client, unsigned int rpc_number, unsigned int mode)
 {
     /// Returns success otherwise program will loop forever
+    client->serve = malloc(sizeof(struct _sif_serve_data));
     return 1;
 }
 

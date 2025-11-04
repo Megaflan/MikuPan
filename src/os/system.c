@@ -139,8 +139,8 @@ void InitGraphics()
     sceGsResetGraph(0, 1, 2, 1);
 #endif
     
-    *REG_RCNT0_MODE = 0x83;
-    *REG_RCNT1_MODE = 0x83;
+    //*REG_RCNT0_MODE = 0x83;
+    //*REG_RCNT1_MODE = 0x83;
     
     sceDmaGetEnv(&env);
     

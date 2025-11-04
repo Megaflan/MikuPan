@@ -38,10 +38,12 @@ void* sceSifAllocIopHeap(unsigned int)
 
 int sceSifRebootIop(const char* img)
 {
+    return 1;
 }
 
 int sceSifSyncIop()
 {
+    return 1;
 }
 
 int sceSifLoadModule(const char* filename, int args, const char* argp)
