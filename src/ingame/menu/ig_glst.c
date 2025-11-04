@@ -1,54 +1,74 @@
 #include "common.h"
+#include "ig_glst.h"
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_glst", NewgameMenuGlstInit);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_glst", StartGlstModeInit);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_glst", IngameMenuGlst);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_glst", IngameMenuGlstDisp);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_glst", IngameMenuGlstData);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_glst", IngameMenuGlstDataDisp);
-
-void GlstCntInit(void) {
+void NewgameMenuGlstInit()
+{
 }
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_glst", GlstCntRenew);
+void StartGlstModeInit()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_glst", GlstModeInOut);
+void IngameMenuGlst()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_glst", GlstModeInOut2);
+void IngameMenuGlstDisp()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_glst", DspGhostList);
+void DspGlst(u_char alpha)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_glst", DspGlst);
+void DspLstOfs(u_short start, u_char alpha)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_glst", DspLstOfs);
+void PutRayName(u_char ray_knd, u_short ray_no, u_char ray_msn, short int pos_x, short int pos_y, int rgb, u_char alpha)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_glst", PutRayName);
+void DspGInf(u_char alpha)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_glst", DspGInf);
+void DspGdtl(u_char alpha)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_glst", DspGdtl);
+void Sheet(u_short chr_lbl, short int pos_x, short int pos_y, u_short siz_x, u_short siz_y, u_char pri, u_char alp)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_glst", Sheet);
+void Fuchidori(u_short chr_lbl, short int pos_x, short int pos_y, u_short siz_x, u_short siz_y, u_char pri, u_char alp)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_glst", Fuchidori);
+void Naraberu(u_short chr_lbl, short int pos_x, short int pos_y, u_char dir, u_short dst, u_char pri, u_char alp)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_glst", Naraberu);
+void ReSetGhostList(PICTURE_WRK new_pic)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_glst", PutPtrn);
+u_short GetGlistAllNum()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_glst", ReSetGhostList);
+u_short GetGlistGNum()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_glst", GetGlistAllNum);
+void DispGlistPhoto(u_int line, u_char alpha)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_glst", GetGlistGNum);
+char CheckGlistComplete(u_int list)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_glst", DispGlistPhoto);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_glst", CheckGlistComplete);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_glst", CheckGlistRareGhost);
+char CheckGlistRareGhost(u_int kind, u_int no)
+{
+}

@@ -1,17 +1,34 @@
 #include "common.h"
+#include "map_htck.h"
 
-INCLUDE_ASM(const s32, "ingame/map/map_htck", PosInAreaJudgeSub);
+u_char PosInAreaJudgeSub(int* addr, u_short pos_x, u_short pos_y, u_char type)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_htck", Get2DLinearConstFromPos);
+void Get2DLinearConstFromPos(float* a, float* b, float* c, float x0, float y0, float x1, float y1)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_htck", Get2DLinearCrossPoint);
+int Get2DLinearCrossPoint(float* cpx, float* cpy, float a0, float b0, float c0, float a1, float b1, float c1)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_htck", ChkLineCross);
+int ChkLineCross(float x0, float y0, float x1, float y1, float x2, float y2, float x3, float y3)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_htck", ChkInsideBox);
+int ChkInsideBox(float cpx, float cpy, float x0, float y0, float x1, float y1, float x2, float y2, float x3, float y3)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_htck", HitChkSegment2All);
+u_char HitChkSegment2All(float* f, float* t, float deg)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_htck", HitChkSegment2All2D);
+u_char HitChkSegment2All2D(float* f, float* t, float deg)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_htck", FurnCoverCheck);
+u_char FurnCoverCheck(u_short pos_x, short int pos_y, u_short pos_z, u_char room_no)
+{
+}

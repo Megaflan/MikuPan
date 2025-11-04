@@ -1,80 +1,172 @@
 #include "common.h"
+#include "pht_make.h"
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", InitPhotoMake);
+/* data 33fbd8 */ SPRT_DAT hintdat[0];
+/* data 3407f8 */ SPRT_DAT hintreadat[0];
+/* data 340e58 */ int pazene_load_tbl[0];
+/* sdata 357220 */ int frm_type;
+/* sdata 357224 */ int ers_type;
+/* sdata 357244 */ int hint_2d;
+/* sdata 357248 */ int hint_rea;
+/* sdata 35724c */ int hint_3d;
+/* sdata 357250 */ int hint_2d_num;
+/* sdata 357254 */ int hint_3d_num;
+/* sdata 357258 */ int pic_save_flag;
+/* sdata 35725c */ int pht_finder_off;
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", CopyScreenToBuffer);
-
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", DrawPhotoBuffer);
-
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", CompressData);
-
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", UncompressData);
-
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", TakePhotoFromScreen);
-
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", MakeSPhotoFromWorkArea);
-
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", MakeSPhotoFromCompress);
-
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", DrawSPhotoFromSmallPhotoArea);
-
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", DrawSPhotoFromSmallPhotoAreaAD);
-
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", DrawSPhotoFromSmallPhotoArea2);
-
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", DrawSPhotoFromSmallPhotoArea2AD);
-
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", CompPhotoFromWorkArea);
-
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", DrawPhotoFromWorkArea);
-
-void DrawPhotoFromCompress(void) {
+void InitPhotoMake()
+{
 }
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", UncompressPhoto);
+void CopyScreenToBuffer(int addr, int szfl, int mx, int my, int mw, int mh)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", UncompressPhotoAD);
+void DrawPhotoBuffer(u_int pri, int addr, int szfl, int x, int y, int szw, int szh, int mszw, int mszh, int ftype,
+    int alp, int ztype)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", DrawPhotoFromPhotoWrk);
+void CompressData(int addri, int addro, int n)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", CopyPhoto);
+void UncompressData(int addri, int n, int addro)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", CopySPhoto);
+void TakePhotoFromScreen()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", DrawPhotoHinttex);
+void MakeSPhotoFromWorkArea(int n)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", DrawPhotoHinttex2);
+void MakeSPhotoFromCompress(int ni, int no)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", DrawPhotoEffect);
+void DrawSPhotoFromSmallPhotoArea(int n, int pri, int ftype, int x, int y, u_char alp)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", DrawPhotoFilter);
+void DrawSPhotoFromSmallPhotoAreaAD(int addr, int n, int pri, int ftype, int x, int y, u_char alp)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", DispPhotoFrame0);
+void DrawSPhotoFromSmallPhotoArea2(int n, int pri, int ftype, int x, int y, int szw, int szh, u_char alp)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", DispPhotoFrame00);
+void DrawSPhotoFromSmallPhotoArea2AD(int addr, int n, int pri, int ftype, int x, int y, int szw, int szh, int alp)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", DispPhotoFrame1);
+void CompPhotoFromWorkArea(int n)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", DispPhotoFrame2);
+void DrawPhotoFromWorkArea(int pri, int ftype, int x, int y, int szw, int szh, u_char alp)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", DispPhotoFrame2_2);
+void DrawPhotoFromCompress(int n, u_int pri, int ftype, int x, int y, int szw, int szh, u_char alp)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", DispPhotoFrame2_3);
+void UncompressPhoto(int n)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", SetNegaFilter);
+void UncompressPhotoAD(int addr, int n)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", PhotoMake);
+void DrawPhotoFromPhotoWrk(int n, u_int pri, int ftype, int x, int y, int szw, int szh, u_char alp)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", PhotoMake_EneDead);
+void CopyPhoto(int addri, int ni, int addro, int no)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", PhotoMakeSaveInit);
+void CopySPhoto(int addri, int ni, int addro, int no)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", DrawPicture);
+void DrawPhotoHinttex(u_int pri, int num)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", CopyPicture);
+void DrawPhotoHinttex2(u_int sw, u_int pri, int num)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", ReqSavePicture);
+void DrawPhotoEffect(u_int pri, int type)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", PhotoMakeSave);
+void DrawPhotoFilter(u_int pri, int type, u_char alp)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_make", PhotoMakeSave2);
+void DispPhotoFrame0()
+{
+}
+
+void DispPhotoFrame00(int flag)
+{
+}
+
+int DispPhotoFrame1(int fl)
+{
+}
+
+void DispPhotoFrame2()
+{
+}
+
+void DispPhotoFrame2_2(int type)
+{
+}
+
+void DispPhotoFrame2_3(int type)
+{
+}
+
+void SetNegaFilter(int type)
+{
+}
+
+void PhotoMake()
+{
+}
+
+void PhotoMake_EneDead()
+{
+}
+
+void PhotoMakeSaveInit()
+{
+}
+
+void DrawPicture(int pri, int addr, int n, float x, float y, float szw, float szh, u_char alp)
+{
+}
+
+void CopyPicture(int addri, int ni, int addro, int no)
+{
+}
+
+void ReqSavePicture()
+{
+}
+
+void PhotoMakeSave()
+{
+}
+
+void PhotoMakeSave2()
+{
+}

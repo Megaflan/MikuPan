@@ -1,13 +1,32 @@
 #include "common.h"
+#include "sound_test.h"
 
-INCLUDE_ASM(const s32, "outgame/sound_test", SoundTestForModeSlectInit);
+#include "scn_test.h"
 
-INCLUDE_ASM(const s32, "outgame/sound_test", SoundTestForModeSlect);
+/* data 341790 */ SCN_TEST_WRK scn_test_wrk;
 
-INCLUDE_ASM(const s32, "outgame/sound_test", SoundTestForModeSlectDisp);
+void SoundTestForModeSlectInit()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/sound_test", SlotNum);
+char SoundTestForModeSlect()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/sound_test", ShockWave);
+void SoundTestForModeSlectDisp(u_char alp, float flsh)
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/sound_test", OneNum);
+void SlotNum(int number, u_char digit, u_char timer, u_char tim_lmt, short int pos_x, short int pos_y,
+    short int lmt_upp, short int lmt_dwn, int alp, int time_mode, int ud_sw)
+{
+}
+
+void ShockWave(u_char bgm_no, u_char alp)
+{
+}
+
+void OneNum(u_short num_chr, u_char number, u_char no, u_char timer, u_char tim_lmt, short int pos_x, short int pos_y,
+    short int lmt_upp, int lmt_dwn, int mode, int alp, int time_mode)
+{
+}

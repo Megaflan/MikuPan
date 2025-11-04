@@ -1,9 +1,20 @@
 #include "common.h"
+#include "mc_start.h"
 
-INCLUDE_ASM(const s32, "mc/mc_start", mcStartCheckMain);
+char mcStartCheckMain()
+{
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "mc/mc_start", mcStartCheckSet);
+void mcStartCheckSet()
+{
+}
 
-INCLUDE_ASM(const s32, "mc/mc_start", mcStartCheckResult);
+char mcStartCheckResult()
+{
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "mc/mc_start", mcStartCheckYesno);
+char mcStartCheckYesno(int def_pos)
+{
+}

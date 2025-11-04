@@ -1,7 +1,14 @@
 #include "common.h"
+#include "pht_main.h"
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_main", PhotoCtrlInit);
+void PhotoCtrlInit()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_main", PhotoCtrl);
+void PhotoCtrl()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/pht_main", InitPazEneTexLoad);
+void InitPazEneTexLoad()
+{
+}

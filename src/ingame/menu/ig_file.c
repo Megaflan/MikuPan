@@ -1,106 +1,123 @@
 #include "common.h"
+#include "ig_file.h"
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", NewgameMenuFileInit);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", LoadgameMenuFileInit);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", StartFileModeInit);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", IngameMenuFile);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", IngameMenuFileDisp);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", IngameMenuFileData);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", IngameMenuFileDataDisp);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", GetDispMenuFile);
-
-void FileCntInit(void) {
+void NewgameMenuFileInit()
+{
 }
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", FileCntRenew);
+void LoadgameMenuFileInit()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", FileModeInOut);
+void StartFileModeInit()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", FileModeInOut2);
+void IngameMenuFile()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", DspFileOut);
+void IngameMenuFileDisp()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", DspKindTab);
+void IngameMenuFileData()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", DspFile2D);
+void IngameMenuFileDataDisp()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", DspFile2D2);
+void GetDispMenuFile(u_char csr)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", DspFileLst);
+void SideBar(u_char hav_now, u_char dsp_max, u_short mov_lng, u_char lst_top, u_short chr_top, u_char alp, short int dx,
+    short int dy)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", SideBar);
+void PageInfo(u_char now, u_char all, short int pos_x, short int pos_y, u_char alpha)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", PutBarScale);
+void DokiDokiLetter(u_char level)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", SideTri);
+void RelationShip()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", DspMsgWndw);
+void RelationMapInit()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", DspFileDtl);
+void RelAtributeChg()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", DspFileBook);
+void RelComAtributeChg()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", DspFilePhot);
+void MoveBeyondData()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", PhotDispCtrl);
+void MoveBeyondGroup()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", AllVramTensoOK);
+void RelMapScroolX(RELATION_DAT* r_dat)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", TargetPhot);
+void RelMapScroolY(RELATION_PRT* r_prt)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", DspPhot2D);
+int ButtonManager()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", DspBack2D);
+void RelationDispDat()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", DspFileCmmn);
+void RelDspYajirusi(RELATION_YAJI* r_yaj)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", PageInfo);
+void RelDspComment()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", DokiDokiLetter);
+void RelDspPrtFla(RELATION_PRT* r_prt)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", RelationShip);
+void RelDspPrt(RELATION_PRT* r_prt)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", TateizFreeSpace);
+void RelDspBackGrd()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", RelationMapInit);
+void RelationDispMsg()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", RelAtributeChg);
+void SimpleDispSprtDS(SPRT_DAT* ssd, u_int addr, int sp_no, SPRT_SROT* srot, SPRT_SSCL* sscl, u_char alp_rate)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", RelComAtributeChg);
+void TestPk2DataSou(long int sendtexaddr)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", MoveBeyondData);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", MoveBeyondGroup);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", RelMapScroolX);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", RelMapScroolY);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", ButtonManager);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", RelationDispDat);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", RelDspYajirusi);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", RelDspComment);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", RelDspPrtFla);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", RelDspPrt);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", RelDspBackGrd);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", RelationDispMsg);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", SimpleDispSprtDS);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", TestPk2DataSou);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_file", DispCaption);
+void DispCaption(int no, u_char alp)
+{
+}

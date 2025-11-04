@@ -1,22 +1,56 @@
 #include "common.h"
+#include "btl_mode.h"
 
-INCLUDE_ASM(const s32, "outgame/btl_mode/btl_mode", BattleModeStageInit);
+/* data 344670 */ int rank_dat[0];
+/* data 344688 */ int battle_scr_effct[0];
+/* data 3446d8 */ int btlBonus[0];
+/* sdata 3577e8 */ static int sp_load_id;
+/* data 344700 */ BTL_MODE_WRK btl_wrk;
+/* data 344710 */ STAGE_WRK stage_wrk[20];
+/* sdata 3577f0 */ long int msn_high_score;
+/* sdata 3577f8 */ long int msn_total_score;
+/* sdata 357800 */ long int msn_bonus;
+/* sdata 357808 */ int stage_all_clear_bak;
+/* sdata 35780c */ int btl_mode_bgm_init;
+/* sdata 357810 */ int btl_clear_disp;
 
-INCLUDE_ASM(const s32, "outgame/btl_mode/btl_mode", BattleModeStageMain);
 
-void BattleModeInfomationDisp(void) {
+void BattleModeStageInit()
+{
 }
 
-INCLUDE_ASM(const s32, "outgame/btl_mode/btl_mode", CheckClearAllS);
+void BattleModeStageMain()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/btl_mode/btl_mode", BattleModeClear);
+void BattleModeInfomationDisp()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/btl_mode/btl_mode", BattleModeScoreRecord);
+int CheckClearAllS()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/btl_mode/btl_mode", isBattleModeGame);
+void BattleModeClear()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/btl_mode/btl_mode", CheckClearAllFirst);
+void BattleModeScoreRecord(long int score)
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/btl_mode/btl_mode", CheckClearAll);
+int isBattleModeGame()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/btl_mode/btl_mode", SetBattleEnd);
+int CheckClearAllFirst()
+{
+}
+
+int CheckClearAll()
+{
+}
+
+void SetBattleEnd()
+{
+}

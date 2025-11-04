@@ -14,6 +14,8 @@
 #define DMAC_FROM_SPR           8
 #define DMAC_TO_SPR             9
 
+#include "typedefs.h"
+
 typedef struct {
 	int status;
 	void *entry;

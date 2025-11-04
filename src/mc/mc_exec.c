@@ -1,4 +1,8 @@
 #include "common.h"
+#include "typedefs.h"
+#include "mc_exec.h"
+
+/* sdata 357755 */ u_char save_pht_in_game;
 
 INCLUDE_ASM(const s32, "mc/mc_exec", mcSetPathDir);
 

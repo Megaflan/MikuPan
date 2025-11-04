@@ -1,73 +1,146 @@
 #include "common.h"
+#include "scn_test.h"
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneTestCtrl);
+void SceneTestCtrl()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneTestInit);
+int SceneTestInit()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneTestMain);
+void SceneTestMain()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneTestSelect);
+void SceneTestSelect()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneTestPlay);
+void SceneTestPlay()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneTestLoad);
+int SceneTestLoad()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", ScnTestMdlLoadReq);
+void ScnTestMdlLoadReq(u_int* addr)
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", ScnTestMdlLoadWait);
+int ScnTestMdlLoadWait()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneTestMenu);
+void SceneTestMenu()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneTestMainMenu);
+void SceneTestMainMenu()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneTestLightSelect);
+void SceneTestLightSelect()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneTestLightData);
+void SceneTestLightData()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", ScnDispPrintVector);
+void ScnDispPrintVector(char* ttl, float* v, float x, float y)
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneTestAmbient);
+void SceneTestAmbient()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", RotVectorY);
+void RotVectorY(float* normal, float* vector, float delta)
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneTestPadCamera);
+void SceneTestPadCamera()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneTestCameraMode);
+void SceneTestCameraMode()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneTestFogData);
+void SceneTestFogData()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneTestEffect);
+void SceneTestEffect()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneTestEffectData);
+void SceneTestEffectData()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneTestEneEffect);
+void SceneTestEneEffect()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneTestEneEffFire);
+void SceneTestEneEffFire()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneTestEneEffPDeform);
+void SceneTestEneEffPDeform()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneTestEneEffOthers);
+void SceneTestEneEffOthers()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneTestEffectTest);
+void SceneTestEffectTest()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneTestSetDefEffect);
+void SceneTestSetDefEffect()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneTestVibrate);
+void SceneTestVibrate()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneTestDraw);
+int SceneTestDraw(int cnt_flg)
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneTestLoopManage);
+void SceneTestLoopManage(char flg)
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", ScnLRCtrl);
+int ScnLRCtrl(int* csr, int max, int min)
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", ScnUDCtrl);
+int ScnUDCtrl(int* csr, int max, int min)
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", ScnValueCtrl);
+int ScnValueCtrl(float* val, float max, float min, float inc, float mul)
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", ScnValueCtrlI);
+int ScnValueCtrlI(int* val, int max, int min, int inc, int mul)
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", ScnValueCtrlC);
+int ScnValueCtrlC(u_char* val, u_char max, u_char min, int inc, int mul)
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneFileSaveBin);
+int SceneFileSaveBin()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/scn_test", SceneFileSaveText);
+int SceneFileSaveText()
+{
+}

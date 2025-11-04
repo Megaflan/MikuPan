@@ -1,45 +1,90 @@
 #include "common.h"
+#include "ig_camra.h"
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_camra", CameraCustomNewgameInit);
+void CameraCustomNewgameInit()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_camra", CameraCustomInit);
+void CameraCustomInit()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_camra", CameraCustomMain);
+void CameraCustomMain()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_camra", CameraCustomMenuSlct);
+void CameraCustomMenuSlct(char* err)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_camra", CameraCustomFilm);
+void CameraCustomFilm(char* err)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_camra", CameraCustomPowerUp);
+void CameraCustomPowerUp(char* err)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_camra", CameraCustomSubAbility);
+void CameraCustomSubAbility(char* err)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_camra", CameraCustomSpecialAbility);
+void CameraCustomSpecialAbility(char* err)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_camra", CameraDspCtrl);
+void CameraDspCtrl(u_char err)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_camra", CameraDsp);
+void CameraDsp(short int pos_x, short int pos_y, u_char alp, u_char msg)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_camra", StrKndChk);
+char StrKndChk(u_char err)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_camra", FilmPossChk);
+char FilmPossChk(u_char knd)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_camra", CameraModeInOut);
+void CameraModeInOut()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_camra", CameraModeInOut2);
+void CameraModeInOut2()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_camra", CameraCntRenew);
+void CameraCntRenew()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_camra", isCameraTopMenu);
+int isCameraTopMenu()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_camra", OutGameInitCamera);
+void OutGameInitCamera()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_camra", isCameraEnd);
+int isCameraEnd()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_camra", GetCamDispAlpha);
+float GetCamDispAlpha()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_camra", OpenCameraMenu);
+void OpenCameraMenu()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_camra", NeonAlp);
+float NeonAlp(short int num, short int exe, short int dly, short int stp, short int no, short int* timer)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_camra", BeMax);
+float BeMax(u_char no)
+{
+}

@@ -1,6 +1,7 @@
 #ifndef GRAPHICS_MOTION_MDLDAT_H
 #define GRAPHICS_MOTION_MDLDAT_H
 
+#include "ani_dat.h"
 #include "typedefs.h"
 
 #include "graphics/motion/acs_dat.h"

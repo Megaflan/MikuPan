@@ -1,570 +1,1122 @@
 #include "common.h"
+#include "ev_spcl.h"
 
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", GetSpecialEventMessageAddr);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SimpleDispSprt);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SimpleDispAlphaSprt);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SimpleDispSprtRGB);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SimpleDispSprtLNR);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SimpleDispSprtDatCopy);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", TestPk2Data);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", ButtonMarkNext);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", ButtonMarkWait);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", ButtonMarkTimeClear);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", CsrInclease);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", CsrDeclease);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", CsrBlink);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", CsrClear);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", CsrClearAll);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpevStrInit);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpevWrkInit);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpevSelectYesNoCsr);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", DeadlySeStopWait);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", DummyProg);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", StarPuzzleInit);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", StarPuzzleDataSet);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", StarPuzzleMain);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", StarPuzzleClearJudge);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", StarPuzzleDisp);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", StarPuzzleMSGMain);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", StarPuzzleMSGDisp);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", DialKeyDoorInit);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", DialKeyDoorDataSet);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", DialKeyDoorMain);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", DialKeyDoorDisp);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", DialKeyMSGDoorInit);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", DialKeyMSGDoorMain);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", DialKeyMSGDoorDisp);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", GhostDoorInit);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", GhostDoorSet);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", GhostDoorMain);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", GhostDoorDisp);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", DollPzlInit);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", DollPzlMain);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", CursorManagerEvent003);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventDisp003);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", ButsuzoPzlInit);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", ButsuzoPzlMain);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", BldAlpRetern);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventDisp004);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", ButsuzoMSGInit);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", ButsuzoMSGMain);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", ButsuzoMSGDisp);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", LightsOutInit);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", LightsOutMain);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventDisp014);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", FaceDoorInit);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", FaceDoorMain);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", FaceDoorOkSet);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", FaceDoorAimSet);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", NisUseCheck);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", NisUseSet);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", NisUseUnSet);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", FaceDoorDisp);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SurpriseDoorInit);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SurpriseDoorMain);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SurpriseDoorDisp);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SimenPillarInit);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SimenPillarMain);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SimenCheck);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SimenPillarDisp);
-
-void IkariMenInit(void) {
+void SpecialEventInit(u_char spev_no)
+{
 }
 
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", IkariMenComeOn);
-
-void HanyouKaitenInit(void) {
+void SpecialEventMain()
+{
 }
 
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", HanyouKaitenMain);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", ZushiBonjiInit);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", ZushiBonjiMain);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", ZushiBonjiDisp);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", ZushiBonjiMSGInit);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", ZushiBonjiMSGMain);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", ZushiBonjiMSGDisp);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", ZushiBonjiAfterInit);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", ZushiBonjiAfterMain);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", ZushiBonjiAfterDisp);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", KakejikuDoorInit);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", KakejikuDoorMain);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", IdoFirstIntoInit);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", IdoFirstIntoMain);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", IdoIntoInit);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", IdoIntoMain);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", IdoFirstOutInit);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", IdoFirstOutMain);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", IdoOutInit);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", IdoOutMain);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", IdoInOutDisp);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", ItemEventInit);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", ItemEventMain);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", ItemEventDisp);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", NawakakeFalseMain);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", NawakakeFalseDisp);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit000);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain000);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit001);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain001);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit002);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain002);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit003);
-
-void SpecialEventMain003(void) {
+int GetSpecialEventMessageAddr(short int msg_no)
+{
 }
 
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit004);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain004);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit005);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain005);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit006);
-
-void SpecialEventMain006(void) {
+void SimpleDispSprt(SPRT_SDAT* ssd, u_int addr, int sp_no, SPRT_SROT* srot, SPRT_SSCL* sscl, u_char alp_rate)
+{
 }
 
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit007);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain007);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit008);
-
-void SpecialEventMain008(void) {
+void SimpleDispAlphaSprt(u_int addr, int sp_no, u_char alp_rate, u_char alp_type)
+{
 }
 
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit009);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain009);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit010);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain010);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit011);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain011);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit012);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain012);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit013);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain013);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit014);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain014);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit015);
-
-void SpecialEventMain015(void) {
+void SimpleDispSprtRGB(u_int addr, int sp_no, u_char alp_rate, u_char rr, u_char gg, int bb)
+{
 }
 
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit016);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain016);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit017);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain017);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit018);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain018);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit019);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain019);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit020);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain020);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit021);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain021);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit022);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain022);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit023);
-
-void SpecialEventMain023(void) {
+void SimpleDispSprtLNR(u_int addr, int sp_no, u_char alp_rate, int lnr)
+{
 }
 
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit024);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain024);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit025);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain025);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit026);
-
-void SpecialEventMain026(void) {
+void SimpleDispSprtDatCopy(SPRT_SDAT* org, SPRT_SDAT* cpy)
+{
 }
 
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit027);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain027);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit028);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain028);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit029);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain029);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit030);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain030);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit031);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain031);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit032);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain032);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit033);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain033);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit034);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain034);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit035);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain035);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit036);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain036);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit037);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain037);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit038);
-
-void SpecialEventMain038(void) {
+void TestPk2Data(long int sendtexaddr)
+{
 }
 
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit039);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain039);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit040);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain040);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit041);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain041);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit042);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain042);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit043);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain043);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit044);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain044);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit045);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain045);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit046);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain046);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit047);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain047);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit048);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain048);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit049);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain049);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit050);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain050);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit051);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain051);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit052);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain052);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit053);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain053);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit054);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain054);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit055);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain055);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit056);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain056);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit057);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain057);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit058);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain058);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit059);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain059);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit060);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain060);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit061);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain061);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit062);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain062);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit063);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain063);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit064);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain064);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit065);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain065);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit066);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain066);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit067);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain067);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit068);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain068);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit069);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain069);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit070);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain070);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit071);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain071);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit072);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain072);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit073);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain073);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit074);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain074);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit075);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain075);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit076);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain076);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit077);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain077);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit078);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain078);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit079);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain079);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit080);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain080);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit081);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain081);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit082);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain082);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit083);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain083);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit084);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain084);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit085);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain085);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit086);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain086);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit087);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain087);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit088);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain088);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit089);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain089);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventInit090);
-
-INCLUDE_ASM(const s32, "ingame/event/ev_spcl", SpecialEventMain090);
+int ButtonMarkNext(int x_off, int y_off, int se_flg)
+{
+}
+
+int ButtonMarkWait()
+{
+}
+
+void ButtonMarkTimeClear()
+{
+}
+
+int CsrInclease(u_char* csr_idx, u_char alpha_max, u_char inclease)
+{
+}
+
+int CsrDeclease(u_char* csr_idx, u_char alpha_min, int inclease)
+{
+}
+
+int CsrBlink(u_char* csr_idx, u_char alpha_max, u_char alpha_min, u_char inclease, u_char* blink)
+{
+}
+
+void CsrClear(u_char* csr_idx)
+{
+}
+
+void CsrClearAll()
+{
+}
+
+void SpevStrInit()
+{
+}
+
+void SpevWrkInit()
+{
+}
+
+void SpevSelectYesNoCsr(float pos_x, float pos_y, int pri, float alp)
+{
+}
+
+int DeadlySeStopWait()
+{
+}
+
+void DummyProg()
+{
+}
+
+void StarPuzzleInit(int pzl_no)
+{
+}
+
+void StarPuzzleDataSet(int pzl_no)
+{
+}
+
+int StarPuzzleMain(int pzl_no)
+{
+}
+
+int StarPuzzleClearJudge()
+{
+}
+
+void StarPuzzleDisp()
+{
+}
+
+int StarPuzzleMSGMain(int pzl_no)
+{
+}
+
+void StarPuzzleMSGDisp()
+{
+}
+
+void DialKeyDoorInit(int door_no)
+{
+}
+
+void DialKeyDoorDataSet(int door_no)
+{
+}
+
+int DialKeyDoorMain()
+{
+}
+
+void DialKeyDoorDisp()
+{
+}
+
+void DialKeyMSGDoorInit()
+{
+}
+
+int DialKeyMSGDoorMain(int msg_no)
+{
+}
+
+void DialKeyMSGDoorDisp(int msg_no)
+{
+}
+
+void GhostDoorInit(int door_no)
+{
+}
+
+void GhostDoorSet(int door_no)
+{
+}
+
+void GhostDoorMain(int door_no)
+{
+}
+
+void GhostDoorDisp(int door_no)
+{
+}
+
+void DollPzlInit()
+{
+}
+
+void DollPzlMain()
+{
+}
+
+int CursorManagerEvent003()
+{
+}
+
+void SpecialEventDisp003(int no)
+{
+}
+
+void ButsuzoPzlInit()
+{
+}
+
+void ButsuzoPzlMain()
+{
+}
+
+u_char BldAlpRetern(short int time_cnt, short int bld_appear, short int bld_end, short int bld_alp)
+{
+}
+
+void SpecialEventDisp004()
+{
+}
+
+void ButsuzoMSGInit()
+{
+}
+
+void ButsuzoMSGMain()
+{
+}
+
+void ButsuzoMSGDisp()
+{
+}
+
+void LightsOutInit()
+{
+}
+
+void LightsOutMain()
+{
+}
+
+void SpecialEventDisp014(int no)
+{
+}
+
+void FaceDoorInit(int face_no)
+{
+}
+
+void FaceDoorMain(int face_no)
+{
+}
+
+void FaceDoorOkSet(int face_no)
+{
+}
+
+void FaceDoorAimSet(int face_no)
+{
+}
+
+int NisUseCheck(int face_no)
+{
+}
+
+void NisUseSet(int face_no)
+{
+}
+
+void NisUseUnSet(int face_no)
+{
+}
+
+void FaceDoorDisp(int face_no)
+{
+}
+
+void SurpriseDoorInit()
+{
+}
+
+void SurpriseDoorMain()
+{
+}
+
+void SurpriseDoorDisp(int face_no)
+{
+}
+
+void SimenPillarInit(int event_no)
+{
+}
+
+void SimenPillarMain(int event_no)
+{
+}
+
+int SimenCheck()
+{
+}
+
+void SimenPillarDisp()
+{
+}
+
+void IkariMenInit()
+{
+}
+
+void IkariMenComeOn()
+{
+}
+
+void HanyouKaitenInit(int event_no)
+{
+}
+
+void HanyouKaitenMain(int event_no)
+{
+}
+
+void ZushiBonjiInit(int bonji_no)
+{
+}
+
+void ZushiBonjiMain(int bonji_no)
+{
+}
+
+void ZushiBonjiDisp(int bonji_no)
+{
+}
+
+void ZushiBonjiMSGInit()
+{
+}
+
+void ZushiBonjiMSGMain()
+{
+}
+
+void ZushiBonjiMSGDisp()
+{
+}
+
+void ZushiBonjiAfterInit(int bonji_no)
+{
+}
+
+void ZushiBonjiAfterMain(int bonji_no)
+{
+}
+
+void ZushiBonjiAfterDisp(int bonji_no)
+{
+}
+
+void KakejikuDoorInit()
+{
+}
+
+void KakejikuDoorMain()
+{
+}
+
+void IdoFirstIntoInit()
+{
+}
+
+void IdoFirstIntoMain()
+{
+}
+
+void IdoIntoInit()
+{
+}
+
+void IdoIntoMain()
+{
+}
+
+void IdoFirstOutInit()
+{
+}
+
+void IdoFirstOutMain()
+{
+}
+
+void IdoOutInit()
+{
+}
+
+void IdoOutMain()
+{
+}
+
+void IdoInOutDisp(int inout)
+{
+}
+
+void ItemEventInit(int event_no)
+{
+}
+
+void ItemEventMain(int event_no)
+{
+}
+
+void ItemEventDisp()
+{
+}
+
+void NawakakeFalseMain(int event_no)
+{
+}
+
+void NawakakeFalseDisp()
+{
+}
+
+void SpecialEventInit000()
+{
+}
+
+void SpecialEventMain000()
+{
+}
+
+void SpecialEventInit001()
+{
+}
+
+void SpecialEventMain001()
+{
+}
+
+void SpecialEventInit002()
+{
+}
+
+void SpecialEventMain002()
+{
+}
+
+void SpecialEventInit003()
+{
+}
+
+void SpecialEventMain003()
+{
+}
+
+void SpecialEventInit004()
+{
+}
+
+void SpecialEventMain004()
+{
+}
+
+void SpecialEventInit005()
+{
+}
+
+void SpecialEventMain005()
+{
+}
+
+void SpecialEventInit006()
+{
+}
+
+void SpecialEventMain006()
+{
+}
+
+void SpecialEventInit007()
+{
+}
+
+void SpecialEventMain007()
+{
+}
+
+void SpecialEventInit008()
+{
+}
+
+void SpecialEventMain008()
+{
+}
+
+void SpecialEventInit009()
+{
+}
+
+void SpecialEventMain009()
+{
+}
+
+void SpecialEventInit010()
+{
+}
+
+void SpecialEventMain010()
+{
+}
+
+void SpecialEventInit011()
+{
+}
+
+void SpecialEventMain011()
+{
+}
+
+void SpecialEventInit012()
+{
+}
+
+void SpecialEventMain012()
+{
+}
+
+void SpecialEventInit013()
+{
+}
+
+void SpecialEventMain013()
+{
+}
+
+void SpecialEventInit014()
+{
+}
+
+void SpecialEventMain014()
+{
+}
+
+void SpecialEventInit015()
+{
+}
+
+void SpecialEventMain015()
+{
+}
+
+void SpecialEventInit016()
+{
+}
+
+void SpecialEventMain016()
+{
+}
+
+void SpecialEventInit017()
+{
+}
+
+void SpecialEventMain017()
+{
+}
+
+void SpecialEventInit018()
+{
+}
+
+void SpecialEventMain018()
+{
+}
+
+void SpecialEventInit019()
+{
+}
+
+void SpecialEventMain019()
+{
+}
+
+void SpecialEventInit020()
+{
+}
+
+void SpecialEventMain020()
+{
+}
+
+void SpecialEventInit021()
+{
+}
+
+void SpecialEventMain021()
+{
+}
+
+void SpecialEventInit022()
+{
+}
+
+void SpecialEventMain022()
+{
+}
+
+void SpecialEventInit023()
+{
+}
+
+void SpecialEventMain023()
+{
+}
+
+void SpecialEventInit024()
+{
+}
+
+void SpecialEventMain024()
+{
+}
+
+void SpecialEventInit025()
+{
+}
+
+void SpecialEventMain025()
+{
+}
+
+void SpecialEventInit026()
+{
+}
+
+void SpecialEventMain026()
+{
+}
+
+void SpecialEventInit027()
+{
+}
+
+void SpecialEventMain027()
+{
+}
+
+void SpecialEventInit028()
+{
+}
+
+void SpecialEventMain028()
+{
+}
+
+void SpecialEventInit029()
+{
+}
+
+void SpecialEventMain029()
+{
+}
+
+void SpecialEventInit030()
+{
+}
+
+void SpecialEventMain030()
+{
+}
+
+void SpecialEventInit031()
+{
+}
+
+void SpecialEventMain031()
+{
+}
+
+void SpecialEventInit032()
+{
+}
+
+void SpecialEventMain032()
+{
+}
+
+void SpecialEventInit033()
+{
+}
+
+void SpecialEventMain033()
+{
+}
+
+void SpecialEventInit034()
+{
+}
+
+void SpecialEventMain034()
+{
+}
+
+void SpecialEventInit035()
+{
+}
+
+void SpecialEventMain035()
+{
+}
+
+void SpecialEventInit036()
+{
+}
+
+void SpecialEventMain036()
+{
+}
+
+void SpecialEventInit037()
+{
+}
+
+void SpecialEventMain037()
+{
+}
+
+void SpecialEventInit038()
+{
+}
+
+void SpecialEventMain038()
+{
+}
+
+void SpecialEventInit039()
+{
+}
+
+void SpecialEventMain039()
+{
+}
+
+void SpecialEventInit040()
+{
+}
+
+void SpecialEventMain040()
+{
+}
+
+void SpecialEventInit041()
+{
+}
+
+void SpecialEventMain041()
+{
+}
+
+void SpecialEventInit042()
+{
+}
+
+void SpecialEventMain042()
+{
+}
+
+void SpecialEventInit043()
+{
+}
+
+void SpecialEventMain043()
+{
+}
+
+void SpecialEventInit044()
+{
+}
+
+void SpecialEventMain044()
+{
+}
+
+void SpecialEventInit045()
+{
+}
+
+void SpecialEventMain045()
+{
+}
+
+void SpecialEventInit046()
+{
+}
+
+void SpecialEventMain046()
+{
+}
+
+void SpecialEventInit047()
+{
+}
+
+void SpecialEventMain047()
+{
+}
+
+void SpecialEventInit048()
+{
+}
+
+void SpecialEventMain048()
+{
+}
+
+void SpecialEventInit049()
+{
+}
+
+void SpecialEventMain049()
+{
+}
+
+void SpecialEventInit050()
+{
+}
+
+void SpecialEventMain050()
+{
+}
+
+void SpecialEventInit051()
+{
+}
+
+void SpecialEventMain051()
+{
+}
+
+void SpecialEventInit052()
+{
+}
+
+void SpecialEventMain052()
+{
+}
+
+void SpecialEventInit053()
+{
+}
+
+void SpecialEventMain053()
+{
+}
+
+void SpecialEventInit054()
+{
+}
+
+void SpecialEventMain054()
+{
+}
+
+void SpecialEventInit055()
+{
+}
+
+void SpecialEventMain055()
+{
+}
+
+void SpecialEventInit056()
+{
+}
+
+void SpecialEventMain056()
+{
+}
+
+void SpecialEventInit057()
+{
+}
+
+void SpecialEventMain057()
+{
+}
+
+void SpecialEventInit058()
+{
+}
+
+void SpecialEventMain058()
+{
+}
+
+void SpecialEventInit059()
+{
+}
+
+void SpecialEventMain059()
+{
+}
+
+void SpecialEventInit060()
+{
+}
+
+void SpecialEventMain060()
+{
+}
+
+void SpecialEventInit061()
+{
+}
+
+void SpecialEventMain061()
+{
+}
+
+void SpecialEventInit062()
+{
+}
+
+void SpecialEventMain062()
+{
+}
+
+void SpecialEventInit063()
+{
+}
+
+void SpecialEventMain063()
+{
+}
+
+void SpecialEventInit064()
+{
+}
+
+void SpecialEventMain064()
+{
+}
+
+void SpecialEventInit065()
+{
+}
+
+void SpecialEventMain065()
+{
+}
+
+void SpecialEventInit066()
+{
+}
+
+void SpecialEventMain066()
+{
+}
+
+void SpecialEventInit067()
+{
+}
+
+void SpecialEventMain067()
+{
+}
+
+void SpecialEventInit068()
+{
+}
+
+void SpecialEventMain068()
+{
+}
+
+void SpecialEventInit069()
+{
+}
+
+void SpecialEventMain069()
+{
+}
+
+void SpecialEventInit070()
+{
+}
+
+void SpecialEventMain070()
+{
+}
+
+void SpecialEventInit071()
+{
+}
+
+void SpecialEventMain071()
+{
+}
+
+void SpecialEventInit072()
+{
+}
+
+void SpecialEventMain072()
+{
+}
+
+void SpecialEventInit073()
+{
+}
+
+void SpecialEventMain073()
+{
+}
+
+void SpecialEventInit074()
+{
+}
+
+void SpecialEventMain074()
+{
+}
+
+void SpecialEventInit075()
+{
+}
+
+void SpecialEventMain075()
+{
+}
+
+void SpecialEventInit076()
+{
+}
+
+void SpecialEventMain076()
+{
+}
+
+void SpecialEventInit077()
+{
+}
+
+void SpecialEventMain077()
+{
+}
+
+void SpecialEventInit078()
+{
+}
+
+void SpecialEventMain078()
+{
+}
+
+void SpecialEventInit079()
+{
+}
+
+void SpecialEventMain079()
+{
+}
+
+void SpecialEventInit080()
+{
+}
+
+void SpecialEventMain080()
+{
+}
+
+void SpecialEventInit081()
+{
+}
+
+void SpecialEventMain081()
+{
+}
+
+void SpecialEventInit082()
+{
+}
+
+void SpecialEventMain082()
+{
+}
+
+void SpecialEventInit083()
+{
+}
+
+void SpecialEventMain083()
+{
+}
+
+void SpecialEventInit084()
+{
+}
+
+void SpecialEventMain084()
+{
+}
+
+void SpecialEventInit085()
+{
+}
+
+void SpecialEventMain085()
+{
+}
+
+void SpecialEventInit086()
+{
+}
+
+void SpecialEventMain086()
+{
+}
+
+void SpecialEventInit087()
+{
+}
+
+void SpecialEventMain087()
+{
+}
+
+void SpecialEventInit088()
+{
+}
+
+void SpecialEventMain088()
+{
+}
+
+void SpecialEventInit089()
+{
+}
+
+void SpecialEventMain089()
+{
+}
+
+void SpecialEventInit090()
+{
+}
+
+void SpecialEventMain090()
+{
+}

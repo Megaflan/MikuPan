@@ -1,13 +1,26 @@
 #include "common.h"
+#include "rotd_ctl.h"
 
-INCLUDE_ASM(const s32, "ingame/map/rotd_ctl", CheckRotDoorOpenStatus);
+int CheckRotDoorOpenStatus(int dwrk_no, u_char type)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/rotd_ctl", ChangeRotDoorFace);
+void ChangeRotDoorFace(u_short door_id)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/rotd_ctl", ChangeRotDoorFaceRoomId);
+void ChangeRotDoorFaceRoomId(u_short door_id, u_char room_id)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/rotd_ctl", ChangeRotDoorFace2Room);
+void ChangeRotDoorFace2Room(u_short door_id, u_char room_id)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/rotd_ctl", JudgePlyrRotForRotDoor);
+int JudgePlyrRotForRotDoor(int dwrk_no)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/rotd_ctl", ChkRotDoorRot);
+u_char ChkRotDoorRot(int dwrk_no)
+{
+}

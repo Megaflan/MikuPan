@@ -1,73 +1,97 @@
 #include "common.h"
+#include "ig_menu.h"
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", NewgameMenuInit);
+/* data 33d8c8 */ STR_DAT ig_menu_str;
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", LoadgameMenuInit);
+void NewgameMenuInit()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", IngameMenuInit);
+void LoadgameMenuInit()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", IngameMenuOpenStart);
+void IngameMenuInit()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", IngameMenuOpenInit);
+void IngameMenuOpenStart()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", IngameMenuMain);
+void IngameMenuMain()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", IngameMenuModeSlct);
+void IngameMenuModeSlct()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", Get4Byte);
+int Get4Byte(u_char* addr)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", GetIngameMSGAddr);
+int GetIngameMSGAddr(u_char type, int msg_no)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", IngameMenuModeSlctDispInit);
+void IngameMenuModeSlctDispInit()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", IngameMenuModeSlctDisp);
+void IngameMenuModeSlctDisp()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", DspTopMenu);
+void DspTopMenu(short int pos_x, short int pos_y, short int alpha, u_short anm)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", WakuWaku);
+void WakuWaku(short int pos_x, short int pos_y, u_char alp, u_char num, u_char pri)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", WakuWaku2);
+void WakuWaku2(short int pos_x, short int pos_y, u_char alp, u_char num, u_char pri)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", MenuInOut);
+void DspPlayData(short int pos_x, short int pos_y, float alpha, u_char str_mode)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", DspPlayData);
+void DspMenuTitle(short int pos_x, short int pos_y, float alp, u_char pri, u_char mode)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", TimeZone);
+char SimpleMoveRuler(float* rslt, u_short t1, u_short t2, u_short t3, u_short dst, u_short* cnt)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", ClockHari);
+char MoveRuler(short int* mov_x, short int* mov_y, short int x0, short int y0, short int x1, short int y1, u_short t1,
+    u_short t2, int t3, u_short* cnt)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", ComingOut);
+void CmnWindow(u_char win_no, short int pos_x, short int pos_y, u_char alp, u_char rgb)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", MenuAdjClock);
+void CmnCursol(short int pos_x, short int pos_y, short int wide, short int high, float flsh, u_char alp, int pri)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", MenuPlayTime);
+u_short Ana2PadDirCnt(u_char chk)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", DspMenuTitle);
+void AnaPonChk()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", SimpleMoveRuler);
+char CanYouOpenMyMind(char mode)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", MoveRuler);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", CmnWakuForWin);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", PutParts);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", BehindTheMask);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", PutMask);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", BehindTheMask2);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", CmnLineForWin);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", CmnWindow);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", CmnCursol);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", Ana2PadDirCnt);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", AnaPonChk);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", CanYouOpenMyMind);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_menu", StopCameraMenu);
+int StopCameraMenu()
+{
+}

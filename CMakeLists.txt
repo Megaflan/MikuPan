@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 4.0.2)
 project(MikuPan)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=x86-64")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=x86-64")
 
 add_executable(MikuPan
         "src/common/ul_math.c"
@@ -45,6 +45,7 @@ add_executable(MikuPan
         "src/graphics/motion/acs_dat.c"
         "src/graphics/motion/anicode.c"
         "src/graphics/motion/mdlact.c"
+        "src/graphics/motion/mdldat.c"
         "src/graphics/motion/mdlwork.c"
         "src/graphics/motion/mime.c"
         "src/graphics/motion/mim_dat.c"
@@ -157,11 +158,36 @@ add_executable(MikuPan
         "src/os/system.c"
         "src/outgame/btl_mode/btl_menu.c"
         "src/outgame/btl_mode/btl_mode.c"
+        "src/outgame/btl_mode/btl_dat.c"
         "src/outgame/memory_album.c"
         "src/outgame/mode_slct.c"
         "src/outgame/outgame.c"
         "src/outgame/scn_test.c"
         "src/outgame/sound_test.c"
-        "src/outgame/title.c")
+        "src/outgame/title.c"
+        "include/sce/libvu0.c"
+        "include/sce/sifrpc.c"
+        "include/ee/kernel.c"
+        "include/sce/libgraph.c"
+        "include/sce/sifdev.c"
+        "include/sce/libdma.c"
+        "include/sce/misc/diei.c"
+        "include/sce/libsdr.c"
+        "include/ee/eekernel.c"
+        "include/sce/libgifpk.c"
+        "include/sce/libcdvd.c"
+        "include/sce/devvif0.c"
+        "include/sce/devvif1.c"
+        "include/sce/libpc.c"
+        "include/sce/libpad.c"
+        "include/sce/sif.c"
+        "include/sce/devvu0.c"
+        "include/sce/libmc.c"
+        "include/sce/mpeg/libmpeg.c"
+        src/graphics/scene/scene_dat.c
+        src/mc/mc.c
+        src/graphics/graph3d/vu_program.c
+        src/graphics/graph3d/vu_program.h
+)
 
 target_include_directories(MikuPan PRIVATE "include/" "src" "resources/")

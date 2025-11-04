@@ -703,11 +703,11 @@ static void SeStartVp(SE_REQ_TMP_STR *tmp_str)
 
     if (swp->menu != 0)
     {
-        SetIopCmdLg(2, tmp_str->vpos, swp->se_p, swp->pitch, swp->pan, swp->vol_rate, 0, 0);
+        SetIopCmdLg(IC_SE_PLAY, tmp_str->vpos, swp->se_p, swp->pitch, swp->pan, swp->vol_rate, 0, 0);
     }
     else
     {
-        SetIopCmdLg(2, tmp_str->vpos, swp->se_p, swp->pitch, swp->pan, (swp->vol_rate * sm_fade.mvol) / 0xfff, 0, 0);
+        SetIopCmdLg(IC_SE_PLAY, tmp_str->vpos, swp->se_p, swp->pitch, swp->pan, (swp->vol_rate * sm_fade.mvol) / 0xfff, 0, 0);
     }
 }
 

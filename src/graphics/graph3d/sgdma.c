@@ -2,6 +2,8 @@
 #include "typedefs.h"
 #include "sgdma.h"
 
+#include <stdio.h>
+
 #include "ee/kernel.h"
 #include "sce/libgraph.h"
 #include "sce/libdma.h"

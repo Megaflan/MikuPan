@@ -9,8 +9,8 @@
 #include "ingame/event/ev_load.h"
 #include "ingame/enemy/ene_ctl.h"
 #include "graphics/motion/mdlwork.h"
-// #include "graphics/graph2d/effect_ene.h" // LoadEneDmgTex should be undeclared
-// #include "graphics/motion/motion.h" // motInitEnemyAnm, motInitEnemyMdl should be undeclared
+#include "graphics/graph2d/effect_ene.h" // LoadEneDmgTex should be undeclared
+#include "graphics/motion/motion.h" // motInitEnemyAnm, motInitEnemyMdl should be undeclared
 
 BGST_WRK bgst_wrk = {0};
 

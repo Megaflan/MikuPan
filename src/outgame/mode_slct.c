@@ -4,6 +4,8 @@
 #include "enums.h"
 #include "mode_slct.h"
 
+#include <string.h>
+
 #include "main/glob.h"
 #include "main/gamemain.h"
 #include "outgame/title.h"
@@ -16,7 +18,7 @@
 #include "ingame/menu/ig_album.h"
 #include "ingame/menu/item.h"
 #include "ingame/menu/ig_file.h"
-// #include "ingame/menu/ig_glst.h"
+#include "ingame/menu/ig_glst.h"
 #include "ingame/menu/ig_menu.h"
 #include "outgame/sound_test.h"
 #include "outgame/outgame.h"

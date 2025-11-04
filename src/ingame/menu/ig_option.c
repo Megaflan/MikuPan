@@ -1,48 +1,34 @@
 #include "common.h"
+#include "ig_option.h"
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_option", NewgameMenuOptionInit);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_option", LoadgameMenuOptionInit);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_option", StartOptionModeInit);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_option", IngameMenuOption);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_option", MenuOptionPad);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_option", MenuOptionDisp);
-
-void OptionCntInit(void) {
+void NewgameMenuOptionInit()
+{
 }
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_option", OptionCntRenew);
+void LoadgameMenuOptionInit()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_option", OptionModeInOut);
+void StartOptionModeInit(u_char mode)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_option", OptionModeInOut2);
+void IngameMenuOption()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_option", DspOptCtrl);
+char MenuOptionPad(u_char* csr, u_char* mode)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_option", DspAlpCtrl);
+void DspOptCtrl(u_char csr, u_char mode, u_char alpha, u_char ttl)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_option", DspOptMain);
+void StepLinesSimpleDraw(short int* p_stp[2], u_char r, u_char g, u_char b, u_char alpha)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_option", DspOptCsr);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_option", DspBigFlame1);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_option", DspBigFlame2);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_option", DspSmlFlame1);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_option", DspSmlFlame2);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_option", DspMsgWin);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_option", StepLinesSimpleDraw);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_option", SimpleHorLine);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_option", DspPadType);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_option", DspLgtScrn);
+void SimpleHorLine(short int* p_stp[3], u_char r, u_char g, u_char b, u_char alpha, int typ)
+{
+}

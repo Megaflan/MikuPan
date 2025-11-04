@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include "common.h"
 #include "typedefs.h"
 

@@ -2,6 +2,8 @@
 #include "typedefs.h"
 #include "sce_pp3.h"
 
+#include <stdio.h>
+
 #include "ee/kernel.h"
 #include "ee/registers.h"
 #include "sce/libdma.h"

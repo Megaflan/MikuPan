@@ -3104,6 +3104,7 @@ int SetTecmoLogo()
         .pri = 16,
         .alpha = 128,
     }};
+
     DISP_SPRT ds;
     static int cnt;
     u_char alp;

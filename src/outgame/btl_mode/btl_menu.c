@@ -1,23 +1,46 @@
 #include "common.h"
+#include "btl_menu.h"
 
-INCLUDE_ASM(const s32, "outgame/btl_mode/btl_menu", FreeModeMain);
+void FreeModeMain()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/btl_mode/btl_menu", FreeModePosSet);
+void FreeModePosSet()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/btl_mode/btl_menu", BattleModeInit);
+void BattleModeInit()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/btl_mode/btl_menu", ClearStageWrk);
+void ClearStageWrk()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/btl_mode/btl_menu", BattleModeMain);
+void BattleModeMain()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/btl_mode/btl_menu", StageTitleInit);
+int StageTitleInit()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/btl_mode/btl_menu", StageTitleLoad);
+int StageTitleLoad()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/btl_mode/btl_menu", StageGhostLoadReq);
+void StageGhostLoadReq()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/btl_mode/btl_menu", StageGhostLoadAfter);
+void StageGhostLoadAfter()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/btl_mode/btl_menu", SaveStoryWrk);
+void SaveStoryWrk()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/btl_mode/btl_menu", LoadStoryWrk);
+void LoadStoryWrk()
+{
+}

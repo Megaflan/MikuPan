@@ -3,6 +3,8 @@
 #include "enums.h"
 #include "ene_ctl.h"
 
+#include <string.h>
+
 #include "sce/libvu0.h"
 
 #include "common/ul_math.h"
@@ -46,6 +48,13 @@
 #include "data/jene_dat.h"       // ENE_DAT *jene_dat[];
 #include "data/fene_dat.h"       // ENE_DAT *fene_dat[];
 #include "data/aene_info_dat.h"  // AENE_INFO_DAT *aene_info_dat[];
+#include "graphics/graph2d/effect_ene.h"
+#include "graphics/motion/mdlwork.h"
+#include "ingame/entry/ap_zgost.h"
+#include "ingame/event/ev_main.h"
+#include "ingame/event/wan_soul.h"
+#include "ingame/menu/ig_camra.h"
+#include "outgame/btl_mode/btl_mode.h"
 int erootd0[20][3] = {0};
 int erootd1[20][3] = {0};
 int erootd2[20][3] = {0};

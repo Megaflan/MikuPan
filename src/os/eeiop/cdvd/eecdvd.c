@@ -242,6 +242,7 @@ static int GetFreeId()
 
 IMG_ARRANGEMENT *GetImgArrangementP(int file_no)
 {
+    /// TODO: 0x12f0000 is the DVD address for IMG_HD.BIN, needs to have loaded before access
     return (IMG_ARRANGEMENT *)(file_no * 8 + 0x12f0000);
 }
 

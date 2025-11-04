@@ -384,11 +384,9 @@ float SgGetProjection()
 {
     sceVu0FVECTOR tmp;
 
-    /*
-    __asm__ volatile ("\n\
-        sqc2 $vf1,0(%0)\n\
-        ": : "r" (tmp));
-        */
+    //__asm__ volatile ("\n\
+    //    sqc2 $vf1,0(%0)\n\
+    //    ": : "r" (tmp));
 
     return tmp[3];
 }
@@ -462,39 +460,39 @@ void GetMatrixFromQuaternion(sceVu0FMATRIX quat, sceVu0FVECTOR qvert)
     lmat[3][1] = +qvert[1];
     lmat[3][2] = +qvert[2];
     lmat[3][3] = +qvert[3];
-/*
-    __asm__ volatile ("\n\
-        lqc2         $vf12,0(%1)\n\
-        lqc2         $vf13,0x10(%1)\n\
-        lqc2         $vf14,0x20(%1)\n\
-        lqc2         $vf15,0x30(%1)\n\
-        lqc2         $vf16,0(%2)\n\
-        lqc2         $vf17,0x10(%2)\n\
-        lqc2         $vf18,0x20(%2)\n\
-        lqc2         $vf19,0x30(%2)\n\
-        vmulax.xyzw  ACCxyzw,$vf12xyzw,$vf16x\n\
-        vmadday.xyzw ACCxyzw,$vf13xyzw,$vf16y\n\
-        vmaddaz.xyzw ACCxyzw,$vf14xyzw,$vf16z\n\
-        vmaddw.xyzw  $vf16xyzw,$vf15xyzw,$vf16w\n\
-        vmulax.xyzw  ACCxyzw,$vf12xyzw,$vf17x\n\
-        vmadday.xyzw ACCxyzw,$vf13xyzw,$vf17y\n\
-        vmaddaz.xyzw ACCxyzw,$vf14xyzw,$vf17z\n\
-        vmaddw.xyzw  $vf17xyzw,$vf15xyzw,$vf17w\n\
-        vmulax.xyzw  ACCxyzw,$vf12xyzw,$vf18x\n\
-        vmadday.xyzw ACCxyzw,$vf13xyzw,$vf18y\n\
-        vmaddaz.xyzw ACCxyzw,$vf14xyzw,$vf18z\n\
-        vmaddw.xyzw  $vf18xyzw,$vf15xyzw,$vf18w\n\
-        vmulax.xyzw  ACCxyzw,$vf12xyzw,$vf19x\n\
-        vmadday.xyzw ACCxyzw,$vf13xyzw,$vf19y\n\
-        vmaddaz.xyzw ACCxyzw,$vf14xyzw,$vf19z\n\
-        vmaddw.xyzw  $vf19xyzw,$vf15xyzw,$vf19w\n\
-        sqc2         $vf16,0(%0)\n\
-        sqc2         $vf17,0x10(%0)\n\
-        sqc2         $vf18,0x20(%0)\n\
-        sqc2         $vf19,0x30(%0)\n\
-        ": : "r" (quat), "r" (rmat), "r" (lmat)
-    );
-    */
+
+    //__asm__ volatile ("\n\
+    //    lqc2         $vf12,0(%1)\n\
+    //    lqc2         $vf13,0x10(%1)\n\
+    //    lqc2         $vf14,0x20(%1)\n\
+    //    lqc2         $vf15,0x30(%1)\n\
+    //    lqc2         $vf16,0(%2)\n\
+    //    lqc2         $vf17,0x10(%2)\n\
+    //    lqc2         $vf18,0x20(%2)\n\
+    //    lqc2         $vf19,0x30(%2)\n\
+    //    vmulax.xyzw  ACCxyzw,$vf12xyzw,$vf16x\n\
+    //    vmadday.xyzw ACCxyzw,$vf13xyzw,$vf16y\n\
+    //    vmaddaz.xyzw ACCxyzw,$vf14xyzw,$vf16z\n\
+    //    vmaddw.xyzw  $vf16xyzw,$vf15xyzw,$vf16w\n\
+    //    vmulax.xyzw  ACCxyzw,$vf12xyzw,$vf17x\n\
+    //    vmadday.xyzw ACCxyzw,$vf13xyzw,$vf17y\n\
+    //    vmaddaz.xyzw ACCxyzw,$vf14xyzw,$vf17z\n\
+    //    vmaddw.xyzw  $vf17xyzw,$vf15xyzw,$vf17w\n\
+    //    vmulax.xyzw  ACCxyzw,$vf12xyzw,$vf18x\n\
+    //    vmadday.xyzw ACCxyzw,$vf13xyzw,$vf18y\n\
+    //    vmaddaz.xyzw ACCxyzw,$vf14xyzw,$vf18z\n\
+    //    vmaddw.xyzw  $vf18xyzw,$vf15xyzw,$vf18w\n\
+    //    vmulax.xyzw  ACCxyzw,$vf12xyzw,$vf19x\n\
+    //    vmadday.xyzw ACCxyzw,$vf13xyzw,$vf19y\n\
+    //    vmaddaz.xyzw ACCxyzw,$vf14xyzw,$vf19z\n\
+    //    vmaddw.xyzw  $vf19xyzw,$vf15xyzw,$vf19w\n\
+    //    sqc2         $vf16,0(%0)\n\
+    //    sqc2         $vf17,0x10(%0)\n\
+    //    sqc2         $vf18,0x20(%0)\n\
+    //    sqc2         $vf19,0x30(%0)\n\
+    //    ": : "r" (quat), "r" (rmat), "r" (lmat)
+    //);
+
 
     // Multiply rmat × lmat → quat
     for (int i = 0; i < 4; ++i) {

@@ -1,21 +1,42 @@
 #include "common.h"
+#include "map_area.h"
 
-INCLUDE_ASM(const s32, "ingame/map/map_area", MapAreaInit);
+/* data 332120 */ u_char area_dat[11][6];
+/* sdata 3570ec */ u_char one_room_load_ok;
+/* data 332170 */ AREA_WRK area_wrk;
 
-INCLUDE_ASM(const s32, "ingame/map/map_area", MapAreaMain);
+void MapAreaInit()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_area", MapAreaRoomLoadReq);
+void MapAreaMain()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_area", MapAreaLoadSet);
+int MapAreaRoomLoadReq()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_area", GetRoomArea);
+void MapAreaLoadSet()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_area", SetAreaLoadRoom);
+u_char GetRoomArea(u_char room_id)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_area", AreaRoomAllLoadInit);
+int SetAreaLoadRoom(u_char mode, u_char area_no)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_area", AreaRoomAllLoad);
+void AreaRoomAllLoadInit()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_area", GetEmptyRoomAddr);
+int AreaRoomAllLoad(u_char area_no)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_area", ClearDispRoom);
+int GetEmptyRoomAddr()
+{
+}

@@ -1,200 +1,264 @@
 #include "common.h"
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", IsUseDoor);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", SearchDoorWrk);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", SearchAcDoor);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", SearchNcDoor);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", ClearDoorAttrFlg);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", InitDoorAttrFlg);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorPassRoom);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorRDoorSetRotOK);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorPassSetSttsMap);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorPassSetHide);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorPassSetTouch);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorAcInit);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorCtrlInit);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", InitDoorOpenCtrl);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", InitAreaReadWrk);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorDataInit);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", SetDoorSttsData);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", SetDoorSttsEve);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", SetDoorLockEve);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorSetAllLocked);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", IsInDoorSpuare);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", GetRoomIdBeyondDoor2);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", GetRoomIdBeyondDoor);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", IsAllConnectDoorClose);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", LockAllDoorInNowRoom);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", UnlockAllDoorInNowRoom);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", IsDoorLoad);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", GetRoomDoorID);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", SetDoorWrk);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorSetFurnWrk);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorCtrlMain);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", IsDoorOpenCtrlMode);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorCtrlOpen);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", SetPlyrPosAfterDOpen);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", SetNcDwrk);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", SetAcDwrk);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorCtrlAutoClose);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", AllCloseAcDoor);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", AllCloseConnectDoor);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorReOpenCheck);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorCtrlNoClose);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorOpenCtrlRot);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorOpenCtrlSlide);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorOpenCheckMain);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorCheckOn);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorCheckOff);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", SetDoorOpenPlyrPos);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorOpenJudge);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", SetDoorOpenCameraNo);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", AreaReadCheck);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorOpenCheck);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", GetDoorBaseRot);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorOpenCheckSquareArea);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorOpenSttsPermissionCheck);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorInitDSM);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorSetDSM);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorGetOpenSquareNo);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorKeyLock);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorKeyLockOnly);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorKeyUnlock);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorKeyUnlockOnly);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorLockChange);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorSttsChange);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorHitCheck);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorHitCheck2);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorCoverCheck);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", GetFusumaHitVertex);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", GetFusumaHitVertex2);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", GetDoorHitVertex);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", GetDoorHitVertex2);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", ChkRotBetween);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorDataRenewNow);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorFreeFurnWrk);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorJoint2Next);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorDataRenewNext);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", GetNextRIdFromRNoDId);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", NextRoomRenew);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", ChkNextRoomIsInsite);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", GetDoorRoomNumP);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", GetDoorRoomNumPFloor);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", GetDoorDoorNumP);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", GetDoorRoomConectDataP);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", GetDoorDataTopP);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", GetDoorDataHeader);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", ChkDoorIsInsite);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", ChkDoorIsInsite2);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", TmpMapHit);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", ChkDoorIsOpen);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", GetDoorIdFromDoorNo);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", GetDoorStts);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", GetDoorSttsForMap);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorChangeModel);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorDispOnOff);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorOpenShiftForce);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", TargetDoorKindChk);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", PlyrPosAdj);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", DoorMoveStart);
-
-INCLUDE_ASM(const s32, "ingame/map/door_ctl", OneRoomLoadReq);
-
-void PrintDoorID(void) {
+#include "door_ctl.h"
+
+/* data 3326b0 */ AREA_READ_WRK area_read_wrk;
+/* data 3326d0 */ DOOR_OPEN_CTRL door_open_ctrl;
+/* data 332710 */ DOOR_WRK door_wrk[20];
+/* data 332c10 */ AUTO_CLOSE_DOOR_WRK ac_door_wrk[10];
+/* data 332e90 */ NON_CLOSE_DOOR_WRK nc_door_wrk[50];
+/* data 333b30 */ sceVu0FVECTOR tmp_area_end_door_pos;
+/* sbss 357ac9 */ static char load_conte_flg;
+/* bss 402740 */ static u_short lock_did[20];
+/* sdata 3570f4 */ int furn_disp_flg;
+
+u_char IsUseDoor(u_char use)
+{
+}
+
+short int SearchDoorWrk(int door_id)
+{
+}
+
+void ClearDoorAttrFlg()
+{
+}
+
+void InitDoorAttrFlg()
+{
+}
+
+void DoorPassRoom(u_char room_id)
+{
+}
+
+void DoorRDoorSetRotOK(u_short door_id)
+{
+}
+
+void DoorPassSetSttsMap(u_short door_id)
+{
+}
+
+void DoorPassSetHide(u_short door_id)
+{
+}
+
+void DoorPassSetTouch(u_short door_id)
+{
+}
+
+void DoorAcInit()
+{
+}
+
+void DoorCtrlInit()
+{
+}
+
+void InitAreaReadWrk()
+{
+}
+
+void DoorDataInit()
+{
+}
+
+void DoorSetAllLocked()
+{
+}
+
+int IsInDoorSpuare()
+{
+}
+
+u_char GetRoomIdBeyondDoor2()
+{
+}
+
+u_char GetRoomIdBeyondDoor(u_short door_id, u_char now_room_id)
+{
+}
+
+u_char IsAllConnectDoorClose()
+{
+}
+
+void LockAllDoorInNowRoom()
+{
+}
+
+void UnlockAllDoorInNowRoom()
+{
+}
+
+u_char IsDoorLoad(u_char type)
+{
+}
+
+int GetRoomDoorID(u_char room_id, u_short* door_id, u_char msn_no)
+{
+}
+
+void DoorCtrlMain()
+{
+}
+
+int DoorKeyUnlockOnly(u_short door_id)
+{
+}
+
+int DoorSttsChange(u_short door_id, u_char stts)
+{
+}
+
+u_char IsDoorOpenCtrlMode()
+{
+}
+
+void SetPlyrPosAfterDOpen()
+{
+}
+
+void AllCloseAcDoor()
+{
+}
+
+void AllCloseConnectDoor()
+{
+}
+
+void DoorOpenCheckMain()
+{
+}
+
+void DoorCheckOn(u_char mode)
+{
+}
+
+void DoorCheckOff()
+{
+}
+
+u_char DoorOpenJudge()
+{
+}
+
+void SetDoorOpenCameraNo()
+{
+}
+
+int AreaReadCheck()
+{
+}
+
+int DoorKeyLock(u_short door_id)
+{
+}
+
+int DoorKeyLockOnly(u_short door_id)
+{
+}
+
+int DoorKeyUnlock(u_short door_id)
+{
+}
+
+u_char DoorHitCheck(u_char* dx_max, u_char* dz_max, float* dst, float* ppos, u_char div)
+{
+}
+
+u_char DoorHitCheck2(u_short pos_x, u_short pos_y, u_char room_id)
+{
+}
+
+u_char DoorCoverCheck(u_short pos_x, short int pos_y, u_short pos_z, u_char room_id)
+{
+}
+
+void DoorDataRenewNow()
+{
+}
+
+void DoorFreeFurnWrk(u_char room_id)
+{
+}
+
+void DoorJoint2Next()
+{
+}
+
+void DoorDataRenewNext(u_char room_id)
+{
+}
+
+u_char GetNextRIdFromRNoDId(u_char room_no, u_short door_id)
+{
+}
+
+u_char NextRoomRenew()
+{
+}
+
+u_char ChkNextRoomIsInsite()
+{
+}
+
+u_char* GetDoorRoomNumP()
+{
+}
+
+u_char* GetDoorRoomNumPFloor(u_char floor)
+{
+}
+
+u_char* GetDoorRoomConectDataP(u_char room_id)
+{
+}
+
+int ChkDoorIsInsite(float* dpos, float dpre_rot, u_short door_id)
+{
+}
+
+int ChkDoorIsInsite2(float* dpos, float dpre_rot, u_short door_id)
+{
+}
+
+int TmpMapHit(u_short door_id)
+{
+}
+
+int GetDoorSttsForMap(DOOR_STTS_MAP* dsmp, u_short door_id, u_char floor)
+{
+}
+
+u_short DoorChangeModel(u_short door_id, u_short model_no)
+{
+}
+
+void DoorDispOnOff(u_short door_id, u_char on_off)
+{
+}
+
+void DoorOpenShiftForce(u_short door_id)
+{
+}
+
+char TargetDoorKindChk()
+{
+}
+
+void PlyrPosAdj(u_char mtn_no, u_char mtn_type)
+{
+}
+
+void DoorMoveStart(u_char mtn_no, u_char door_close_flg)
+{
+}
+
+void OneRoomLoadReq()
+{
+}
+
+void PrintDoorID(int no)
+{
 }

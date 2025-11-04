@@ -17,6 +17,7 @@
 #include "graphics/graph2d/g2d_main.h"
 #include "graphics/graph3d/sgdma.h"
 #include "graphics/graph3d/gra3d.h"
+#include "os/eeiop/adpcm/ea_cmd.h"
 // #include "os/eeiop/adpcm/ea_cmd.h"
 
 int sceGsSyncPath(int mode, u_short timeout);
@@ -24,12 +25,16 @@ int sceGsSyncPath(int mode, u_short timeout);
 int main()
 {    
     InitSystem();
+
     do
     {
         InitGameFirst();
         do
         {
+            // ReSharper disable once CppDFAEndlessLoop
             while (PlayMpegEvent()) {};
+
+            // ReSharper disable once CppDFAEndlessLoop
             EiMain();
             GameMain();
             CheckDMATrans();
@@ -40,7 +45,7 @@ int main()
             ClearTextureCache();
             SeCtrlMain();
         } while (!SoftResetChk());
-    } while (1);
+    } while (1); // TODO: Change this check to be able to close the window
 }
 
 void InitGameFirst()
@@ -104,7 +109,8 @@ int SoftResetChk()
         *key_now[11] && *key_now[12] && *key_now[13]
     )
     {
-        sys_wrk.sreset_count = 0;
+        // Re-enabled for debug purposes
+        sys_wrk.sreset_count = 1;
     }
     else
     {

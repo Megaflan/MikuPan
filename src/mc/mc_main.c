@@ -1,39 +1,83 @@
 #include "common.h"
+#include "mc_main.h"
 
-INCLUDE_ASM(const s32, "mc/mc_main", mcSaveMain);
+MC_CTRL mc_ctrl;
+/* sdata 3576f9 */ u_char mc_msn_flg;
+/* sdata 3576f8 */ u_char mc_start_flg;
+/* sdata 357700 */ u_int mc_photo_num;
 
-INCLUDE_ASM(const s32, "mc/mc_main", mcLoadMain);
+char mcSaveMain()
+{
+}
 
-INCLUDE_ASM(const s32, "mc/mc_main", mcCtrlCheck);
+char mcLoadMain()
+{
+}
 
-INCLUDE_ASM(const s32, "mc/mc_main", mcCtrlSelSlot);
+char mcCtrlCheck()
+{
+}
 
-INCLUDE_ASM(const s32, "mc/mc_main", mcCtrlFileSel);
+char mcCtrlSelSlot()
+{
+}
 
-INCLUDE_ASM(const s32, "mc/mc_main", mcCtrlLoad);
+char mcCtrlFileSel()
+{
+}
 
-INCLUDE_ASM(const s32, "mc/mc_main", mcCtrlSave);
+char mcCtrlLoad()
+{
+}
 
-INCLUDE_ASM(const s32, "mc/mc_main", mcCtrlMakeDir);
+char mcCtrlSave()
+{
+}
 
-INCLUDE_ASM(const s32, "mc/mc_main", mcCtrlFormat);
+char mcCtrlMakeDir()
+{
+}
 
-INCLUDE_ASM(const s32, "mc/mc_main", mcCtrlDelete);
+char mcCtrlFormat()
+{
+}
 
-INCLUDE_ASM(const s32, "mc/mc_main", mcCtrlDispErr);
+char mcCtrlDelete()
+{
+}
 
-INCLUDE_ASM(const s32, "mc/mc_main", mcCtrlYesno);
+char mcCtrlDispErr()
+{
+}
 
-INCLUDE_ASM(const s32, "mc/mc_main", mcCtrl3taku);
+char mcCtrlYesno(int def_pos)
+{
+}
 
-INCLUDE_ASM(const s32, "mc/mc_main", mcInit);
+char mcCtrl3taku(int def_pos)
+{
+}
 
-INCLUDE_ASM(const s32, "mc/mc_main", mcSubInit);
+void mcInit(u_char mode, u_int* work_addr, u_char msn_flg)
+{
+}
 
-INCLUDE_ASM(const s32, "mc/mc_main", mcClearHeader);
+void mcSubInit()
+{
+}
 
-INCLUDE_ASM(const s32, "mc/mc_main", mcEnd);
+void mcClearHeader()
+{
+}
 
-INCLUDE_ASM(const s32, "mc/mc_main", mcSetStep);
+void mcEnd()
+{
+}
 
-INCLUDE_ASM(const s32, "mc/mc_main", mcSetStepAfterCheck);
+void mcSetStep(int step, int msg_no)
+{
+}
+
+void mcSetStepAfterCheck()
+{
+}

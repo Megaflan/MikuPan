@@ -8,6 +8,7 @@
 #include "os/eeiop/sd_room.h"
 #include "ingame/map/doortype.h"
 #include "ingame/map/door_ctl.h"
+#include "ingame/map/map_ctrl.h"
 // #include "ingame/map/map_ctrl.h"
 
 static void SDoorNoUse(u_char room_id0, u_char room_id1);

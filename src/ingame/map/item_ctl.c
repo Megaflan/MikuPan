@@ -1,26 +1,52 @@
 #include "common.h"
+#include "item_ctl.h"
 
-INCLUDE_ASM(const s32, "ingame/map/item_ctl", MapItemInit);
+/* data 33b528 */ u_short item_ap[300][2];
 
-INCLUDE_ASM(const s32, "ingame/map/item_ctl", MissionStartMapItemInit);
-
-INCLUDE_ASM(const s32, "ingame/map/item_ctl", FileDateInit);
-
-INCLUDE_ASM(const s32, "ingame/map/item_ctl", ItemGetMain);
-
-INCLUDE_ASM(const s32, "ingame/map/item_ctl", ItemCtrl);
-
-INCLUDE_ASM(const s32, "ingame/map/item_ctl", ItemDispCtrl);
-
-INCLUDE_ASM(const s32, "ingame/map/item_ctl", SetItemDispData);
-
-INCLUDE_ASM(const s32, "ingame/map/item_ctl", ItemDispDataRenew);
-
-INCLUDE_ASM(const s32, "ingame/map/item_ctl", GetMapItemJudge);
-
-INCLUDE_ASM(const s32, "ingame/map/item_ctl", GetMapItem);
-
-void ItemAppearCtrl(void) {
+void MapItemInit()
+{
 }
 
-INCLUDE_ASM(const s32, "ingame/map/item_ctl", ItemGetContinueJudge);
+void MissionStartMapItemInit(int msn_no)
+{
+}
+
+void FileDateInit()
+{
+}
+
+int ItemGetMain()
+{
+}
+
+void ItemCtrl()
+{
+}
+
+void ItemDispCtrl()
+{
+}
+
+void SetItemDispData(u_char id)
+{
+}
+
+void ItemDispDataRenew()
+{
+}
+
+int GetMapItemJudge()
+{
+}
+
+void GetMapItem(u_short get_no)
+{
+}
+
+void ItemAppearCtrl()
+{
+}
+
+int ItemGetContinueJudge()
+{
+}

@@ -22,13 +22,32 @@
 #include "ingame/map/door_ctl.h"
 #include "ingame/event/wan_soul.h" //
 #include "os/eeiop/se_ev.h"
-// #include "os/key_cnf.h"
+#include "os/key_cnf.h"
+#include <string.h>
+
+#include "entry/ap_pgost.h"
 #include "entry/ap_rgost.h"
+#include "entry/ap_sgost.h"
+#include "event/ev_load.h"
+#include "event/ev_spcl.h"
+#include "graphics/graph2d/effect.h"
+#include "graphics/graph2d/effect_sub2.h"
+#include "graphics/graph2d/g2d_main.h"
+#include "graphics/graph2d/tim2.h"
+#include "graphics/motion/mdlwork.h"
+#include "graphics/mov/movie.h"
+#include "graphics/scene/scene.h"
 #include "ingame/plyr/plyr_ctl.h"
 #include "main/gamemain.h"
 #include "map/item_ctl.h"
+#include "map/map_area.h"
 #include "menu/ig_spd_menu.h"
+#include "menu/item.h"
 #include "menu/pause.h"
+#include "menu/sp_menu.h"
+#include "os/key_cnf.h"
+#include "os/eeiop/cdvd/eecdvd.h"
+#include "plyr/time_ctl.h"
 
 /* sdata 356ef0 */ int start_msn = 0;
 /* sdata 356ef4 */ int msn0_wait_timer = 0;

@@ -1,68 +1,63 @@
 #include "common.h"
+#include "sp_menu.h"
 
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", SavePointMenuInit);
-
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", SavePointMenuOpen);
-
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", SavePointMenuOpenInit);
-
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", BtlModSaveInit);
-
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", SavePointMenuMain);
-
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", SavePointMenuModeSlct);
-
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", SavePointMenuModeSlctDisp);
-
-void SavePointMenuAlbum(void) {
+void SavePointMenuInit()
+{
 }
 
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", SavePointMenuSave);
+void SavePointMenuOpen()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", SaveConte);
+void SavePointMenuOpenInit(u_char msn)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", DspMemSavePoint);
+void BtlModSaveInit()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", WarningMsg);
+char SavePointMenuMain(u_char msn)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", GetSvpNo);
+void SavePointMenuModeSlct(u_char msn, u_char mode)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", SaveCamChk);
+void SavePointMenuModeSlctDisp(u_char msn, u_char csr3, u_char csr4, u_char alp_max, u_char mode)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", DspSavePoint);
+void SavePointMenuAlbum()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", DspSpLenz);
+void SavePointMenuSave()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", DspSpCate);
+void DspMemSavePoint(u_char msk, u_char msg, u_char fdt, u_char svp, u_char alt, u_char csr0, u_char csr1, u_char csr2,
+    int yes_no, int alp_max, int type)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", DspSpData);
+char SaveCamChk()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", DspSpFile);
+char AlbmSlct(u_char csr3, u_char step, u_char alp_max, u_char ini)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", DspSpInfo);
+void AlbumModeInGameOverInit()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", DspSpFile2);
+char AlbumModeInGameOver()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", DspSpInfo2);
-
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", AlbmSlct);
-
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", OpenBook);
-
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", SpMsgWin);
-
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", SpSideBar);
-
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", SpTrFlsh);
-
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", DspSaveTitle);
-
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", PhotoDataExchange);
-
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", AlbmDesignLoadInGame);
-
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", AlbumModeInGameOverInit);
-
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", AlbumModeInGameOver);
-
-INCLUDE_ASM(const s32, "ingame/menu/sp_menu", SavePointLightJudge);
+int SavePointLightJudge()
+{
+}

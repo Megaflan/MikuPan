@@ -34,7 +34,7 @@ typedef struct _sceDmaTag {
     u_char              id;
     struct _sceDmaTag   *next;
     u_int               p[2];
-} sceDmaTag __attribute__ ((aligned(16)));
+} sceDmaTag /* __attribute__ ((aligned(16))) */;
 
 typedef struct {
              tD_CHCR     chcr;   u_int   p0[3];
@@ -72,6 +72,5 @@ int sceDmaPutEnv(sceDmaEnv *env);
 sceDmaChan *sceDmaGetChan(int id);
 void sceDmaSend(sceDmaChan *d, void *tag);
 int sceDmaSync(sceDmaChan *d, int mode, int timeout);
-
 
 #endif // SCE_LIBDMA_H

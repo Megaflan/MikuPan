@@ -2,10 +2,9 @@
 #include "typedefs.h"
 #include "message.h"
 
+#include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
-
-#include "gcc/stdarg.h"
 
 #include "ee/eestruct.h"
 
@@ -1910,7 +1909,7 @@ int SubMessageV3(u_char *s, int pri, int delflg)
 
     if (msdat.pass != 0)
     {
-        return;
+        return -1;
     }
 
     if (delflg != 0 && plyr_wrk.mode == 1)
@@ -1922,7 +1921,7 @@ int SubMessageV3(u_char *s, int pri, int delflg)
     {
         if (s == 0)
         {
-            return;
+            return -1;
         }
 
         msdat.bx = (s[1] << 8) + s[0];

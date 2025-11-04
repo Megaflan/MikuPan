@@ -1,39 +1,26 @@
 #include "common.h"
+#include "item_get.h"
 
-INCLUDE_ASM(const s32, "ingame/menu/item_get", ItemGet);
+void ItemGet(u_char get_type, u_char get_no, u_char msg0_no, u_char msg1_no)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item_get", ItemGetCtrl);
+int ItemGetCtrl()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item_get", BookGetMain);
+void NextPageNavi(u_char hav_now, u_char dsp_max, u_short chr_top, short int ofs_x, short int ofs_y, u_char alpha)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item_get", BookGetPad);
+int CheckTape(int item_no)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item_get", BookGetDsp);
+void PlayTape(int adpcm_no)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item_get", PhotGetMain);
-
-INCLUDE_ASM(const s32, "ingame/menu/item_get", PhotGetPad);
-
-INCLUDE_ASM(const s32, "ingame/menu/item_get", PhotGetDsp);
-
-INCLUDE_ASM(const s32, "ingame/menu/item_get", ItemGetMain__2);
-
-INCLUDE_ASM(const s32, "ingame/menu/item_get", ItemGetPad);
-
-INCLUDE_ASM(const s32, "ingame/menu/item_get", ItemGetDsp);
-
-INCLUDE_ASM(const s32, "ingame/menu/item_get", GetStr);
-
-INCLUDE_ASM(const s32, "ingame/menu/item_get", GetFad);
-
-INCLUDE_ASM(const s32, "ingame/menu/item_get", FileName);
-
-INCLUDE_ASM(const s32, "ingame/menu/item_get", GetMsg);
-
-INCLUDE_ASM(const s32, "ingame/menu/item_get", NextPageNavi);
-
-INCLUDE_ASM(const s32, "ingame/menu/item_get", CheckTape);
-
-INCLUDE_ASM(const s32, "ingame/menu/item_get", PlayTape);
-
-INCLUDE_ASM(const s32, "ingame/menu/item_get", StopTape);
+void StopTape(int item_no)
+{
+}

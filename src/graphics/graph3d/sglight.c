@@ -1846,7 +1846,7 @@ void SgPreRenderPrim(u_int *prim)
     {
         switch(prim[1])
         {
-        case NULL:
+        case 0:
             vuvnprim = prim;
         break;
         case 1:

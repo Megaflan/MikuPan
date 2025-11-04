@@ -1,13 +1,26 @@
 #include "common.h"
+#include "time_ctl.h"
 
-INCLUDE_ASM(const s32, "ingame/plyr/time_ctl", TimeCtrlInit);
+void TimeCtrlInit()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/time_ctl", GameTimeCtrl);
+void GameTimeCtrl()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/time_ctl", SetNowClock);
+void SetNowClock(sceCdCLOCK* nc)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/time_ctl", PlyrTimerCtrl);
+void PlyrTimerCtrl()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/time_ctl", EntryTimeCtrl);
+void EntryTimeCtrl()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/time_ctl", SetRealTime);
+void SetRealTime()
+{
+}

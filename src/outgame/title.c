@@ -1,30 +1,57 @@
 #include "common.h"
+#include "title.h"
 
-INCLUDE_ASM(const s32, "outgame/title", TitleCtrl);
+/* sdata 3576a0 */ int opening_movie_type;
+/* data 343070 */ TITLE_WRK title_wrk;
 
-INCLUDE_ASM(const s32, "outgame/title", AlbmDesignLoad);
-
-INCLUDE_ASM(const s32, "outgame/title", TitleWaitMode);
-
-INCLUDE_ASM(const s32, "outgame/title", TitleStartSlct);
-
-INCLUDE_ASM(const s32, "outgame/title", TitleStartSlctYW);
-
-void TitleLoadCtrl(void) {
+void TitleCtrl()
+{
 }
 
-INCLUDE_ASM(const s32, "outgame/title", TitleSelectMode);
+void TitleWaitMode()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/title", TitleSelectModeYW);
+void TitleStartSlct()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/title", TitleSelectDifficultyYW);
+void TitleStartSlctYW(u_char pad_off, u_char alp_max)
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/title", NewGameInit);
+void TitleLoadCtrl()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/title", LoadGameInit);
+void TitleSelectMode()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/title", InitOutDither);
+void TitleSelectModeYW(u_char pad_off, u_char alp_max)
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/title", MakeOutDither);
+void TitleSelectDifficultyYW()
+{
+}
 
-INCLUDE_ASM(const s32, "outgame/title", DispOutDither);
+void NewGameInit()
+{
+}
+
+void LoadGameInit()
+{
+}
+
+void InitOutDither()
+{
+}
+
+void MakeOutDither()
+{
+}
+
+void DispOutDither()
+{
+}

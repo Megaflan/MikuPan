@@ -1,121 +1,142 @@
 #include "common.h"
+#include "map_ctrl.h"
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", MissonMapDataLoad);
+int MissonMapDataLoad(u_char msn_no)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", InitMapStatus);
+void InitMapStatus(u_char msn_no)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", MapDataInit);
+void MapDataInit()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", MapMissionChange);
+void MapMissionChange(u_char new_msn)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", RoomPassInit);
+void RoomPassInit()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", RoomPass);
+void RoomPass(u_char room_id)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", IsRoomPass);
+int IsRoomPass(u_char room_id)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", MapFloorChange);
+void MapFloorChange(u_char new_floor)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", GetFloorTopAddr);
+int GetFloorTopAddr(u_char floor)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", InitMap);
+void InitMap()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", MapCtrlMain);
+void MapCtrlMain()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", GetNewRoomData);
+void GetNewRoomData()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", RoomWrkRenew);
+u_char RoomWrkRenew()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", CameraNoRenewEach);
+void CameraNoRenewEach(u_char cam_type)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", CameraNoRenew);
+void DbgGetDrmCamNo()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", DbgGetDrmCamNo);
+u_short CameraGetDoorCameraNo(u_short door_id0, u_short door_id1)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", CameraGetDoramaCameraNo);
+u_char GetRoomIdFromRoomNo(u_char map, u_char room_no)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", CameraGetDoorCameraNo);
+u_char GetRoomIdFromRoomNoFloor(u_char map, u_char room_no, u_char floor)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", CameraCheckDoorCameraNo);
+u_char GetDataRoom(u_char map, u_char room_id)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", PlayerHeightRenew);
+int GetPointRoomNo(u_short pos_x, u_short pos_z)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", GetRoomNum);
+int GetPointRoomNoFloor(u_short pos_x, u_short pos_z, u_char floor)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", GetRoomNumFloor);
+int GetPointRoom(u_short pos_x, u_short pos_z)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", GetDataNum);
+float GetPointHeight(u_short pos_x, u_short pos_z)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", RoomChangeJudge);
+u_char PosInAreaJudge0(u_char room, u_short pos_x, u_short pos_y)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", CameraChangeJudgeEach);
+u_char PosInAreaJudge1(u_char map, u_char room, u_char data, u_short pos_x, u_short pos_y)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", CameraChangeJudge);
+u_char MapHitCheck(u_short pos_x, u_short pos_y, u_char room_id)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", HeightChangeJudge);
+u_char MapHitCheckAll(u_short pos_x, u_short pos_y, u_char room_id)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", GetNowRoom);
+void PlyrHitRot(float* pos, float* dst, float* go_rot, float* no_rot, u_char div, u_char room_id)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", GetRoomIdFromRoomNo);
+u_char PlyrMapHitCheck(float* dst, float* pos, u_char div, u_char room_id)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", GetRoomIdFromRoomNoFloor);
+int PlyrMapHitMoveOfs(float* dst, float* pos, u_char room, u_char flr_room)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", GetDoorRoomIdFromRoomNo);
+u_char GetPointMoveMotion(float* p, u_char no)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", GetDoorRoomIdFromRoomNoFloor);
+u_char MapCameraCdivideAB(u_short data_no, u_short* xmin, u_short* xmax, u_short* ymin, u_short* ymax, u_char cam_type)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", GetDataRoom);
+void NakasuHazeSet()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", GetDoorDataRoom);
+void DebugMemoryCheck(u_char* addr, int size)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", GetNowCameraEach);
-
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", GetNowCamera);
-
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", GetNowHeight);
-
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", GetPointRoomNo);
-
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", GetPointRoomNoFloor);
-
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", GetPointRoom);
-
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", GetPointHeight);
-
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", GetPlayerRoom);
-
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", GetRoomDispPos);
-
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", PosInAreaJudge0);
-
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", PosInAreaJudge0Floor);
-
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", PosInAreaJudge1);
-
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", MapHitCheck);
-
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", MapHitCheckAll);
-
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", PlyrHitRot);
-
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", PlyrMapHitCheck);
-
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", PlyrMapHitMoveOfs);
-
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", GetNowOpenEvent);
-
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", GetNowOpenFindAct);
-
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", GetNowPlayerMoveMotion);
-
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", GetPointMoveMotion);
-
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", MapCameraCdivideAB);
-
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", NakasuHazeSet);
-
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", DebugMemoryCheck);
-
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", MapSetFloorSeNo);
-
-INCLUDE_ASM(const s32, "ingame/map/map_ctrl", GetRoomPos);
+int GetRoomPos(u_char room_no, float* room_pos)
+{
+}

@@ -1,114 +1,151 @@
 #include "common.h"
-
-INCLUDE_ASM(const s32, "ingame/menu/item", NewgameItemInit);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", NewgameItemInit2);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", MissionSelectItemInit);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", MenuItemInit);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", LoadgameMenuItemInit);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", StartItemModeInit);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", ItemInitAtMenuOpen);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", FilmPossessionExp);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", IngameMenuItem);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", IngameMenuItemUseSlct);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", IngameMenuItemDisp);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", ItemUse);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", IngameMenuItemEventOpenJudge);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", ItemModeInOut);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", ItemModeInOut2);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", PlayerStatusYW);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", GageAnime);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", PutStsBar);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", FilmAnime);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", ItemList);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", CameUp);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", PlaySM);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", ItemInTheLenz2D);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", LoadItem2D);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", VramItem2D);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", DspItem2D);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", PkTm2);
-
-INCLUDE_ASM(const s32, "ingame/menu/item", MessageWindow);
+#include "item.h"
 
 void ItemCntInit(void) {
 }
 
-INCLUDE_ASM(const s32, "ingame/menu/item", ItemCntRenew);
+void NewgameItemInit()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item", GetItemNum);
+void NewgameItemInit2()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item", PutSpriteYW);
+void MissionSelectItemInit()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item", WipeChange);
+void MenuItemInit()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item", PlusZanzo);
+void LoadgameMenuItemInit()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item", FlashStarYW);
+void StartItemModeInit()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item", CLRtoRGB);
+void ItemInitAtMenuOpen()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item", RGBtoCLR);
+void FilmPossessionExp()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item", PutStringYW);
+void IngameMenuItem()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item", RstMessageYW);
+void IngameMenuItemUseSlct()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item", PutMessageYW);
+void IngameMenuItemDisp()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item", ChkChrNumYW);
+void PlayerStatusYW(u_char alpha)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item", ChkChrNumUS);
+int LoadItem2D(u_char get_type, u_char get_no)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item", ChkPageYW);
+u_long VramItem2D(u_char mode, u_char type)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item", PutPageYW);
+char DspItem2D(u_long tex_addr, float pos_x, float pos_y, int rgb, float alp, float scl_x, float scl_y, char pri)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item", PutPage2YW);
+void PkTm2(u_long tex_addr, short int pos_x, short int pos_y, short int w, short int h, u_char alp, int pri)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item", PutNumberYW);
+void PutSpriteYW(u_short top_label, u_short end_label, float pos_x, float pos_y, float rot, int rgb, float alp,
+    float scl_x, float scl_y, u_char scl_mode, int pri, u_char by, u_char blnd, u_char z_sw)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item", DigiPut01);
+void FlashStarYW(FLSH_CORE* flsh, u_char flsh_max, u_char flsh_min, u_char flsh_flm, u_char mode)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item", PolySquareYW);
+void CLRtoRGB(int* rgb, u_char r, u_char g, u_char b)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item", YesNoCrslOKR);
+void RGBtoCLR(int rgb, u_char* r, u_char* g, u_char* b)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item", XYAdefaultYW);
+void PutStringYW(u_char msg_knd, u_char msg_no, short int pos_x, short int pos_y, int rgb, u_char alpha, int pri,
+                 u_char type)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item", BgFusumaYW);
+void RstMessageYW()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item", SttsRenew);
+u_char PutMessageYW(u_char msg_knd, u_char msg_no, short int pos_x, short int pos_y, int rgb, u_char alpha, int pri)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item", ItmTrFlsh);
+char ChkChrNumYW(u_char msg_knd, u_char msg_no)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item", FromPKZ);
+int ChkChrNumUS(u_char msg_knd, u_char msg_no)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item", DcdCMP2PK2);
+char ChkPageYW(u_char msg_knd, u_char msg_no)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/item", YW_DBG);
+void PutPageYW(u_char msg_knd, u_char msg_no, u_char open_page, short int pos_x, short int pos_y, int rgb, u_char alpha,
+    int pri)
+{
+}
+
+void PutPage2YW(u_char msg_knd, u_char msg_no, u_char open_page, short int pos_x, short int pos_y, int rgb,
+    u_char alpha, int pri)
+{
+}
+
+void PutNumberYW(u_char font, int num, short int pos_x, short int pos_y, float sx, float sy, int rgb, short int alpha,
+    int pri, int digit, int mode)
+{
+}
+
+void PolySquareYW(float pos_x, float pos_y, u_short bar_l, u_short bar_h, int rgb, float alp, float scl_x, float scl_y,
+    int pri, u_char blnd, u_char sw_z, short int rz)
+{
+}
+
+void YesNoCrslOKR(int pri, float pos_x, float pos_y, int rgb, float alp, float scl)
+{
+}
+
+void XYAdefaultYW(u_char no)
+{
+}
+
+void BgFusumaYW(int rgb, float pos_x, float alpha, int pri)
+{
+}
+
+u_int FromPKZ(u_int pkz_addr, u_char pk2_no)
+{
+}
+
+void DcdCMP2PK2(u_int cmp_addr, u_int tmp_addr)
+{
+}

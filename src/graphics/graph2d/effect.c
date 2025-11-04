@@ -6,8 +6,6 @@
 #include "effect.h"
 #undef INCLUDING_FROM_EFFECT_C
 
-#include "gcc/stdarg.h"
-
 #include "sce/libvu0.h"
 
 #include "main/glob.h"
@@ -29,6 +27,7 @@
 #include "graphics/graph2d/effect_sub.h"
 // #include "ingame/entry/ap_sgost.h" // DO NOT INCLUDE
 
+#include <stdarg.h>
 #include <string.h>
 
 #include "data/effdat.h" // SPRT_DAT effdat[];

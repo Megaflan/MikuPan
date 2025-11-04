@@ -3,6 +3,8 @@
 #include "typedefs.h"
 #include "ev_main.h"
 
+#include <string.h>
+
 #include "main/glob.h"
 #include "os/system.h"
 #include "os/eeiop/eese.h"
@@ -44,6 +46,7 @@
 #include "graphics/graph2d/effect_sub2.h"
 #include "graphics/graph3d/gra3d.h"
 #include "graphics/graph3d/load3d.h"
+#include "ingame/map/map_ctrl.h"
 
 u_char event_stts[250] = {0};
 EVENT_WRK ev_wrk = {0};

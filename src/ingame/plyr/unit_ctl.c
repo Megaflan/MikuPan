@@ -1,23 +1,46 @@
 #include "common.h"
+#include "unit_ctl.h"
 
-INCLUDE_ASM(const s32, "ingame/plyr/unit_ctl", RotLimitChk);
+void RotLimitChk(sceVu0FVECTOR rot)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/unit_ctl", GetTrgtRotY);
+float GetTrgtRotY(sceVu0FVECTOR p0, sceVu0FVECTOR p1)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/unit_ctl", GetTrgtRotFromPlyr);
+void GetTrgtRotFromPlyr(sceVu0FVECTOR p, int id)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/unit_ctl", GetTrgtRot);
+void GetTrgtRot(sceVu0FVECTOR p0, sceVu0FVECTOR p1, sceVu0FVECTOR rot, int id)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/unit_ctl", GetRndSP);
+int GetRndSP(u_int min, u_int lng)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/unit_ctl", ConvertRot2Dir);
+u_char ConvertRot2Dir(float rot, u_char id)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/unit_ctl", HitChkSegment2AllChk);
+u_char HitChkSegment2AllChk(sceVu0FVECTOR f, sceVu0FVECTOR t, float deg)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/unit_ctl", OutSightChk);
+u_char OutSightChk(sceVu0FVECTOR tp, sceVu0FVECTOR vp, float rot, float sight, float dist)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/unit_ctl", RotRngChk);
+int RotRngChk(sceVu0FVECTOR vp, sceVu0FVECTOR tp, float rot, float rng)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/unit_ctl", GetPointHeightChk);
+int GetPointHeightChk(sceVu0FVECTOR tv)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/unit_ctl", ReqEneStop);
+void ReqEneStop(u_char req, u_char except)
+{
+}

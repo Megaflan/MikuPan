@@ -3,9 +3,6 @@
 #include "enums.h"
 #include "movie.h"
 
-#include "gcc/ctype.h"
-#include "gcc/index.h"
-
 #include "ee/eekernel.h"
 #include "ee/eeregs.h"
 #include "ee/eestruct.h"
@@ -36,6 +33,7 @@
 #include "os/eeiop/eese.h"
 #include "graphics/graph3d/sglib.h"
 // #include "ingame/map/map_area.h"
+#include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -45,6 +43,7 @@
 #include "graphics/scene/scene_dat.h"
 #include "ingame/map/map_area.h"
 #include "graphics/scene/scene.h"
+#include "data/scene_movie_no.h"
 
 #ifdef BUILD_EU_VERSION
 char *mpegName[][40] = {
@@ -1038,7 +1037,7 @@ void ReqLogoMovie(void) {
     movie_wrk.play_event_sta = 0x4 | 0x2 | 0x1;
     play_mov_no = 37;
 
-    //vfunc();
+    vfunc();
 
     DrawAll2DMes_P2();
 
@@ -1849,7 +1848,7 @@ int strFileOpen(StrFile *file, char *filename)
     sceCdRMode mode;
     int ret;
 
-    body = index(filename, ':');
+    body = strchr(filename, ':');
 
     if (body)
     {
@@ -1875,7 +1874,7 @@ int strFileOpen(StrFile *file, char *filename)
                 body[i] = toupper(body[i]);
             }
 
-            tail = (index(filename, ';'))? "": ";1";
+            tail = (strchr(filename, ';'))? "": ";1";
 
             sprintf(fn, "%s%s", body, tail);
         }
@@ -2517,7 +2516,7 @@ int viBufGetTs(ViBuf *f, TimeStamp *ts)
     {
         int j = (wt - tscount + f->n_ts + i) % f->n_ts;
 
-        if (IsPtsInRegion(stop, f->ts[j].pos, f->ts[j].len, datasize))
+        if (false /* IsPtsInRegion(stop, f->ts[j].pos, f->ts[j].len, datasize) */)
         {
             isEnd = 1;
 

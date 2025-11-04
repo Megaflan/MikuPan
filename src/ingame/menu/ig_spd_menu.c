@@ -1,21 +1,22 @@
 #include "common.h"
+#include "ig_spd_menu.h"
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_spd_menu", SpdMenuInit);
+void SpdMenuInit()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_spd_menu", SpdMenuCtrl);
+char SpdMenuCtrl()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_spd_menu", SpdMapStart);
+void SpdMapMain()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_spd_menu", SpdMapInit);
+void SpdOptStart()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/ig_spd_menu", SpdMapMain);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_spd_menu", SpdMapInOut);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_spd_menu", SpdOptStart);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_spd_menu", SpdOptInit);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_spd_menu", SpdOptMain);
-
-INCLUDE_ASM(const s32, "ingame/menu/ig_spd_menu", SpdOptInOut);
+void SpdOptMain()
+{
+}

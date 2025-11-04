@@ -1,196 +1,393 @@
 #include "common.h"
+#include "plyr_ctl.h"
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrCtrlMain);
+u_short photo_dmg_tbl[0];
+/* sdata 357300 */ u_char plyr_vib_time;
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrDoorOpenChk);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", ShortPauseChk);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrCondChk);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrDmgChk);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrVibCtrl);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrFinderModeChk);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", FinderInSet);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", FinderEndSet);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", ClrEneSta);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrHeightCtrl);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrNormalCtrl);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrSpotMoveCtrl);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrFinderCtrl);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrCamRotCngChk);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", EneHPchk);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", FModeScreenEffect);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrDmgCtrl);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", LeverGachaChk);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrFinderEnd);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrNAnimeCtrl);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", SetPlyrAnime);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrTrembleChk);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", ReqPlyrHPdown);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrHPdwonCtrl);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrSpotLightOnChk);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", SetPlyrSpotLight);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrSubAtkChk);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PSAchk0);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PSAchk1);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PSAchk3);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PSAchk2);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PSAchk4);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PSAchk5);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrPhotoChk);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", EneFrameHitChk);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrChargeCtrl);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PhotoFlyChk);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", FrameInsideChk);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", FrameInsideChkFurn);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", FrameInsideChkRare);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PhotoDmgChk);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PhotoDmgChkSub);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PhotoPointSet);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PhotoPointChkEne);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PhotoPointChkFurn);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PhotoPointChkRare);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PhotoPointCulcEne);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PhotoPointCulcFurn);
-
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PhotoPointCulcRare);
-
-void PlyrMpRecoverChk(void) {
+void PlyrCtrlMain()
+{
 }
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrFModeMoveCtrl);
+int PlyrDoorOpenChk()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrActionChk);
+u_char ShortPauseChk()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrNModeMoveCtrl);
+void PlyrCondChk()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrHitTurnChk);
+void PlyrDmgChk()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrSpecialMoveChk2);
+void PlyrVibCtrl(u_char time)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrSpecialMoveChk);
+void PlyrFinderModeChk()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrPosSet);
+void FinderInSet()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrKonwakuMove);
+void FinderEndSet()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrMovePad);
+void ClrEneSta()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", GetMoveSpeed);
+void PlyrHeightCtrl(float* tv)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrMovePadV);
+void PlyrNormalCtrl()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", CngPlyrRotRapid);
+void PlyrSpotMoveCtrl()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrMovePadFind);
+void PlyrFinderCtrl()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", GetMovePad);
+void PlyrCamRotCngChk()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", MovePadEnableChk);
+void EneHPchk()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PadInfoTmpSave);
+void FModeScreenEffect()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrMoveStaChk);
+void PlyrDmgCtrl()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrLeverInputChk);
+u_char LeverGachaChk()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrMoveHitChk);
+void PlyrFinderEnd()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", InitPhotoWrk);
+void PlyrNAnimeCtrl()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", InitSubjectWrk);
+void SetPlyrAnime(u_char anime_no, u_char frame)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrBattleChk);
+void PlyrTrembleChk()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrLightSet);
+void ReqPlyrHPdown(u_short deg, u_char prio)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrMessageDisp);
+void PlyrHPdwonCtrl()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", ReqPlyrSpeAnime);
+void PlyrSpotLightOnChk()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrSpeAnimeCtrl);
+void SetPlyrSpotLight(u_char id)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrDWalkTmCtrl);
+void PlyrSubAtkChk()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", GetEnePowerDegree);
+u_char PSAchk0()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", CulcEP);
+u_char PSAchk1()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", CulcEP2);
+u_char PSAchk3()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", ChkPhotoAble);
+u_char PSAchk2()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", SearchRareEne);
+void PSAchk4(u_char id)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", SearchFurnHint);
+void PSAchk5()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", GetFurnHintPos);
+void PlyrPhotoChk()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", GetPlyrSpd);
+void EneFrameHitChk()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrNeckDirectionChk);
+void PlyrChargeCtrl(u_char req)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", NeckTargetEneChk);
+void PhotoFlyChk()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", NeckTargetItemChk);
+int FrameInsideChk(float* tv, float* tx, float* ty)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", NeckTargetDoorChk);
+int FrameInsideChkFurn(float* degree, u_int fsta)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlyrNoticeObjectChk);
+int FrameInsideChkRare(int wrk_no, float* degree)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", ReqPlayerStop);
+u_short PhotoDmgChk()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlayerWarpReq);
+u_short PhotoDmgChkSub()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlayerWarpCtrl);
+void PhotoPointSet()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlayerWarpRoomLoadReq);
+void PhotoPointChkEne()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", ShutterChanceChk);
+void PhotoPointChkFurn()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/plyr/plyr_ctl", PlayerWarpReq2);
+void PhotoPointChkRare()
+{
+}
+
+void PhotoPointCulcEne()
+{
+}
+
+void PhotoPointCulcFurn(float dist, float degree, u_int stts)
+{
+}
+
+void PhotoPointCulcRare(u_char wrk_no, float dist, float degree)
+{
+}
+
+void PlyrMpRecoverChk(u_int recov)
+{
+}
+
+void PlyrFModeMoveCtrl()
+{
+}
+
+void PlyrActionChk()
+{
+}
+
+void PlyrNModeMoveCtrl()
+{
+}
+
+void PlyrHitTurnChk(float* tv)
+{
+}
+
+u_char PlyrSpecialMoveChk2(float* mv)
+{
+}
+
+void PlyrSpecialMoveChk(float* mv)
+{
+}
+
+void PlyrPosSet(float* tv)
+{
+}
+
+void PlyrKonwakuMove(float* tv)
+{
+}
+
+void PlyrMovePad(float* tv)
+{
+}
+
+void GetMoveSpeed(float* tv)
+{
+}
+
+void PlyrMovePadV(float* tv)
+{
+}
+
+void CngPlyrRotRapid(float rot0)
+{
+}
+
+void PlyrMovePadFind(float* tv)
+{
+}
+
+float GetMovePad(u_char id)
+{
+}
+
+int MovePadEnableChk(u_char* dir_save)
+{
+}
+
+void PadInfoTmpSave(u_char* dir_save, u_char dir_now, float* rot_save, float rot_now)
+{
+}
+
+u_char PlyrMoveStaChk(float pad_chk)
+{
+}
+
+u_int PlyrLeverInputChk()
+{
+}
+
+u_char PlyrMoveHitChk(float* tv, u_char id)
+{
+}
+
+void InitPhotoWrk()
+{
+}
+
+void InitSubjectWrk()
+{
+}
+
+void PlyrBattleChk()
+{
+}
+
+void PlyrLightSet()
+{
+}
+
+void PlyrMessageDisp()
+{
+}
+
+int ReqPlyrSpeAnime(u_char anime_no, u_char frame)
+{
+}
+
+void PlyrSpeAnimeCtrl()
+{
+}
+
+void PlyrDWalkTmCtrl()
+{
+}
+
+float GetEnePowerDegree()
+{
+}
+
+float CulcEP(float* v0, float* v1)
+{
+}
+
+float CulcEP2(float* v0, float* v1)
+{
+}
+
+int ChkPhotoAble()
+{
+}
+
+int SearchRareEne()
+{
+}
+
+int SearchFurnHint()
+{
+}
+
+int GetFurnHintPos(float* tv, u_int* fsta)
+{
+}
+
+float GetPlyrSpd()
+{
+}
+
+int PlyrNeckDirectionChk(float* p)
+{
+}
+
+u_char NeckTargetEneChk(float* p)
+{
+}
+
+u_char NeckTargetItemChk(float* p)
+{
+}
+
+u_char NeckTargetDoorChk(float* p)
+{
+}
+
+u_char PlyrNoticeObjectChk(float* ov, float* dist)
+{
+}
+
+void ReqPlayerStop(u_char frame)
+{
+}
+
+void PlayerWarpReq(u_char dat_no)
+{
+}
+
+int PlayerWarpCtrl()
+{
+}
+
+void PlayerWarpRoomLoadReq()
+{
+}
+
+int ShutterChanceChk()
+{
+}
+
+void PlayerWarpReq2(u_char dat_no)
+{
+}

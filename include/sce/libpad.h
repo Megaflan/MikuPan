@@ -7,7 +7,6 @@ int scePadPortOpen(int port, int slot, void* addr);
 int scePadInit(int mode);
 int scePadGetState(int port, int slot);
 int scePadRead(int port, int slot, unsigned char* rdata);
-int scePadGetState(int port, int slot);
 int scePadInfoMode(int port, int slot, int term, int offs);
 int scePadSetMainMode(int port, int slot, int offs, int lock);
 int scePadInfoAct(int port, int slot, int actno, int term);

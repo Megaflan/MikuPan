@@ -1,11 +1,14 @@
 #include "common.h"
+#include "gameover.h"
 
-INCLUDE_ASM(const s32, "ingame/menu/gameover", StartGameOver);
+void StartGameOver()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/gameover", ReturnGameOver);
+void ReturnGameOver()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/menu/gameover", GameOverInit);
-
-INCLUDE_ASM(const s32, "ingame/menu/gameover", GameOverMenuMain);
-
-INCLUDE_ASM(const s32, "ingame/menu/gameover", GameOverMenuDisp);
+void GameOverMenuMain()
+{
+}
