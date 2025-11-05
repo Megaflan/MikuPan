@@ -1,11 +1,16 @@
 cmake_minimum_required(VERSION 4.0.2)
-project(MikuPan)
+project(MikuPan LANGUAGES C CXX)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=x86-64 -Wno-implicit-function-declaration -Wno-int-conversion")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=x86-64 -Wno-implicit-function-declaration -Wno-int-conversion")
 
-add_executable(MikuPan
-        "src/common/file_loading.cpp"
+list(PREPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/MikuPan)
+
+include(sdl3)
+include(imgui)
+
+set(MIKUPAN_SOURCES "src/common/file_loading.cpp"
         "src/common/ul_math.c"
         "src/common/utility.c"
         "src/edit/test_2d.c"
@@ -189,8 +194,9 @@ add_executable(MikuPan
         "src/mc/mc.c"
         "src/graphics/graph3d/vu_program.c"
         "src/common/memory_addresses.c"
+        src/graphics/ui/imgui_window.cpp)
 
-)
+add_executable(MikuPan ${MIKUPAN_SOURCES})
 
-target_include_directories(MikuPan PRIVATE "include/" "src" "resources/")
-target_link_libraries(MikuPan PRIVATE m) # Link Math.h
+target_include_directories(MikuPan PRIVATE "include/" "src" "resources/" ${SDL3_INCLUDE_DIR})
+target_link_libraries(MikuPan PRIVATE m imgui SDL3::SDL3) # Link Math.h

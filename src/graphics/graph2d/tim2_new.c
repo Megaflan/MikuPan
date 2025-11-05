@@ -646,7 +646,7 @@ void DrawAll2DMes_P2()
     mch = nmdpri;
     mpk = nmdpkt;
 
-    mmp = DrawAllMes_P2((u_int)&g2d_end_pkt[mes_swap]);
+    mmp = DrawAllMes_P2((int64_t)&g2d_end_pkt[mes_swap]);
 
     if (mmp == NULL)
     {
@@ -673,7 +673,7 @@ void DrawAll2DMes_P2()
     g2d_end_pkt[mes_swap].ui32[2] = VU0_ADDRESS;
     g2d_end_pkt[mes_swap].ui32[3] = 0;
 
-    AppendDmaTagCall((u_int)&g2d_top_pkt[mes_swap]);
+    AppendDmaTagCall((int64_t)&g2d_top_pkt[mes_swap]);
     AppendDmaTagNextRet(&g2d_end_pkt[mes_swap]);
 
     nch = ndpri;
@@ -694,7 +694,7 @@ void DrawAll2DMes_P2()
     mmp = (void *)(mes_swap * 0x60000 + 0x720000); // what's this ??
     pbuf = (Q_WORDDATA *)UNCACHED(mmp);
 
-    SetG2DTopPkt((u_int)pbuf);
+    SetG2DTopPkt((int64_t)pbuf);
 
     if (dbg_wrk.oth_pkt_num_sw != 0)
     {

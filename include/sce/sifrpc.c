@@ -50,6 +50,10 @@ int sceSifCallRpc(sceSifClientData* client, unsigned int rpc_number, unsigned in
             switch (send_cmd[i].cmd_no)
             {
             default: printf("Error: Command %d not yet implemented!\n", send_cmd[i].cmd_no); break;
+            case IC_CDVD_INIT:
+                {
+                    break;
+                }
             case IC_CDVD_LOAD_SECT:
                 {
                     ReadFileInArchive(send_cmd[i].data2, send_cmd[i].data3, send_cmd[i].data4);

@@ -3109,13 +3109,10 @@ int SetTecmoLogo()
     DISP_SPRT ds;
     static int cnt;
     u_char alp;
-    int sec1;
-    int sec2;
-    int sec3;
-    
-    sec1 = 90;
-    sec2 = 60;
-    sec3 = 90;
+
+    int sec1 = 90;
+    int sec2 = 60;
+    int sec3 = 90;
     
     switch (tecmo_logo_flow)
     {

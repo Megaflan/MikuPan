@@ -10,6 +10,7 @@ int sceCdMmode(int media)
 
 int sceCdReadClock(sceCdCLOCK* rtc)
 {
+    return 1;
 }
 
 int sceCdStRead(u_int size, u_int* buf, u_int mode, u_int* err)

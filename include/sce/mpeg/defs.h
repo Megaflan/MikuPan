@@ -1,6 +1,8 @@
 #ifndef SCE_MPEG_DEFS_H
 #define SCE_MPEG_DEFS_H
 
+#include <stdint.h>
+
 #include "typedefs.h"
 
 #ifdef BUILD_EU_VERSION
@@ -25,12 +27,12 @@
 
 static inline void *DmaAddr(void *val)
 {
-    return (void*)((u_int)val & 0x0fffffff);
+    return (void*)((int64_t)val & 0x0fffffff);
 }
 
 static inline void *UncAddr(void *val)
 {
-    return (void*)(((u_int)val & 0x0fffffff) | 0x20000000);
+    return (void*)(((int64_t)val & 0x0fffffff) | 0x20000000);
 }
 
 void clearGsMem(int r, int g, int b, int disp_width, int disp_height);

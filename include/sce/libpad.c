@@ -2,14 +2,18 @@
 
 int scePadPortOpen(int port, int slot, void* addr)
 {
+    return 1;
 }
 
 int scePadInit(int mode)
 {
+    return 1;
 }
 
 int scePadGetState(int port, int slot)
 {
+    /// TODO : Implement PAD
+    return scePadStateDiscon;
 }
 
 int scePadRead(int port, int slot, unsigned char* rdata)
