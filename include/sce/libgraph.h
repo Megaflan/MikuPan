@@ -13,103 +13,88 @@
 #define SCE_GS_NTSC 2
 #define SCE_GS_PAL  3
 
-typedef struct {
-    long unsigned int NLOOP : 15;
-    long unsigned int EOP : 1;
-    long unsigned int pad16 : 16;
-    long unsigned int id : 14;
-    long unsigned int PRE : 1;
-    long unsigned int PRIM : 11;
-    long unsigned int FLG : 2;
-    long unsigned int NREG : 4;
-    long unsigned int REGS0 : 4;
-    long unsigned int REGS1 : 4;
-    long unsigned int REGS2 : 4;
-    long unsigned int REGS3 : 4;
-    long unsigned int REGS4 : 4;
-    long unsigned int REGS5 : 4;
-    long unsigned int REGS6 : 4;
-    long unsigned int REGS7 : 4;
-    long unsigned int REGS8 : 4;
-    long unsigned int REGS9 : 4;
-    long unsigned int REGS10 : 4;
-    long unsigned int REGS11 : 4;
-    long unsigned int REGS12 : 4;
-    long unsigned int REGS13 : 4;
-    long unsigned int REGS14 : 4;
-    long unsigned int REGS15 : 4;
-} sceGifTag __attribute__((aligned(16)));
+typedef struct  {
+  /// Repeat count (GS primitive data size)
+  ///     PACKED mode NREG x NLOOP(qword)
+  ///         REGLIST mode NREG x NLOOP(dword)
+  ///             IMAGE mode NLOOP(qword)
+  unsigned long long NLOOP : 15;
 
-typedef struct {
-    long unsigned int SBP : 14;
-    long unsigned int pad14 : 2;
-    long unsigned int SBW : 6;
-    long unsigned int pad22 : 2;
-    long unsigned int SPSM : 6;
-    long unsigned int pad30 : 2;
-    long unsigned int DBP : 14;
-    long unsigned int pad46 : 2;
-    long unsigned int DBW : 6;
-    long unsigned int pad54 : 2;
-    long unsigned int DPSM : 6;
-    long unsigned int pad62 : 2;
-} sceGsBitbltbuf;
+  /// Termination information (End Of Packet)
+  ///     0 With following primitive
+  ///     1 Without following primitive (End of GS packet)
+  unsigned long long EOP : 1;
+  unsigned long long pad16 : 16;
+  unsigned long long id : 14;
 
-typedef struct {
-    long unsigned int SSAX : 11;
-    long unsigned int pad11 : 5;
-    long unsigned int SSAY : 11;
-    long unsigned int pad27 : 5;
-    long unsigned int DSAX : 11;
-    long unsigned int pad43 : 5;
-    long unsigned int DSAY : 11;
-    long unsigned int DIR : 2;
-    long unsigned int pad61 : 3;
-} sceGsTrxpos;
+  /// PRIM field enable
+  ///     0 Ignores PRIM field
+  ///     1 Outputs PRIM field value to PRIM register
+  unsigned long long PRE : 1;
 
-typedef struct {
-    long unsigned int RRW : 12;
-    long unsigned int pad12 : 20;
-    long unsigned int RRH : 12;
-    long unsigned int pad44 : 20;
-} sceGsTrxreg;
+  /// Data to be set to the PRIM register of GS
+  unsigned long long PRIM : 11;
 
-typedef struct {
-    long unsigned int pad00;
-} sceGsFinish;
+  /// Data format
+  ///     00  PACKED mode
+  ///     01  REGLIST mode
+  ///     10  IMAGE mode
+  ///     11  Disable (Same operation with the IMAGE mode)
+  unsigned long long FLG : 2;
 
-typedef struct {
-    long unsigned long XDR : 2;
-    long unsigned long pad02 : 62;
-} sceGsTrxdir;
+  /// Register descriptor
+  ///     Number of register descriptors in REGS field
+  ///         When the value is 0, the number of descriptors is 16.
+  unsigned long long NREG : 4;
 
-typedef struct {
-    sceGifTag giftag0;
-    sceGsBitbltbuf bitbltbuf;
-    long bitbltbufaddr;
-    sceGsTrxpos trxpos;
-    long trxposaddr;
-    sceGsTrxreg trxreg;
-    long trxregaddr;
-    sceGsTrxdir trxdir;
-    long trxdiraddr;
-    sceGifTag giftag1;
-} sceGsLoadImage __attribute__((aligned(16)));
+  /// PRIM
+  unsigned long long REGS0 : 4;
 
-typedef struct {
-    u_int vifcode[4];
-    sceGifTag giftag;
-    sceGsBitbltbuf bitbltbuf;
-    long bitbltbufaddr;
-    sceGsTrxpos trxpos;
-    long trxposaddr;
-    sceGsTrxreg trxreg;
-    long trxregaddr;
-    sceGsFinish finish;
-    long finishaddr;
-    sceGsTrxdir trxdir;
-    long trxdiraddr;
-} sceGsStoreImage __attribute__((aligned(16)));
+  /// RGBAQ
+  unsigned long long REGS1 : 4;
+
+  /// ST
+  unsigned long long REGS2 : 4;
+
+  /// UV
+  unsigned long long REGS3 : 4;
+
+  /// XYZF2
+  unsigned long long REGS4 : 4;
+
+  /// XYZ2
+  unsigned long long REGS5 : 4;
+
+  /// TEX0_1
+  unsigned long long REGS6 : 4;
+
+  /// TEX0_2
+  unsigned long long REGS7 : 4;
+
+  /// CLAMP_1
+  unsigned long long REGS8 : 4;
+
+  /// CLAMP_2
+  unsigned long long REGS9 : 4;
+
+  /// FOG
+  unsigned long long REGS10 : 4;
+  unsigned long long REGS11 : 4;
+
+  /// XYZF3
+  unsigned long long REGS12 : 4;
+
+  /// XYZ3
+  unsigned long long REGS13 : 4;
+
+  /// A+D
+  unsigned long long REGS14 : 4;
+
+  /// NOP
+  unsigned long long REGS15 : 4;
+} sceGifTag;
+
+
 
 typedef struct {
     sceGsFrame frame1;
@@ -163,14 +148,88 @@ typedef struct {
     sceGsClear clear1;
 } sceGsDBuff;
 
+typedef struct {
+  unsigned long long SBP : 14; /// Source Buffer Pointer
+  unsigned long long pad14 : 2;
+  unsigned long long SBW : 6; /// Source Buffer Width
+  unsigned long long pad22 : 2;
+  unsigned long long SPSM : 6; /// Source Pixel Storage Mode
+  unsigned long long pad30 : 2;
+  unsigned long long DBP : 14; /// Destination Buffer Pointer (i.e., 0x100 * 256 = 0x10000 bytes into GS memory)
+  unsigned long long pad46 : 2;
+  unsigned long long DBW : 6; /// Destination Buffer Width in blocks (each block = 64 pixels)
+  unsigned long long pad54 : 2;
+  unsigned long long DPSM : 6; /// Destination Pixel Storage Mode (e.g., 0x0 = PSMCT32, 32-bit color)
+  unsigned long long pad62 : 2;
+} sceGsBitbltbuf;
+
+typedef struct {
+  unsigned long long SSAX : 11; /// Source X coordinate (in pixels) where the transfer begins. Range 0–2047.
+  unsigned long long pad11 : 5;
+  unsigned long long SSAY : 11; /// Source Y coordinate (in pixels) where the transfer begins. Range 0–2047.
+  unsigned long long pad27 : 5;
+  unsigned long long DSAX : 11; /// Destination X coordinate (in pixels) where the transfer begins. Range 0–2047.
+  unsigned long long pad43 : 5;
+  unsigned long long DSAY : 11; /// Destination Y coordinate (in pixels) where the transfer begins. Range 0–2047.
+  unsigned long long DIR : 2; /// X-axis direction: 0 = left→right, 1 = right→left. Y-axis direction: 0 = top→bottom, 1 = bottom→top.
+  unsigned long long pad61 : 3;
+} sceGsTrxpos;
+
+typedef struct {
+  unsigned long long RRW : 12; /// Rectangle Region Width
+  unsigned long long pad12 : 20;
+  unsigned long long RRH : 12; /// Rectangle Region Height
+  unsigned long long pad44 : 20;
+} sceGsTrxreg;
+
+typedef struct {
+  unsigned long long XDR : 2;
+  unsigned long long pad01 : 30;
+  unsigned long long pad02 : 32;
+} sceGsTrxdir;
+
+typedef struct {
+  sceGifTag giftag0;
+  sceGsBitbltbuf bitbltbuf;
+  unsigned long long bitbltbufaddr;
+  sceGsTrxpos trxpos;
+  unsigned long long trxposaddr;
+  sceGsTrxreg trxreg;
+  unsigned long long trxregaddr;
+  sceGsTrxdir trxdir;
+  unsigned long long trxdiraddr;
+  sceGifTag giftag1;
+} sceGsLoadImage;
+
 typedef struct { // 0x10
-	/* 0x0 */ short int sceGsInterMode;
-	/* 0x2 */ short int sceGsOutMode;
-	/* 0x4 */ short int sceGsFFMode;
-	/* 0x6 */ short int sceGsVersion;
-	/* 0x8 */ int (*sceGsVSCfunc)(int);
-	/* 0xc */ int sceGsVSCid;
+  /* 0x0 */ short int sceGsInterMode;
+  /* 0x2 */ short int sceGsOutMode;
+  /* 0x4 */ short int sceGsFFMode;
+  /* 0x6 */ short int sceGsVersion;
+  /* 0x8 */ int (*sceGsVSCfunc)(int);
+  /* 0xc */ int sceGsVSCid;
 } sceGsGParam __attribute__((aligned(16)));
+
+typedef struct {
+  long unsigned long pad00;
+} sceGsFinish;
+
+typedef struct {
+  u_int vifcode[4];
+  sceGifTag giftag;
+  sceGsBitbltbuf bitbltbuf;
+  long bitbltbufaddr;
+  sceGsTrxpos trxpos;
+  long trxposaddr;
+  sceGsTrxreg trxreg;
+  long trxregaddr;
+  sceGsFinish finish;
+  long finishaddr;
+  sceGsTrxdir trxdir;
+  long trxdiraddr;
+} sceGsStoreImage __attribute__((aligned(16)));
+
+
 
 void sceGsSetDefDBuff(sceGsDBuff *dp, short psm, short w, short h, short ztest, short zpsm,  short clear);
 void sceGsResetPath();

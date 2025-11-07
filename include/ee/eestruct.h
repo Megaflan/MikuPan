@@ -403,32 +403,55 @@ typedef struct {
 } sceGsXyz;
 
 typedef struct {
-	long unsigned long TBP0 : 14;
-	long unsigned long TBW : 6;
-	long unsigned long PSM : 6;
-	long unsigned long TW : 4;
-	long unsigned long TH : 4;
-	long unsigned long TCC : 1;
-	long unsigned long TFX : 2;
-	long unsigned long CBP : 14;
-	long unsigned long CPSM : 4;
-	long unsigned long CSM : 1;
-	long unsigned long CSA : 5;
-	long unsigned long CLD : 3;
+  /// TBP0 (Texture Base Pointer), Start address of texture in VRAM, in units of 64-byte blocks. The GS uses this to find the texture’s first page.
+  unsigned long long TBP0 : 14;
+
+  /// TBW (Texture Buffer Width), Width of the texture buffer in pages, where a page is 64 pixels wide for PSMCT32/PSMZ32 (32-bit formats). For other formats, the width unit changes.
+  unsigned long long TBW : 6;
+
+  /// PSM (Pixel Storage Mode), Texture pixel format: PSMCT32 (0), PSMCT24 (1), PSMCT16 (2), PSMT8 (19), PSMT4 (20), etc.
+  unsigned long long PSM : 6;
+
+  /// Texture Width, Stored as log2(width). Example: TW=8 → 2^8 = 256 pixels wide.
+  unsigned long long TW : 4;
+
+  /// Texture Height, Stored as log2(height). Example: TH=8 → 2^8 = 256 pixels tall.
+  unsigned long long TH : 4;
+
+  /// TCC (Texture Color Component), 0 = RGB, 1 = RGBA. This affects how the GS blends and modulates the texture.
+  unsigned long long TCC : 1;
+
+  /// TFX (Texture Function), How the texture combines with vertex color: 0=MODULATE, 1=DECAL, 2=HIGHLIGHT, 3=HIGHLIGHT2.
+  unsigned long long TFX : 2;
+
+  /// CBP (CLUT Base Pointer), Base address of the Color Look-Up Table (palette) in VRAM, in 64-byte blocks (used only for paletted textures like PSMT8/4).
+  unsigned long long CBP : 14;
+
+  /// CPSM (CLUT Pixel Storage Mode), Format of palette entries (usually PSMCT32 or PSMCT16).
+  unsigned long long CPSM : 4;
+
+  /// CSM (CLUT Storage Mode), 0 = CSM1 (1D palette), 1 = CSM2 (2D palette). Controls how palette entries are arranged in VRAM.
+  unsigned long long CSM : 1;
+
+  /// CSA (CLUT Entry Offset), Offset (in blocks of 16 colors) inside the CLUT. Lets you pick sub-palettes.
+  unsigned long long CSA : 5;
+
+  /// CLD (CLUT Load Control), 0 = No load, 1 = Load CLUT, 2/3 = Reserved. Used to trigger CLUT loading.
+  unsigned long long CLD : 3;
 } sceGsTex0;
 
 typedef struct {
-    unsigned long long LCM:1;
-    unsigned long long pad01:1;
-    unsigned long long MXL:3;
-    unsigned long long MMAG:1;
-    unsigned long long MMIN:3;
-    unsigned long long MTBA:1;
-    unsigned long long pad10:9;
-    unsigned long long L:2;
-    unsigned long long pad21:11;
-    unsigned long long K:12;
-    unsigned long long pad44:20;
+  unsigned long long LCM:1;
+  unsigned long long pad01:1;
+  unsigned long long MXL:3;
+  unsigned long long MMAG:1;
+  unsigned long long MMIN:3;
+  unsigned long long MTBA:1;
+  unsigned long long pad10:9;
+  unsigned long long L:2;
+  unsigned long long pad21:11;
+  unsigned long long K:12;
+  unsigned long long pad44:20;
 } sceGsTex1;
 
 #define SCE_DMA_VIF0        0

@@ -15,9 +15,11 @@
 #include "graphics/mov/movie.h"
 #include "graphics/graph2d/tim2_new.h"
 #include "graphics/graph2d/g2d_main.h"
+#include "graphics/graph2d/message.h"
 #include "graphics/graph3d/sgdma.h"
 #include "graphics/graph3d/gra3d.h"
 #include "os/eeiop/adpcm/ea_cmd.h"
+#include "rendering/sdl_renderer.h"
 // #include "os/eeiop/adpcm/ea_cmd.h"
 
 int sceGsSyncPath(int mode, u_short timeout);
@@ -25,10 +27,6 @@ int sceGsSyncPath(int mode, u_short timeout);
 #define SDL_MAIN_USE_CALLBACKS 1  /* use the callbacks instead of main() */
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
-
-/* We will use this renderer to draw into this window every frame. */
-static SDL_Window *window = NULL;
-static SDL_Renderer *renderer = NULL;
 
 /// CPP Extern Functions ///
 void InitImGuiWindow(SDL_Window *window, SDL_Renderer *renderer);
@@ -39,23 +37,9 @@ void NewFrameImGuiWindow();
 void ProcessEventImGui(SDL_Event *event);
 /// CPP Extern Functions ///
 
-/* This function runs once at startup. */
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
 {
-    SDL_SetAppMetadata("Example Renderer Clear", "1.0", "com.example.renderer-clear");
-
-    if (!SDL_Init(SDL_INIT_VIDEO)) {
-        SDL_Log("Couldn't initialize SDL: %s", SDL_GetError());
-        return SDL_APP_FAILURE;
-    }
-
-    if (!SDL_CreateWindowAndRenderer("MikuPan", 640, 480, SDL_WINDOW_RESIZABLE, &window, &renderer)) {
-        SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
-        return SDL_APP_FAILURE;
-    }
-
-    SDL_SetRenderLogicalPresentation(renderer, 640, 480, SDL_LOGICAL_PRESENTATION_LETTERBOX);
-    InitImGuiWindow(window, renderer);
+    SDL_AppResult result = InitSDL();
 
     /// GAME LOGIC ///
     SDL_Log("Initializing Systems");
@@ -64,10 +48,9 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
     SDL_Log("Initializing Game");
     InitGameFirst();
 
-    return SDL_APP_CONTINUE;  /* carry on with the program! */
+    return result;
 }
 
-/* This function runs when a new event (mouse input, keypresses, etc) occurs. */
 SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
 {
     if (event->type == SDL_EVENT_QUIT) {
@@ -76,19 +59,14 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
 
     ProcessEventImGui(event);
 
-    return SDL_APP_CONTINUE;  /* carry on with the program! */
+    return SDL_APP_CONTINUE;
 }
 
-/* This function runs once per frame, and is the heart of the program. */
 SDL_AppResult SDL_AppIterate(void *appstate)
 {
     NewFrameImGuiWindow();
-    const double now = ((double)SDL_GetTicks()) / 1000.0;  /* convert from milliseconds to seconds. */
-    /* choose the color for the frame we will draw. The sine wave trick makes it fade between colors smoothly. */
-    const float red = (float) (0.5 + 0.5 * SDL_sin(now));
-    const float green = (float) (0.5 + 0.5 * SDL_sin(now + SDL_PI_D * 2 / 3));
-    const float blue = (float) (0.5 + 0.5 * SDL_sin(now + SDL_PI_D * 4 / 3));
-    SDL_SetRenderDrawColorFloat(renderer, red, green, blue, SDL_ALPHA_OPAQUE_FLOAT);  /* new color, full alpha. */
+
+    SDL_Clear();
 
     if (!SoftResetChk())
     {
@@ -98,6 +76,7 @@ SDL_AppResult SDL_AppIterate(void *appstate)
             GameMain();
             CheckDMATrans();
             sceGsSyncPath(0, 0);
+            //SetString2(0x10, 48.0f, 364.0f, 1, 0x80, 0x80, 0x80, "HELLO WORLD!");
             vfunc();
             //DrawAll2DMes_P2();
             //FlushModel(1);
@@ -113,16 +92,13 @@ SDL_AppResult SDL_AppIterate(void *appstate)
     DrawImGuiWindow();
     RenderImGuiWindow(renderer);
 
-    /* put the newly-cleared rendering on the screen. */
     SDL_RenderPresent(renderer);
 
-    return SDL_APP_CONTINUE;  /* carry on with the program! */
+    return SDL_APP_CONTINUE;
 }
 
-/* This function runs once at shutdown. */
 void SDL_AppQuit(void *appstate, SDL_AppResult result)
 {
-    /* SDL will clean up the window/renderer for us. */
     ShutDownImGuiWindow();
 }
 

@@ -12,6 +12,7 @@
 #include "graphics/graph2d/message.h"
 #include "graphics/graph2d/g2d_debug.h"
 #include "graphics/graph2d/effect_sub.h"
+#include "gs/gs_server_c.h"
 
 u_int *tm2_end_pkt = NULL;
 
@@ -48,7 +49,7 @@ u_int* MakeTim2Direct2(u_int *pkt_addr, u_int *tim2_addr, int tbp)
 
     nloop = tph->ImageSize / 16;
 
-    img_addr = (u_int *)((int)tph + tph->HeaderSize);
+    img_addr = (u_int *)((int64_t)tph + tph->HeaderSize);
 
     sgtx0 = *(sceGsTex0*)&tph->GsTex0;
 
@@ -62,7 +63,37 @@ u_int* MakeTim2Direct2(u_int *pkt_addr, u_int *tim2_addr, int tbp)
 
     qw = (Q_WORDDATA *)(pkt_addr + 4);
 
+    sceGsLoadImage load_image;
+
+    /// Setting up the BITBLTBUF tag
+    load_image.bitbltbuf.SBP = 0;
+    load_image.bitbltbuf.SBW = 0;
+    load_image.bitbltbuf.SPSM = 0;
+    load_image.bitbltbuf.DBP = tbp;
+    load_image.bitbltbuf.DBW = tbw;
+    load_image.bitbltbuf.DPSM = psm;
+    load_image.bitbltbufaddr = SCE_GS_BITBLTBUF;
+
+    /// Setting up the TRXPOS tag
+    load_image.trxpos.DIR = 0;
+    load_image.trxpos.DSAX = 0;
+    load_image.trxpos.DSAY = 0;
+    load_image.trxpos.SSAX = 0;
+    load_image.trxpos.SSAY = 0;
+    load_image.trxdiraddr = SCE_GS_TRXPOS;
+
+    /// Setting up the TRXREG tag
+    load_image.trxreg.RRW = tph->ImageWidth;
+    load_image.trxreg.RRH = tph->ImageHeight;
+    load_image.trxregaddr = SCE_GS_TRXREG;
+
+    /// Setting up the TRXDIR tag
+    load_image.trxdir.XDR = 0;
+    load_image.trxdiraddr = SCE_GS_TRXDIR;
+
     qw = SetImageTransParam2(qw, tbp, tbw, psm, tph->ImageWidth, tph->ImageHeight);
+
+    GsUpload(&load_image, (unsigned char*)img_addr);
 
 #ifdef BUILD_EU_VERSION
     qw->ul64[0] = SCE_GIF_SET_TAG(nloop, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_IMAGE, 0);
@@ -115,7 +146,7 @@ u_int* MakeClutDirect2(u_int *pkt_addr, u_int *tim2_addr, int cbp)
 
     nloop = tph->ClutSize / 16;
 
-    img_addr = (u_int *)((int)tph + (tph->HeaderSize + tph->ImageSize));
+    img_addr = (u_int *)((int64_t)tph + (tph->HeaderSize + tph->ImageSize));
 
     sgtx0 = *(sceGsTex0*)&tph->GsTex0;
 
@@ -129,15 +160,50 @@ u_int* MakeClutDirect2(u_int *pkt_addr, u_int *tim2_addr, int cbp)
 
     qw = (Q_WORDDATA *)(pkt_addr + 4);
 
+    sceGsLoadImage load_image;
+
+    /// Setting up the BITBLTBUF tag
+    load_image.bitbltbuf.SBP = 0;
+    load_image.bitbltbuf.SBW = 0;
+    load_image.bitbltbuf.SPSM = 0;
+    load_image.bitbltbuf.DBP = cbp;
+    load_image.bitbltbuf.DBW = tbw;
+    load_image.bitbltbuf.DPSM = psm;
+    load_image.bitbltbufaddr = SCE_GS_BITBLTBUF;
+
+    /// Setting up the TRXPOS tag
+    load_image.trxpos.DIR = 0;
+    load_image.trxpos.DSAX = 0;
+    load_image.trxpos.DSAY = 0;
+    load_image.trxpos.SSAX = 0;
+    load_image.trxpos.SSAY = 0;
+    load_image.trxdiraddr = SCE_GS_TRXPOS;
+
+    /// Setting up the TRXDIR tag
+    load_image.trxdir.XDR = 0;
+    load_image.trxdiraddr = SCE_GS_TRXDIR;
+
     if (tph->ClutColors == 16)
     {
         qw = SetImageTransParam2(qw, cbp, tbw, psm, 8, 2);
+
+        /// Setting up the TRXREG tag
+        load_image.trxreg.RRW = 8;
+        load_image.trxreg.RRH = 2;
+        load_image.trxregaddr = SCE_GS_TRXREG;
     }
     else
     {
         int h = tph->ClutColors / 16;
         qw = SetImageTransParam2(qw, cbp, tbw, psm, 16, h);
+
+        /// Setting up the TRXREG tag
+        load_image.trxreg.RRW = 16;
+        load_image.trxreg.RRH = h;
+        load_image.trxregaddr = SCE_GS_TRXREG;
     }
+
+    GsUpload(&load_image, (unsigned char*)img_addr);
 
 #ifdef BUILD_EU_VERSION
     qw->ul64[0] = SCE_GIF_SET_TAG(nloop, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_IMAGE, 0);
@@ -177,21 +243,48 @@ Q_WORDDATA* SetImageTransParam2(Q_WORDDATA *qw, int tbp, int tbw, int psm, u_sho
     qw->ul64[1] = SCE_GIF_PACKED_AD;
     qw++;
 
+    sceGsLoadImage load_image;
+
+    /// Setting up the BITBLTBUF tag
+    load_image.bitbltbuf.SBP = 0;
+    load_image.bitbltbuf.SBW = 0;
+    load_image.bitbltbuf.SPSM = 0;
+    load_image.bitbltbuf.DBP = tbp;
+    load_image.bitbltbuf.DBW = tbw;
+    load_image.bitbltbuf.DPSM = psm;
+    load_image.bitbltbufaddr = SCE_GS_BITBLTBUF;
     qw->ul64[0] = SCE_GS_SET_BITBLTBUF(0, 0, 0, tbp, tbw, psm);
     qw->ul64[1] = SCE_GS_BITBLTBUF;
     qw++;
 
+    /// Setting up the TRXPOS tag
+    load_image.trxpos.DIR = 0;
+    load_image.trxpos.DSAX = 0;
+    load_image.trxpos.DSAY = 0;
+    load_image.trxpos.SSAX = 0;
+    load_image.trxpos.SSAY = 0;
+    load_image.trxdiraddr = SCE_GS_TRXPOS;
     qw->ul64[0] = SCE_GS_SET_TRXPOS(0, 0, 0, 0, 0);
     qw->ul64[1] = SCE_GS_TRXPOS;
     qw++;
 
+    /// Setting up the TRXREG tag
+    load_image.trxreg.RRW = w;
+    load_image.trxreg.RRH = h;
+    load_image.trxregaddr = SCE_GS_TRXREG;
     qw->ul64[0] = SCE_GS_SET_TRXREG(w, h);
     qw->ul64[1] = SCE_GS_TRXREG;
     qw++;
 
+    /// Setting up the TRXDIR tag
+    load_image.trxdir.XDR = 0;
+    load_image.trxdiraddr = SCE_GS_TRXDIR;
     qw->ul64[0] = SCE_GS_SET_TRXDIR(0);
     qw->ul64[1] = SCE_GS_TRXDIR;
     qw++;
+
+    /// Setting up the giftag1 tag
+    *(u_long*)&load_image.giftag0 = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
 
     return qw;
 }
@@ -277,6 +370,12 @@ void CallFontTexAndMesPacket()
     DrawOne2D_P2(fnt_pkt);
 }
 
+/**
+ * Uploads the Tim2 data to the GS
+ * @param tim2_addr
+ * @param tbp
+ * @param offset
+ */
 void MakeTim2Direct3(u_int *tim2_addr, int tbp, int offset)
 {
     TIM2_PICTUREHEADER *tph;
@@ -321,25 +420,56 @@ void MakeTim2Direct3(u_int *tim2_addr, int tbp, int offset)
         tbp = sgtx0.TBP0 + offset;
     }
 
+    sceGsLoadImage load_image;
+
     qwtop = ndpkt++;
 
+    /// Setting up the giftag1 tag
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
     pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
+    *(u_long*)&load_image.giftag0 = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
 
+    /// Setting up the BITBLTBUF tag
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_BITBLTBUF(0, 0, 0, tbp, tbw, psm);
     pbuf[ndpkt++].ul64[1] = SCE_GS_BITBLTBUF;
+    load_image.bitbltbuf.SBP = 0;
+    load_image.bitbltbuf.SBW = 0;
+    load_image.bitbltbuf.SPSM = 0;
+    load_image.bitbltbuf.DBP = tbp;
+    load_image.bitbltbuf.DBW = tbw;
+    load_image.bitbltbuf.DPSM = psm;
+    load_image.bitbltbufaddr = SCE_GS_BITBLTBUF;
 
+    /// Setting up the TRXPOS tag
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_TRXPOS(0, 0, 0, 0, 0);
     pbuf[ndpkt++].ul64[1] = SCE_GS_TRXPOS;
+    load_image.trxpos.DIR = 0;
+    load_image.trxpos.DSAX = 0;
+    load_image.trxpos.DSAY = 0;
+    load_image.trxpos.SSAX = 0;
+    load_image.trxpos.SSAY = 0;
+    load_image.trxdiraddr = SCE_GS_TRXPOS;
 
+    /// Setting up the TRXREG tag
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_TRXREG(tph->ImageWidth, tph->ImageHeight);
     pbuf[ndpkt++].ul64[1] = SCE_GS_TRXREG;
+    load_image.trxreg.RRW = tph->ImageWidth;
+    load_image.trxreg.RRH = tph->ImageHeight;
+    load_image.trxregaddr = SCE_GS_TRXREG;
 
+    /// Setting up the TRXDIR tag
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_TRXDIR(0);
     pbuf[ndpkt++].ul64[1] = SCE_GS_TRXDIR;
 
+    load_image.trxdir.XDR = 0;
+    load_image.trxdiraddr = SCE_GS_TRXDIR;
+
+    /// Setting up the giftag1 tag
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(nloop, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_IMAGE, 1);
     pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
+    *(u_long*)&load_image.giftag1 = SCE_GIF_SET_TAG(nloop, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_IMAGE, 1);
+
+    GsUpload(&load_image, (unsigned char*)img_addr);
 
     qwc = (ndpkt - qwtop) - 1;
 
@@ -393,34 +523,65 @@ void MakeClutDirect3(u_int *tim2_addr, int cbp, int offset)
         cbp = sgtx0.CBP + offset;
     }
 
+    sceGsLoadImage load_image;
     qwtop = ndpkt++;
 
+    /// Setting up the giftag1 tag
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
     pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
+    *(u_long*)&load_image.giftag0 = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
 
+    /// Setting up the BITBLTBUF tag
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_BITBLTBUF(0, 0, SCE_GS_PSMCT32, cbp, 1, SCE_GS_PSMCT32);
     pbuf[ndpkt++].ul64[1] = SCE_GS_BITBLTBUF;
+    load_image.bitbltbuf.SBP = 0;
+    load_image.bitbltbuf.SBW = 0;
+    load_image.bitbltbuf.SPSM = SCE_GS_PSMCT32;
+    load_image.bitbltbuf.DBP = cbp;
+    load_image.bitbltbuf.DBW = 1;
+    load_image.bitbltbuf.DPSM = SCE_GS_PSMCT32;
+    load_image.bitbltbufaddr = SCE_GS_BITBLTBUF;
 
+    /// Setting up the TRXPO tag
     pbuf[ndpkt].ul64[0] = 0;
     pbuf[ndpkt++].ul64[1] = SCE_GS_TRXPOS;
+    load_image.trxpos.DIR = 0;
+    load_image.trxpos.DSAX = 0;
+    load_image.trxpos.DSAY = 0;
+    load_image.trxpos.SSAX = 0;
+    load_image.trxpos.SSAY = 0;
+    load_image.trxdiraddr = SCE_GS_TRXPOS;
 
+    /// Setting up the TRXREG tag
     if (tph->ClutColors == 16)
     {
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_TRXREG(8, 2);
+        load_image.trxreg.RRW = 8;
+        load_image.trxreg.RRH = 2;
     }
     else
     {
         int rrh = tph->ClutColors / 16;
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_TRXREG(16, rrh);
+        load_image.trxreg.RRW = 16;
+        load_image.trxreg.RRH = rrh;
     }
 
     pbuf[ndpkt++].ul64[1] = SCE_GS_TRXREG;
+    load_image.trxregaddr = SCE_GS_TRXREG;
 
+    /// Setting up the TRXDIR tag
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_TRXDIR(0);
     pbuf[ndpkt++].ul64[1] = SCE_GS_TRXDIR;
+    load_image.trxdir.XDR = 0;
+    load_image.trxdiraddr = SCE_GS_TRXDIR;
 
+    /// Setting up the giftag1 tag
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(nloop, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_IMAGE, 1);
     pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
+    *(u_long*)&load_image.giftag1 = SCE_GIF_SET_TAG(nloop, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_IMAGE, 1);
+
+    GsUpload(&load_image, (unsigned char*)img_addr);
 
     qwc = (ndpkt - qwtop) - 1;
 
@@ -435,6 +596,13 @@ void MakeClutDirect3(u_int *tim2_addr, int cbp, int offset)
     pbuf[qwtop].ui32[3] = qwc | DMAcall;
 }
 
+/**
+ * Generates DMA transfer tags for all Tim2 within PAK file
+ * @param tm2_addr Address for the Tim2 texture
+ * @param tbp Texture buffer pointer
+ * @param cbp Clut buffer pointer
+ * @param offset
+ */
 void MakeTim2ClutDirect3(int64_t tm2_addr, int tbp, int cbp, int offset)
 {
     int i;
@@ -696,7 +864,7 @@ void DrawAll2DMes_P2()
 
     SetG2DTopPkt((int64_t)pbuf);
 
-    if (dbg_wrk.oth_pkt_num_sw != 0)
+    if (dbg_wrk.oth_pkt_num_sw == 0)
     {
         SetPanel2(0x20, 44.0f, 360.0f, 580.0f, 396.0f, 0, 0x0, 0x0, 0x0, 0x80);
         SetString2(0x10, 48.0f, 364.0f, 1, 0x80, 0x80, 0x80, "2D Chain  Num : %4d", nch);

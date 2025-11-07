@@ -5,23 +5,26 @@
 
 typedef struct {
 	u_long tex0;
+    /// Shifts the image content within the texture's frame on the x
 	u_short u;
+
+    /// Shifts the image content within the texture's frame on the y
 	u_short v;
-	u_short w;
-	u_short h;
-	int x;
-	int y;
+	u_short w; /// Width of the frame for the texture
+	u_short h; /// Height of the frame for the texture
+	int x; /// Absolute X coordinate of the texture's (upper-left corner) on the screen
+	int y; /// Absolute Y coordinate of the texture's (upper-left corner) on the screen
 	int pri;
 	u_char alpha;
 } SPRT_DAT;
 
 typedef struct {
-	short int u;
-	short int v;
-	short int w;
-	short int h;
-	short int x;
-	short int y;
+	short int u; /// Shifts the image content within the texture's frame on the x
+	short int v; /// Shifts the image content within the texture's frame on the y
+	short int w; /// Width of the frame for the texture
+	short int h; /// Height of the frame for the texture
+	short int x; /// Absolute X coordinate of the texture's (upper-left corner) on the screen
+	short int y; /// Absolute Y coordinate of the texture's (upper-left corner) on the screen
 	u_char pri;
 	u_char alp;
 } SPRT_SDAT;
@@ -41,15 +44,27 @@ typedef struct {
 
 typedef struct {
 	u_int att;
+
+    /// Shifts the image content within the texture's frame on the x
 	u_int u;
+
+    /// Shifts the image content within the texture's frame on the y
 	u_int v;
+
+    /// Width of the frame for the texture
 	u_int w;
+
+    /// Height of the frame for the texture
 	u_int h;
 	float crx;
 	float cry;
 	float csx;
 	float csy;
+
+    /// Absolute X coordinate of the texture's (upper-left corner) on the screen
 	float x;
+
+    /// Absolute Y coordinate of the texture's (upper-left corner) on the screen
 	float y;
 	u_int z;
 	float scw;

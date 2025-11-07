@@ -2,6 +2,9 @@
 #include "typedefs.h"
 #include "message.h"
 
+#include "tim2_new.h"
+#include "common/memory_addresses.h"
+
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
@@ -14,6 +17,8 @@
 #include "graphics/graph2d/tim2.h"
 #include "graphics/graph2d/effect.h"
 #include "graphics/graph2d/effect_sub.h"
+#include "gs/gs_server_c.h"
+#include "rendering/sdl_renderer.h"
 #ifdef BUILD_EU_VERSION
 #include "graphics/graph2d/subtitles.h"
 #endif
@@ -806,6 +811,12 @@ static void SetFont(int pri, int type, int no, int x, int y, u_char r, u_char g,
     th1 = ((no / Num_W) * Font_H + off_ht); th1 *= 16;
     tw2 = ((no % Num_W) * Font_W + Font_W + off_w); tw2 *= 16;
     th2 = ((no / Num_W) * Font_H + Font_H + off_hd); th2 *= 16;
+
+    int64_t addr = FontTextAddress;
+
+
+    //image = DownloadGsTexture(&tex0);
+    //SDL_Render2DTexture(s, image);
 
     mpbuf[nmdpkt].ui32[0] = r;
     mpbuf[nmdpkt].ui32[1] = g;
@@ -1861,6 +1872,8 @@ int SetMessageV2(DISP_STR *s)
     }
 
     s->brnch_num = selnum;
+
+    //SDL_Render2DTexture2(&dq);
 
     i = draw_mpri[nmdpri][1];
     /// mpbuf[i].ul128 = (u_long128)0;

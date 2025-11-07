@@ -11,6 +11,8 @@
 
 #include "graphics/graph2d/tim2_new.h"
 #include "graphics/graph3d/sglib.h"
+#include "gs/gs_server_c.h"
+#include "rendering/sdl_renderer.h"
 
 // borrowed and adapted from FF2 symbols
 typedef struct {
@@ -1666,6 +1668,11 @@ void SetSprFile2(int64_t addr, u_int offset)
     MakeTim2ClutDirect3(addr, -1, -1, offset);
 }
 
+/**
+ * Uploads a Tim2 with its Clut data as a texture to the GS
+ * @param addr
+ * @param offset
+ */
 void SetSprFile3(int64_t addr, u_int offset)
 {
     MakeTim2ClutDirect3(addr, -1, -1, offset);
@@ -1806,6 +1813,10 @@ void _ftoi4(int *out, float *in)
     out[3] = (int)(in[3] * 16.0f);
 }
 
+/**
+ * Used to render a 2D sprite onto the screen
+ * @param s Sprite information to render on screen
+ */
 void DispSprD(DISP_SPRT *s)
 {
     u_int ui;
@@ -2008,16 +2019,20 @@ void DispSprD(DISP_SPRT *s)
     pbuf[ndpkt].ul64[0] = 0;
     pbuf[ndpkt++].ul64[1] = SCE_GS_TEXFLUSH;
 
+    u_char* image;
+
+    sceGsTex0 tex0;
+    tex0 = *(sceGsTex0 *)&mtex0;
+
     if (psm == 20)
     {
-        sceGsTex0 tex0;
-
-        tex0 = *(sceGsTex0 *)&mtex0;
         tex0.PSM = SCE_GS_PSMT8;
         tex0.CSA = 0;
         tex0.CLD = 1;
         pbuf[ndpkt].ul64[0] = *(u_long *)&tex0;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX0_1;
+
+        image = DownloadGsTexture(&tex0);
 
         tex0 = *(sceGsTex0 *)&mtex0;
         tex0.CSA = 0;
@@ -2027,12 +2042,16 @@ void DispSprD(DISP_SPRT *s)
     }
     else
     {
+        image = DownloadGsTexture(&tex0);
+
         pbuf[ndpkt].ul64[0] = mtex0;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX0_1;
 
         pbuf[ndpkt].ul64[0] = 0;
         pbuf[ndpkt++].ul64[1] = SCE_GS_NOP;
     }
+
+    SDL_Render2DTexture(s, image);
 
     pbuf[ndpkt].ul64[0] = mtex1;
     pbuf[ndpkt++].ul64[1] = SCE_GS_TEX1_1;
@@ -2367,6 +2386,11 @@ void DispSqrD(DISP_SQAR *s)
     }
 
     Reserve2DPacket(mpri);
+
+    //unsigned char* image = DownloadGsTexture(&mtexa, s->, s->h);
+    //SDL_Render2DTexture(s, image);
+
+    return;
 
     /// pbuf[ndpkt].ul128 = (u_long128)0;
 

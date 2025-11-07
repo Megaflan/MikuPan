@@ -2843,7 +2843,6 @@ void LocalCopyBtoL(int no, int addr)
     LocalCopyBtoL_Sub(no, 1, addr);
 }
 
-
 void LocalCopyLtoB_NB(int no, int addr)
 {
     LocalCopyLtoB_Sub(no, 0, addr);

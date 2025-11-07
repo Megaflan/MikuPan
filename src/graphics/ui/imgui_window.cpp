@@ -17,9 +17,6 @@ void InitImGuiWindow(SDL_Window *window, SDL_Renderer *renderer)
 void RenderImGuiWindow(SDL_Renderer* renderer)
 {
     ImGui::Render();
-
-    /* clear the window to the draw color. */
-    SDL_RenderClear(renderer);
     ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), renderer);
 }
 
@@ -32,11 +29,9 @@ void NewFrameImGuiWindow()
 
 void DrawImGuiWindow()
 {
-    ImGui::Begin("Hello, world!");
-    ImGui::Text("Welcome to Dear ImGui with SDL3!");
-    ImGui::End();
-
-    ImGui::ShowDemoWindow();
+    //ImGui::Begin("Hello, world!");
+    //ImGui::Text("Welcome to Dear ImGui with SDL3!");
+    //ImGui::End();
 }
 
 void ShutDownImGuiWindow()

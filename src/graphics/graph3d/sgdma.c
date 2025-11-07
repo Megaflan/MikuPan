@@ -174,10 +174,10 @@ void AppendDmaTagCall(int64_t next_tag_addr)
 
     ptag = &cachetag[vu1tag_num];
 
-    ((int *)ptag)[0] = 0x20000000;
-    ((int *)ptag)[1] = next_tag_addr & 0x0fffffff;
+    //((int *)ptag)[0] = 0x20000000;
+    //((int *)ptag)[1] = next_tag_addr & 0x0fffffff;
 
-    ptag->pad[0] = ptag->pad[1] = 0;
+    //ptag->pad[0] = ptag->pad[1] = 0;
 
     vu1tag_num++;
 }

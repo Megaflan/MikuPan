@@ -9,6 +9,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/MikuPan)
 
 include(sdl3)
 include(imgui)
+include(spdlog)
 
 set(MIKUPAN_SOURCES "src/common/file_loading.cpp"
         "src/common/ul_math.c"
@@ -194,9 +195,16 @@ set(MIKUPAN_SOURCES "src/common/file_loading.cpp"
         "src/mc/mc.c"
         "src/graphics/graph3d/vu_program.c"
         "src/common/memory_addresses.c"
-        src/graphics/ui/imgui_window.cpp)
+        src/graphics/ui/imgui_window.cpp
+        src/rendering/sdl_renderer.c
+        src/rendering/sdl_renderer.h
+        src/gs/gs_server.cpp
+        src/gs/gs_server.h
+        src/gs/texture_manager.cpp
+        src/gs/texture_manager.h
+        src/gs/gs_server_c.h)
 
 add_executable(MikuPan ${MIKUPAN_SOURCES})
 
 target_include_directories(MikuPan PRIVATE "include/" "src" "resources/" ${SDL3_INCLUDE_DIR})
-target_link_libraries(MikuPan PRIVATE m imgui SDL3::SDL3) # Link Math.h
+target_link_libraries(MikuPan PRIVATE m imgui SDL3::SDL3 spdlog) # Link Math.h
