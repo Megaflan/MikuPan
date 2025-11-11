@@ -10,6 +10,12 @@ SDL_Gamepad *gamepad = NULL;
 
 int scePadPortOpen(int port, int slot, void* addr)
 {
+    if (gamepad != NULL && !SDL_GamepadConnected(gamepad))
+    {
+        SDL_CloseGamepad(gamepad);
+        return 0;
+    }
+
     if (gamepad != NULL || !SDL_HasGamepad())
     {
         return 0;

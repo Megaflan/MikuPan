@@ -68,6 +68,11 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
         MikuPan_UpdateWindowSize(event->window.data1, event->window.data2);
     }
 
+    if (event->type == SDL_EVENT_GAMEPAD_REMOVED)
+    {
+        scePadPortOpen(0, 0 ,0);
+    }
+
     if (event->type == SDL_EVENT_GAMEPAD_ADDED)
     {
         scePadPortOpen(0, 0 ,0);

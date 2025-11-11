@@ -73,7 +73,7 @@ void DrawImGuiWindow()
 
     if (show_fps)
     {
-        SetString2(0x10, 0.0f, 420.0f, 0, 0x80, 0x80, 0x80, (char*)"FPS %d", (int)GetFrameRate());
+        SetString2(0x10, 0.0f, 420.0f, 1, 0x80, 0x80, 0x80, (char*)"FPS %d", (int)GetFrameRate());
 
         // You can choose to make the window static or toggle it via a bool
         //ImGui::Begin("Performance");
