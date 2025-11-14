@@ -28,7 +28,9 @@
 #include "os/eeiop/adpcm/ea_ctrl.h"
 #include "os/eeiop/adpcm/ea_dat.h"
 #include "os/eeiop/cdvd/eecdvd.h"
+#include "rendering/sdl_renderer.h"
 
+#include <math.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -1781,6 +1783,7 @@ void MakeOutDither()
 
     sceGsExecLoadImage(&gs_limage1, (u_long128 *)pat);
     sceGsExecLoadImage(&gs_limage2, (u_long128 *)pal);
+
 
     sceGsSyncPath(0, 0);
 }

@@ -5,6 +5,8 @@
 
 #include "graphics/graph3d/sglib.h"
 
+#include <stdlib.h>
+
 // line 26
 static inline void load_matrix_0(sceVu0FMATRIX m0)
 {
@@ -47,8 +49,7 @@ static inline void copy_skinned_data(sceVu0FVECTOR *vb, float *s0, float *s1)
 // Line 151
 static inline float vu0Rand()
 {
-#define RAND_MAX 2147483647
-    float r = rand() / RAND_MAX;
+    float r = (float)rand() / (float)64000;
 
     /*
     asm volatile("                      \n\

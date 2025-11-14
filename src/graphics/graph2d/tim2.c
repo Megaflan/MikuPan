@@ -1605,7 +1605,7 @@ void* DrawAllMes_P2(int64_t ret_addr)
             n = draw_mpri[i][1];
             m = draw_mpri[i+1][1];
 
-            ReadAllPackets(&mpbuf[n]);
+            //ReadAllPackets(&mpbuf[n]);
 
             s = mpbuf[n].us16[0];
             mpbuf[n].uc8[3] = 0x20;
@@ -1617,7 +1617,7 @@ void* DrawAllMes_P2(int64_t ret_addr)
 
         s = mpbuf[n].us16[0];
 
-        ReadAllPackets(&mpbuf[n]);
+        //ReadAllPackets(&mpbuf[n]);
 
         /// Sets the final message packet
         if (ret_addr != 0)

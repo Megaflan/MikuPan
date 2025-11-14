@@ -699,6 +699,8 @@ static void SetFontPacketHeader(int n, int type, u_char alp)
         Change.CLD = 0;
     }
 
+    //MakeFontTexSendPacket();
+
     mpbuf[nmdpkt].ul128 = (u_long128)0;
 
     mpbuf[nmdpkt++].ui32[0] = (DMAend | 10) + n * 5;
@@ -840,8 +842,9 @@ static void SetFont(int pri, int type, int no, int x, int y, u_char r, u_char g,
     //    return;
     //}
 
-    unsigned char* image = DownloadGsTexture(&Load);
-    MikuPan_Render2DTexture(&s, image);
+    //unsigned char* image = DownloadGsTexture(&Load);
+    MikuPan_Render2DMessage(&s, type);
+    //MikuPan_Render2DTexture(&s, image);
 
     mpbuf[nmdpkt].ui32[0] = r;
     mpbuf[nmdpkt].ui32[1] = g;

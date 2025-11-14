@@ -16,6 +16,7 @@
 #include "gs/texture_manager_c.h"
 #include "common/logging_c.h"
 #include "gs/gs_packet_handler.h"
+#include "rendering/sdl_renderer.h"
 
 u_int *tm2_end_pkt = NULL;
 
@@ -103,7 +104,7 @@ u_int* MakeTim2Direct2(u_int *pkt_addr, u_int *tim2_addr, int tbp)
 
     qw = SetImageTransParam2(qw, tbp, tbw, psm, tph->ImageWidth, tph->ImageHeight);
 
-    //GsUpload(&load_image, (unsigned char*)img_addr);
+    GsUpload(&load_image, (unsigned char*)img_addr);
 
 #ifdef BUILD_EU_VERSION
     qw->ul64[0] = SCE_GIF_SET_TAG(nloop, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_IMAGE, 0);
@@ -219,7 +220,7 @@ u_int* MakeClutDirect2(u_int *pkt_addr, u_int *tim2_addr, int cbp)
         load_image.trxregaddr = SCE_GS_TRXREG;
     }
 
-    //GsUpload(&load_image, (unsigned char*)img_addr);
+    GsUpload(&load_image, (unsigned char*)img_addr);
 
 #ifdef BUILD_EU_VERSION
     qw->ul64[0] = SCE_GIF_SET_TAG(nloop, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_IMAGE, 0);
@@ -348,6 +349,8 @@ void MakeFontTexSendPacket()
     }
 
     tm2_end_pkt = ChainPK2Direct(pkt_addr, (u_int *)addr);
+
+    MikuPan_SetupFntTexture();
 }
 
 void CallFontTexSendPacket()
@@ -486,7 +489,7 @@ void MakeTim2Direct3(u_int *tim2_addr, int tbp, int offset)
     pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
     *(u_long*)&load_image.giftag1 = SCE_GIF_SET_TAG(nloop, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_IMAGE, 1);
 
-    //GsUpload(&load_image, (unsigned char*)img_addr);
+    GsUpload(&load_image, (unsigned char*)img_addr);
 
     qwc = (ndpkt - qwtop) - 1;
 
@@ -598,7 +601,7 @@ void MakeClutDirect3(u_int *tim2_addr, int cbp, int offset)
     pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
     *(u_long*)&load_image.giftag1 = SCE_GIF_SET_TAG(nloop, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_IMAGE, 1);
 
-    //GsUpload(&load_image, (unsigned char*)img_addr);
+    GsUpload(&load_image, (unsigned char*)img_addr);
 
     qwc = (ndpkt - qwtop) - 1;
 
@@ -787,7 +790,7 @@ void DrawAll2DMes_P2()
 
             s = pbuf[n].us16[0];
 
-            ReadAllPackets(&pbuf[n]);
+            //ReadAllPackets(&pbuf[n]);
 
             if (pbuf[n].uc8[3] == 0x70) // upper part of 0x70000000 (DMAend) ??
             {

@@ -1,5 +1,6 @@
 #include "libgraph.h"
 
+#include "graphics/graph2d/sprt.h"
 #include "gs/gs_server_c.h"
 
 #include <stddef.h>
@@ -89,17 +90,6 @@ int sceGsSetDefLoadImage(sceGsLoadImage* lp, short dbp, short dbw, short dpsm, s
 int sceGsExecLoadImage(sceGsLoadImage* lp, u_long128* srcaddr)
 {
     GsUpload(lp, (unsigned char*)srcaddr);
-
-    sceGsTex0 tex0;
-
-    tex0.TBP0 = lp->bitbltbuf.DBP;
-    tex0.TBW = lp->bitbltbuf.DBW;
-    tex0.PSM = lp->bitbltbuf.DPSM;
-    tex0.CPSM = lp->bitbltbuf.SPSM;
-    tex0.CSA = 0;
-    tex0.TW = lp->trxreg.RRW;
-    tex0.TH = lp->trxreg.RRH;
-
     return 1;
 }
 
