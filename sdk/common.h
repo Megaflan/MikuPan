@@ -55,9 +55,6 @@ typedef float f32;
 
 // #define PI 3.1415928f
 
-f32 cosf(f32);
-f32 atan2f(f32, f32);
-
 #define BSS __attribute__ ((section (".bss")))
 
 #endif /* COMMON_H */

@@ -201,8 +201,8 @@ set(MIKUPAN_SOURCES "src/common/file_loading.cpp"
         "src/graphics/graph3d/vu_program.c"
         "src/common/memory_addresses.c"
         src/graphics/ui/imgui_window.cpp
-        src/rendering/sdl_renderer.c
-        src/rendering/sdl_renderer.h
+        src/rendering/mikupan_renderer.c
+        src/rendering/mikupan_renderer.h
         src/gs/gs_server.cpp
         src/gs/gs_server.h
         src/gs/texture_manager.cpp
@@ -214,9 +214,14 @@ set(MIKUPAN_SOURCES "src/common/file_loading.cpp"
         src/common/logging.h
         src/common/logging_c.h
         src/gs/gs_packet_handler.c
-        src/gs/gs_packet_handler.h)
+        src/gs/gs_packet_handler.h
+        extern/imgui_toggle/imgui_toggle.cpp
+        extern/imgui_toggle/imgui_toggle_palette.cpp
+        extern/imgui_toggle/imgui_toggle_presets.cpp
+        extern/imgui_toggle/imgui_toggle_renderer.cpp
+)
 
 add_executable(MikuPan ${MIKUPAN_SOURCES})
 
-target_include_directories(MikuPan PRIVATE "sdk/" "src" "resources/" ${SDL3_INCLUDE_DIR})
+target_include_directories(MikuPan PRIVATE "sdk/" "src" "resources/" "extern/" ${SDL3_INCLUDE_DIR})
 target_link_libraries(MikuPan PRIVATE m imgui SDL3::SDL3 spdlog) # Link Math.h

@@ -13,7 +13,7 @@
 #include "graphics/graph3d/sglib.h"
 #include "gs/gs_packet_handler.h"
 #include "gs/gs_server_c.h"
-#include "rendering/sdl_renderer.h"
+#include "rendering/mikupan_renderer.h"
 
 #include <stdlib.h>
 

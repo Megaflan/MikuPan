@@ -120,6 +120,12 @@ void GameMain()
     break;
     }
 #else
+
+    if (L3_PRESSED() == 1 && R3_PRESSED() == 1)
+    {
+        dbg_wrk.mode_on = !dbg_wrk.mode_on;
+    }
+
     switch (sys_wrk.game_mode)
     {
     case GAME_MODE_INIT:

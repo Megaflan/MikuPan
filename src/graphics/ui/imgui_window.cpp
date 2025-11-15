@@ -3,6 +3,8 @@
 #include "imgui_impl_sdl3.h"
 #include "imgui_impl_sdlrenderer3.h"
 #include "main/glob.h"
+#include "imgui_internal.h"
+#include "imgui_toggle/imgui_toggle.h"
 
 extern "C"
 {
@@ -10,8 +12,96 @@ extern "C"
 #include "graphics/graph2d/message.h"
 }
 
+#include <imgui.h>
+#include <vector>
+#include <numeric>
+#include <cmath>
+
+class FrameTimeGraph {
+public:
+    FrameTimeGraph(int max_samples = 300, float ms_scale = -1.0f)
+        : max_samples_(std::max(8, max_samples)), ms_scale_(ms_scale)
+    {
+        times_.reserve(max_samples_);
+    }
+
+    void update(float dt_sec) {
+        float ms = dt_sec;
+        if ((int)times_.size() >= max_samples_) {
+            times_.erase(times_.begin());
+        }
+        times_.push_back(ms);
+
+        sum_ms_ += ms;
+        if (times_.size() > 1) {
+        }
+    }
+
+    void draw(const char* label = "Frame Time", ImVec2 size = ImVec2(0,0)) {
+        if (times_.empty()) {
+            ImGui::TextUnformatted("No frame data yet");
+            return;
+        }
+
+        float sum = 0.0f;
+        float minv = times_[0];
+        float maxv = times_[0];
+        for (float v : times_) {
+            sum += v;
+            if (v < minv) minv = v;
+            if (v > maxv) maxv = v;
+        }
+        float avg = sum / (float)times_.size();
+        float latest = times_.back();
+
+        ImGui::Text("%s: %.1f ms (%.1f FPS)", label, latest, latest > 0.0f ? 1000.0f/latest : 0.0f);
+        ImGui::Text("Avg: %.2f ms (%.1f FPS)  Min: %.2f ms  Max: %.2f ms  Samples: %zu", avg, avg > 0.0f ? 1000.0f/avg : 0.0f, minv, maxv, times_.size());
+
+        float scale = ms_scale_ > 0.0f ? ms_scale_ : std::max(maxv, avg * 1.5f);
+        if (scale < 1.0f) scale = 1.0f;
+
+        ImGui::PlotLines("", times_.data(), (int)times_.size(), 0, nullptr, 0.0f, scale, size);
+
+        ImGui::Spacing();
+        ImGui::Text("Frame time histogram (ms)");
+        const int buckets = 16;
+        std::vector<int> hist(buckets);
+        float step = scale / (float)buckets;
+        for (float v : times_) {
+            int b = (int)std::floor(v / step);
+            if (b < 0) b = 0;
+            if (b >= buckets) b = buckets - 1;
+            hist[b]++;
+        }
+
+        std::vector<float> histf(buckets);
+        int maxcount = 1;
+        for (int i = 0; i < buckets; ++i) { histf[i] = (float)hist[i]; if (hist[i] > maxcount) maxcount = hist[i]; }
+        ImGui::PlotLines("##hist", histf.data(), buckets, 0, nullptr, 0.0f, (float)maxcount, ImVec2(0,60));
+    }
+
+    void setMaxSamples(int max_samples) {
+        max_samples_ = std::max(8, max_samples);
+        times_.reserve(max_samples_);
+        if ((int)times_.size() > max_samples_) times_.erase(times_.begin(), times_.begin() + ((int)times_.size() - max_samples_));
+    }
+
+    void setManualScaleMs(float ms) { ms_scale_ = ms; }
+
+    void clear() { times_.clear(); }
+
+private:
+    std::vector<float> times_;
+    int max_samples_ = 300;
+    float ms_scale_ = -1.0f; // negative means auto scale
+    double sum_ms_ = 0.0; // reserved for future use
+};
+
+FrameTimeGraph g_frame_graph(600); // keep last 240 frames (~4s at 60fps)
+
 bool show_fps = true;
 bool show_menu_bar = false;
+bool show_frame_time_graph = false;
 
 void InitImGuiWindow(SDL_Window *window, SDL_Renderer *renderer)
 {
@@ -49,12 +139,18 @@ void DrawImGuiWindow()
         dbg_wrk.mode_on = !dbg_wrk.mode_on;
     }
 
-    if (show_menu_bar && ImGui::BeginMainMenuBar()) {
-        if (ImGui::BeginMenu("Debug")) {
-            ImGui::Checkbox("FPS Counter", &show_fps);
-            ImGui::Checkbox("Ingame Debug Menu", (bool*)&dbg_wrk.mode_on);
-            ImGui::Checkbox("Performance Info", (bool*)&dbg_wrk.oth_perf);
-            ImGui::Checkbox("Packet Count", (bool*)&dbg_wrk.oth_pkt_num_sw);
+    //ImGui::ShowDebugLogWindow();
+    //ImGui::ShowMetricsWindow();
+
+    if (show_menu_bar && ImGui::BeginMainMenuBar())
+    {
+        if (ImGui::BeginMenu("Debug"))
+        {
+            ImGui::Toggle("FPS Counter", &show_fps, ImGuiToggleFlags_Animated);
+            ImGui::Toggle("Frame Time Graph", &show_frame_time_graph, ImGuiToggleFlags_Animated);
+            ImGui::Toggle("Ingame Debug Menu", (bool*)&dbg_wrk.mode_on, ImGuiToggleFlags_Animated);
+            ImGui::Toggle("Performance Info", (bool*)&dbg_wrk.oth_perf, ImGuiToggleFlags_Animated);
+            ImGui::Toggle("Packet Count", (bool*)&dbg_wrk.oth_pkt_num_sw, ImGuiToggleFlags_Animated);
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();
@@ -65,20 +161,17 @@ void DrawImGuiWindow()
         gra2dDrawDbgMenu();
     }
 
+    if (show_frame_time_graph)
+    {
+        ImGui::Begin("Frame Time Graph");
+        g_frame_graph.update(1000.0f / ImGui::GetIO().Framerate);
+        g_frame_graph.draw("Frame Time", ImVec2(0,100));
+        ImGui::End();
+    }
+
     if (show_fps)
     {
-        SetString2(0x10, 0.0f, 420.0f, 0, 0x80, 0x80, 0x80, (char*)"FPS %d", (int)GetFrameRate());
-
-        // You can choose to make the window static or toggle it via a bool
-        //ImGui::Begin("Performance");
-
-        // ImGui provides a ready-made function for FPS:
-        //ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
-
-        // You can also show frame time in ms:
-        //ImGui::Text("Frame time: %.3f ms/frame", 1000.0f / ImGui::GetIO().Framerate);
-
-        //ImGui::End();
+        SetString2(0x10, 0.0f, 420.0f, 1, 0x80, 0x80, 0x80, (char*)"FPS %d", (int)GetFrameRate());
     }
 }
 

@@ -19,7 +19,7 @@
 #include "graphics/graph2d/effect_sub.h"
 #include "gs/gs_server_c.h"
 #include "gs/texture_manager_c.h"
-#include "rendering/sdl_renderer.h"
+#include "rendering/mikupan_renderer.h"
 #ifdef BUILD_EU_VERSION
 #include "graphics/graph2d/subtitles.h"
 #endif

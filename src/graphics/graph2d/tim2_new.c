@@ -16,7 +16,7 @@
 #include "gs/texture_manager_c.h"
 #include "common/logging_c.h"
 #include "gs/gs_packet_handler.h"
-#include "rendering/sdl_renderer.h"
+#include "rendering/mikupan_renderer.h"
 
 u_int *tm2_end_pkt = NULL;
 

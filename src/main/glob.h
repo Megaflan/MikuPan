@@ -481,6 +481,9 @@ typedef struct {
 	int param_camera;
 } DEBUG_NUMBERS;
 
+#define L3_PRESSED() *key_now[14]
+#define R3_PRESSED() *key_now[15]
+
 extern u_int realtime_scene_flg;
 extern u_int scene_bg_load_flg;
 extern SYS_WRK sys_wrk;

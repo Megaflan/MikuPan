@@ -15,7 +15,7 @@
 #include "graphics/graph3d/sgdma.h"
 #include "graphics/graph3d/gra3d.h"
 #include "os/eeiop/adpcm/ea_cmd.h"
-#include "rendering/sdl_renderer.h"
+#include "rendering/mikupan_renderer.h"
 
 #define SDL_MAIN_USE_CALLBACKS 1  /* use the callbacks instead of main() */
 #include <SDL3/SDL.h>
@@ -148,7 +148,7 @@ void CallSoftReset()
     {
         EiMain();
 
-        if (EAGetRetStat() == 1 || EAGetRetStat() == 2)
+        //if (EAGetRetStat() == 1 || EAGetRetStat() == 2)
         {
             EAdpcmCmdInit(1);
             break;

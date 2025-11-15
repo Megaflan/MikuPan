@@ -5,6 +5,7 @@
 
 #include <stdint.h>
 
+
 typedef struct {
 	u_char *str;
 	int pos_x;
