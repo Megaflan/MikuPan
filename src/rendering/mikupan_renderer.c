@@ -27,12 +27,14 @@ SDL_AppResult MikuPan_Init()
 {
     SDL_SetAppMetadata("MikuPan", "1.0", "mikupan");
 
-    if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD | SDL_INIT_JOYSTICK | SDL_INIT_HAPTIC)) {
+    if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD | SDL_INIT_JOYSTICK | SDL_INIT_HAPTIC))
+        {
         SDL_Log("Couldn't initialize SDL: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
 
-    if (!SDL_CreateWindowAndRenderer("MikuPan", window_width, window_height, SDL_WINDOW_RESIZABLE, &window, &renderer)) {
+    if (!SDL_CreateWindowAndRenderer("MikuPan", window_width, window_height, SDL_WINDOW_RESIZABLE, &window, &renderer))
+        {
         SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
@@ -62,13 +64,13 @@ void MikuPan_Render2DTexture(DISP_SPRT* sprite)
         return;
     }
 
-    sceGsTex0 tex0 = *(sceGsTex0*)&sprite->tex0;
+    sceGsTex0* tex0 = (sceGsTex0*)&sprite->tex0;
 
-    SDL_Texture* texture = (SDL_Texture*)GetSDLTexture(&tex0);
+    SDL_Texture* texture = (SDL_Texture*)GetSDLTexture(tex0);
 
     if (texture == NULL)
     {
-        texture = MikuPan_CreateTexture(&tex0);
+        texture = MikuPan_CreateTexture(tex0);
     }
 
     SDL_FRect dst_rect;
@@ -173,6 +175,8 @@ SDL_Texture * MikuPan_CreateTexture(sceGsTex0 *tex0)
 
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
     SDL_DestroySurface(surface);
+
+    AddSDLTexture(tex0, texture);
 
     return texture;
 }
