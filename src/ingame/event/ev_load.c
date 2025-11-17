@@ -18,7 +18,118 @@ u_char msn_title_sp_ttl_no[];
 u_char msn_title_ttl_sp_num[];
 SPRT_SDAT *msn_title_sp_flr[];
 SPRT_SDAT *msn_title_sp_ttl[];
-SPRT_SDAT msn_title_sp_bak[];
+SPRT_SDAT msn_title_sp_bak[] = {
+    {
+        .u = 0,
+        .v = 0,
+        .w = 512,
+        .h = 256,
+        .x = 0,
+        .y = 0,
+        .pri = 30,
+        .alp = 128,
+    },
+    {
+        .u = 0,
+        .v = 0,
+        .w = 128,
+        .h = 128,
+        .x = 512,
+        .y = 0,
+        .pri = 30,
+        .alp = 128,
+    },
+    {
+        .u = 0,
+        .v = 0,
+        .w = 128,
+        .h = 128,
+        .x = 512,
+        .y = 128,
+        .pri = 30,
+        .alp = 128,
+    },
+    {
+        .u = 0,
+        .v = 0,
+        .w = 256,
+        .h = 128,
+        .x = 0,
+        .y = 256,
+        .pri = 30,
+        .alp = 128,
+    },
+    {
+        .u = 0,
+        .v = 0,
+        .w = 256,
+        .h = 128,
+        .x = 256,
+        .y = 256,
+        .pri = 30,
+        .alp = 128,
+    },
+    {
+        .u = 0,
+        .v = 0,
+        .w = 128,
+        .h = 128,
+        .x = 512,
+        .y = 256,
+        .pri = 30,
+        .alp = 128,
+    },
+    {
+        .u = 0,
+        .v = 0,
+        .w = 128,
+        .h = 64,
+        .x = 0,
+        .y = 384,
+        .pri = 30,
+        .alp = 128,
+    },
+    {
+        .u = 0,
+        .v = 0,
+        .w = 128,
+        .h = 64,
+        .x = 128,
+        .y = 384,
+        .pri = 30,
+        .alp = 128,
+    },
+    {
+        .u = 0,
+        .v = 0,
+        .w = 128,
+        .h = 64,
+        .x = 256,
+        .y = 384,
+        .pri = 30,
+        .alp = 128,
+    },
+    {
+        .u = 0,
+        .v = 0,
+        .w = 128,
+        .h = 64,
+        .x = 384,
+        .y = 384,
+        .pri = 30,
+        .alp = 128,
+    },
+    {
+        .u = 0,
+        .v = 0,
+        .w = 128,
+        .h = 64,
+        .x = 512,
+        .y = 384,
+        .pri = 30,
+        .alp = 128,
+    },
+};
 MSN_LOAD_DAT *msn_title_load_dat[];
 
 static u_char msn_start_floor[9];
@@ -34,7 +145,7 @@ void MissionTitleInit(int msn_no)
     if (ingame_wrk.game == 0)
     {
         map_wrk.floor = msn_start_floor[msn_no];
-        mttl_wrk.load_id = LoadReq(msn_no + 0x26, &MTTL_WRK_LOAD_ID_ADDR);
+        mttl_wrk.load_id = LoadReq(msn_no + 0x26, &MISSION_TITLE_CARD_ADDRESS);
     }
     else if (ingame_wrk.game == 1)
     {
@@ -451,7 +562,7 @@ void MissionTitleDisp(int msn_no)
    
     printf("MISSION TITLE DISP \n");
 
-    SetSprFile(MTTL_WRK_LOAD_ID_ADDR);
+    SetSprFile(MISSION_TITLE_CARD_ADDRESS);
     
     if (mttl_wrk.mode == 1) {
         alp_rate = ((0x1e - mttl_wrk.time) * 100) / 0x1e & 0xff;
@@ -467,18 +578,18 @@ void MissionTitleDisp(int msn_no)
 
 
     for (i = 0; i < 11; i++) {
-        SimpleDispSprt(&msn_title_sp_bak[i], 0x1e90000, i, NULL, NULL, alp_rate);
+        SimpleDispSprt(&msn_title_sp_bak[i], MISSION_TITLE_CARD_ADDRESS, i, NULL, NULL, alp_rate);
     }
 
 
 
     for (i = 0; i < msn_title_flr_sp_num[msn_no]; i++) {
-        SimpleDispAlphaSprt(&msn_title_sp_flr[msn_no][i], 0x1e90000,
+        SimpleDispAlphaSprt(&msn_title_sp_flr[msn_no][i], MISSION_TITLE_CARD_ADDRESS,
                             msn_title_sp_flr_no[msn_no], ((alp_rate * 0x46) / 100), 0);
     }
 
     for (i = 0; i < msn_title_ttl_sp_num[msn_no]; i++) {    
-        SimpleDispSprt(&msn_title_sp_ttl[msn_no][i], 0x1e90000, 
+        SimpleDispSprt(&msn_title_sp_ttl[msn_no][i], MISSION_TITLE_CARD_ADDRESS, 
                        msn_title_sp_ttl_no[msn_no], NULL, NULL, alp_rate);    
     }
 }
