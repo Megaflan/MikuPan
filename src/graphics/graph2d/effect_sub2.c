@@ -17,6 +17,8 @@
 #include "ingame/menu/ig_menu.h"
 #include "ingame/event/ev_main.h"
 // #include "ingame/plyr/plyr_ctl.h" // do not include the declaration for `FinderEndSet`
+#include "common/memory_addresses.h"
+
 #include <string.h>
 
 #include "outgame/mode_slct.h"
@@ -3297,7 +3299,7 @@ void ZanzouEffect(/* a2 6 */ ANM2D_WRK_TABLE *w_table, /* a1 5 */ SPRT_SDAT *ssd
 void BtlReadyDisp(/* s0 16 */ ANM2D_WRK_TABLE *w_table)
 {
     /* s1 17 */ int i;
-    u_long addr = 0x1e90000; // workaround to make the last for loop match
+    int64_t addr = EFFECT_ADDRESS; // workaround to make the last for loop match
 
     SetSprFile(addr);
 

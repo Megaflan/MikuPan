@@ -115,7 +115,7 @@ void MikuPan_Render2DMessage(DISP_SPRT *sprite, int font)
 
     SDL_Texture* texture = font == 1 ? fnt_0_texture : fnt_1_texture;
 
-    SDL_SetTextureAlphaMod(texture, (char)(255.0f * (sprite->alpha / 128.0f)));
+    SDL_SetTextureAlphaMod(texture, sprite->alpha);
     SDL_SetTextureColorMod(texture, sprite->r, sprite->g, sprite->b);
     SDL_RenderTexture(renderer, texture, &src_rect, &dst_rect);
 }

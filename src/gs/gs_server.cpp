@@ -233,7 +233,6 @@ unsigned char* DownloadGsTexture(sceGsTex0* tex0)
         return nullptr;
     }
 
-    std::vector<uint8_t> img;
     int width = (1<<tex0->TW);
     int height = (1<<tex0->TH);
 
@@ -244,6 +243,8 @@ unsigned char* DownloadGsTexture(sceGsTex0* tex0)
     {
         return texture;
     }
+
+    std::vector<uint8_t> img;
 
     switch (tex0->PSM)
     {
@@ -293,7 +294,7 @@ unsigned char* DownloadGsTexture(sceGsTex0* tex0)
         for (auto k = 0; k < width; k++)
         {
             auto pixel = (RGBA*) &rawPixel[(i * width + k)];
-            pixel->a = (char) (255.0f * (pixel->a / 128.0f));
+            pixel->a = (unsigned char) (255.0f * (pixel->a / 128.0f));
             image_data[(i * width + k)] = *(unsigned int*) pixel;
         }
     }

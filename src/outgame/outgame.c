@@ -19,6 +19,7 @@
 
 #include "common/memory_addresses.h"
 #include "graphics/graph2d/effect_sub.h"
+#include "graphics/graph2d/g2d_debug.h"
 #include "graphics/graph2d/g2d_main.h"
 #include "graphics/graph3d/load3d.h"
 

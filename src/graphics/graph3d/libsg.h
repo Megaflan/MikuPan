@@ -54,7 +54,7 @@ static inline void copy_skinned_data(sceVu0FVECTOR *vb, float *s0, float *s1)
 static inline float vu0Rand(void)
 {
 #ifdef WIN32
-    float r = (float)rand() / ((float) RAND_MAX * 2);
+    float r = (float)rand() / ((float) RAND_MAX * 4.0f);
 #else
     u_int rnd = rnext();
     float r = (*(float *) &rnd) - 1.0f;

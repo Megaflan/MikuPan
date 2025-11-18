@@ -12,6 +12,8 @@
 #include "graphics/graph3d/sglight.h"
 #include "graphics/graph3d/shadow.h"
 
+#include <stdint.h>
+
 extern u_int fly_display[3];
 extern sceVu0FVECTOR fog_param[64];
 extern sceVu0IVECTOR fog_rgb[64];
@@ -59,9 +61,9 @@ char* appendchar(char *dest, char *source, char *append);
 void SetUnitMatrix(u_int *pmodel);
 void InitializeRoom(RMDL_ADDR *room_tbl);
 void gra3dInitFirst();
-u_int PlayerModelInit();
-u_int PlayerAccessoryInit(int addr);
-u_int SGDLoadInit(u_int *addr, int size);
+int64_t PlayerModelInit();
+int64_t PlayerAccessoryInit(int64_t addr);
+int64_t SGDLoadInit(u_int *addr, int size);
 void gra3dInit();
 void Init3D();
 void SetDefaultLightPower(float pow);

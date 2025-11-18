@@ -1534,11 +1534,20 @@ void SetTexDirectS2(int pri, SPRITE_DATA *sd, DRAW_ENV *de, int type)
     s.alpha = sd->alpha;
     s.x = mx + 320;
     s.y = my + 224;
-    s.u = tw[0];
-    s.v = th[0];
+
+    int min_u_clamp = (mclu>>4) & 0xffff;
+    int max_u_clamp = (mclu>>24) & 0xffff;
+
+    int min_v_clamp = (mclv>>4) & 0xffff;
+    int max_v_clamp = (mclv>>24) & 0xffff;
+
+    s.u = min_u_clamp + ((rand() / RAND_MAX) * max_u_clamp);
+    s.v = min_v_clamp + ((rand() / RAND_MAX) * max_v_clamp);
     s.w = sd->size_w;
     s.h = sd->size_h;
 
+    MikuPan_Render2DTexture(&s);
+    s.alpha = de->alpha;
     MikuPan_Render2DTexture(&s);
 
     Reserve2DPacket(pri);

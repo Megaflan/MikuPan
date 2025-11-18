@@ -868,13 +868,13 @@ void gra3dInitFirst()
     sceDmaSend(d1, &dma);
 }
 
-u_int PlayerModelInit()
+int64_t PlayerModelInit()
 {
     int i;
     u_int *tmpp;
     u_int *p;
 
-    tmpp = (u_int *)0x9a0000;
+    tmpp = (u_int *)PLYR_FILE_ADDRESS;
 
     pmanmodel[0] = &tmpp[0];
     pmanmpk[0] = &tmpp[0];
@@ -899,10 +899,10 @@ u_int PlayerModelInit()
         tmpp += tmpp[0] / 4 + 4;
     }
 
-    return (u_int)tmpp;
+    return (int64_t)tmpp;
 }
 
-u_int PlayerAccessoryInit(int addr)
+int64_t PlayerAccessoryInit(int64_t addr)
 {
     int i;
     u_int *tmpp;
@@ -938,10 +938,10 @@ u_int PlayerAccessoryInit(int addr)
 
     item_addr_tbl[1] = pgirlacs[1];
 
-    return (u_int)tmpp;
+    return (int64_t)tmpp;
 }
 
-u_int SGDLoadInit(u_int *addr, int size)
+int64_t SGDLoadInit(u_int *addr, int size)
 {
     pgirlshadow = addr;
 
@@ -951,7 +951,7 @@ u_int SGDLoadInit(u_int *addr, int size)
 
     addr += (size + 16) / 4;
 
-    return (u_int)addr;
+    return (int64_t)addr;
 }
 
 void gra3dInit()

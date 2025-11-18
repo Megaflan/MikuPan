@@ -23,7 +23,7 @@
 #endif
 
 int init_load_id = 0;
-int init_load_adr = 0;
+int64_t init_load_adr = 0;
 int init_load_size = 0;
 
 int GameInit()

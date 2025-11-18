@@ -51,8 +51,8 @@
 #include "os/eeiop/cdvd/eecdvd.h"
 #include "plyr/time_ctl.h"
 
-/* sdata 356ef0 */ int start_msn = 0;
-/* sdata 356ef4 */ int msn0_wait_timer = 0;
+int start_msn = 0;
+int msn0_wait_timer = 0;
 
 void InGameCtrl(void)
 {    
@@ -232,7 +232,7 @@ int InGameFirstLoad(void)
 
 void InGameInit(void) 
 {
-    /* s2 18 */ int next_msn_chk = 0;
+    int next_msn_chk = 0;
     
     if (sys_wrk.load == 1 && mc_msn_flg == 1 || ev_wrk.next_msn == 1)
     {
@@ -343,9 +343,7 @@ void InGameInit(void)
 
 void InGameInit2()
 {
-    /* s2 18 */ int mode;
-    
-    mode = 0;
+    int mode = 0;
     
     if (ingame_wrk.mode == 0x5)
     {

@@ -4,11 +4,13 @@
 #include "typedefs.h"
 #include "graphics/graph2d/sprt.h"
 
+#include <stdint.h>
+
 typedef struct {
 	u_short file_no;
 	u_char file_type;
 	u_char tmp_no;
-	u_int addr;
+	int64_t addr;
 } MSN_LOAD_DAT;
 
 typedef struct { // 0x8

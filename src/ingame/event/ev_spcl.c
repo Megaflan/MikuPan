@@ -1,6 +1,7 @@
 #include "common.h"
 #include "ev_spcl.h"
 #include "typedefs.h"
+#include "graphics/graph2d/tim2.h"
 
 
 void SpecialEventInit(u_char spev_no)

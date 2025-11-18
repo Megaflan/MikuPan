@@ -51,7 +51,7 @@ int title_bgm_no = -1;
 static DSP_M_SLCT_WRK dsp_ms;
 static int ms_load_id;
 
-void ModeSlctInit(u_char top,u_char end)
+void ModeSlctInit(u_char top, u_char end)
 {
 #ifdef BUILD_EU_VERSION
     ms_load_id = LoadReqLanguage(M_SLCT_CMN_E_PK2, 0xc80000);
@@ -1686,7 +1686,7 @@ void ChangeModeSel(int mode)
 {
     dsp_ms.next_mode = mode;
     dsp_ms.now_mode = dsp_ms.next_mode;
-    OutGameModeChange(8);
+    OutGameModeChange(OUTGAME_MODE_MODESEL);
 }
 
 void BattleModeExit()

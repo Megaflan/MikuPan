@@ -2,11 +2,28 @@
 #include "ev_load.h"
 #include "main/glob.h"
 #include "enums.h"
+#include "ev_spcl.h"
 #include "ingame/map/map_area.h"
 #include "ingame/entry/entry.h"
 #include "common/memory_addresses.h"
+#include "graphics/graph2d/effect_ene.h"
+#include "graphics/graph2d/tim2.h"
+#include "graphics/motion/mdlwork.h"
+#include "ingame/entry/ap_dgost.h"
+#include "ingame/entry/ap_fgost.h"
+#include "ingame/entry/ap_ggost.h"
+#include "ingame/map/door_ctl.h"
 #include "ingame/map/furn_ctl.h"
+#include "ingame/map/item_ctl.h"
+#include "ingame/map/map_ctrl.h"
 #include "ingame/map/furn_spe/fspe_acs.h"
+#include "os/eeiop/eese.h"
+#include "os/eeiop/adpcm/ea_cmd.h"
+#include "os/eeiop/adpcm/ea_ctrl.h"
+#include "os/eeiop/cdvd/eecdvd.h"
+#include "outgame/btl_mode/btl_menu.h"
+
+#include <string.h>
 
 MSN_TITLE_WRK mttl_wrk;
 EVENT_LOAD_WRK ev_load_wrk;
@@ -153,14 +170,10 @@ void MissionTitleInit(int msn_no)
     }
     MissionStartMapItemInit(msn_no);
     AdpcmMapNoUse();
-    return;
 }
 
 int MissionTitleMain(int msn_no)
 {
-
-    printf("MISSION TITLE MAIN \n");
-
     switch(mttl_wrk.mode) 
     {
         case MSN_TITLE_MODE_READY:
@@ -246,9 +259,6 @@ int MissionTitleMain(int msn_no)
 
 int MissionTitleLoad(int msn_no)
 {
-
-    printf("MISSION TITLE LOAD\n");
-
     if (mttl_wrk.load_mode == 9)
     {
         return 1;
@@ -267,6 +277,7 @@ int MissionTitleLoad(int msn_no)
         {
             mttl_wrk.load_mode = 2;
         }
+
         return 0;
     }
     
@@ -364,10 +375,7 @@ int MissionTitleLoad(int msn_no)
 
 int MissionDataLoadReq(MSN_LOAD_DAT* dat)
 {
-    	
-    /* v0 2 */ int ret;
-    
-    printf("MISSION DATA LOAD REQ\n");
+    int ret;
 
     if (dat->file_type == 2)
     {
@@ -412,9 +420,6 @@ int MissionDataLoadReq(MSN_LOAD_DAT* dat)
 
 void MissionDataLoadAfterInit(MSN_LOAD_DAT* dat)
 {
-
-    printf("MISSION DATA LOAD AFTER INIT\n");
-
     switch (dat->file_type)
     {
         case 3:
@@ -464,8 +469,6 @@ void MissionDataLoadAfterInit(MSN_LOAD_DAT* dat)
 void DataLoadWrkInit()
 {	
     int i;
-    
-    printf("DATA LOAD WRK INIT\n");
 
     memset(&load_dat_wrk, 0, sizeof(load_dat_wrk));
 
@@ -478,8 +481,6 @@ void DataLoadWrkInit()
 void SetDataLoadWrk(MSN_LOAD_DAT* dat)
 {
     int i;
-
-    printf("SET DATA LOAD WRK\n");
 
     for (i = 0; i < 40; i++)
     {
@@ -497,8 +498,6 @@ void SetDataLoadWrk(MSN_LOAD_DAT* dat)
 void DelDataLoadWrk(u_short file_no)
 {        
     int i;
-
-    printf("DEL DATA LOAD WRK\n");
 
     for (i = 0; i < 40; i++)
     {
@@ -535,8 +534,6 @@ u_int GetLoadDataAddr(u_short file_no)
 {
     int i;
 
-    printf("GET LOAD DATA ADDR\n");
-
     for (i = 0; i < 40; i++)
     {
         if (load_dat_wrk[i].file_no == file_no)
@@ -550,7 +547,7 @@ u_int GetLoadDataAddr(u_short file_no)
 
 void SortLoadDataAddr()
 {
-    printf("SORT LOAD DATA ADDR \n");
+    info_log("SORT LOAD DATA ADDR \n");
 }
 
 void MissionTitleDisp(int msn_no)
@@ -559,29 +556,26 @@ void MissionTitleDisp(int msn_no)
 	/* s3 19 */ u_char alp_rate;
 	/* 0x0(sp) */ SPRT_SDAT ssd;
     SPRT_SDAT *p;
-   
-    printf("MISSION TITLE DISP \n");
 
     SetSprFile(MISSION_TITLE_CARD_ADDRESS);
     
-    if (mttl_wrk.mode == 1) {
+    if (mttl_wrk.mode == 1)
+    {
         alp_rate = ((0x1e - mttl_wrk.time) * 100) / 0x1e & 0xff;
-    
     }
     else if (mttl_wrk.mode == 3 || mttl_wrk.mode == 4)
     {
         alp_rate = (mttl_wrk.time * 100) / 0x1e & 0xff;
     }
     else
+    {
         alp_rate = 100;
-    
-
-
-    for (i = 0; i < 11; i++) {
-        SimpleDispSprt(&msn_title_sp_bak[i], MISSION_TITLE_CARD_ADDRESS, i, NULL, NULL, alp_rate);
     }
 
-
+    for (i = 0; i < 11; i++)
+    {
+        SimpleDispSprt(&msn_title_sp_bak[i], MISSION_TITLE_CARD_ADDRESS, i, NULL, NULL, alp_rate);
+    }
 
     for (i = 0; i < msn_title_flr_sp_num[msn_no]; i++) {
         SimpleDispAlphaSprt(&msn_title_sp_flr[msn_no][i], MISSION_TITLE_CARD_ADDRESS,
@@ -618,9 +612,7 @@ void MikuCGDisp()
 
 void RoomLoadReq(int load_room)
 {
-	/* s0 16 */ int i;
-
-    printf("ROOM LOAD REQ \n");
+	int i;
 
     for (i = 0; i < 2; i++)
     {

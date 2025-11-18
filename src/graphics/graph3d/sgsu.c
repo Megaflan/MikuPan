@@ -357,10 +357,10 @@ u_int* SetVUVNDataPost(u_int *prim)
 
 void printTEX0(sceGsTex0 *tex0)
 {
-    printf("TBP0 %x TBW %d PSM %x TW %d TH %d TCC %d\n",
+    info_log("TBP0 %x TBW %d PSM %x TW %d TH %d TCC %d\n",
            tex0->TBP0, tex0->TBW, tex0->PSM, tex0->TW, tex0->TH, tex0->TCC);
 
-    printf("TFX %d CBP %x CPSM %x CSM %d CSA %d CLD %x\n",
+    info_log("TFX %d CBP %x CPSM %x CSM %d CSA %d CLD %x\n",
            tex0->TFX, tex0->CBP, tex0->CPSM, tex0->CSM, tex0->CSA, tex0->CLD);
 
 }

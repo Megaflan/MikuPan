@@ -1,6 +1,7 @@
 #include "common.h"
 #include "typedefs.h"
 #include "enums.h"
+#include "common/memory_addresses.h"
 
 #ifdef MATCHING_DECOMP
 #define INCLUDING_FROM_MDLWORK_C
@@ -665,7 +666,7 @@ char MsnInitPlyr()
 
         plyr_init_ctrl.step = 2;
     case 2:
-        init_load_id = LoadReq(plyr_file_id[pk2_id].pk2, 0x9a0000);
+        init_load_id = LoadReq(plyr_file_id[pk2_id].pk2, &PLYR_FILE_ADDRESS);
         plyr_init_ctrl.step = 3;
         break;
     case 3:
@@ -674,7 +675,7 @@ char MsnInitPlyr()
             break;
         }
 
-        SetManmdlTm2((u_int*)0x9a0000, 0, 1);
+        SetManmdlTm2((u_int*)PLYR_FILE_ADDRESS, 0, 1);
         plyr_init_ctrl.step = 4;
         sync_flg = 2;
         break;
@@ -685,7 +686,7 @@ char MsnInitPlyr()
             break;
         }
 
-        init_load_id = LoadReq(plyr_file_id[pk2_id].mpk, 0x9a0000);
+        init_load_id = LoadReq(plyr_file_id[pk2_id].mpk, &PLYR_FILE_ADDRESS);
         plyr_init_ctrl.step = 5;
         break;
     case 5:

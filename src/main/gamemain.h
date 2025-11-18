@@ -3,8 +3,10 @@
 
 #include "typedefs.h"
 
+#include <stdint.h>
+
 extern int init_load_id;
-extern int init_load_adr;
+extern int64_t init_load_adr;
 extern int init_load_size;
 
 void GameMain();

@@ -3,8 +3,6 @@
 
 #include "typedefs.h"
 
-// #include "main/glob.h"
-
 #include "sce/libpad.h"
 
 typedef struct {
@@ -42,7 +40,5 @@ u_short VibrateRequest(u_short p_id, u_short act1, u_short act2); /// Initiall b
 u_short VibrateRequest1(u_short p_id, u_short act_1); /// Initiall badly imported
 u_short VibrateRequest2(u_short p_id, u_short act_2);
 void PadClearCount(int p_id);
-
-
 
 #endif // OS_PAD_H

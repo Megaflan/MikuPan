@@ -1758,7 +1758,7 @@ void MakeOutDither()
     /* bss 402d80 */ /*static*/ sceGsLoadImage gs_limage1;
     /* bss 402de0 */ /*static*/ sceGsLoadImage gs_limage2;
 
-    SetVURand((float)rand() / (float)RAND_MAX);
+    SetVURand((float)rand() / ((float) RAND_MAX * 4.0f));
 
     for (i = 0; i < 0x4000; i++)
     {
@@ -1783,8 +1783,7 @@ void MakeOutDither()
 
     sceGsExecLoadImage(&gs_limage1, (u_long128 *)pat);
     sceGsExecLoadImage(&gs_limage2, (u_long128 *)pal);
-
-
+    
     sceGsSyncPath(0, 0);
 }
 
@@ -1869,21 +1868,20 @@ void DispOutDither()
 
     sd2.clamp_u = SCE_GS_SET_CLAMP_1(SCE_GS_REPEAT, SCE_GS_REPEAT, 0, 0, 40, 0);
     sd2.clamp_v = SCE_GS_SET_CLAMP_1(SCE_GS_REPEAT, SCE_GS_REPEAT, 0, 0, 32, 0);
-    sd2.alpha = (SgSinf(DEG2RAD(out_dither.cnt)) + 1.0f) * out_dither.alp;
+    sd2.alpha = (u_char)((SgSinf(DEG2RAD(out_dither.cnt)) + 1.0f) * out_dither.alp);
     SetTexDirectS2(-2, &sd2, &de2, 0);
 
     sd2.clamp_u = SCE_GS_SET_CLAMP_1(SCE_GS_REPEAT, SCE_GS_REPEAT, 64, 0, 44, 0);
     sd2.clamp_v = SCE_GS_SET_CLAMP_1(SCE_GS_REPEAT, SCE_GS_REPEAT, 0, 0, 32, 0);
-    sd2.alpha = (SgSinf(DEG2RAD(out_dither.cnt + 120.0f)) + 1.0f) * out_dither.alp;
+    sd2.alpha = (u_char)((SgSinf(DEG2RAD(out_dither.cnt + 120.0f)) + 1.0f) * out_dither.alp);
     SetTexDirectS2(-2, &sd2, &de2, 0);
 
     sd2.clamp_u = SCE_GS_SET_CLAMP_1(SCE_GS_REPEAT, SCE_GS_REPEAT, 0, 0, 40, 0);
     sd2.clamp_v = SCE_GS_SET_CLAMP_1(SCE_GS_REPEAT, SCE_GS_REPEAT, 64, 0, 36, 0);
-    sd2.alpha = (SgSinf(DEG2RAD(out_dither.cnt + 240.0f)) + 1.0f) * out_dither.alp;
+    sd2.alpha = (u_char)((SgSinf(DEG2RAD(out_dither.cnt + 240.0f)) + 1.0f) * out_dither.alp);
     SetTexDirectS2(-2, &sd2, &de2, 0);
 
-    out_dither.cnt += 8.0f;
-    out_dither.spd = 8.0f;
+    out_dither.cnt += out_dither.spd;
 }
 
 int AlbmDesignLoad(u_char side, u_char type)

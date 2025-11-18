@@ -1032,7 +1032,7 @@ void CheckHintTex()
 
     if (num != num_old)
     {
-        g2d_load_flg.hint = LoadReq(hint_tbl[num], 0x1e90000);
+        g2d_load_flg.hint = LoadReq(hint_tbl[num], &EFFECT_ADDRESS);
     }
 
     MakeTim2ClutDirect4((int64_t)EFFECT_ADDRESS, 0, -1, -1, 0);

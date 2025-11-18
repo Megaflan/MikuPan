@@ -51,6 +51,7 @@ u_int* RoomMdlLoadReq(u_int *addr, u_char blk_no, u_char msn_no, u_char room_no,
 
     rlb = &room_load_block[blk_no];
 
+    /// Each room has a PK2 and a LIT file
     file_no = room_no * 2 + R000_GENKAN_PK2;
 
     SetRenewDoorAddr(blk_no);
