@@ -523,6 +523,11 @@ SPRT_DAT title_sprt[11] = {
     case TITLE_TITLE_SEL:
         SetSprFile(SPRITE_ADDRESS);
 
+        if (L1_PRESSED() >= 1 && R1_PRESSED()  >= 1)
+        {
+            ttl_dsp.mode = 0;
+        }
+
         if (ttl_dsp.mode != 0)
         {
             TitleStartSlctYW(0, 0x80);
@@ -642,7 +647,7 @@ SPRT_DAT title_sprt[11] = {
         }
     break;
     case TITLE_ALBM_LOAD0:
-        //if (IsEndAdpcmFadeOut() != 0)
+        if (IsEndAdpcmFadeOut() != 0)
         {
             EAdpcmCmdPlay(0, 1, AB018_STR, 0, GetAdpcmVol(AB018_STR), 0x280, 0xfff, 0);
 
@@ -664,7 +669,7 @@ SPRT_DAT title_sprt[11] = {
             mc_slot1 = mc_ctrl.port + 1;
             mc_file1 = mc_ctrl.sel_file + 1;
 
-            //memcpy((void *)0xE80000, (void *)0x5a0000, 0x180000);
+            memcpy((void *)0xE80000, (void *)0x5a0000, 0x180000);
 
             mcInit(6, (u_int *)MC_WORK_ADDRESS, 0);
 
@@ -694,15 +699,14 @@ SPRT_DAT title_sprt[11] = {
             //mc_atyp2 = mc_album_type;
             mc_slot2 = mc_ctrl.port + 1;
             //mc_file2 = mc_ctrl.sel_file + 1;
-
-            //memcpy((void *)0x1000000, (void *)0x5a0000, 0x180000);
+            memcpy((void *)0x1000000, (void *)0x5a0000, 0x180000);
 
             MemAlbmInit(1, mc_pnum1, mc_pnum2, mc_atyp1, mc_atyp2, mc_slot1, mc_slot2, mc_file1, mc_file2 & 0xff);
 
             title_wrk.load_id = LoadReq(PL_ALBM_FSM_PK2, &PL_ALBM_FSM_PK2_ADDRESS);
             title_wrk.load_id = LoadReq(PL_ALBM_PK2, &PL_SAVE_PK2_ADDRESS);
-            title_wrk.load_id = AlbmDesignLoad(0, 0/* mc_atyp1 */);
-            title_wrk.load_id = AlbmDesignLoad(1, 1 /* mc_atyp2 */);
+            title_wrk.load_id = AlbmDesignLoad(0, mc_atyp1);
+            title_wrk.load_id = AlbmDesignLoad(1, mc_atyp2);
 
             title_wrk.mode = TITLE_ALBM_MAIN_PRE;
         break;
@@ -732,7 +736,7 @@ SPRT_DAT title_sprt[11] = {
         }
     break;
     case TITLE_ALBM_MAIN_PRE:
-        //if (IsLoadEnd(title_wrk.load_id) != 0)
+        if (IsLoadEnd(title_wrk.load_id) != 0)
         {
             title_wrk.mode = TITLE_ALBM_MAIN;
         }
@@ -743,9 +747,7 @@ SPRT_DAT title_sprt[11] = {
 
         switch(SweetMemories(1, 0x80))
         {
-        case 0:
-            // do nothing ...
-        break;
+        case 0: break;
         case 1:
             memcpy((void *)0x5a0000, (void *)0xe80000, 0x180000);
 
@@ -845,9 +847,7 @@ SPRT_DAT title_sprt[11] = {
                 //mc_atyp2 = mc_album_type;
                 mc_slot2 = mc_ctrl.port + 1;
                 //mc_file2 = mc_ctrl.sel_file + 1;
-
                 //album_save_dat[1] = mc_album_save;
-
                 //MemAlbmInit2(1, mc_pnum2, mc_atyp2, mc_slot2, mc_file2);
             }
 
@@ -900,7 +900,6 @@ SPRT_DAT title_sprt[11] = {
                 //mc_atyp2 = mc_album_type;
                 mc_slot2 = mc_ctrl.port + 1;
                 //mc_file2 = mc_ctrl.sel_file + 1;
-
                 //MemAlbmInit2(1, mc_pnum2, mc_atyp2, mc_slot2, mc_file2);
             }
 
@@ -969,7 +968,7 @@ void TitleWaitMode()
 
     ttl_dsp.mode = 0;
 
-    if (*key_now[5] == 1 || *key_now[12] == 1)
+    if (CROSS_PRESSED() == 1 || START_PRESSED() == 1)
     {
         ttl_dsp.mode = 1;
 
@@ -989,28 +988,28 @@ void TitleStartSlct()
 	/* s3 19 */ char *str4 = "ALBUM";
 	/* s4 20 */ char *csr0 = "MISSION";
 
-    SetASCIIString(70.0f, 110.0f, str_o);
+    SetASCIIString(70.0f, 110.0f, str4);
 
     SetASCIIString(160.0f, 190.0f, str1);
     SetASCIIString(160.0f, 230.0f, str2);
     SetASCIIString(160.0f, 270.0f, str3);
-    SetASCIIString(230.0f, 350.0f, str4);
+    SetASCIIString(230.0f, 350.0f, csr0);
 
     SetInteger2(0, 350.0f, 350.0f, 0, 0x80, 0x80, 0x80, ingame_wrk.msn_no);
 
-    SetASCIIString(120.0f, title_wrk.csr * 40 + 190, csr0);
+    SetASCIIString(120.0f, title_wrk.csr * 40 + 190, str_o);
 
     if (
-        *key_now[3] == 1 ||
-        (*key_now[3] > 25 && (*key_now[3] % 5) == 1) ||
+        DPAD_RIGHT_PRESSED() == 1 ||
+        (DPAD_RIGHT_PRESSED() > 25 && (DPAD_RIGHT_PRESSED() % 5) == 1) ||
         Ana2PadDirCnt(1) == 1 ||
         (Ana2PadDirCnt(1) > 25 && (Ana2PadDirCnt(1) % 5) == 1)
     ) {
         ingame_wrk.msn_no++;
     }
     else if (
-        *key_now[2] == 1 ||
-        (*key_now[2] > 25 && (*key_now[2] % 5) == 1) ||
+        DPAD_LEFT_PRESSED() == 1 ||
+        (DPAD_LEFT_PRESSED() > 25 && (DPAD_LEFT_PRESSED() % 5) == 1) ||
         Ana2PadDirCnt(3) == 1 ||
         (Ana2PadDirCnt(3) > 25 && (Ana2PadDirCnt(3) % 5) == 1))
     {
@@ -1020,7 +1019,7 @@ void TitleStartSlct()
         }
     }
 
-    if (*key_now[5] == 1 || *key_now[12] == 1)
+    if (CROSS_PRESSED() == 1 || START_PRESSED() == 1)
     {
         if (title_wrk.csr != 0x0)
         {
@@ -1030,7 +1029,7 @@ void TitleStartSlct()
             title_wrk.load_id = LoadReq(PL_SAVE_PK2, &PL_SAVE_PK2_ADDRESS);
             title_wrk.load_id = LoadReq(SV_PHT_PK2, &SV_PHT_PK2_ADDRESS);
 
-            title_wrk.mode = 6;
+            title_wrk.mode = TITLE_LOAD_PRE;
 
             EAdpcmFadeOut(0x3c);
         }
@@ -1044,15 +1043,15 @@ void TitleStartSlct()
 
         SeStartFix(1, 0, 0x1000, 0x1000, 0);
     }
-    else if (*key_now[4] == 1)
+    else if (TRIANGLE_PRESSED() == 1)
     {
         ttl_dsp.timer = 0;
-        title_wrk.mode = 2;
+        title_wrk.mode = TITLE_TITLE;
         SeStartFix(3, 0, 0x1000, 0x1000, 0);
     }
     else if (
-        *key_now[0] == 1 ||
-        (*key_now[0] > 25 && (*key_now[0] % 5) == 1) ||
+        DPAD_UP_PRESSED() == 1 ||
+        (DPAD_UP_PRESSED() > 25 && (DPAD_UP_PRESSED() % 5) == 1) ||
         Ana2PadDirCnt(0) == 1 ||
         (Ana2PadDirCnt(0) > 25 && (Ana2PadDirCnt(0) % 5) == 1)
     ) {
@@ -1060,8 +1059,8 @@ void TitleStartSlct()
         SeStartFix(0, 0, 0x1000, 0x1000, 0);
     }
     else if (
-        *key_now[1] == 1 ||
-        (*key_now[1] > 25 && (*key_now[1] % 5) == 1) ||
+        DPAD_DOWN_PRESSED() == 1 ||
+        (DPAD_DOWN_PRESSED() > 25 && (DPAD_DOWN_PRESSED() % 5) == 1) ||
         Ana2PadDirCnt(2) == 1 ||
         (Ana2PadDirCnt(2) > 25 && (Ana2PadDirCnt(2) % 5) == 1)
     ) {
@@ -1389,22 +1388,30 @@ void TitleSelectMode()
             case 0:
                 ingame_wrk.game = 0;
 
-                GameModeChange(0);
+                GameModeChange(GAME_MODE_INIT);
                 break;
             case 1:
-                OutGameModeChange(6);
+                OutGameModeChange(OUTGAME_MODE_BATTLE);
                 break;
             case 2:
-                OutGameModeChange(7);
+                OutGameModeChange(OUTGAME_MODE_OPTION);
+                break;
+            case 3: // MAP DATA EDIT
+                break;
+            case 4:
+                OutGameModeChange(OUTGAME_MODE_SOUND_TEST);
                 break;
             case 5:
-                OutGameModeChange(11);
+                OutGameModeChange(OUTGAME_MODE_SCENE_TEST);
                 break;
             case 6:
-                OutGameModeChange(12);
+                OutGameModeChange(OUTGAME_MODE_MOTION_TEST);
                 break;
             case 7:
-                OutGameModeChange(14);
+                OutGameModeChange(OUTGAME_MODE_ROOM_SIZE_CHECK);
+                break;
+            case 8:
+                OutGameModeChange(OUTGAME_MODE_LAYOUT_TEST);
                 break;
         }
 
@@ -1742,7 +1749,7 @@ void InitOutDither()
 {
     out_dither.cnt = 0.0f;
     out_dither.spd = 8.0f;
-    out_dither.alp = 64.0f;
+    out_dither.alp = 20.0f;
     out_dither.alpmx = 0x40;
     out_dither.colmx = 0x40;
     out_dither.type = 7;
@@ -1756,7 +1763,7 @@ void MakeOutDither()
     static sceGsLoadImage gs_limage1;
     static sceGsLoadImage gs_limage2;
 
-    SetVURand((float)rand() / (float) RAND_MAX);
+    SetVURand(0.51387006f);
 
     for (i = 0; i < 0x4000; i++)
     {

@@ -1,4 +1,7 @@
 #include "file_loading.h"
+
+#include "gs/texture_manager.h"
+
 #include <filesystem>
 #include <fstream>
 #include <string.h>
@@ -40,6 +43,7 @@ void ReadFileInArchive(int sector, int size, int64_t address)
 
     if ((int64_t*)*(int64_t*)address != nullptr)
     {
+        MikuPan_FlushTextureCache();
         free((int64_t*)*(int64_t*)address);
     }
 

@@ -1,5 +1,12 @@
 #include "texture_manager.h"
 
+extern "C"
+{
+#include "rendering/mikupan_renderer.h"
+#include <stdlib.h>
+}
+
+
 std::unordered_map<unsigned long long, unsigned char*> texture_atlas;
 std::unordered_map<unsigned long long, void*> sdl_texture_atlas;
 bool first_upload_done = false;
@@ -41,17 +48,34 @@ void AddSDLTexture(sceGsTex0* tex0, void *img)
     sdl_texture_atlas[CONVERT_TEX0_TO_ULONG(tex0)] = img;
 }
 
-void * GetSDLTexture(sceGsTex0* tex0)
+void *GetSDLTexture(sceGsTex0 *tex0)
 {
     if (!first_upload_done)
     {
         return nullptr;
     }
 
-    if (auto el = sdl_texture_atlas.find(CONVERT_TEX0_TO_ULONG(tex0)); el != sdl_texture_atlas.end())
+    if (auto el = sdl_texture_atlas.find(CONVERT_TEX0_TO_ULONG(tex0));
+        el != sdl_texture_atlas.end())
     {
         return sdl_texture_atlas[CONVERT_TEX0_TO_ULONG(tex0)];
     }
 
     return nullptr;
+}
+void MikuPan_FlushTextureCache()
+{
+    for (auto t : texture_atlas)
+    {
+        free(t.second);
+    }
+
+    texture_atlas.clear();
+
+    for (auto t : sdl_texture_atlas)
+    {
+        MikuPan_DeleteTexture(t.second);
+    }
+
+    sdl_texture_atlas.clear();
 }

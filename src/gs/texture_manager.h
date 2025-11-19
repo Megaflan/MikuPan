@@ -16,6 +16,7 @@ extern "C"
     void* GetSDLTexture(sceGsTex0* tex0);
     void FirstUploadDone();
     bool IsFirstUploadDone();
+    void MikuPan_FlushTextureCache();
 }
 
 

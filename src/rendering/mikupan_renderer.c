@@ -199,3 +199,15 @@ void MikuPan_SetFontTexture(int fnt)
 {
     curr_fnt_texture = fnt_texture[fnt];
 }
+void MikuPan_DeleteTexture(void *texture)
+{
+    for (int i = 0; i < 6; i++)
+    {
+        if (fnt_texture[i] == texture)
+        {
+            return;
+        }
+    }
+
+    SDL_DestroyTexture(texture);
+}
