@@ -788,7 +788,7 @@ void SgSortUnit(void *sgd_top, int pnum)
     hs = (HeaderSection *)sgd_top;
 
     wscissor_flg = 0;
-    lcp = hs->coordp;
+    lcp = GetCoordP(hs);
 
     if (((u_int)lcp & 0xf) != 0)
     {

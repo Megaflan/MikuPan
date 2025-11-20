@@ -625,7 +625,7 @@ void DrawShadowModel(void *sgd_top, int pnum)
 
     hs = (HeaderSection *)sgd_top;
 
-    lcp = hs->coordp;
+    lcp = GetCoordP(hs);
     blocksm = hs->blocks;
 
     lphead = (PHEAD *)hs->phead;
@@ -1022,7 +1022,7 @@ void AssignShadow(void *sgd_top, int except_num)
     hs = (HeaderSection *)sgd_top;
 
     ccahe.cache_on = -1;
-    lcp = hs->coordp;
+    lcp = GetCoordP(hs);
     blocksm = hs->blocks;
 
     pk = (u_int *)&hs->primitives;
@@ -1606,7 +1606,7 @@ void DrawShadow(ShadowHandle *shandle, EnvFuncCallback env_func)
 
     hs = (HeaderSection *)shandle->shadow_model;
 
-    SetShadowCamera(center, shandle->bbox, hs->coordp);
+    SetShadowCamera(center, shandle->bbox, GetCoordP(hs));
 
     shandle->shadow_tex0 = SCE_GS_SET_TEX0_1(shadowtex.addr >> 6, shadowtex.width >> 6, SCE_GS_PSMCT16, shadowtex.width_p, shadowtex.height_p, 1, SCE_GS_MODULATE, shadowtex.addr >> 6, SCE_GS_PSMCT32, 0, 0, 1);
 

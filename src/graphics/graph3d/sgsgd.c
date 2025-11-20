@@ -1,6 +1,8 @@
+#include "sgsgd.h"
 #include "common.h"
 #include "typedefs.h"
-#include "sgsgd.h"
+
+#include "common/logging_c.h"
 
 #include <stdio.h>
 
@@ -46,7 +48,8 @@ void MappingVUVNData(u_int *intpointer, HeaderSection *hs)
     sceVu0FVECTOR *vp;
     sceVu0FVECTOR *np;
 
-    ph = (PHEAD *)hs->phead;
+    // ph = (PHEAD *)hs->phead
+    ph = (PHEAD *)GetPHead(hs);
     vh = (VUVN_PRIM *)&intpointer[2];
 
     intpointer += 12;
@@ -54,18 +57,23 @@ void MappingVUVNData(u_int *intpointer, HeaderSection *hs)
     switch (vh->vtype)
     {
     case SVA_UNIQUE:
-        vp = ph->pUniqVertex;
-        np = ph->pUniqNormal;
+        //vp = ph->pUniqVertex;
+        //np = ph->pUniqNormal;
+        vp = GetOffsetPtr(hs, ph->pUniqVertex);
+        np = GetOffsetPtr(hs, ph->pUniqNormal);
 
         for (i = 0; i < vh->vnum; i++)
         {
-            intpointer[0] = intpointer[0] * 16 + (int)vp; intpointer++;
-            intpointer[0] = intpointer[0] * 16 + (int)np; intpointer++;
+            //intpointer[0] = intpointer[0] * 16 + (int)vp; intpointer++;
+            //intpointer[0] = intpointer[0] * 16 + (int)np; intpointer++;
+
+            /// In order to make it 32bits compatible, the base reference needs to removed
+            /// so now instead if will contain the offset from its vp/np
+            intpointer[0] = intpointer[0] * 16; intpointer++;
+            intpointer[0] = intpointer[0] * 16; intpointer++;
         }
     break;
-    case SVA_COMMON:
-        // ...
-    break;
+    case SVA_COMMON:    break;
     case SVA_WEIGHTED:
     default:
         if (ph->pWeightedList)
@@ -75,19 +83,31 @@ void MappingVUVNData(u_int *intpointer, HeaderSection *hs)
 
             for (i = 0; i < vh->vnum; i++)
             {
-                intpointer[0] = intpointer[0] * 16 + (int)vp; intpointer++;
-                intpointer[0] = intpointer[0] * 16 + (int)np; intpointer++;
+                //intpointer[0] = intpointer[0] * 16 + (int)vp; intpointer++;
+                //intpointer[0] = intpointer[0] * 16 + (int)np; intpointer++;
+
+                /// In order to make it 32bits compatible, the base reference needs to removed
+                /// so now instead if will contain the offset from its vp/np
+                intpointer[0] = intpointer[0] * 16; intpointer++;
+                intpointer[0] = intpointer[0] * 16; intpointer++;
             }
         }
         else
         {
-            vp = ph->pWeightedVertex;
-            np = ph->pWeightedNormal;
+            //vp = ph->pWeightedVertex;
+            //np = ph->pWeightedNormal;
+            vp = GetOffsetPtr(hs, ph->pWeightedVertex);
+            np = GetOffsetPtr(hs, ph->pWeightedNormal);
 
             for (i = 0; i < vh->vnum; i++)
             {
-                intpointer[0] = intpointer[0] * 32 + (int)vp; intpointer++;
-                intpointer[0] = intpointer[0] * 32 + (int)np; intpointer++;
+                //intpointer[0] = intpointer[0] * 32 + (int)vp; intpointer++;
+                //intpointer[0] = intpointer[0] * 32 + (int)np; intpointer++;
+
+                /// In order to make it 32bits compatible, the base reference needs to removed
+                /// so now instead if will contain the offset from its vp/np
+                intpointer[0] = intpointer[0] * 32; intpointer++;
+                intpointer[0] = intpointer[0] * 32; intpointer++;
             }
         }
     break;
@@ -190,8 +210,8 @@ void MappingVertexList(VERTEXLIST *vli, PHEAD *ph)
 
     if (vnbuf_size < size)
     {
-        printf("VNBuffer Over size %d needs %d\n", vnbuf_size, size);
-        ph->pUniqList = ph->pWeightedList = NULL;
+        info_log("VNBuffer Over size %d needs %d\n", vnbuf_size, size);
+        ph->pUniqList = ph->pWeightedList = 0;
     }
 }
 
@@ -237,8 +257,8 @@ void SgMapUnit(void *sgd_top)
     int i;
     int j;
     int size;
-    int64_t *intpointer;
-    int64_t *nextprim;
+    u_int *intpointer;
+    u_int *nextprim;
     u_int *pk;
     u_int *vuvnprim;
     HeaderSection *hs;
@@ -261,15 +281,18 @@ void SgMapUnit(void *sgd_top)
 
     if ((u_int)hs->coordp - 1 < 0x2fffffff)
     {
+        /// Overwrites data for 64bits PTR
         //hs->coordp = (SgCOORDUNIT *)((u_int)hs->coordp + (int)sgd_top);
     }
 
     if ((u_int)hs->matp - 1 < 0x2fffffff)
     {
+        /// Overwrites data for 64bits PTR
         //hs->matp = (SgMaterial *)((u_int)hs->matp + (int)sgd_top);
     }
 
-    hs->phead = (u_int *)((u_int)hs->phead + (int)sgd_top);
+    /// Overwrites data for 64bits PTR
+    //hs->phead = (u_int *)((u_int)hs->phead + (int)sgd_top);
 
     pk = (int *)&hs->primitives;
 
@@ -277,31 +300,36 @@ void SgMapUnit(void *sgd_top)
     {
         if (pk[i] != 0)
         {
-            pk[i] = pk[i] + (int64_t)sgd_top;
+            /// Overwrites data for 64bits PTR
+            //pk[i] = pk[i] + (int64_t)sgd_top;
         }
     }
 
     cp = GetCoordP(hs);
 
+    /// Maps CoordP parents
     if (cp != 0)
     {
         for (i = 0; i < hs->blocks - 1; i++)
         {
             if ((int64_t)cp[i].parent < 0)
             {
-                cp[i].parent = NULL;
+                /// Overwrites data for 64bits PTR. -1 is our only indicator of no parent
+                //cp[i].parent = NULL;
             }
             else if ((int64_t)cp[i].parent < (int64_t)cp)
             {
-                cp[i].parent = (int64_t)cp[i].parent + cp;
+                /// Overwrites data for 64bits PTR
+                //cp[i].parent = (int64_t)cp[i].parent + cp;
             }
         }
     }
 
-    intpointer = (u_int *)((int64_t)hs->phead);
+    //intpointer = (u_int *)((int64_t)hs->phead);
+    intpointer = GetPHead(hs);
     intpointer++;
 
-    for (i = 0; i < hs->phead[0]; i++)
+    for (i = 0; i < GetPHead(hs)[0]; i++)
     {
         size = *intpointer++;
 
@@ -309,34 +337,36 @@ void SgMapUnit(void *sgd_top)
         {
             if (*intpointer != 0)
             {
-                *intpointer = *intpointer + (int64_t)sgd_top;
+                //*intpointer = *intpointer + (int64_t)sgd_top;
             }
         }
     }
 
-    ph = (PHEAD *)hs->phead;
+    //ph = (PHEAD *)hs->phead;
+    ph = (PHEAD *)GetPHead(hs);
 
-    if (ph->pUniqList != NULL && ph->UniqHeaderSize == 4)
+    if (ph->pUniqList != 0 && ph->UniqHeaderSize == 4)
     {
         if (vnbuf_size == 0)
         {
-            ph->pUniqList = NULL;
-            ph->pCommonList = NULL;
-            ph->pWeightedList = NULL;
+            ph->pUniqList = 0;
+            ph->pCommonList = 0;
+            ph->pWeightedList = 0;
         }
         else
         {
-            if (ph->pWeightedVertex == NULL && ph->pWeightedNormal == NULL)
+            if (ph->pWeightedVertex == 0 && ph->pWeightedNormal == 0)
             {
-                ph->pWeightedList = NULL;
+                ph->pWeightedList = 0;
             }
         }
 
-        ph->pUniqList = NULL;
-        if (ph->pWeightedList != NULL)
+        ph->pUniqList = 0;
+        if (ph->pWeightedList != 0)
         {
-            vli = ((VERTEXLIST *)ph->pWeightedList);
-            MappingVertexList((VERTEXLIST *)ph->pWeightedList, ph);
+            //vli = ((VERTEXLIST *)ph->pWeightedList);
+            vli = ((VERTEXLIST *)GetOffsetPtr(hs, ph->pWeightedList));
+            MappingVertexList((VERTEXLIST *)GetOffsetPtr(hs, ph->pWeightedList), ph);
 
             vli = (VERTEXLIST *)(&vli->lists[vli->list_num]);
             MappingVertexList(vli, ph);
@@ -359,18 +389,16 @@ void SgMapUnit(void *sgd_top)
             continue;
         }
 
-        intpointer = (u_int *)pk[i];
+        //intpointer = (u_int *)pk[i];
+        intpointer = GetTopProcUnitHeaderPtr(hs, i);
 
         while (*intpointer != NULL)
         {
-            *intpointer = (int)*intpointer + (int)intpointer;
+            //*intpointer = (int)*intpointer + (int)intpointer;
+            // nextprim = intpointer++;
+            nextprim = GetNextProcUnitHeaderPtr(intpointer);
 
-            if (0) // intpointer == NULL ?
-            {
-                break;
-            }
-
-            nextprim = intpointer++;
+            intpointer = &intpointer[1];
 
             switch(*intpointer)
             {
@@ -382,7 +410,7 @@ void SgMapUnit(void *sgd_top)
             break;
             case MATERIAL:
                 intpointer++;
-                *intpointer = (u_int)&hs->matp[*intpointer];
+                //*intpointer = (u_int)&hs->matp[*intpointer];
             break;
             case COORDINATE:
                 MappingCoordinateData(intpointer-1, hs);
@@ -392,7 +420,8 @@ void SgMapUnit(void *sgd_top)
             break;
             }
 
-            intpointer = (u_int *)*nextprim;
+            //intpointer = (u_int *)*nextprim;
+            intpointer = nextprim;
         }
     }
 

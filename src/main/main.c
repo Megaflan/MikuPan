@@ -84,7 +84,7 @@ SDL_AppResult SDL_AppIterate(void *appstate)
             vfunc();
             DrawAll2DMes_P2();
             //FlushModel(1);
-            //ClearTextureCache();
+            ClearTextureCache();
             SeCtrlMain();
         }
     }

@@ -508,7 +508,7 @@ void SetTextureAfterScene()
 
 void MpkAddTexOffset(u_int *mpk_p, int offset)
 {
-    HeaderSection *hs; // not from debugging symbols
+    HeaderSection *hs;
 
     mpk_p += 4;
 
@@ -580,6 +580,7 @@ void ManTexflush()
     return;
 }
 
+/// TODO: ADJUST FUNCTION FOR 64BITS!!!
 void SgdAddTexOffset(void *sgd_top, int offset)
 {
     u_int i;
@@ -698,19 +699,19 @@ char MsnInitPlyr()
 
         break;
     case 6:
-        init_load_id = LoadReq(plyr_file_id[pk2_id].acs, init_load_adr);
+        init_load_id = LoadReq(plyr_file_id[pk2_id].acs, &PLYR_FILE_ACS_ADDRESS);
         plyr_init_ctrl.step = 7;
         break;
     case 7:
         if (IsLoadEnd(init_load_id) != 0)
         {
-            init_load_adr = PlayerAccessoryInit(init_load_adr);
+            init_load_adr = PlayerAccessoryInit(PLYR_FILE_ACS_ADDRESS);
             plyr_init_ctrl.step = 8;
         }
 
         break;
     case 8:
-        init_load_id = LoadReq(plyr_file_id[pk2_id].bwc, init_load_adr);
+        init_load_id = LoadReq(plyr_file_id[pk2_id].bwc, &PLYR_FILE_BWC_ADDRESS);
         plyr_init_ctrl.step = 9;
         break;
     case 9:
@@ -719,12 +720,12 @@ char MsnInitPlyr()
             break;
         }
 
-        plyr_bwc_addr = (u_int*)init_load_adr;
-        init_load_adr = (int)GetPakTaleAddr((void*)init_load_adr);
+        plyr_bwc_addr = (u_int*)PLYR_FILE_BWC_ADDRESS;
+        init_load_adr = (int64_t)GetPakTaleAddr((void*)PLYR_FILE_BWC_ADDRESS);
         plyr_init_ctrl.step = 10;
         break;
     case 10:
-        init_load_id = LoadReq(plyr_file_id[pk2_id].clt, init_load_adr);
+        init_load_id = LoadReq(plyr_file_id[pk2_id].clt, &PLYR_FILE_CLT_ADDRESS);
         plyr_init_ctrl.step = 11;
         break;
     case 11:
@@ -733,13 +734,13 @@ char MsnInitPlyr()
             break;
         }
 
-        plyr_clut_addr = (u_int*)init_load_adr;
-        init_load_adr = (int)GetPakTaleAddr(plyr_bwc_addr);
+        plyr_clut_addr = (u_int*)PLYR_FILE_CLT_ADDRESS;
+        init_load_adr = (int64_t)GetPakTaleAddr(plyr_bwc_addr);
         plyr_init_ctrl.step = 12;
         break;
     case 12:
         plyr_init_ctrl.step = 13;
-        init_load_id = LoadReq(plyr_file_id[pk2_id].anm, 0x870000);
+        init_load_id = LoadReq(plyr_file_id[pk2_id].anm, &PLAYER_ANM_ADDRESS);
         break;
     case 13:
         if (IsLoadEnd(init_load_id) == 0)

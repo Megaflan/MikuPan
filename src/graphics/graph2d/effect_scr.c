@@ -3821,7 +3821,13 @@ int SetNowLoading()
     }
     
     SetPanel(0x80000, 0.0f, 0.0f, 640.0f, 448.0f, 0, 0, 0, 0x80);
-    SetSprFile3(0x1f1c000, 0);
+
+    if (N_LOAD_PK2_ADDRESS == NULL)
+    {
+        return 0xff;
+    }
+
+    SetSprFile3(N_LOAD_PK2_ADDRESS, 0);
     CopySprDToSpr(&ds, test);
     
     ds.tex1 = SCE_GS_SET_TEX1(1, 0, SCE_GS_LINEAR, SCE_GS_LINEAR_MIPMAP_LINEAR, 0, 0, 0);

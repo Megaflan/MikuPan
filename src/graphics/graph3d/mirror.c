@@ -800,7 +800,7 @@ void MirrorDraw(SgCAMERA *camera, void *sgd_top, void (*render_func)(/* paramete
 
     SetClipValue(-1.0f, 1.0f, -1.0f, 1.0f);
 
-    lcp = hs->coordp;
+    lcp = GetCoordP(hs);
     blocksm = hs->blocks;
     pk = (u_int *)&hs->primitives;
     sgd_top_addr = sgd_top;
@@ -908,7 +908,7 @@ void MirrorDraw(SgCAMERA *camera, void *sgd_top, void (*render_func)(/* paramete
 
     SetEnvironment();
 
-    lcp = hs->coordp;
+    lcp = GetCoordP(hs);
     blocksm = hs->blocks;
     sgd_top_addr = sgd_top;
 

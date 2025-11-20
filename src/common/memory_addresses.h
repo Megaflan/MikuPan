@@ -103,6 +103,12 @@ extern void* PL_ALBM_SIDE_1_ADDRESS;
 /// 0x1d573b0
 extern void* PL_PHOT_PK2_ADDRESS;
 
+/// 0x870000
+extern void* PLAYER_ANM_ADDRESS;
+extern void* PLYR_FILE_ACS_ADDRESS;
+extern void* PLYR_FILE_BWC_ADDRESS;
+extern void* PLYR_FILE_CLT_ADDRESS;
+
 #define VNBufferAddress     0x00420000
 #define CachedBuffer        0x20000000
 #define UnCachedBuffer      0x30000000

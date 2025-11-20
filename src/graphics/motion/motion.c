@@ -5,17 +5,21 @@
 
 #include "sce/libvu0.h"
 
-#include "main/glob.h"
-#include "ingame/plyr/plyr_ctl.h"
-#include "graphics/motion/mime.h"
-#include "graphics/motion/mdldat.h"
-#include "graphics/motion/motion.h"
-#include "graphics/motion/mdlwork.h"
-#include "graphics/motion/anicode.h"
-#include "graphics/motion/accessory.h"
+#include "graphics/graph3d/gra3d.h"
 #include "graphics/graph3d/sglib.h"
 #include "graphics/graph3d/sgsgd.h"
-#include "graphics/graph3d/gra3d.h"
+#include "graphics/motion/accessory.h"
+#include "graphics/motion/anicode.h"
+#include "graphics/motion/mdldat.h"
+#include "graphics/motion/mdlwork.h"
+#include "graphics/motion/mime.h"
+#include "graphics/motion/motion.h"
+
+#include "ingame/plyr/plyr_ctl.h"
+#include "main/glob.h"
+#include "mdlact.h"
+
+#include <common/memory_addresses.h>
 
 typedef struct {
     u_char file_id[4];
@@ -55,18 +59,16 @@ static sceVu0FMATRIX m_end[60];
 
 #define DEG2RAD(x) ((float)(x)*PI/180.0f)
 
-#define PLAYER_ANM_ADDR 0x870000
-
 void motInitPlayerAnm(char mdl_no)
 {
     u_int *pkt_p;
 
-    pkt_p = (u_int *)GetPakTaleAddr((void *)PLAYER_ANM_ADDR);
+    pkt_p = (u_int *)GetPakTaleAddr((void *)PLAYER_ANM_ADDRESS);
 
-    motInitAniCtrl(ani_mdl, (u_int *)PLAYER_ANM_ADDR, pmanmpk[0], pkt_p, mdl_no, A000_MIKU);
-    mimLNigiriReq(M001_MIM_LHAND_NIGIRI, 0);
+    //motInitAniCtrl(ani_mdl, (u_int *)PLAYER_ANM_ADDRESS, pmanmpk[0], pkt_p, mdl_no, A000_MIKU);
+    //mimLNigiriReq(M001_MIM_LHAND_NIGIRI, 0);
 
-    ani_mdl[0].mot.reso = 1;
+    //ani_mdl[0].mot.reso = 1;
 }
 
 void motInitEnemyAnm(u_int *anm_p, u_int mdl_no, u_int anm_no)
@@ -322,7 +324,7 @@ u_int* motInitAniCtrl(ANI_CTRL *ani_ctrl, u_int *anm_p, u_int *mdl_p, u_int *pkt
 
     hs = (HeaderSection *)ani_ctrl->base_p;
 
-    motSetHierarchy(hs->coordp, ani_ctrl->mot.dat);
+    motSetHierarchy(GetCoordP(hs), ani_ctrl->mot.dat);
 
     return pkt_p;
 }
@@ -753,10 +755,6 @@ void* GetFileInPak(void *pak_head, int num)
 
             fp += 0x10;
             fp += file_size;
-
-            asm("nop");
-            asm("nop");
-            asm("nop");
         }
 
         fp += 0x10;
@@ -849,7 +847,7 @@ void GetMdlNeckPos(sceVu0FVECTOR pos, ANI_CTRL *ani_ctrl, u_short mdl_no)
 
     hs = (HeaderSection *)ani_ctrl->base_p;
 
-    sceVu0ApplyMatrix(pos, hs->coordp[id].lwmtx, p);
+    sceVu0ApplyMatrix(pos, GetCoordP(hs)[id].lwmtx, p);
 }
 
 u_int GetMdlBonePos(sceVu0FVECTOR *pos, u_char work_no)
@@ -864,7 +862,7 @@ u_int GetMdlBonePos(sceVu0FVECTOR *pos, u_char work_no)
 
     for (i = 0; i < hs->blocks - 1; i++)
     {
-        Vu0CopyVector(pos[i], hs->coordp[i].lwmtx[3]);
+        Vu0CopyVector(pos[i], GetCoordP(hs)[i].lwmtx[3]);
     }
 
     return hs->blocks - 1;
@@ -878,7 +876,7 @@ void GetMdlWaistPos(sceVu0FVECTOR pos, ANI_CTRL *ani_ctrl, u_short mdl_no)
     id = manmdl_dat[mdl_no].waist_id;
     hs = (HeaderSection *)ani_ctrl->base_p;
 
-    Vu0CopyVector(pos, hs->coordp[id].lwmtx[3]);
+    Vu0CopyVector(pos, GetCoordP(hs)[id].lwmtx[3]);
 }
 
 void GetMdlLegPos(sceVu0FVECTOR pos, ANI_CTRL *ani_ctrl, u_short mdl_no)
@@ -890,7 +888,7 @@ void GetMdlLegPos(sceVu0FVECTOR pos, ANI_CTRL *ani_ctrl, u_short mdl_no)
     id = manmdl_dat[mdl_no].leg_id;
     hs = (HeaderSection *)ani_ctrl->base_p;
 
-    Vu0CopyVector(pos, hs->coordp[id].lwmtx[3]);
+    Vu0CopyVector(pos, GetCoordP(hs)[id].lwmtx[3]);
 }
 
 void GetMdlShldPos(sceVu0FVECTOR pos, ANI_CTRL *ani_ctrl, u_char lr)
@@ -901,7 +899,7 @@ void GetMdlShldPos(sceVu0FVECTOR pos, ANI_CTRL *ani_ctrl, u_char lr)
     id = lr + 1;
     hs = (HeaderSection *)ani_ctrl->base_p;
 
-    Vu0CopyVector(pos, hs->coordp[id].lwmtx[3]);
+    Vu0CopyVector(pos, GetCoordP(hs)[id].lwmtx[3]);
 }
 
 void GetPlyrFootPos(sceVu0FVECTOR pos, ANI_CTRL *ani_ctrl, u_char lr)
@@ -912,7 +910,7 @@ void GetPlyrFootPos(sceVu0FVECTOR pos, ANI_CTRL *ani_ctrl, u_char lr)
     id = lr + 10;
     hs = (HeaderSection *)ani_ctrl->base_p;
 
-    Vu0CopyVector(pos, hs->coordp[id].lwmtx[3]);
+    Vu0CopyVector(pos, GetCoordP(hs)[id].lwmtx[3]);
 }
 
 void GetPlyrAcsLightPos(sceVu0FVECTOR pos, ANI_CTRL *ani_ctrl)
@@ -922,7 +920,7 @@ void GetPlyrAcsLightPos(sceVu0FVECTOR pos, ANI_CTRL *ani_ctrl)
 
     hs = (HeaderSection *)ani_ctrl->base_p;
 
-    sceVu0ApplyMatrix(pos, hs->coordp[5].lwmtx, p);
+    sceVu0ApplyMatrix(pos, GetCoordP(hs)[5].lwmtx, p);
 }
 
 void GetToushuKatanaPos(sceVu0FVECTOR p0, sceVu0FVECTOR p1, ANI_CTRL *ani_ctrl)
@@ -930,8 +928,8 @@ void GetToushuKatanaPos(sceVu0FVECTOR p0, sceVu0FVECTOR p1, ANI_CTRL *ani_ctrl)
     static sceVu0FVECTOR ofs0 = {1.4f, 1.4f, 0.3f, 1.0f};
     static sceVu0FVECTOR ofs1 = {1.81f, 18.0f, -6.0f, 1.0f};
 
-    sceVu0ApplyMatrix(p0, ((HeaderSection *)ani_ctrl->base_p)->coordp[5].lwmtx, ofs0);
-    sceVu0ApplyMatrix(p1, ((HeaderSection *)ani_ctrl->base_p)->coordp[5].lwmtx, ofs1);
+    sceVu0ApplyMatrix(p0, GetCoordP(((HeaderSection *)ani_ctrl->base_p))[5].lwmtx, ofs0);
+    sceVu0ApplyMatrix(p1, GetCoordP(((HeaderSection *)ani_ctrl->base_p))[5].lwmtx, ofs1);
 }
 
 u_short GetPlyrFtype()
@@ -1028,7 +1026,7 @@ static void motInterpAnm(ANI_CTRL *ani_ctrl, sceVu0FMATRIX *start, sceVu0FMATRIX
 
     hs = (HeaderSection *)ani_ctrl->base_p;
 
-    coord = hs->coordp;
+    coord = GetCoordP(hs);
 
     if (m_ctrl->inp_allcnt != 0)
     {
@@ -1676,7 +1674,7 @@ void motSetHierarchy(SgCOORDUNIT *coord, u_int *top_addr)
 
     bone_num = motGetBoneNum(top_addr);
 
-    coord[0].parent = NULL;
+    coord[0].parent = -1;
 
     for (i = 0; i < bone_num; i++)
     {
@@ -1684,14 +1682,15 @@ void motSetHierarchy(SgCOORDUNIT *coord, u_int *top_addr)
 
         if (parent_id == 0xff)
         {
-            coord[i+1].parent = NULL;
+            //coord[i+1].parent = NULL;
         }
         else
         {
-            coord[i+1].parent = &coord[parent_id];
+            //coord[i+1].parent = &coord[parent_id];
         }
     }
 }
+
 u_int* SceneInitAnime(ANI_CTRL *ani_ctrl, u_int *mdl_p, u_int *mot_p, u_int *mim_p, u_int *pkt_p, u_int mdl_no)
 {
     MIME_DAT *mim_dat;
@@ -1748,7 +1747,7 @@ u_int* SceneInitAnime(ANI_CTRL *ani_ctrl, u_int *mdl_p, u_int *mot_p, u_int *mim
 
     hs = (HeaderSection *)ani_ctrl->base_p;
 
-    motSetHierarchy(hs->coordp, (ani_ctrl->mot).dat);
+    motSetHierarchy(GetCoordP(hs), (ani_ctrl->mot).dat);
 
     return pkt_p;
 }
@@ -1797,7 +1796,7 @@ u_int* SceneInitOtherAnime(ANI_CTRL *ani_ctrl, u_int *mdl_p, u_int *mot_p, u_int
 
     hs = (HeaderSection *)ani_ctrl->base_p;
 
-    motSetHierarchy(hs->coordp, ani_ctrl->mot.dat);
+    motSetHierarchy(GetCoordP(hs), ani_ctrl->mot.dat);
 
     return pkt_p;
 }
@@ -1836,7 +1835,7 @@ void SceneSetCoordFrame(ANI_CTRL *ani_ctrl, u_int frame, u_int type)
     static RST_DATA rst[60];
 
     hs = (HeaderSection *)ani_ctrl->base_p;
-    cp = hs->coordp;
+    cp = GetCoordP(hs);
 
     motGetFrameDataRT(rst, (ani_ctrl->mot).dat, frame, 1);
 
@@ -1916,9 +1915,9 @@ void motSetInvMatrix(sceVu0FMATRIX m1, sceVu0FMATRIX m0)
 
 u_int* motAlign128(u_int *addr)
 {
-    u_int tmp;
+    int64_t tmp;
 
-    tmp = (u_int)addr;
+    tmp = (int64_t)addr;
 
     if (tmp & 0xf)
     {

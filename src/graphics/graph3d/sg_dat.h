@@ -13,17 +13,26 @@ typedef struct {
 typedef struct {
 	u_int HeaderSections;
 	u_int UniqHeaderSize;
-	sceVu0FVECTOR *pUniqVertex;
-	sceVu0FVECTOR *pUniqNormal;
-	u_int *pUniqList;
+	//sceVu0FVECTOR *pUniqVertex;
+	int pUniqVertex;
+	//sceVu0FVECTOR *pUniqNormal;
+	int pUniqNormal;
+	//u_int *pUniqList;
+	u_int pUniqList;
 	u_int CommonHeaderSize;
-	sceVu0FVECTOR *pCommonVertex;
-	sceVu0FVECTOR *pCommonNormal;
-	u_int *pCommonList;
+	//sceVu0FVECTOR *pCommonVertex;
+	int pCommonVertex;
+	//sceVu0FVECTOR *pCommonNormal;
+	int pCommonNormal;
+	//u_int *pCommonList;
+	int pCommonList;
 	u_int WeightedHeaderSize;
-	sceVu0FVECTOR *pWeightedVertex;
-	sceVu0FVECTOR *pWeightedNormal;
-	u_int *pWeightedList;
+	//sceVu0FVECTOR *pWeightedVertex;
+	int pWeightedVertex;
+	//sceVu0FVECTOR *pWeightedNormal;
+	int pWeightedNormal;
+	//u_int *pWeightedList;
+	int pWeightedList;
 } PHEAD;
 
 typedef struct SgCOORDUNIT SgCOORDUNIT;
@@ -33,7 +42,8 @@ struct SgCOORDUNIT {
 	sceVu0FMATRIX lwmtx;
 	sceVu0FMATRIX workm;
 	sceVu0FVECTOR rot;
-	SgCOORDUNIT *parent;
+	//SgCOORDUNIT *parent;
+	int parent;
 	u_int flg;
 	u_int edge_check;
 	u_int camin;
@@ -104,25 +114,73 @@ typedef struct {
 	u_char MAPFLAG;
 	u_char kind;
 	u_short materials;
-	SgCOORDUNIT *coordp;
-	//int coordp;
-	SgMaterial *matp;
-	//int matp;
-	u_int *phead;
-	//u_int phead;
+	//SgCOORDUNIT *coordp;
+	int coordp;
+	//SgMaterial *matp;
+	int matp;
+	//u_int *phead;
+
+	/// pVectorInfo
+	u_int phead;
 	u_int blocks;
-	u_int **primitives;
-	//u_int **primitives;
+	u_int primitives[];
 } HeaderSection;
 
-inline static SgCOORDUNIT * GetCoordP(HeaderSection *hs)
+inline static u_int * GetPHead(HeaderSection *hs)
 {
-    return (SgCOORDUNIT *)((int64_t)hs->coordp + (int64_t)hs);
+	return (u_int *)((u_int)hs->phead + (int64_t)hs);
+}
+
+inline static void* GetOffsetPtr(void *p, int offset)
+{
+	return (u_int *)((u_int)offset + (int64_t)p);
+}
+
+inline static SgCOORDUNIT* GetCoordP(HeaderSection *hs)
+{
+    return (SgCOORDUNIT *)((int)hs->coordp + (int64_t)hs);
+}
+
+inline static SgCOORDUNIT* GetCoordPParent(SgCOORDUNIT* cp)
+{
+    return (SgCOORDUNIT *)((int)cp->parent + (int64_t)cp);
 }
 
 inline static SgMaterial* GetMatP(HeaderSection *hs)
 {
-    return (SgMaterial *)((int64_t)hs->matp + (int64_t)hs);
+    return (SgMaterial *)((int)hs->matp + (int64_t)hs);
+}
+
+inline static SgMaterial* GetMaterialPtr(const HeaderSection *hs, int index)
+{
+	if (index > hs->materials)
+	{
+		return NULL;
+	}
+
+	SgMaterial* pMaterial = (SgMaterial *) ((int64_t) hs + (int) hs->matp);
+	return &pMaterial[index];
+}
+
+inline static u_int* GetTopProcUnitHeaderPtr(HeaderSection *hs, int index)
+{
+	if (hs->primitives[index] != 0x0)
+	{
+		return (u_int*) ((int64_t) hs
+					      + (unsigned int) hs->primitives[index]);
+	}
+
+	return NULL;
+}
+
+static inline u_int* GetNextProcUnitHeaderPtr(const u_int *pHead)
+{
+	if (pHead[0] != 0x0)
+	{
+		return (u_int *) ((int64_t) pHead + pHead[0]);
+	}
+
+	return NULL;
 }
 
 typedef struct {

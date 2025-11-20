@@ -64,8 +64,8 @@ void DispPlyrAcs(u_int *base_p, u_int *mdl_p, ACS_ALPHA *acs_ctrl, u_int bone_id
     hs = (HeaderSection *)base_p;
     hs2 = (HeaderSection *)mdl_p;
 
-    cp2 = hs2->coordp;
-    cp = hs->coordp;
+    cp2 = GetCoordP(hs2);
+    cp = GetCoordP(hs);
 
     cp2[0] = cp[bone_id];
 
@@ -724,7 +724,8 @@ u_int* acsInitCloth(CLOTH_CTRL *cloth_top, u_int *mpk_p, u_int *top_addr, u_int 
         cloth->reset_flg = 0x3;
 
         ph = GetFileInPak(mpk_p, cloth->cdat->sgd_id);
-        vtx = (sceVu0FVECTOR *)ph->pUniqList[2];
+        //vtx = (sceVu0FVECTOR *)ph->pUniqList[2];
+        vtx = ((sceVu0FVECTOR *)GetOffsetPtr(ph, ph->pUniqList))[2];
 
         if (dat->type == 0)
         {
@@ -974,7 +975,8 @@ void acsClothCtrl(ANI_CTRL* ani_ctrl, u_int* mpk_p, u_int mdl_no, u_char scene_f
         }
 
         ph = GetFileInPak(mpk_p, cdat->sgd_id);
-        vtx = (sceVu0FVECTOR*)ph->pUniqList[2];
+        //vtx = (sceVu0FVECTOR*)ph->pUniqList[2];
+        vtx = ((sceVu0FVECTOR *)GetOffsetPtr(ph, ph->pUniqList))[2];
 
         if (scene_flg != 0)
         {
@@ -1006,10 +1008,6 @@ void acsClothCtrl(ANI_CTRL* ani_ctrl, u_int* mpk_p, u_int mdl_no, u_char scene_f
 
 void acsMoveCloth(sceVu0FVECTOR *vtx, CLOTH_CTRL *cloth, SgCOORDUNIT *cp, COLLISION_DAT *collision, float scale, float collision_scale, u_int mdl_no)
 {
-#ifdef MATCHING_DECOMP
-// fixes syntax errors for new compilers/type checkers
-#define Restrict restrict
-#endif
     u_int i;
     u_int j;
     u_int k;
@@ -1067,7 +1065,6 @@ void acsMoveCloth(sceVu0FVECTOR *vtx, CLOTH_CTRL *cloth, SgCOORDUNIT *cp, COLLIS
             current[i].v[1] = 0.0f;
             current[i].v[2] = 0.0f;
             current[i].v[3] = 0.0f;
-
         }
 
         if (cloth->reset_flg & 2)
@@ -1398,10 +1395,6 @@ void acsInitChodoWork()
     {
         cmove_ctrl[i].furn_id = 0xffff;
         cmove_ctrl[i].req = 0;
-
-        asm volatile ("nop");
-        asm volatile ("nop");
-        asm volatile ("nop");
     }
 }
 
@@ -1489,7 +1482,7 @@ void acsChodoMove(CMOVE_CTRL *mv, u_int *sgd_top)
     HeaderSection *hs;
 
     hs = (HeaderSection *)sgd_top;
-    cp = hs->coordp;
+    cp = GetCoordP(hs);
 
     ManmdlSetAlpha(sgd_top, 0x7f);
 
@@ -1881,9 +1874,6 @@ void SetSpeFurnLight(FURN_WRK *furn)
     sceVu0FVECTOR ambient;
     u_int num;
     LIGHT_PACK *light_pack;
-    // float *v1;
-    // float *v1;
-    // float *v1;
 
     room_no = furn->room_id;
 

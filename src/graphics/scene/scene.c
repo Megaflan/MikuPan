@@ -665,7 +665,7 @@ void SceneMirrorMdlDraw()
     fc = &sc->fod_ctrl;
 
     hs = (HeaderSection *)room_addr_tbl[sc->room_no].near_sgd;
-    cp = hs->coordp;
+    cp = GetCoordP(hs);
 
     sceVu0UnitMatrix(cp->matrix);
 
@@ -693,7 +693,7 @@ void SceneMirrorMdlDraw()
 
         if (hs != 0)
         {
-            CalcCoordinate(hs->coordp, hs->blocks -1);
+            CalcCoordinate(GetCoordP(hs), hs->blocks -1);
             FodSetMyLight(&fc->fod_light, sam->prefix, sc->cam->zd);
             SgSortUnitKind(sam->mdl_addr, -1);
         }
@@ -706,7 +706,7 @@ void SceneMirrorMdlDraw()
 
         if (hs != 0)
         {
-            CalcCoordinate(hs->coordp, hs->blocks -1);
+            CalcCoordinate(GetCoordP(hs), hs->blocks -1);
             FodSetMyLight(&fc->fod_light, sam->prefix, sc->cam->zd);
             SgSortUnitKind(sam->mdl_addr, -1);
         }
@@ -719,7 +719,7 @@ void SceneMirrorMdlDraw()
 
         if (hs != 0)
         {
-            CalcCoordinate(hs->coordp, hs->blocks -1);
+            CalcCoordinate(GetCoordP(hs), hs->blocks -1);
             FodSetMyLight(&fc->fod_light, sam->prefix, sc->cam->zd);
             SgSortUnitKind(sam->mdl_addr, -1);
         }
@@ -902,7 +902,7 @@ sceVu0FVECTOR* SceneGetMdlWaistPos(ANI_CTRL *ani_ctrl, u_short mdl_no)
 
     hs = (HeaderSection *)ani_ctrl->base_p;
 
-    return &hs->coordp[waist_id].lwmtx[3];
+    return &(GetCoordP(hs)[waist_id].lwmtx[3]);
 }
 
 void SceneSetEneEffect(SCN_ANM_MDL *sam)
@@ -1152,7 +1152,7 @@ void SceneDrawManMdl(SCENE_CTRL *sc, u_int mdl_id)
     SceneSetCoordFrame(&sam->mdl_anm, fc->now_frame - 1, 0);
     SceneMimSetVertex(&sam->mdl_anm, fc->now_frame - 1);
 
-    cp = hs->coordp;
+    cp = GetCoordP(hs);
 
     sceVu0UnitMatrix(cp->matrix);
 
@@ -1271,7 +1271,7 @@ void SceneDrawManShadow(SCENE_CTRL *sc, SCN_ANM_MDL *sam)
     }
 
     hs = (HeaderSection *)sam->mdl_anm.base_p;
-    cp = hs->coordp;
+    cp = GetCoordP(hs);
 
     for (i = 0; i < 8; i++)
     {
@@ -1380,7 +1380,7 @@ void SceneDrawRoom(SCENE_CTRL *sc)
 
         if (hs != NULL)
         {
-            cp = hs->coordp;
+            cp = GetCoordP(hs);
 
             sceVu0UnitMatrix(cp->matrix);
 

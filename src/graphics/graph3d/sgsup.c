@@ -500,7 +500,7 @@ void SgSortUnitP(void *sgd_top, int pnum)
 
     hs = (HeaderSection *)sgd_top;
 
-    lcp = hs->coordp;
+    lcp = GetCoordP(hs);
 
     if (((u_int)lcp & 0xf) != 0)
     {
@@ -583,7 +583,7 @@ void SgSortGroupP(void *sgd_top, int gnum)
 
     hs = (HeaderSection *)sgd_top;
 
-    lcp = hs->coordp;
+    lcp = GetCoordP(hs);
 
     if (((u_int)lcp & 0xf) != 0)
     {

@@ -191,7 +191,8 @@ void CalcRoomCoord(void *sgd_top, float *pos)
 
     hs = (HeaderSection*)sgd_top;
 
-    cp = hs->coordp;
+    //cp = hs->coordp;
+    cp = GetCoordP(hs);
 
     sceVu0RotMatrixX(cp->matrix, runit_mtx, PI);
 
@@ -258,7 +259,7 @@ void ChoudoPreRender(FURN_WRK* furn) {
 
     hs = (HeaderSection *)tmpModelp;
 
-    cp = hs->coordp;
+    cp = GetCoordP(hs);
 
     if ((int64_t)cp->matrix % 16) // check for sceVu0FMATRIX address alignment (should be aligned 16)
     {
@@ -368,7 +369,7 @@ void SetPreRender(void *buf, void *light_buf)
     HeaderSection *hs;
 
     hs = (HeaderSection *)buf;
-    cp = hs->coordp;
+    cp = GetCoordP(hs);
 
     sceVu0UnitMatrix(cp[0].matrix);
 
@@ -724,7 +725,7 @@ void SetLWS(SgCOORDUNIT *cp, SgCAMERA *camera)
         return;
     }
 
-    if (cp->parent == NULL)
+    if (cp->parent == -1)
     {
         sceVu0CopyMatrix(cp->lwmtx, cp->matrix);
         sceVu0MulMatrix(cp->workm, camera->ws, cp->lwmtx);
@@ -733,8 +734,8 @@ void SetLWS(SgCOORDUNIT *cp, SgCAMERA *camera)
     }
     else
     {
-        SetLWS(cp->parent, camera);
-        sceVu0MulMatrix(cp->lwmtx, cp->parent->lwmtx, cp->matrix);
+        SetLWS(GetCoordPParent(cp), camera);
+        sceVu0MulMatrix(cp->lwmtx, GetCoordPParent(cp)->lwmtx, cp->matrix);
         sceVu0MulMatrix(cp->workm, camera->ws, cp->lwmtx);
 
         cp->flg = 1;
@@ -782,7 +783,7 @@ void SetUnitMatrix(u_int *pmodel)
 
     hs = (HeaderSection*)pmodel;
 
-    cp = hs->coordp;
+    cp = GetCoordP(hs);
 
     for (i = 0; i < (hs->blocks - 1); i++)
     {
@@ -1501,7 +1502,7 @@ void DrawOneRoom(int no)
         return;
     }
 
-    cp = hs->coordp;
+    cp = GetCoordP(hs);
 
     if (cp->flg == 0)
     {
@@ -1576,7 +1577,7 @@ int CalcShadowDirecion(ShadowHandle *shandle)
     _NormalizeVector(sdirection, psp->direction);
 
     hs = (HeaderSection *)shandle->shadow_model;
-    cp = hs->coordp;
+    cp = GetCoordP(hs);
 
     sceVu0AddVector(center, shandle->bbox[0], shandle->bbox[5]);
     sceVu0ScaleVector(center, center, 0.5f);
@@ -1792,7 +1793,7 @@ void DrawFurniture(int disp_room)
             HeaderSection *hs;
 
             hs = (HeaderSection *)tmpModelp;
-            cp = hs->coordp;
+            cp = GetCoordP(hs);
 
             acs_flg = furn_dat[furn_wrk[j].id].acs_flg;
 
@@ -1860,7 +1861,7 @@ void DrawFurniture(int disp_room)
 
                                     ghs = (HeaderSection *)pgirlbase;
 
-                                    acsMoveRope(&rope_ctrl[i], ghs->coordp, m000_collision, cp->matrix);
+                                    acsMoveRope(&rope_ctrl[i], GetCoordP(ghs), m000_collision, cp->matrix);
                                 }
 
                                 acsCalcCoordinate(cp, hs->blocks - 1, &furn_wrk[j], &rope_ctrl[i]);
@@ -2241,7 +2242,7 @@ void CalcGirlCoord()
     SgCOORDUNIT oldcoord;
 
     hs = (HeaderSection *)pgirlbase;
-    cp = hs->coordp;
+    cp = GetCoordP(hs);
 
     if ((ingame_wrk.stts & 0x10 || ingame_wrk.stts & 0x80) == 0)
     {
@@ -2310,7 +2311,7 @@ void DrawGirl(int in_mirror)
     dsearch_num = 0;
 
     hs = (HeaderSection *)pgirlbase;
-    cp = hs->coordp;
+    cp = GetCoordP(hs);
 
     Vu0SubVector(goffset, plyr_wrk.bwp, plyr_wrk.move_box.pos);
     sceVu0UnitMatrix(transmtx);
@@ -2500,7 +2501,7 @@ int DrawEnemy(int no)
     mdat = &manmdl_dat[mdl_no];
 
     hs = (HeaderSection *)tmpModelp;
-    cp = hs->coordp;
+    cp = GetCoordP(hs);
     scale = mdat->scale;
 
     if (ene_child_ctrl[j].flg != 0)
@@ -2514,7 +2515,7 @@ int DrawEnemy(int no)
         m[2][2] = 25.0f / scale;
 
         hs2 = ((HeaderSection *)pgirlbase);
-        cp2 = hs2->coordp;
+        cp2 = GetCoordP(hs2);
 
         sceVu0UnitMatrix(cp->matrix);
         sceVu0Normalize(cp->matrix[0], cp2[k].lwmtx[0]);
@@ -2626,7 +2627,7 @@ int DrawFlyMove(int work_no)
     }
 
     hs = (HeaderSection *)tmpModelp;
-    cp = hs->coordp;
+    cp = GetCoordP(hs);
 
     sceVu0UnitMatrix(cp->matrix);
     sceVu0RotMatrixX(cp->matrix, runit_mtx, PI);

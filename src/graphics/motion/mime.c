@@ -1183,7 +1183,7 @@ void mimWeightCtrl(ANI_CTRL *ani_ctrl, u_int weight_id, float scale)
     wdat = w_ctrl->wdat;
     hs = (HeaderSection *)ani_ctrl->base_p;
 
-    sceVu0CopyMatrix(m, hs->coordp[wdat->bone_id].lwmtx);
+    sceVu0CopyMatrix(m, GetCoordP(hs)[wdat->bone_id].lwmtx);
     sceVu0ApplyMatrix(pos, m, wdat->dat->pos);
     sceVu0SubVector(f, pos, w_ctrl->pbak);
     sceVu0CopyVector(w_ctrl->pbak, pos);

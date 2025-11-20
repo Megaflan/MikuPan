@@ -304,7 +304,7 @@ void ClearMaterialCache(HeaderSection *hs)
 
     for (i = 0; i < hs->materials; i++)
     {
-        ((int *)&hs->matp[i].vifcode)[0] = -1;
+        GetMaterialPtr(hs, i)->vifcode[0] = -1;
     }
 }
 
@@ -1901,7 +1901,7 @@ void SgPreRender(void *sgd_top, int pnum)
     hs = (HeaderSection *)sgd_top;
 
     pk = (u_int *)&hs->primitives;
-    lcp = hs->coordp;
+    lcp = GetCoordP(hs);
     blocksm = hs->blocks;
 
     SetMaterialPointer();
