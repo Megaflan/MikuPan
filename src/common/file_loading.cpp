@@ -1,6 +1,7 @@
 #include "file_loading.h"
 
 #include "gs/texture_manager.h"
+#include "logging.h"
 
 #include <filesystem>
 #include <fstream>
@@ -40,6 +41,8 @@ void ReadFileInArchive(int sector, int size, int64_t address)
     {
         return;
     }
+
+    info_log("File load pointer 0x%x", address);
 
     if ((int64_t*)*(int64_t*)address != nullptr)
     {

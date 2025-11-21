@@ -3,6 +3,8 @@
 
 #include "typedefs.h"
 
+#include <stdint.h>
+
 typedef struct {
 	u_char mode;
 	u_char evt_no;
@@ -38,7 +40,7 @@ void EventMain();
 void EventOpenMain();
 u_char EventOpenCtrl();
 u_char EventOpenJudge(short int event_no);
-int GetEventMessageAddr(short int msg_no);
+int64_t GetEventMessageAddr(short int msg_no);
 void EventEnemySet(u_char *addr);
 int BattleEndEventOpenJudge(u_char ene_no);
 int PhotoEventOpenJudge(u_char pht_2d, u_char pht_furn);

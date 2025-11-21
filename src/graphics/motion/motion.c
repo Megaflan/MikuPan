@@ -1504,6 +1504,7 @@ static u_int motCheckIncludeRstPacket(u_int *mot_p)
     return (mfh->flg >> 2) & 1;
 }
 
+/// TODO: FIX THIS CODE TO 64bits SUPPORT
 static void motAddressMapping(u_int *top_addr)
 {
     MOT_ADDR_TABLE *tbl_p;

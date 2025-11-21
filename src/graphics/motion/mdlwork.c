@@ -536,11 +536,11 @@ void SetManmdlTm2(u_int *pak_addr, int offset, char mode)
 
         if (mode == 0)
         {
-            MakeTim2SendPacket_3Dpkt((u_int)tm2_addr, offset);
+            MakeTim2SendPacket_3Dpkt((int64_t)tm2_addr, offset);
         }
         else
         {
-            MakeTim2SendPacket((u_int)tm2_addr, offset);
+            MakeTim2SendPacket((int64_t)tm2_addr, offset);
         }
     }
 }

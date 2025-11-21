@@ -1,6 +1,9 @@
+#include "cdvd/iopcdvd.h"
 #include "iopsys.h"
 
 #include "os/eeiop/eeiop.h"
+
+#include <SDL3/SDL_timer.h>
 
 IOP_STAT iop_stat;
 IOP_MASTER_VOL iop_mv;

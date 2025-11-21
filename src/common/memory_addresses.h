@@ -16,7 +16,7 @@ extern void* EFFECT_ADDRESS; ///
 // #define PBUF_ADDRESS        0x00720000
 //extern void* PBUF_ADDRESS; /// Packet buffer
 
-// #define SPRITE_ADDRESS 0xa30000
+// #define SPRITE_ADDRESS 0xa30000 10682368
 extern void* SPRITE_ADDRESS;
 
 /// 0x1d05140
@@ -111,6 +111,39 @@ extern void* PLYR_FILE_CLT_ADDRESS;
 
 /// 0xac8000
 extern void* ENE_DMG_TEX_ADDRESS;
+
+/// 0x1090000
+extern void* SCENE_LOAD_ADDRESS;
+
+/// 0x7F0000
+extern void* MSN_TITLE_DAT_ADDRESS;
+
+/// 0x7E0000 8257536
+extern void* MSN_TITLE_DAT_ADDRESS_1;
+
+/// 0x7F8000 8355840
+extern void* MSN_TITLE_DAT_ADDRESS_2;
+
+/// 0xE00000 14680064
+extern void* MSN_TITLE_DAT_ADDRESS_3;
+
+/// 0xE80000 15204352
+extern void* MSN_TITLE_DAT_ADDRESS_4;
+
+/// 0xC40000 12845056
+extern void* MSN_TITLE_DAT_ADDRESS_5;
+
+/// 0xC4C000 12894208
+extern void* MSN_TITLE_DAT_ADDRESS_6;
+
+/// 0xC58000 12943360
+extern void* MSN_TITLE_DAT_ADDRESS_7;
+
+/// 0x1000000 16777216
+extern void* MSN_TITLE_DAT_ADDRESS_8;
+
+/// 0x1020000 16908288
+extern void* MSN_TITLE_DAT_ADDRESS_9;
 
 #define VNBufferAddress     0x00420000
 #define CachedBuffer        0x20000000

@@ -1,5 +1,6 @@
 #include "iopcdvd.h"
 
+#include "common/logging_c.h"
 #include "common/memory_addresses.h"
 #include "iop/iopsys.h"
 #include "os/eeiop/eeiop.h"

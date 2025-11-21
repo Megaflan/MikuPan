@@ -28,248 +28,7 @@
 MSN_TITLE_WRK mttl_wrk;
 EVENT_LOAD_WRK ev_load_wrk;
 u_char msn_start_room[] = {0, 0, 40, 29, 35};
-MSN_LOAD_DAT load_dat_wrk[] = {
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-    {
-        .file_no = 0,
-        .file_type = 0,
-        .tmp_no = 0,
-        .addr = 0,
-    },
-};
+MSN_LOAD_DAT load_dat_wrk[40] = {0};
 
 u_char msn_title_sp_flr_no[] = {12, 12, 12, 12, 12};
 u_char msn_title_flr_sp_num[] = {1, 2, 1, 1, 1};
@@ -547,43 +306,43 @@ MSN_LOAD_DAT msn0_title_load_dat[] = {
         .file_no = 26,
         .file_type = 3,
         .tmp_no = 0,
-        .addr = 8323072, // 7F0000
+        .addr = &MSN_TITLE_DAT_ADDRESS,
     },
     {
         .file_no = 29,
         .file_type = 4,
         .tmp_no = 0,
-        .addr = 8323072, // 7F0000
+        .addr = &MSN_TITLE_DAT_ADDRESS
     },
     {
         .file_no = 32,
         .file_type = 5,
         .tmp_no = 0,
-        .addr = 8323072, // 7F0000
+        .addr = &MSN_TITLE_DAT_ADDRESS,
     },
     {
         .file_no = 35,
         .file_type = 6,
         .tmp_no = 0,
-        .addr = 8323072,// 7F0000
+        .addr = &MSN_TITLE_DAT_ADDRESS,
     },
     {
         .file_no = 15,
         .file_type = 1,
         .tmp_no = 0,
-        .addr = 8323072, // 7F0000
+        .addr = &MSN_TITLE_DAT_ADDRESS,
     },
     {
         .file_no = 21,
         .file_type = 1,
         .tmp_no = 0,
-        .addr = 8257536,
+        .addr = &MSN_TITLE_DAT_ADDRESS_1, // 0x7E0000
     },
     {
         .file_no = 10,
         .file_type = 7,
         .tmp_no = 0,
-        .addr = 8355840,
+        .addr = &MSN_TITLE_DAT_ADDRESS_2,
     },
     {
         .file_no = 1430,
@@ -619,7 +378,7 @@ MSN_LOAD_DAT msn0_title_load_dat[] = {
         .file_no = 901,
         .file_type = 9,
         .tmp_no = 58,
-        .addr = 10682368,
+        .addr = &SPRITE_ADDRESS,
     },
     {
         .file_no = 1385,
@@ -631,43 +390,43 @@ MSN_LOAD_DAT msn0_title_load_dat[] = {
         .file_no = 860,
         .file_type = 8,
         .tmp_no = 0,
-        .addr = 14680064,
+        .addr = &MSN_TITLE_DAT_ADDRESS_3,
     },
     {
         .file_no = 801,
         .file_type = 8,
         .tmp_no = 0,
-        .addr = 15204352,
+        .addr = &MSN_TITLE_DAT_ADDRESS_4,
     },
     {
         .file_no = 920,
         .file_type = 10,
         .tmp_no = 2,
-        .addr = 12845056,
+        .addr = &MSN_TITLE_DAT_ADDRESS_5,
     },
     {
         .file_no = 907,
         .file_type = 10,
         .tmp_no = 2,
-        .addr = 12894208,
+        .addr = &MSN_TITLE_DAT_ADDRESS_6,
     },
     {
         .file_no = 925,
         .file_type = 10,
         .tmp_no = 61,
-        .addr = 12943360,
+        .addr = &MSN_TITLE_DAT_ADDRESS_7,
     },
     {
         .file_no = 947,
         .file_type = 11,
         .tmp_no = 0,
-        .addr = 16777216,
+        .addr = &MSN_TITLE_DAT_ADDRESS_8,
     },
     {
         .file_no = 949,
         .file_type = 11,
         .tmp_no = 0,
-        .addr = 16908288,
+        .addr = &MSN_TITLE_DAT_ADDRESS_9,
     },
     {
         .file_no = 65535,
@@ -712,13 +471,13 @@ MSN_LOAD_DAT msn1_title_load_dat[] = {
         .file_no = 22,
         .file_type = 1,
         .tmp_no = 0,
-        .addr = 8257536,
+        .addr = &MSN_TITLE_DAT_ADDRESS_1,
     },
     {
         .file_no = 11,
         .file_type = 7,
         .tmp_no = 0,
-        .addr = 8355840,
+        .addr = &MSN_TITLE_DAT_ADDRESS_2,
     },
     {
         .file_no = 275,
@@ -730,7 +489,7 @@ MSN_LOAD_DAT msn1_title_load_dat[] = {
         .file_no = 805,
         .file_type = 8,
         .tmp_no = 0,
-        .addr = 15204352,
+        .addr = &MSN_TITLE_DAT_ADDRESS_4,
     },
     {
         .file_no = 65535,
@@ -775,25 +534,25 @@ MSN_LOAD_DAT msn2_title_load_dat[] = {
         .file_no = 23,
         .file_type = 1,
         .tmp_no = 0,
-        .addr = 8257536,
+        .addr = &MSN_TITLE_DAT_ADDRESS_1,
     },
     {
         .file_no = 12,
         .file_type = 7,
         .tmp_no = 0,
-        .addr = 8355840,
+        .addr = &MSN_TITLE_DAT_ADDRESS_2,
     },
     {
         .file_no = 828,
         .file_type = 8,
         .tmp_no = 0,
-        .addr = 14680064,
+        .addr = &MSN_TITLE_DAT_ADDRESS_3,
     },
     {
         .file_no = 954,
         .file_type = 11,
         .tmp_no = 0,
-        .addr = 16777216,
+        .addr = &MSN_TITLE_DAT_ADDRESS_8,
     },
     {
         .file_no = 65535,
@@ -838,13 +597,13 @@ MSN_LOAD_DAT msn3_title_load_dat[] = {
         .file_no = 24,
         .file_type = 1,
         .tmp_no = 0,
-        .addr = 8257536,
+        .addr = &MSN_TITLE_DAT_ADDRESS_1,
     },
     {
         .file_no = 13,
         .file_type = 7,
         .tmp_no = 0,
-        .addr = 8355840,
+        .addr = &MSN_TITLE_DAT_ADDRESS_2,
     },
     {
         .file_no = 854,
@@ -856,7 +615,7 @@ MSN_LOAD_DAT msn3_title_load_dat[] = {
         .file_no = 897,
         .file_type = 9,
         .tmp_no = 55,
-        .addr = 10682368,
+        .addr = &SPRITE_ADDRESS,
     },
     {
         .file_no = 1379,
@@ -874,7 +633,7 @@ MSN_LOAD_DAT msn3_title_load_dat[] = {
         .file_no = 800,
         .file_type = 8,
         .tmp_no = 0,
-        .addr = 14680064,
+        .addr = &MSN_TITLE_DAT_ADDRESS_3,
     },
     {
         .file_no = 65535,
@@ -919,13 +678,13 @@ MSN_LOAD_DAT msn4_title_load_dat[] = {
         .file_no = 25,
         .file_type = 1,
         .tmp_no = 0,
-        .addr = 8257536,
+        .addr = &MSN_TITLE_DAT_ADDRESS_1,
     },
     {
         .file_no = 14,
         .file_type = 7,
         .tmp_no = 0,
-        .addr = 8355840,
+        .addr = &MSN_TITLE_DAT_ADDRESS_2,
     },
     {
         .file_no = 826,
@@ -979,7 +738,7 @@ MSN_LOAD_DAT msn4_title_load_dat[] = {
         .file_no = 904,
         .file_type = 9,
         .tmp_no = 64,
-        .addr = 10682368,
+        .addr = &SPRITE_ADDRESS,
     },
     {
         .file_no = 1384,
@@ -991,13 +750,13 @@ MSN_LOAD_DAT msn4_title_load_dat[] = {
         .file_no = 805,
         .file_type = 8,
         .tmp_no = 0,
-        .addr = 14680064,
+        .addr = &MSN_TITLE_DAT_ADDRESS_3,
     },
     {
         .file_no = 856,
         .file_type = 8,
         .tmp_no = 0,
-        .addr = 15204352,
+        .addr = &MSN_TITLE_DAT_ADDRESS_4,
     },
     {
         .file_no = 65535,
@@ -1024,7 +783,7 @@ void MissionTitleInit(int msn_no)
     if (ingame_wrk.game == 0)
     {
         map_wrk.floor = msn_start_floor[msn_no];
-        mttl_wrk.load_id = LoadReq(msn_no + 0x26, &MISSION_TITLE_CARD_ADDRESS);
+        mttl_wrk.load_id = LoadReq(msn_no + MSN00TTL_PK2, &MISSION_TITLE_CARD_ADDRESS);
     }
     else if (ingame_wrk.game == 1)
     {
@@ -1265,15 +1024,17 @@ int MissionDataLoadReq(MSN_LOAD_DAT* dat)
     }
     else
     {
+        dat->addr = 0;
         if (dat->file_type == 9)
         {
-            LoadEneDmgTex(dat->tmp_no, (u_int *)(dat->addr + 0x98000));
+            //LoadEneDmgTex(dat->tmp_no, (u_int *)(dat->addr + 0x98000));
+            LoadEneDmgTex(dat->tmp_no, (u_int*)&dat->addr);
 
-            ret = LoadReq(dat->file_no, dat->addr);
+            ret = LoadReq(dat->file_no, &dat->addr);
         }
         else
         {
-            ret = LoadReq(dat->file_no, dat->addr);
+            ret = LoadReq(dat->file_no, &dat->addr);
         }
     }
 

@@ -3,6 +3,8 @@
 #include "typedefs.h"
 #include "ev_main.h"
 
+#include "common/memory_addresses.h"
+
 #include <string.h>
 
 #include "main/glob.h"
@@ -55,8 +57,7 @@ EVENT_WRK ev_wrk = {0};
 
 #define DEG2RAD(x) ((float)(x)*PI/180.0f)
 
-#define ADDRESS ((u_int *)0x1090000)
-#define DVD_DATA_ADDR 0x7F0000
+#define DVD_DATA_ADDR ((u_char*)MSN_TITLE_DAT_ADDRESS)
 
 void EventWrkInit()
 {
@@ -103,7 +104,7 @@ void EventMain()
     u_char *dat_adr;
     short int scene_no;
 
-    addr = (int *)DVD_DATA_ADDR;
+    addr = (int *)MSN_TITLE_DAT_ADDRESS;
     addr++;
     addr = (int *)(*addr + DVD_DATA_ADDR + ev_wrk.evt_no * 4);
     dat_adr = (u_char *)(*addr + DVD_DATA_ADDR);
@@ -966,15 +967,15 @@ u_char EventOpenJudge(short int event_no)
     return 1;
 }
 
-int GetEventMessageAddr(short int msg_no)
+int64_t GetEventMessageAddr(short int msg_no)
 {
     u_char *addr;
 
     addr = (u_char *)Get4Byte((u_char *)DVD_DATA_ADDR + 2 * 4);
-    addr += msg_no * 4 + DVD_DATA_ADDR;
+    addr += DVD_DATA_ADDR[msg_no * 4];
     addr = (u_char *)Get4Byte(addr);
 
-    return (int)addr + DVD_DATA_ADDR;
+    return (int64_t)addr + DVD_DATA_ADDR;
 }
 
 void EventEnemySet(u_char *addr)
@@ -1104,7 +1105,7 @@ int EventSceneCtrl(short int scene_no)
 
                 if(SceneDecisionMovie(scene_no) == 0)
                 {
-                    if (SceneAllLoad(scene_no, ADDRESS) != 0)
+                    if (SceneAllLoad(scene_no, SCENE_LOAD_ADDRESS) != 0)
                     {
                         ev_wrk.movie_on = 4;
                         change_efbank = 0;
@@ -1133,7 +1134,7 @@ int EventSceneCtrl(short int scene_no)
             {
                 if (SceneDecisionMovie(scene_no) == 0)
                 {
-                    SceneDataLoadReq(scene_no, ADDRESS);
+                    SceneDataLoadReq(scene_no, SCENE_LOAD_ADDRESS);
 
                     change_efbank = 0;
                     ev_wrk.movie_on = 2;

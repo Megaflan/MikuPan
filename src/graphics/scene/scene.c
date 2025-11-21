@@ -153,7 +153,7 @@ u_int* SceneDataLoadReq(int scene_no, u_int *load_addr)
     if (next_addr == NULL)
     {
         sc->light_rev_addr = NULL;
-        next_addr = (int)scn_addr;
+        next_addr = (int64_t)scn_addr;
     }
     else
     {
