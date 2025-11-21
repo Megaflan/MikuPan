@@ -29,7 +29,6 @@ int sceSifCheckStatRpc(sceSifRpcData* cd)
     return 0;
 }
 
-void ReadFileInArchive(int sector, int size, int64_t address);
 /**
  *
  * @param client

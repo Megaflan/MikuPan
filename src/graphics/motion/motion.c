@@ -781,10 +781,6 @@ void* GetPakTaleAddr(void *pak_head)
 
         fp += 16;
         fp += file_size;
-
-        asm("nop");
-        asm("nop");
-        asm("nop");
     }
 
     return motAlign128((u_int *)(fp + 16));

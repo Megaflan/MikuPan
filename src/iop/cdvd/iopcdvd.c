@@ -62,6 +62,7 @@ void ICdvdInitOnce()
     memset(&iop_stat.cdvd, 0, sizeof(iop_stat.cdvd));
     memset(cdvd_trans, 0, sizeof(cdvd_trans));
     load_buf_table[0] = malloc(0x64000);
+
     if (load_buf_table[0])
     {
         load_buf_table[1] = load_buf_table[0] + 0x32000;
@@ -82,12 +83,13 @@ void ICdvdInitSoftReset()
 }
 
 // --- these functions are more heavily modified for PC ---
+void ReadFileInArchive(int sector, int size, int64_t address);
 void ICdvdDoTransfer(CDVD_REQ_BUF *rq)
 {
     switch (rq->tmem)
     {
         case TRANS_MEM_EE:// EE
-            ReadFileInArchive(rq->start_sector, rq->size_byte, rq->taddr);
+            ReadFileInArchive(rq->start_sector, rq->size_sector, rq->taddr);
             break;
         case TRANS_MEM_IOP:// IOP
             info_log("CDVD transfer to IOP unimplemented");
@@ -132,7 +134,7 @@ void ICdvdBreak()
 
 static void ICdvdAddCmd(IOP_COMMAND *icp)
 {
-    CDVD_REQ_BUF req_buf;
+    CDVD_REQ_BUF req_buf = {0};
 
     req_buf.req_type = icp->cmd_no;
     req_buf.file_no = icp->data1;
