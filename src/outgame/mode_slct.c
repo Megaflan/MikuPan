@@ -1001,7 +1001,7 @@ void DspModeSlect(u_char alp)
     u_char dsp_rgb[5];
     u_char dsp_alp[5];
     
-    for (i = 0; i < 6; i++)
+    for (i = 0; i < 5; i++)
     {
         if (i == dsp_ms.csr[0])
         {
