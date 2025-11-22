@@ -65,10 +65,10 @@ void motInitPlayerAnm(char mdl_no)
 
     pkt_p = (u_int *)GetPakTaleAddr((void *)PLAYER_ANM_ADDRESS);
 
-    //motInitAniCtrl(ani_mdl, (u_int *)PLAYER_ANM_ADDRESS, pmanmpk[0], pkt_p, mdl_no, A000_MIKU);
-    //mimLNigiriReq(M001_MIM_LHAND_NIGIRI, 0);
+    motInitAniCtrl(ani_mdl, (u_int *)PLAYER_ANM_ADDRESS, pmanmpk[0], pkt_p, mdl_no, A000_MIKU);
+    mimLNigiriReq(M001_MIM_LHAND_NIGIRI, 0);
 
-    //ani_mdl[0].mot.reso = 1;
+    ani_mdl[0].mot.reso = 1;
 }
 
 void motInitEnemyAnm(u_int *anm_p, u_int mdl_no, u_int anm_no)

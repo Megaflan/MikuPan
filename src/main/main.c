@@ -173,8 +173,8 @@ void CallSoftReset()
 int SoftResetChk()
 {
     if (
-        /* L1 */ L1_PRESSED() && /* L2 */ L2_PRESSED() && /* R1 */ R1_PRESSED() &&
-        /* R2 */ R2_PRESSED() && /* START */ START_PRESSED() && /* SELECT */ SELECT_PRESSED()
+        L1_PRESSED() && L2_PRESSED() && R1_PRESSED() &&
+        R2_PRESSED() && START_PRESSED() && SELECT_PRESSED()
     )
     {
         // Re-enabled for debug purposes

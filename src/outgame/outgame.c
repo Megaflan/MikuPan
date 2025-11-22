@@ -57,21 +57,6 @@ void OutGameCtrl(void)
             OutGameModeChange(OUTGAME_MODE_TITLE);
         case OUTGAME_MODE_TITLE:
             TitleCtrl();
-
-            if (/* SELECT */ *key_now[13] == 1 && /* SQUARE */ *key_now[6] == 1)
-            {
-                OutGameModeChange(OUTGAME_MODE_LAYOUT_TEST);
-            }
-
-            if (/* SELECT */ *key_now[13] == 1 && /* TRIANGLE */ *key_now[4] == 1)
-            {
-                OutGameModeChange(OUTGAME_MODE_SCENE_TEST);
-            }
-
-            if (/* SELECT */ *key_now[13] == 1 && /* CIRCLE */ *key_now[7] == 1)
-            {
-                OutGameModeChange(OUTGAME_MODE_ROOM_SIZE_CHECK);
-            }
         break;
         case OUTGAME_MODE_BATTLE:
             ModeSlctLoop();

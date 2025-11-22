@@ -1,493 +1,1332 @@
 #include "mdldat.h"
 
-/* data 2fa4e0 */ ANI_CODE m000anm000[0];
-/* data 2fa4e8 */ ANI_CODE m000anm001[0];
-/* data 2fa4f8 */ ANI_CODE m000anm002[0];
-/* data 2fa508 */ ANI_CODE m000anm003[0];
-/* data 2fa518 */ ANI_CODE m000anm004[0];
-/* data 2fa528 */ ANI_CODE m000anm005[0];
-/* data 2fa540 */ ANI_CODE m000anm006[0];
-/* data 2fa558 */ ANI_CODE m000anm007[0];
-/* data 2fa560 */ ANI_CODE m000anm008[0];
-/* data 2fa570 */ ANI_CODE m000anm009[0];
-/* data 2fa580 */ ANI_CODE m000anm010[0];
-/* data 2fa588 */ ANI_CODE m000anm011[0];
-/* data 2fa590 */ ANI_CODE m000anm012[0];
-/* data 2fa598 */ ANI_CODE m000anm013[0];
-/* data 2fa5a0 */ ANI_CODE m000anm014[0];
-/* data 2fa5a8 */ ANI_CODE m000anm015[0];
-/* data 2fa5b0 */ ANI_CODE m000anm016[0];
-/* data 2fa5b8 */ ANI_CODE m000anm017[0];
-/* data 2fa5c0 */ ANI_CODE m000anm018[0];
-/* data 2fa5c8 */ ANI_CODE m000anm019[0];
-/* data 2fa5d0 */ ANI_CODE m000anm020[0];
-/* data 2fa5d8 */ ANI_CODE m000anm021[0];
-/* data 2fa5e0 */ ANI_CODE m000anm022[0];
-/* data 2fa5e8 */ ANI_CODE m000anm023[0];
-/* data 2fa5f0 */ ANI_CODE m000anm024[0];
-/* data 2fa5f8 */ ANI_CODE m000anm025[0];
-/* data 2fa600 */ ANI_CODE m000anm026[0];
-/* data 2fa608 */ ANI_CODE m000anm027[0];
-/* data 2fa610 */ ANI_CODE m000anm028[0];
-/* data 2fa618 */ ANI_CODE m000anm029[0];
-/* data 2fa620 */ ANI_CODE m000anm030[0];
-/* data 2fa628 */ ANI_CODE m000anm031[0];
-/* data 2fa630 */ ANI_CODE m000anm032[0];
-/* data 2fa638 */ ANI_CODE m000anm033[0];
-/* data 2fa640 */ ANI_CODE m000anm034[0];
-/* data 2fa648 */ ANI_CODE m000anm035[0];
-/* data 2fa650 */ ANI_CODE m000anm036[0];
-/* data 2fa658 */ ANI_CODE m000anm037[0];
-/* data 2fa660 */ ANI_CODE m000anm038[0];
-/* data 2fa668 */ ANI_CODE m000anm039[0];
-/* data 2fa670 */ ANI_CODE m000anm040[0];
-/* data 2fa678 */ ANI_CODE m000anm041[0];
-/* data 2fa680 */ ANI_CODE m000anm042[0];
-/* data 2fa688 */ ANI_CODE m000anm043[0];
-/* data 2fa690 */ ANI_CODE m000anm044[0];
-/* data 2fa698 */ ANI_CODE m000anm045[0];
-/* data 2fa6a0 */ ANI_CODE m000anm046[0];
-/* data 2fa6a8 */ ANI_CODE m000anm047[0];
-/* data 2fa6b0 */ ANI_CODE m000anm048[0];
-/* data 2fa6c8 */ ANI_CODE m000anm049[0];
-/* data 2fa6e0 */ ANI_CODE m000anm050[0];
-/* data 2fa6f8 */ ANI_CODE m000anm051[0];
-/* data 2fa710 */ ANI_CODE m000anm052[0];
-/* data 2fa728 */ ANI_CODE m000anm053[0];
-/* data 2fa740 */ ANI_CODE m000anm054[0];
-/* data 2fa758 */ ANI_CODE m000anm055[0];
-/* data 2fa770 */ ANI_CODE m000anm056[0];
-/* data 2fa780 */ ANI_CODE m000anm057[0];
-/* data 2fa788 */ ANI_CODE m000anm058[0];
-/* data 2fa798 */ ANI_CODE m000anm059[0];
-/* data 2fa7a0 */ ANI_CODE m000anm060[0];
-/* data 2fa7b0 */ ANI_CODE m000anm061[0];
-/* data 2fa7b8 */ ANI_CODE m000anm062[0];
-/* data 2fa7c0 */ ANI_CODE m000anm063[0];
-/* data 2fa7c8 */ ANI_CODE m000anm064[0];
-/* data 2fa7d0 */ ANI_CODE m000anm065[0];
-/* data 2fa7d8 */ ANI_CODE m000anm066[0];
-/* data 2fa7e0 */ ANI_CODE m000anm067[0];
-/* data 2fa7e8 */ ANI_CODE m000anm068[0];
-/* data 2fa7f0 */ ANI_CODE m000anm069[0];
-/* data 2fa800 */ ANI_CODE m000anm070[0];
-/* data 2fa810 */ ANI_CODE m000anm071[0];
-/* data 2fa820 */ ANI_CODE m000anm072[0];
-/* data 2fa830 */ ANI_CODE m000anm073[0];
-/* data 2fa840 */ ANI_CODE m000anm074[0];
-/* data 2fa850 */ ANI_CODE m000anm075[0];
-/* data 2fa860 */ ANI_CODE m000anm076[0];
-/* data 2fa870 */ ANI_CODE m000anm077[0];
-/* data 2fa880 */ ANI_CODE m000anm078[0];
-/* data 2fa890 */ ANI_CODE m000anm079[0];
-/* data 2fa8a0 */ ANI_CODE m000anm080[0];
-/* data 2fa8b0 */ ANI_CODE m000anm081[0];
-/* data 2fa8c0 */ ANI_CODE m000anm082[0];
-/* data 2fa8d0 */ ANI_CODE m000anm083[0];
-/* data 2fa8e0 */ ANI_CODE m000anm084[0];
-/* data 2fa8f0 */ ANI_CODE m000anm085[0];
-/* data 2fa8f8 */ ANI_CODE m000anm086[0];
-/* data 2fa900 */ ANI_CODE m000anm087[0];
-/* data 2fa908 */ ANI_CODE m000anm088[0];
-/* data 2fa910 */ ANI_CODE m000anm089[0];
-/* data 2fa918 */ ANI_CODE m000anm090[0];
-/* data 2fa920 */ ANI_CODE m000anm091[0];
-/* data 2fa928 */ ANI_CODE m000anm092[0];
-/* data 2fa930 */ ANI_CODE m000anm093[0];
-/* data 2fa938 */ ANI_CODE m000anm094[0];
-/* data 2fa940 */ ANI_CODE m000anm095[0];
-/* data 2fa948 */ ANI_CODE m000anm096[0];
-/* data 2fa968 */ ANI_CODE m000anm097[0];
-/* data 2fa988 */ ANI_CODE m000anm098[0];
-/* data 2fa9c8 */ ANI_CODE m000anm099[0];
-/* data 2faa00 */ ANI_CODE m000anm100[0];
-/* data 2faa08 */ ANI_CODE m000anm101[0];
-/* data 2faa18 */ ANI_CODE m000anm102[0];
-/* data 2faa28 */ ANI_CODE m000anm103[0];
-/* data 2faa30 */ ANI_CODE m000anm104[0];
-/* data 2faa38 */ ANI_CODE m000anm105[0];
-/* data 2faa78 */ ANI_CODE m000anm106[0];
-/* data 2faab8 */ ANI_CODE m000anm107[0];
-/* data 2faac0 */ ANI_CODE m001anm048[0];
-/* data 2faad8 */ ANI_CODE m001anm049[0];
-/* data 2faaf0 */ ANI_CODE m001anm050[0];
-/* data 2fab08 */ ANI_CODE m001anm051[0];
-/* data 2fab20 */ ANI_CODE m001anm052[0];
-/* data 2fab38 */ ANI_CODE m001anm053[0];
-/* data 2fab50 */ ANI_CODE m001anm054[0];
-/* data 2fab68 */ ANI_CODE m001anm055[0];
-/* data 2fab80 */ ANI_CODE m001anm069[0];
-/* data 2fab98 */ ANI_CODE m001anm070[0];
-/* data 2fabb0 */ ANI_CODE m001anm071[0];
-/* data 2fabc8 */ ANI_CODE m001anm072[0];
-/* data 2fabe0 */ ANI_CODE m001anm073[0];
-/* data 2fabf8 */ ANI_CODE m001anm074[0];
-/* data 2fac10 */ ANI_CODE m001anm075[0];
-/* data 2fac28 */ ANI_CODE m001anm076[0];
-/* data 2fac40 */ ANI_CODE m010anm002[0];
-/* data 2fac48 */ ANI_CODE m010anm006[0];
-/* data 2fac50 */ ANI_CODE m010anm007[0];
-/* data 2fac58 */ ANI_CODE m010anm009[0];
-/* data 2fac60 */ ANI_CODE m010anm010[0];
-/* data 2fac68 */ ANI_CODE m010anm011[0];
-/* data 2fac70 */ ANI_CODE m010anm012[0];
-/* data 2fac78 */ ANI_CODE m010anm013[0];
-/* data 2fac80 */ ANI_CODE m011anm002[0];
-/* data 2fac88 */ ANI_CODE m011anm006[0];
-/* data 2fac90 */ ANI_CODE m011anm007[0];
-/* data 2fac98 */ ANI_CODE m011anm008[0];
-/* data 2faca0 */ ANI_CODE m011anm009[0];
-/* data 2faca8 */ ANI_CODE m011anm010[0];
-/* data 2facb0 */ ANI_CODE m011anm011[0];
-/* data 2facb8 */ ANI_CODE m011anm012[0];
-/* data 2facc0 */ ANI_CODE m011anm013[0];
-/* data 2facc8 */ ANI_CODE m011anm014[0];
-/* data 2facd0 */ ANI_CODE m012anm000[0];
-/* data 2facd8 */ ANI_CODE m012anm002[0];
-/* data 2face0 */ ANI_CODE m012anm003[0];
-/* data 2face8 */ ANI_CODE m012anm004[0];
-/* data 2facf0 */ ANI_CODE m012anm005[0];
-/* data 2facf8 */ ANI_CODE m012anm006[0];
-/* data 2fad00 */ ANI_CODE m012anm007[0];
-/* data 2fad08 */ ANI_CODE m012anm008[0];
-/* data 2fad10 */ ANI_CODE m012anm009[0];
-/* data 2fad18 */ ANI_CODE m012anm010[0];
-/* data 2fad20 */ ANI_CODE m012anm011[0];
-/* data 2fad28 */ ANI_CODE m012anm012[0];
-/* data 2fad30 */ ANI_CODE m012anm013[0];
-/* data 2fad38 */ ANI_CODE m013anm002[0];
-/* data 2fad40 */ ANI_CODE m013anm006[0];
-/* data 2fad48 */ ANI_CODE m013anm007[0];
-/* data 2fad50 */ ANI_CODE m013anm008[0];
-/* data 2fad58 */ ANI_CODE m013anm009[0];
-/* data 2fad60 */ ANI_CODE m013anm010[0];
-/* data 2fad68 */ ANI_CODE m013anm011[0];
-/* data 2fad70 */ ANI_CODE m013anm012[0];
-/* data 2fad78 */ ANI_CODE m014anm002[0];
-/* data 2fad80 */ ANI_CODE m014anm006[0];
-/* data 2fad88 */ ANI_CODE m014anm007[0];
-/* data 2fad90 */ ANI_CODE m014anm008[0];
-/* data 2fad98 */ ANI_CODE m014anm009[0];
-/* data 2fada0 */ ANI_CODE m014anm010[0];
-/* data 2fada8 */ ANI_CODE m014anm011[0];
-/* data 2fadb0 */ ANI_CODE m014anm012[0];
-/* data 2fadb8 */ ANI_CODE m014anm013[0];
-/* data 2fadc0 */ ANI_CODE m014anm014[0];
-/* data 2fadc8 */ ANI_CODE m014anm015[0];
-/* data 2fadd0 */ ANI_CODE m014anm016[0];
-/* data 2fadd8 */ ANI_CODE m014anm017[0];
-/* data 2fade0 */ ANI_CODE m014anm018[0];
-/* data 2fade8 */ ANI_CODE m015anm000[0];
-/* data 2fadf0 */ ANI_CODE m015anm003[0];
-/* data 2fadf8 */ ANI_CODE m015anm004[0];
-/* data 2fae00 */ ANI_CODE m015anm006[0];
-/* data 2fae08 */ ANI_CODE m015anm007[0];
-/* data 2fae10 */ ANI_CODE m015anm008[0];
-/* data 2fae18 */ ANI_CODE m015anm009[0];
-/* data 2fae20 */ ANI_CODE m015anm010[0];
-/* data 2fae28 */ ANI_CODE m015anm011[0];
-/* data 2fae30 */ ANI_CODE m015anm012[0];
-/* data 2fae38 */ ANI_CODE m015anm013[0];
-/* data 2fae40 */ ANI_CODE m015anm014[0];
-/* data 2fae48 */ ANI_CODE m015anm015[0];
-/* data 2fae50 */ ANI_CODE m015anm016[0];
-/* data 2fae58 */ ANI_CODE m015anm017[0];
-/* data 2fae60 */ ANI_CODE m016anm002[0];
-/* data 2fae68 */ ANI_CODE m016anm006[0];
-/* data 2fae70 */ ANI_CODE m016anm007[0];
-/* data 2fae78 */ ANI_CODE m016anm009[0];
-/* data 2fae80 */ ANI_CODE m016anm010[0];
-/* data 2fae88 */ ANI_CODE m016anm011[0];
-/* data 2fae90 */ ANI_CODE m016anm012[0];
-/* data 2fae98 */ ANI_CODE m016anm013[0];
-/* data 2faea0 */ ANI_CODE m016anm014[0];
-/* data 2faea8 */ ANI_CODE m016anm015[0];
-/* data 2faeb0 */ ANI_CODE m016anm016[0];
-/* data 2faeb8 */ ANI_CODE m016anm017[0];
-/* data 2faec0 */ ANI_CODE m016anm018[0];
-/* data 2faec8 */ ANI_CODE m018anm000[0];
-/* data 2faed0 */ ANI_CODE m018anm003[0];
-/* data 2faed8 */ ANI_CODE m018anm004[0];
-/* data 2faee0 */ ANI_CODE m018anm006[0];
-/* data 2faee8 */ ANI_CODE m018anm007[0];
-/* data 2faef0 */ ANI_CODE m018anm008[0];
-/* data 2faef8 */ ANI_CODE m018anm009[0];
-/* data 2faf00 */ ANI_CODE m018anm010[0];
-/* data 2faf08 */ ANI_CODE m018anm011[0];
-/* data 2faf10 */ ANI_CODE m018anm012[0];
-/* data 2faf18 */ ANI_CODE m018anm013[0];
-/* data 2faf20 */ ANI_CODE m018anm014[0];
-/* data 2faf28 */ ANI_CODE m018anm015[0];
-/* data 2faf30 */ ANI_CODE m018anm016[0];
-/* data 2faf38 */ ANI_CODE m019anm000[0];
-/* data 2faf40 */ ANI_CODE m019anm001[0];
-/* data 2faf48 */ ANI_CODE m019anm002[0];
-/* data 2faf50 */ ANI_CODE m019anm006[0];
-/* data 2faf58 */ ANI_CODE m019anm007[0];
-/* data 2faf60 */ ANI_CODE m019anm008[0];
-/* data 2faf68 */ ANI_CODE m019anm009[0];
-/* data 2faf70 */ ANI_CODE m019anm010[0];
-/* data 2faf78 */ ANI_CODE m019anm011[0];
-/* data 2faf80 */ ANI_CODE m019anm012[0];
-/* data 2faf88 */ ANI_CODE m019anm013[0];
-/* data 2faf90 */ ANI_CODE m020anm000[0];
-/* data 2faf98 */ ANI_CODE m020anm002[0];
-/* data 2fafa0 */ ANI_CODE m020anm005[0];
-/* data 2fafa8 */ ANI_CODE m020anm006[0];
-/* data 2fafb0 */ ANI_CODE m020anm007[0];
-/* data 2fafb8 */ ANI_CODE m020anm008[0];
-/* data 2fafc0 */ ANI_CODE m020anm009[0];
-/* data 2fafc8 */ ANI_CODE m020anm010[0];
-/* data 2fafd0 */ ANI_CODE m020anm011[0];
-/* data 2fafd8 */ ANI_CODE m020anm012[0];
-/* data 2fafe0 */ ANI_CODE m020anm013[0];
-/* data 2fafe8 */ ANI_CODE m020anm014[0];
-/* data 2faff0 */ ANI_CODE m021anm000[0];
-/* data 2faff8 */ ANI_CODE m021anm002[0];
-/* data 2fb000 */ ANI_CODE m021anm003[0];
-/* data 2fb008 */ ANI_CODE m021anm004[0];
-/* data 2fb010 */ ANI_CODE m021anm005[0];
-/* data 2fb018 */ ANI_CODE m021anm009[0];
-/* data 2fb020 */ ANI_CODE m022anm000[0];
-/* data 2fb028 */ ANI_CODE m022anm002[0];
-/* data 2fb030 */ ANI_CODE m022anm006[0];
-/* data 2fb038 */ ANI_CODE m022anm007[0];
-/* data 2fb040 */ ANI_CODE m022anm009[0];
-/* data 2fb048 */ ANI_CODE m022anm010[0];
-/* data 2fb050 */ ANI_CODE m022anm011[0];
-/* data 2fb058 */ ANI_CODE m022anm012[0];
-/* data 2fb060 */ ANI_CODE m022anm013[0];
-/* data 2fb068 */ ANI_CODE m022anm014[0];
-/* data 2fb070 */ ANI_CODE m022anm015[0];
-/* data 2fb078 */ ANI_CODE m023anm000[0];
-/* data 2fb080 */ ANI_CODE m023anm002[0];
-/* data 2fb088 */ ANI_CODE m023anm006[0];
-/* data 2fb090 */ ANI_CODE m023anm007[0];
-/* data 2fb098 */ ANI_CODE m023anm009[0];
-/* data 2fb0a0 */ ANI_CODE m023anm010[0];
-/* data 2fb0a8 */ ANI_CODE m023anm011[0];
-/* data 2fb0b0 */ ANI_CODE m023anm012[0];
-/* data 2fb0b8 */ ANI_CODE m024anm000[0];
-/* data 2fb0c0 */ ANI_CODE m024anm002[0];
-/* data 2fb0c8 */ ANI_CODE m024anm006[0];
-/* data 2fb0d0 */ ANI_CODE m024anm007[0];
-/* data 2fb0d8 */ ANI_CODE m024anm009[0];
-/* data 2fb0e0 */ ANI_CODE m024anm010[0];
-/* data 2fb0e8 */ ANI_CODE m024anm011[0];
-/* data 2fb0f0 */ ANI_CODE m024anm012[0];
-/* data 2fb0f8 */ ANI_CODE m024anm013[0];
-/* data 2fb100 */ ANI_CODE m024anm014[0];
-/* data 2fb108 */ ANI_CODE m024anm015[0];
-/* data 2fb110 */ ANI_CODE m024anm016[0];
-/* data 2fb118 */ ANI_CODE m025anm000[0];
-/* data 2fb120 */ ANI_CODE m025anm006[0];
-/* data 2fb128 */ ANI_CODE m025anm007[0];
-/* data 2fb130 */ ANI_CODE m025anm009[0];
-/* data 2fb140 */ ANI_CODE m025anm010[0];
-/* data 2fb148 */ ANI_CODE m025anm013[0];
-/* data 2fb150 */ ANI_CODE m025anm014[0];
-/* data 2fb158 */ ANI_CODE m025anm015[0];
-/* data 2fb160 */ ANI_CODE m025anm016[0];
-/* data 2fb170 */ ANI_CODE m025anm017[0];
-/* data 2fb178 */ ANI_CODE m025anm018[0];
-/* data 2fb180 */ ANI_CODE m025anm019[0];
-/* data 2fb190 */ ANI_CODE m025anm020[0];
-/* data 2fb198 */ ANI_CODE m027anm000[0];
-/* data 2fb1a0 */ ANI_CODE m027anm001[0];
-/* data 2fb1a8 */ ANI_CODE m027anm002[0];
-/* data 2fb1b0 */ ANI_CODE m027anm003[0];
-/* data 2fb1b8 */ ANI_CODE m027anm004[0];
-/* data 2fb1c0 */ ANI_CODE m027anm006[0];
-/* data 2fb1c8 */ ANI_CODE m027anm007[0];
-/* data 2fb1d0 */ ANI_CODE m027anm009[0];
-/* data 2fb1d8 */ ANI_CODE m027anm010[0];
-/* data 2fb1e0 */ ANI_CODE m027anm011[0];
-/* data 2fb1e8 */ ANI_CODE m027anm012[0];
-/* data 2fb1f0 */ ANI_CODE m027anm013[0];
-/* data 2fb1f8 */ ANI_CODE m027anm014[0];
-/* data 2fb200 */ ANI_CODE m027anm015[0];
-/* data 2fb208 */ ANI_CODE m027anm016[0];
-/* data 2fb210 */ ANI_CODE m028anm000[0];
-/* data 2fb218 */ ANI_CODE m028anm001[0];
-/* data 2fb220 */ ANI_CODE m028anm002[0];
-/* data 2fb228 */ ANI_CODE m028anm006[0];
-/* data 2fb230 */ ANI_CODE m028anm007[0];
-/* data 2fb238 */ ANI_CODE m028anm009[0];
-/* data 2fb240 */ ANI_CODE m028anm010[0];
-/* data 2fb248 */ ANI_CODE m028anm011[0];
-/* data 2fb250 */ ANI_CODE m028anm012[0];
-/* data 2fb258 */ ANI_CODE m028anm013[0];
-/* data 2fb260 */ ANI_CODE m028anm014[0];
-/* data 2fb268 */ ANI_CODE m028anm015[0];
-/* data 2fb270 */ ANI_CODE m031anm000[0];
-/* data 2fb278 */ ANI_CODE m031anm001[0];
-/* data 2fb280 */ ANI_CODE m031anm002[0];
-/* data 2fb288 */ ANI_CODE m031anm003[0];
-/* data 2fb290 */ ANI_CODE m031anm004[0];
-/* data 2fb298 */ ANI_CODE m031anm006[0];
-/* data 2fb2a0 */ ANI_CODE m031anm011[0];
-/* data 2fb2a8 */ ANI_CODE m031anm012[0];
-/* data 2fb2b0 */ ANI_CODE m032anm000[0];
-/* data 2fb2b8 */ ANI_CODE m032anm002[0];
-/* data 2fb2c0 */ ANI_CODE m032anm003[0];
-/* data 2fb2c8 */ ANI_CODE m032anm004[0];
-/* data 2fb2d0 */ ANI_CODE m032anm006[0];
-/* data 2fb2d8 */ ANI_CODE m032anm007[0];
-/* data 2fb2e0 */ ANI_CODE m032anm008[0];
-/* data 2fb2e8 */ ANI_CODE m032anm009[0];
-/* data 2fb2f0 */ ANI_CODE m032anm010[0];
-/* data 2fb2f8 */ ANI_CODE m032anm011[0];
-/* data 2fb300 */ ANI_CODE m032anm012[0];
-/* data 2fb308 */ ANI_CODE m032anm013[0];
-/* data 2fb310 */ ANI_CODE m032anm014[0];
-/* data 2fb318 */ ANI_CODE m032anm015[0];
-/* data 2fb320 */ ANI_CODE m032anm016[0];
-/* data 2fb328 */ ANI_CODE m032anm017[0];
-/* data 2fb330 */ ANI_CODE m032anm018[0];
-/* data 2fb338 */ ANI_CODE m032anm019[0];
-/* data 2fb340 */ ANI_CODE m033anm000[0];
-/* data 2fb348 */ ANI_CODE m033anm002[0];
-/* data 2fb350 */ ANI_CODE m033anm003[0];
-/* data 2fb358 */ ANI_CODE m033anm004[0];
-/* data 2fb360 */ ANI_CODE m033anm005[0];
-/* data 2fb368 */ ANI_CODE m033anm006[0];
-/* data 2fb370 */ ANI_CODE m033anm007[0];
-/* data 2fb378 */ ANI_CODE m033anm008[0];
-/* data 2fb380 */ ANI_CODE m033anm009[0];
-/* data 2fb388 */ ANI_CODE m033anm010[0];
-/* data 2fb390 */ ANI_CODE m033anm011[0];
-/* data 2fb398 */ ANI_CODE m033anm012[0];
-/* data 2fb3a0 */ ANI_CODE m033anm013[0];
-/* data 2fb3a8 */ ANI_CODE m033anm014[0];
-/* data 2fb3b0 */ ANI_CODE m033anm015[0];
-/* data 2fb3b8 */ ANI_CODE m033anm016[0];
-/* data 2fb3c0 */ ANI_CODE m033anm017[0];
-/* data 2fb3c8 */ ANI_CODE m033anm018[0];
-/* data 2fb3d0 */ ANI_CODE m033anm019[0];
-/* data 2fb3d8 */ ANI_CODE m034anm000[0];
-/* data 2fb3e0 */ ANI_CODE m034anm002[0];
-/* data 2fb3e8 */ ANI_CODE m034anm003[0];
-/* data 2fb3f0 */ ANI_CODE m034anm004[0];
-/* data 2fb3f8 */ ANI_CODE m034anm006[0];
-/* data 2fb400 */ ANI_CODE m034anm007[0];
-/* data 2fb408 */ ANI_CODE m034anm008[0];
-/* data 2fb410 */ ANI_CODE m034anm009[0];
-/* data 2fb418 */ ANI_CODE m034anm010[0];
-/* data 2fb420 */ ANI_CODE m034anm011[0];
-/* data 2fb428 */ ANI_CODE m034anm012[0];
-/* data 2fb430 */ ANI_CODE m034anm013[0];
-/* data 2fb438 */ ANI_CODE m034anm014[0];
-/* data 2fb440 */ ANI_CODE m034anm015[0];
-/* data 2fb448 */ ANI_CODE m034anm016[0];
-/* data 2fb450 */ ANI_CODE m034anm017[0];
-/* data 2fb458 */ ANI_CODE m034anm018[0];
-/* data 2fb460 */ ANI_CODE m034anm019[0];
-/* data 2fb468 */ ANI_CODE m035anm000[0];
-/* data 2fb470 */ ANI_CODE m035anm002[0];
-/* data 2fb478 */ ANI_CODE m035anm006[0];
-/* data 2fb480 */ ANI_CODE m035anm007[0];
-/* data 2fb488 */ ANI_CODE m035anm008[0];
-/* data 2fb490 */ ANI_CODE m035anm009[0];
-/* data 2fb498 */ ANI_CODE m035anm010[0];
-/* data 2fb4a0 */ ANI_CODE m035anm011[0];
-/* data 2fb4a8 */ ANI_CODE m035anm012[0];
-/* data 2fb4b0 */ ANI_CODE m035anm013[0];
-/* data 2fb4b8 */ ANI_CODE m035anm014[0];
-/* data 2fb4c0 */ ANI_CODE m035anm015[0];
-/* data 2fb4c8 */ ANI_CODE m035anm016[0];
-/* data 2fb4d0 */ ANI_CODE m035anm017[0];
-/* data 2fb4d8 */ ANI_CODE m035anm018[0];
-/* data 2fb4e0 */ ANI_CODE m035anm019[0];
-/* data 2fb4e8 */ ANI_CODE m036anm000[0];
-/* data 2fb4f0 */ ANI_CODE m036anm002[0];
-/* data 2fb4f8 */ ANI_CODE m036anm006[0];
-/* data 2fb500 */ ANI_CODE m036anm007[0];
-/* data 2fb508 */ ANI_CODE m036anm008[0];
-/* data 2fb510 */ ANI_CODE m036anm009[0];
-/* data 2fb518 */ ANI_CODE m036anm010[0];
-/* data 2fb520 */ ANI_CODE m036anm011[0];
-/* data 2fb528 */ ANI_CODE m036anm012[0];
-/* data 2fb530 */ ANI_CODE m036anm013[0];
-/* data 2fb538 */ ANI_CODE m036anm014[0];
-/* data 2fb540 */ ANI_CODE m036anm015[0];
-/* data 2fb548 */ ANI_CODE m036anm016[0];
-/* data 2fb550 */ ANI_CODE m037anm000[0];
-/* data 2fb560 */ ANI_CODE m037anm002[0];
-/* data 2fb570 */ ANI_CODE m037anm006[0];
-/* data 2fb580 */ ANI_CODE m037anm007[0];
-/* data 2fb590 */ ANI_CODE m037anm008[0];
-/* data 2fb5a0 */ ANI_CODE m037anm009[0];
-/* data 2fb5b0 */ ANI_CODE m037anm010[0];
-/* data 2fb5c0 */ ANI_CODE m037anm011[0];
-/* data 2fb5c8 */ ANI_CODE m037anm012[0];
-/* data 2fb5d8 */ ANI_CODE m037anm013[0];
-/* data 2fb5e0 */ ANI_CODE m037anm014[0];
-/* data 2fb5f0 */ ANI_CODE m037anm015[0];
-/* data 2fb5f8 */ ANI_CODE m037anm016[0];
-/* data 2fb600 */ ANI_CODE m037anm017[0];
-/* data 2fb610 */ ANI_CODE m038anm000[0];
-/* data 2fb618 */ ANI_CODE m038anm001[0];
-/* data 2fb620 */ ANI_CODE m038anm002[0];
-/* data 2fb628 */ ANI_CODE m038anm006[0];
-/* data 2fb630 */ ANI_CODE m038anm007[0];
-/* data 2fb638 */ ANI_CODE m038anm008[0];
-/* data 2fb640 */ ANI_CODE m038anm009[0];
-/* data 2fb648 */ ANI_CODE m038anm010[0];
-/* data 2fb650 */ ANI_CODE m038anm011[0];
-/* data 2fb658 */ ANI_CODE m038anm012[0];
-/* data 2fb660 */ ANI_CODE m040anm000[0];
-/* data 2fb668 */ ANI_CODE m040anm002[0];
-/* data 2fb670 */ ANI_CODE m040anm006[0];
-/* data 2fb678 */ ANI_CODE m040anm011[0];
-/* data 2fb680 */ ANI_CODE m040anm013[0];
-/* data 2fb688 */ ANI_CODE m040anm014[0];
-/* data 2fb690 */ ANI_CODE m040anm015[0];
-/* data 2fb698 */ ANI_CODE m040anm016[0];
-/* data 2fb6a0 */ ANI_CODE m042anm002[0];
-/* data 2fb6a8 */ ANI_CODE m042anm006[0];
-/* data 2fb6b0 */ ANI_CODE m042anm007[0];
-/* data 2fb6b8 */ ANI_CODE m042anm008[0];
-/* data 2fb6c0 */ ANI_CODE m042anm009[0];
-/* data 2fb6c8 */ ANI_CODE m042anm010[0];
-/* data 2fb6d0 */ ANI_CODE m042anm011[0];
-/* data 2fb6d8 */ ANI_CODE m042anm012[0];
-/* data 2fb6e0 */ ANI_CODE m042anm013[0];
-/* data 2fb6e8 */ ANI_CODE m042anm014[0];
-/* data 2fb6f0 */ ANI_CODE m042anm015[0];
-/* data 2fb6f8 */ ANI_CODE m042anm016[0];
-/* data 2fb700 */ ANI_CODE m042anm017[0];
-/* data 2fb708 */ ANI_CODE arei_anm[0];
-/* data 2fb710 */ ANI_CODE arei_loop_anm[0];
-/* data 2fb718 */ ANI_CODE *m000anm_tbl[0];
-/* data 2fb8d0 */ ANI_CODE *m001anm_tbl[0];
-/* data 2fba88 */ ANI_CODE *m010anm_tbl[0];
-/* data 2fbac8 */ ANI_CODE *m011anm_tbl[0];
-/* data 2fbb08 */ ANI_CODE *m012anm_tbl[0];
-/* data 2fbb48 */ ANI_CODE *m013anm_tbl[0];
-/* data 2fbb80 */ ANI_CODE *m014anm_tbl[0];
-/* data 2fbbd0 */ ANI_CODE *m015anm_tbl[0];
-/* data 2fbc20 */ ANI_CODE *m016anm_tbl[0];
-/* data 2fbc70 */ ANI_CODE *m018anm_tbl[0];
-/* data 2fbcb8 */ ANI_CODE *m019anm_tbl[0];
-/* data 2fbcf8 */ ANI_CODE *m020anm_tbl[0];
-/* data 2fbd38 */ ANI_CODE *m021anm_tbl[0];
-/* data 2fbd70 */ ANI_CODE *m022anm_tbl[0];
-/* data 2fbdb8 */ ANI_CODE *m023anm_tbl[0];
-/* data 2fbdf0 */ ANI_CODE *m024anm_tbl[0];
-/* data 2fbe38 */ ANI_CODE *m025anm_tbl[0];
-/* data 2fbe90 */ ANI_CODE *m027anm_tbl[0];
-/* data 2fbed8 */ ANI_CODE *m028anm_tbl[0];
-/* data 2fbf20 */ ANI_CODE *m031anm_tbl[0];
-/* data 2fbf58 */ ANI_CODE *m032anm_tbl[0];
-/* data 2fbfb0 */ ANI_CODE *m033anm_tbl[0];
-/* data 2fc008 */ ANI_CODE *m034anm_tbl[0];
-/* data 2fc060 */ ANI_CODE *m035anm_tbl[0];
-/* data 2fc0b8 */ ANI_CODE *m036anm_tbl[0];
-/* data 2fc100 */ ANI_CODE *m037anm_tbl[0];
-/* data 2fc150 */ ANI_CODE *m038anm_tbl[0];
-/* data 2fc188 */ ANI_CODE *m040anm_tbl[0];
-/* data 2fc1d0 */ ANI_CODE *m042anm_tbl[0];
-/* data 2fc220 */ ANI_CODE *arei_anm_tbl[0];
-/* data 2fc228 */ ANI_CODE *arei_loopanm_tbl[0];
-/* data 2fc230 */ MANMDL_DAT manmdl_dat[0];
-/* data 2fc770 */ ANI_CODE **anm_tbl[0];
+#include <stddef.h>
+
+ANI_CODE m000anm000[] = {1040, 9216, 1, 0};
+ANI_CODE m000anm001[] = {1040, 16384, 9225, 16385, 9234, 1, 0};
+ANI_CODE m000anm002[] = {1040, 16385, 9234, 16384, 9225, 1, 0};
+ANI_CODE m000anm003[] = {1040, 16384, 9241, 16385, 9250, 1, 0};
+ANI_CODE m000anm004[] = {1040, 16385, 9250, 16384, 9241, 1, 0};
+ANI_CODE m000anm005[] = {1040, 16384, 24576, 9257, 16385, 24577, 9266, 1, 0};
+ANI_CODE m000anm006[] = {1040, 16385, 24577, 9266, 16384, 24576, 9257, 1, 0};
+ANI_CODE m000anm007[] = {1040, 9272, 1, 0};
+ANI_CODE m000anm008[] = {1040, 16384, 9281, 16385, 9290, 1, 0};
+ANI_CODE m000anm009[] = {1040, 16385, 9290, 16384, 9281, 1, 0};
+ANI_CODE m000anm010[] = {4140, 20483, 9296, 0};
+ANI_CODE m000anm011[] = {4164, 20483, 9312, 0};
+ANI_CODE m000anm012[] = {4162, 20483, 9328, 0};
+ANI_CODE m000anm013[] = {4160, 20483, 9344, 0};
+ANI_CODE m000anm014[] = {4140, 20483, 9360, 0};
+ANI_CODE m000anm015[] = {4154, 20483, 9376, 0};
+ANI_CODE m000anm016[] = {4158, 20483, 9392, 0};
+ANI_CODE m000anm017[] = {4142, 20483, 9408, 0};
+ANI_CODE m000anm018[] = {4158, 20483, 9424, 0};
+ANI_CODE m000anm019[] = {4186, 20483, 9440, 0};
+ANI_CODE m000anm020[] = {4172, 20483, 9456, 0};
+ANI_CODE m000anm021[] = {4162, 20483, 9472, 0};
+ANI_CODE m000anm022[] = {4178, 20483, 9488, 0};
+ANI_CODE m000anm023[] = {4178, 20483, 9504, 0};
+ANI_CODE m000anm024[] = {4184, 20483, 9520, 0};
+ANI_CODE m000anm025[] = {4178, 20483, 9536, 0};
+ANI_CODE m000anm026[] = {4206, 20483, 9960, 0};
+ANI_CODE m000anm027[] = {4180, 20483, 10064, 0};
+ANI_CODE m000anm028[] = {4190, 20483, 10080, 0};
+ANI_CODE m000anm029[] = {9304, 0};
+ANI_CODE m000anm030[] = {9320, 0};
+ANI_CODE m000anm031[] = {9336, 0};
+ANI_CODE m000anm032[] = {9352, 0};
+ANI_CODE m000anm033[] = {9368, 0};
+ANI_CODE m000anm034[] = {9384, 0};
+ANI_CODE m000anm035[] = {9400, 0};
+ANI_CODE m000anm036[] = {9416, 0};
+ANI_CODE m000anm037[] = {9432, 0};
+ANI_CODE m000anm038[] = {9448, 0};
+ANI_CODE m000anm039[] = {9464, 0};
+ANI_CODE m000anm040[] = {9480, 0};
+ANI_CODE m000anm041[] = {9496, 0};
+ANI_CODE m000anm042[] = {9512, 0};
+ANI_CODE m000anm043[] = {9528, 0};
+ANI_CODE m000anm044[] = {9544, 0};
+ANI_CODE m000anm045[] = {9968, 0};
+ANI_CODE m000anm046[] = {10072, 0};
+ANI_CODE m000anm047[] = {10088, 0};
+ANI_CODE m000anm048[] = {1040, 4112, 16384, 9553, 4122, 16385, 9562, 1, 0};
+ANI_CODE m000anm049[] = {1040, 4122, 16385, 9562, 4112, 16384, 9553, 1, 0};
+ANI_CODE m000anm050[] = {1040, 4128, 16384, 9569, 4128, 16385, 9578, 1, 0};
+ANI_CODE m000anm051[] = {1040, 4128, 16385, 9578, 4128, 16384, 9569, 1, 0};
+ANI_CODE m000anm052[] = {1040, 4116, 16384, 9585, 4118, 16385, 9594, 1, 0};
+ANI_CODE m000anm053[] = {1040, 4118, 16385, 9594, 4116, 16384, 9585, 1, 0};
+ANI_CODE m000anm054[] = {1040, 4126, 16384, 9601, 4124, 16385, 9610, 1, 0};
+ANI_CODE m000anm055[] = {1040, 4124, 16385, 9610, 4126, 16384, 9601, 1, 0};
+ANI_CODE m000anm056[] = {9616, 1040, 9624, 1, 0};
+ANI_CODE m000anm057[] = {9632, 0};
+ANI_CODE m000anm058[] = {9640, 1040, 9648, 1, 0};
+ANI_CODE m000anm059[] = {9656, 0};
+ANI_CODE m000anm060[] = {9664, 1040, 9672, 1, 0};
+ANI_CODE m000anm061[] = {9680, 0};
+ANI_CODE m000anm062[] = {9688, 0};
+ANI_CODE m000anm063[] = {9696, 0};
+ANI_CODE m000anm064[] = {9704, 0};
+ANI_CODE m000anm065[] = {9712, 0};
+ANI_CODE m000anm066[] = {9720, 0};
+ANI_CODE m000anm067[] = {9728, 0};
+ANI_CODE m000anm068[] = {9736, 0};
+ANI_CODE m000anm069[] = {1040, 16385, 9778, 16384, 9785, 1, 0};
+ANI_CODE m000anm070[] = {1040, 16384, 9786, 16385, 9777, 1, 0};
+ANI_CODE m000anm071[] = {1040, 16385, 9794, 16384, 9801, 1, 0};
+ANI_CODE m000anm072[] = {1040, 16384, 9802, 16385, 9793, 1, 0};
+ANI_CODE m000anm073[] = {1040, 16385, 9874, 16384, 9881, 1, 0};
+ANI_CODE m000anm074[] = {1040, 16384, 9882, 16385, 9873, 1, 0};
+ANI_CODE m000anm075[] = {1040, 16385, 9890, 16384, 9897, 1, 0};
+ANI_CODE m000anm076[] = {1040, 16384, 9898, 16385, 9889, 1, 0};
+ANI_CODE m000anm077[] = {1040, 16384, 9809, 16385, 9818, 1, 0};
+ANI_CODE m000anm078[] = {1040, 16385, 9817, 16384, 9810, 1, 0};
+ANI_CODE m000anm079[] = {1040, 16384, 9825, 16385, 9834, 1, 0};
+ANI_CODE m000anm080[] = {1040, 16385, 9833, 16384, 9826, 1, 0};
+ANI_CODE m000anm081[] = {1040, 16384, 9841, 16385, 9850, 1, 0};
+ANI_CODE m000anm082[] = {1040, 16385, 9849, 16384, 9842, 1, 0};
+ANI_CODE m000anm083[] = {1040, 16384, 9857, 16385, 9866, 1, 0};
+ANI_CODE m000anm084[] = {1040, 16385, 9865, 16384, 9858, 1, 0};
+ANI_CODE m000anm085[] = {1040, 9744, 1, 0};
+ANI_CODE m000anm086[] = {9760, 0};
+ANI_CODE m000anm087[] = {9752, 0};
+ANI_CODE m000anm088[] = {9768, 0};
+ANI_CODE m000anm089[] = {20484, 9904, 0};
+ANI_CODE m000anm090[] = {20484, 9912, 0};
+ANI_CODE m000anm091[] = {20484, 9920, 0};
+ANI_CODE m000anm092[] = {20484, 9928, 0};
+ANI_CODE m000anm093[] = {20484, 9936, 0};
+ANI_CODE m000anm094[] = {20484, 9944, 0};
+ANI_CODE m000anm095[] = {20484, 9952, 0};
+ANI_CODE m000anm096[] = {1040,  4096, 16384, 4142, 16385, 9977, 4096,
+                           16384, 4142, 16385, 9986, 1,     0};
+ANI_CODE m000anm097[] = {1040,  4096, 16384, 4142, 16385, 9985, 4096,
+                           16384, 4142, 16385, 9978, 1,     0};
+ANI_CODE m000anm098[] = {
+    4174,  16385, 9992,  4104, 16385, 4164, 16385, 10000, 4104,  16385,
+    4164,  16385, 10000, 4104, 16385, 4164, 16385, 4224,  16385, 4284,
+    16385, 4354,  16385, 4434, 16385, 4488, 16385, 10008, 0};
+ANI_CODE m000anm099[] = {4124,  16385, 4212,  16385, 4304,  16385, 4364,
+                           16385, 4424,  16385, 4484,  16385, 10016, 4140,
+                           16385, 4200,  16385, 10024, 4140,  16385, 4200,
+                           16385, 10024, 4142,  16385, 10032, 0};
+ANI_CODE m000anm100[] = {1040, 10040, 1, 0};
+ANI_CODE m000anm101[] = {1040, 16384, 10049, 16385, 10058, 1, 0};
+ANI_CODE m000anm102[] = {1040, 16385, 10057, 16384, 10050, 1, 0};
+ANI_CODE m000anm103[] = {10144, 0};
+ANI_CODE m000anm104[] = {10152, 0};
+ANI_CODE m000anm105[] = {
+    4174, 16385, 4230, 16385, 10096, 4150,  16385, 4210,  24580, 16385, 10104,
+    4150, 16385, 4210, 16385, 10104, 4150,  16385, 4210,  16385, 4270,  16385,
+    4330, 16385, 4396, 16385, 4474,  16385, 4524,  16385, 10112, 0};
+ANI_CODE m000anm106[] = {
+    4174, 16385, 4262,  16385, 4352,  16385, 4412,  16385, 4472, 16385,
+    4532, 16385, 10120, 4140,  16385, 4200,  16385, 10128, 4140, 16385,
+    4200, 16385, 10128, 4148,  16385, 4208,  16385, 10136, 0};
+ANI_CODE m000anm107[] = {1040, 9216, 1, 0};
+ANI_CODE m001anm048[] = {1040, 4118, 16384, 9553, 4120, 16385, 9562, 1, 0};
+ANI_CODE m001anm049[] = {1040, 4120, 16385, 9562, 4118, 16384, 9553, 1, 0};
+ANI_CODE m001anm050[] = {1040, 4124, 16384, 9569, 4120, 16385, 9578, 1, 0};
+ANI_CODE m001anm051[] = {1040, 4120, 16385, 9578, 4124, 16384, 9569, 1, 0};
+ANI_CODE m001anm052[] = {1040, 4116, 16384, 9585, 4116, 16385, 9594, 1, 0};
+ANI_CODE m001anm053[] = {1040, 4116, 16385, 9594, 4116, 16384, 9585, 1, 0};
+ANI_CODE m001anm054[] = {1040, 4114, 16384, 9601, 4114, 16385, 9610, 1, 0};
+ANI_CODE m001anm055[] = {1040, 4114, 16385, 9610, 4114, 16384, 9601, 1, 0};
+ANI_CODE m001anm069[] = {1040, 4108, 16384, 9778, 4106, 16385, 9785, 1, 0};
+ANI_CODE m001anm070[] = {1040, 4106, 16385, 9786, 4108, 16384, 9777, 1, 0};
+ANI_CODE m001anm071[] = {1040, 4110, 16384, 9794, 4110, 16385, 9801, 1, 0};
+ANI_CODE m001anm072[] = {1040, 4110, 16385, 9802, 4110, 16384, 9793, 1, 0};
+ANI_CODE m001anm073[] = {1040, 4112, 16384, 9874, 4110, 16385, 9881, 1, 0};
+ANI_CODE m001anm074[] = {1040, 4110, 16385, 9882, 4112, 16384, 9873, 1, 0};
+ANI_CODE m001anm075[] = {1040, 4112, 16384, 9890, 4112, 16385, 9897, 1, 0};
+ANI_CODE m001anm076[] = {1040, 4112, 16385, 9898, 4112, 16384, 9889, 1, 0};
+ANI_CODE m010anm002[] = {1040, 9216, 1, 0};
+ANI_CODE m010anm006[] = {9224, 0};
+ANI_CODE m010anm007[] = {9232, 0};
+ANI_CODE m010anm009[] = {1040, 9240, 1, 0};
+ANI_CODE m010anm010[] = {9248, 0};
+ANI_CODE m010anm011[] = {9256, 0};
+ANI_CODE m010anm012[] = {9264, 0};
+ANI_CODE m010anm013[] = {9272, 0};
+ANI_CODE m011anm002[] = {1040, 9216, 1, 0};
+ANI_CODE m011anm006[] = {9224, 0};
+ANI_CODE m011anm007[] = {9232, 0};
+ANI_CODE m011anm008[] = {9240, 0};
+ANI_CODE m011anm009[] = {1040, 9248, 1, 0};
+ANI_CODE m011anm010[] = {9256, 0};
+ANI_CODE m011anm011[] = {9264, 0};
+ANI_CODE m011anm012[] = {9272, 0};
+ANI_CODE m011anm013[] = {9280, 0};
+ANI_CODE m011anm014[] = {9288, 0};
+ANI_CODE m012anm000[] = {1040, 9216, 1, 0};
+ANI_CODE m012anm002[] = {1040, 9224, 1, 0};
+ANI_CODE m012anm003[] = {1040, 9232, 1, 0};
+ANI_CODE m012anm004[] = {1040, 9240, 1, 0};
+ANI_CODE m012anm005[] = {9248, 0};
+ANI_CODE m012anm006[] = {9256, 0};
+ANI_CODE m012anm007[] = {9264, 0};
+ANI_CODE m012anm008[] = {9272, 0};
+ANI_CODE m012anm009[] = {1040, 9280, 1, 0};
+ANI_CODE m012anm010[] = {9288, 0};
+ANI_CODE m012anm011[] = {9296, 0};
+ANI_CODE m012anm012[] = {9304, 0};
+ANI_CODE m012anm013[] = {9312, 0};
+ANI_CODE m013anm002[] = {1040, 9216, 1, 0};
+ANI_CODE m013anm006[] = {9224, 0};
+ANI_CODE m013anm007[] = {9232, 0};
+ANI_CODE m013anm008[] = {9240, 0};
+ANI_CODE m013anm009[] = {1040, 9248, 1, 0};
+ANI_CODE m013anm010[] = {9256, 0};
+ANI_CODE m013anm011[] = {9264, 0};
+ANI_CODE m013anm012[] = {9272, 0};
+ANI_CODE m014anm002[] = {1040, 9216, 1, 0};
+ANI_CODE m014anm006[] = {9224, 0};
+ANI_CODE m014anm007[] = {9232, 0};
+ANI_CODE m014anm008[] = {9240, 0};
+ANI_CODE m014anm009[] = {1040, 9248, 1, 0};
+ANI_CODE m014anm010[] = {9256, 0};
+ANI_CODE m014anm011[] = {9264, 0};
+ANI_CODE m014anm012[] = {9272, 0};
+ANI_CODE m014anm013[] = {9280, 0};
+ANI_CODE m014anm014[] = {9288, 0};
+ANI_CODE m014anm015[] = {9296, 0};
+ANI_CODE m014anm016[] = {9304, 0};
+ANI_CODE m014anm017[] = {9312, 0};
+ANI_CODE m014anm018[] = {9320, 0};
+ANI_CODE m015anm000[] = {1040, 9216, 1, 0};
+ANI_CODE m015anm003[] = {9224, 0};
+ANI_CODE m015anm004[] = {9232, 0};
+ANI_CODE m015anm006[] = {9240, 0};
+ANI_CODE m015anm007[] = {9248, 0};
+ANI_CODE m015anm008[] = {9256, 0};
+ANI_CODE m015anm009[] = {1040, 9264, 1, 0};
+ANI_CODE m015anm010[] = {9272, 0};
+ANI_CODE m015anm011[] = {9280, 0};
+ANI_CODE m015anm012[] = {9280, 0};
+ANI_CODE m015anm013[] = {9296, 0};
+ANI_CODE m015anm014[] = {9304, 0};
+ANI_CODE m015anm015[] = {9312, 0};
+ANI_CODE m015anm016[] = {1040, 9320, 1, 0};
+ANI_CODE m015anm017[] = {9328, 0};
+ANI_CODE m016anm002[] = {1040, 9216, 1, 0};
+ANI_CODE m016anm006[] = {9224, 0};
+ANI_CODE m016anm007[] = {9232, 0};
+ANI_CODE m016anm009[] = {1040, 9240, 1, 0};
+ANI_CODE m016anm010[] = {9248, 0};
+ANI_CODE m016anm011[] = {9256, 0};
+ANI_CODE m016anm012[] = {9264, 0};
+ANI_CODE m016anm013[] = {9272, 0};
+ANI_CODE m016anm014[] = {1040, 9280, 1, 0};
+ANI_CODE m016anm015[] = {9288, 0};
+ANI_CODE m016anm016[] = {9296, 0};
+ANI_CODE m016anm017[] = {9304, 0};
+ANI_CODE m016anm018[] = {9312, 0};
+ANI_CODE m018anm000[] = {1040, 9216, 1, 0};
+ANI_CODE m018anm003[] = {9224, 0};
+ANI_CODE m018anm004[] = {9232, 0};
+ANI_CODE m018anm006[] = {9240, 0};
+ANI_CODE m018anm007[] = {9248, 0};
+ANI_CODE m018anm008[] = {9256, 0};
+ANI_CODE m018anm009[] = {1040, 9264, 1, 0};
+ANI_CODE m018anm010[] = {9272, 0};
+ANI_CODE m018anm011[] = {9280, 0};
+ANI_CODE m018anm012[] = {9288, 0};
+ANI_CODE m018anm013[] = {9296, 0};
+ANI_CODE m018anm014[] = {1040, 9304, 1, 0};
+ANI_CODE m018anm015[] = {9312, 0};
+ANI_CODE m018anm016[] = {1040, 9320, 1, 0};
+ANI_CODE m019anm000[] = {1040, 9216, 1, 0};
+ANI_CODE m019anm001[] = {9224, 0};
+ANI_CODE m019anm002[] = {1040, 9232, 1, 0};
+ANI_CODE m019anm006[] = {9240, 0};
+ANI_CODE m019anm007[] = {9248, 0};
+ANI_CODE m019anm008[] = {9256, 0};
+ANI_CODE m019anm009[] = {1040, 9264, 1, 0};
+ANI_CODE m019anm010[] = {9272, 0};
+ANI_CODE m019anm011[] = {9280, 0};
+ANI_CODE m019anm012[] = {9288, 0};
+ANI_CODE m019anm013[] = {9296, 0};
+ANI_CODE m020anm000[] = {1040, 9216, 1, 0};
+ANI_CODE m020anm002[] = {1040, 9224, 1, 0};
+ANI_CODE m020anm005[] = {9232, 0};
+ANI_CODE m020anm006[] = {9240, 0};
+ANI_CODE m020anm007[] = {9248, 0};
+ANI_CODE m020anm008[] = {9256, 0};
+ANI_CODE m020anm009[] = {1040, 9264, 1, 0};
+ANI_CODE m020anm010[] = {9272, 0};
+ANI_CODE m020anm011[] = {9280, 0};
+ANI_CODE m020anm012[] = {9288, 0};
+ANI_CODE m020anm013[] = {9296, 0};
+ANI_CODE m020anm014[] = {9304, 0};
+ANI_CODE m021anm000[] = {9216, 0};
+ANI_CODE m021anm002[] = {9224, 0};
+ANI_CODE m021anm003[] = {9232, 0};
+ANI_CODE m021anm004[] = {9240, 0};
+ANI_CODE m021anm005[] = {9248, 0};
+ANI_CODE m021anm009[] = {9256, 0};
+ANI_CODE m022anm000[] = {1040, 9216, 1, 0};
+ANI_CODE m022anm002[] = {1040, 9224, 1, 0};
+ANI_CODE m022anm006[] = {9232, 0};
+ANI_CODE m022anm007[] = {9240, 0};
+ANI_CODE m022anm009[] = {1040, 9248, 1, 0};
+ANI_CODE m022anm010[] = {9256, 0};
+ANI_CODE m022anm011[] = {9264, 0};
+ANI_CODE m022anm012[] = {9272, 0};
+ANI_CODE m022anm013[] = {1040, 9280, 1, 0};
+ANI_CODE m022anm014[] = {1040, 9288, 1, 0};
+ANI_CODE m022anm015[] = {9296, 0};
+ANI_CODE m023anm000[] = {1040, 9216, 1, 0};
+ANI_CODE m023anm002[] = {1040, 9224, 1, 0};
+ANI_CODE m023anm006[] = {9232, 0};
+ANI_CODE m023anm007[] = {9240, 0};
+ANI_CODE m023anm009[] = {1040, 9248, 1, 0};
+ANI_CODE m023anm010[] = {9256, 0};
+ANI_CODE m023anm011[] = {9264, 0};
+ANI_CODE m023anm012[] = {9272, 0};
+ANI_CODE m024anm000[] = {1040, 9216, 1, 0};
+ANI_CODE m024anm002[] = {1040, 9224, 1, 0};
+ANI_CODE m024anm006[] = {9232, 0};
+ANI_CODE m024anm007[] = {9240, 0};
+ANI_CODE m024anm009[] = {1040, 9248, 1, 0};
+ANI_CODE m024anm010[] = {9256, 0};
+ANI_CODE m024anm011[] = {9264, 0};
+ANI_CODE m024anm012[] = {9272, 0};
+ANI_CODE m024anm013[] = {9280, 0};
+ANI_CODE m024anm014[] = {1040, 9288, 1, 0};
+ANI_CODE m024anm015[] = {9296, 0};
+ANI_CODE m024anm016[] = {9304, 0};
+ANI_CODE m025anm000[] = {9216, 0};
+ANI_CODE m025anm006[] = {14336, 9224, 0};
+ANI_CODE m025anm007[] = {14720, 9232, 0};
+ANI_CODE m025anm009[] = {14400, 1040, 9240, 1, 0};
+ANI_CODE m025anm010[] = {14464, 9248, 0};
+ANI_CODE m025anm013[] = {14528, 9256, 0};
+ANI_CODE m025anm014[] = {14784, 9264, 0};
+ANI_CODE m025anm015[] = {14528, 9272, 0};
+ANI_CODE m025anm016[] = {14592, 1040, 9280, 1, 0};
+ANI_CODE m025anm017[] = {14656, 9288, 0};
+ANI_CODE m025anm018[] = {14848, 9296, 0};
+ANI_CODE m025anm019[] = {14912, 1040, 9304, 1, 0};
+ANI_CODE m025anm020[] = {14976, 9312, 0};
+ANI_CODE m027anm000[] = {1040, 9216, 1, 0};
+ANI_CODE m027anm001[] = {9224, 0};
+ANI_CODE m027anm002[] = {1040, 9232, 1, 0};
+ANI_CODE m027anm003[] = {1040, 9240, 1, 0};
+ANI_CODE m027anm004[] = {1040, 9248, 1, 0};
+ANI_CODE m027anm006[] = {9256, 0};
+ANI_CODE m027anm007[] = {9264, 0};
+ANI_CODE m027anm009[] = {1040, 9272, 1, 0};
+ANI_CODE m027anm010[] = {9280, 0};
+ANI_CODE m027anm011[] = {9288, 0};
+ANI_CODE m027anm012[] = {9296, 0};
+ANI_CODE m027anm013[] = {9304, 0};
+ANI_CODE m027anm014[] = {9312, 0};
+ANI_CODE m027anm015[] = {1040, 9320, 1, 0};
+ANI_CODE m027anm016[] = {9328, 0};
+ANI_CODE m028anm000[] = {1040, 9216, 1, 0};
+ANI_CODE m028anm001[] = {9224, 0};
+ANI_CODE m028anm002[] = {1040, 9232, 1, 0};
+ANI_CODE m028anm006[] = {9240, 0};
+ANI_CODE m028anm007[] = {9248, 0};
+ANI_CODE m028anm009[] = {1040, 9256, 1, 0};
+ANI_CODE m028anm010[] = {9264, 0};
+ANI_CODE m028anm011[] = {9272, 0};
+ANI_CODE m028anm012[] = {9280, 0};
+ANI_CODE m028anm013[] = {9288, 0};
+ANI_CODE m028anm014[] = {9296, 0};
+ANI_CODE m028anm015[] = {9304, 0};
+ANI_CODE m031anm000[] = {1040, 9216, 1, 0};
+ANI_CODE m031anm001[] = {9224, 0};
+ANI_CODE m031anm002[] = {1040, 9232, 1, 0};
+ANI_CODE m031anm003[] = {1040, 9240, 1, 0};
+ANI_CODE m031anm004[] = {1040, 9248, 1, 0};
+ANI_CODE m031anm006[] = {1040, 9256, 1, 0};
+ANI_CODE m031anm011[] = {9264, 0};
+ANI_CODE m031anm012[] = {9272, 0};
+ANI_CODE m032anm000[] = {1040, 9216, 1, 0};
+ANI_CODE m032anm002[] = {1040, 9224, 1, 0};
+ANI_CODE m032anm003[] = {9232, 0};
+ANI_CODE m032anm004[] = {9240, 0};
+ANI_CODE m032anm006[] = {9248, 0};
+ANI_CODE m032anm007[] = {9256, 0};
+ANI_CODE m032anm008[] = {9264, 0};
+ANI_CODE m032anm009[] = {1040, 9272, 1, 0};
+ANI_CODE m032anm010[] = {9280, 0};
+ANI_CODE m032anm011[] = {9288, 0};
+ANI_CODE m032anm012[] = {9296, 0};
+ANI_CODE m032anm013[] = {9304, 0};
+ANI_CODE m032anm014[] = {9312, 0};
+ANI_CODE m032anm015[] = {9320, 0};
+ANI_CODE m032anm016[] = {1040, 9328, 1, 0};
+ANI_CODE m032anm017[] = {9336, 0};
+ANI_CODE m032anm018[] = {9344, 0};
+ANI_CODE m032anm019[] = {9352, 0};
+ANI_CODE m033anm000[] = {1040, 9216, 1, 0};
+ANI_CODE m033anm002[] = {1040, 9224, 1, 0};
+ANI_CODE m033anm003[] = {9232, 0};
+ANI_CODE m033anm004[] = {9240, 0};
+ANI_CODE m033anm005[] = {9248, 0};
+ANI_CODE m033anm006[] = {9256, 0};
+ANI_CODE m033anm007[] = {9264, 0};
+ANI_CODE m033anm008[] = {9272, 0};
+ANI_CODE m033anm009[] = {1040, 9280, 1, 0};
+ANI_CODE m033anm010[] = {9288, 0};
+ANI_CODE m033anm011[] = {9296, 0};
+ANI_CODE m033anm012[] = {9304, 0};
+ANI_CODE m033anm013[] = {9312, 0};
+ANI_CODE m033anm014[] = {9320, 0};
+ANI_CODE m033anm015[] = {9328, 0};
+ANI_CODE m033anm016[] = {9336, 0};
+ANI_CODE m033anm017[] = {9344, 0};
+ANI_CODE m033anm018[] = {1040, 9352, 1, 0};
+ANI_CODE m033anm019[] = {9360, 0};
+ANI_CODE m034anm000[] = {1040, 9216, 1, 0};
+ANI_CODE m034anm002[] = {1040, 9224, 1, 0};
+ANI_CODE m034anm003[] = {9232, 0};
+ANI_CODE m034anm004[] = {9240, 0};
+ANI_CODE m034anm006[] = {9248, 0};
+ANI_CODE m034anm007[] = {9256, 0};
+ANI_CODE m034anm008[] = {9264, 0};
+ANI_CODE m034anm009[] = {1040, 9272, 1, 0};
+ANI_CODE m034anm010[] = {9280, 0};
+ANI_CODE m034anm011[] = {9288, 0};
+ANI_CODE m034anm012[] = {9296, 0};
+ANI_CODE m034anm013[] = {9304, 0};
+ANI_CODE m034anm014[] = {9312, 0};
+ANI_CODE m034anm015[] = {9320, 0};
+ANI_CODE m034anm016[] = {1040, 9328, 1, 0};
+ANI_CODE m034anm017[] = {9336, 0};
+ANI_CODE m034anm018[] = {9344, 0};
+ANI_CODE m034anm019[] = {9352, 0};
+ANI_CODE m035anm000[] = {1040, 9216, 1, 0};
+ANI_CODE m035anm002[] = {1040, 9224, 1, 0};
+ANI_CODE m035anm006[] = {9232, 0};
+ANI_CODE m035anm007[] = {9240, 0};
+ANI_CODE m035anm008[] = {9248, 0};
+ANI_CODE m035anm009[] = {1040, 9256, 1, 0};
+ANI_CODE m035anm010[] = {9264, 0};
+ANI_CODE m035anm011[] = {9272, 0};
+ANI_CODE m035anm012[] = {9280, 0};
+ANI_CODE m035anm013[] = {9288, 0};
+ANI_CODE m035anm014[] = {9296, 0};
+ANI_CODE m035anm015[] = {1040, 9304, 1, 0};
+ANI_CODE m035anm016[] = {9312, 0};
+ANI_CODE m035anm017[] = {1040, 9320, 1, 0};
+ANI_CODE m035anm018[] = {9328, 0};
+ANI_CODE m035anm019[] = {9336, 0};
+ANI_CODE m036anm000[] = {1040, 9216, 1, 0};
+ANI_CODE m036anm002[] = {1040, 9224, 1, 0};
+ANI_CODE m036anm006[] = {9232, 0};
+ANI_CODE m036anm007[] = {9240, 0};
+ANI_CODE m036anm008[] = {9248, 0};
+ANI_CODE m036anm009[] = {1040, 9256, 1, 0};
+ANI_CODE m036anm010[] = {9264, 0};
+ANI_CODE m036anm011[] = {9272, 0};
+ANI_CODE m036anm012[] = {9280, 0};
+ANI_CODE m036anm013[] = {9288, 0};
+ANI_CODE m036anm014[] = {9296, 0};
+ANI_CODE m036anm015[] = {1040, 9304, 1, 0};
+ANI_CODE m036anm016[] = {9312, 0};
+ANI_CODE m037anm000[] = {24579, 1040, 9216, 1, 0};
+ANI_CODE m037anm002[] = {24579, 1040, 9224, 1, 0};
+ANI_CODE m037anm006[] = {24578, 4346, 24579, 9232, 0};
+ANI_CODE m037anm007[] = {24578, 4416, 24579, 9240, 0};
+ANI_CODE m037anm008[] = {24578, 4426, 24579, 9248, 0};
+ANI_CODE m037anm009[] = {24578, 4426, 24579, 9256, 0};
+ANI_CODE m037anm010[] = {24578, 4426, 24579, 9264, 0};
+ANI_CODE m037anm011[] = {24579, 9272, 0};
+ANI_CODE m037anm012[] = {24579, 4196, 24578, 4376, 24579, 9280, 0};
+ANI_CODE m037anm013[] = {24579, 9288, 0};
+ANI_CODE m037anm014[] = {24579, 1040, 9296, 1, 0};
+ANI_CODE m037anm015[] = {24579, 9304, 0};
+ANI_CODE m037anm016[] = {24579, 9312, 0};
+ANI_CODE m037anm017[] = {24579, 1040, 9320, 1, 0};
+ANI_CODE m038anm000[] = {1040, 9216, 1, 0};
+ANI_CODE m038anm001[] = {9224, 0};
+ANI_CODE m038anm002[] = {1040, 9232, 1, 0};
+ANI_CODE m038anm006[] = {9240, 0};
+ANI_CODE m038anm007[] = {9248, 0};
+ANI_CODE m038anm008[] = {9256, 0};
+ANI_CODE m038anm009[] = {1040, 9264, 1, 0};
+ANI_CODE m038anm010[] = {9272, 0};
+ANI_CODE m038anm011[] = {9280, 0};
+ANI_CODE m038anm012[] = {9288, 0};
+ANI_CODE m040anm000[] = {1040, 9216, 1, 0};
+ANI_CODE m040anm002[] = {1040, 9224, 1, 0};
+ANI_CODE m040anm006[] = {1040, 9232, 1, 0};
+ANI_CODE m040anm011[] = {9240, 0};
+ANI_CODE m040anm013[] = {1040, 9248, 1, 0};
+ANI_CODE m040anm014[] = {9256, 0};
+ANI_CODE m040anm015[] = {9264, 0};
+ANI_CODE m040anm016[] = {9272, 0};
+ANI_CODE m042anm002[] = {1040, 9216, 1, 0};
+ANI_CODE m042anm006[] = {9224, 0};
+ANI_CODE m042anm007[] = {9232, 0};
+ANI_CODE m042anm008[] = {9240, 0};
+ANI_CODE m042anm009[] = {1040, 9248, 1, 0};
+ANI_CODE m042anm010[] = {9256, 0};
+ANI_CODE m042anm011[] = {9264, 0};
+ANI_CODE m042anm012[] = {9272, 0};
+ANI_CODE m042anm013[] = {9280, 0};
+ANI_CODE m042anm014[] = {9288, 0};
+ANI_CODE m042anm015[] = {9296, 0};
+ANI_CODE m042anm016[] = {1040, 9304, 1, 0};
+ANI_CODE m042anm017[] = {9312, 0};
+
+ANI_CODE arei_anm[] = {9216, 0};
+ANI_CODE arei_loop_anm[] = {1040, 9216, 1, 0};
+
+ANI_CODE *m000anm_tbl[] = {
+    m000anm000, m000anm001, m000anm002, m000anm003, m000anm004, m000anm005,
+    m000anm006, m000anm007, m000anm008, m000anm009, m000anm010, m000anm000,
+    m000anm000, m000anm013, m000anm014, m000anm000, m000anm000, m000anm017,
+    m000anm018, m000anm000, m000anm020, m000anm021, m000anm000, m000anm023,
+    m000anm000, m000anm025, m000anm026, m000anm027, m000anm028, m000anm029,
+    m000anm000, m000anm000, m000anm032, m000anm033, m000anm000, m000anm000,
+    m000anm036, m000anm037, m000anm000, m000anm039, m000anm040, m000anm000,
+    m000anm042, m000anm000, m000anm044, m000anm045, m000anm046, m000anm047,
+    m000anm048, m000anm049, m000anm050, m000anm051, m000anm052, m000anm053,
+    m000anm054, m000anm055, m000anm056, m000anm057, m000anm058, m000anm059,
+    m000anm060, m000anm061, m000anm062, m000anm063, m000anm064, m000anm065,
+    m000anm066, m000anm067, m000anm068, m000anm069, m000anm070, m000anm071,
+    m000anm072, m000anm073, m000anm074, m000anm075, m000anm076, m000anm077,
+    m000anm078, m000anm079, m000anm080, m000anm081, m000anm082, m000anm083,
+    m000anm084, m000anm085, m000anm086, m000anm087, m000anm088, m000anm089,
+    m000anm090, m000anm091, m000anm092, m000anm093, m000anm094, m000anm095,
+    m000anm096, m000anm097, m000anm098, m000anm099, m000anm100, m000anm101,
+    m000anm102, m000anm103, m000anm104, m000anm105, m000anm106, m000anm107,
+    NULL,
+};
+
+ANI_CODE *m001anm_tbl[] = {
+    m000anm000, m000anm001, m000anm002, m000anm003, m000anm004, m000anm005,
+    m000anm006, m000anm007, m000anm008, m000anm009, m000anm010, m000anm000,
+    m000anm000, m000anm000, m000anm000, m000anm000, m000anm000, m000anm017,
+    m000anm000, m000anm000, m000anm000, m000anm021, m000anm000, m000anm023,
+    m000anm000, m000anm000, m000anm000, m000anm000, m000anm000, m000anm029,
+    m000anm000, m000anm000, m000anm000, m000anm000, m000anm000, m000anm000,
+    m000anm036, m000anm000, m000anm000, m000anm000, m000anm040, m000anm000,
+    m000anm042, m000anm000, m000anm000, m000anm000, m000anm000, m000anm000,
+    m001anm048, m001anm049, m001anm050, m001anm051, m001anm052, m001anm053,
+    m001anm054, m001anm055, m000anm056, m000anm057, m000anm056, m000anm057,
+    m000anm056, m000anm057, m000anm056, m000anm056, m000anm000, m000anm065,
+    m000anm066, m000anm067, m000anm000, m001anm069, m001anm070, m001anm071,
+    m001anm072, m001anm073, m001anm074, m001anm075, m001anm076, m000anm077,
+    m000anm078, m000anm079, m000anm080, m000anm081, m000anm082, m000anm083,
+    m000anm084, m000anm000, m000anm000, m000anm000, m000anm000, m000anm000,
+    m000anm000, m000anm000, m000anm000, m000anm000, m000anm000, m000anm000,
+    m000anm000, m000anm000, m000anm000, m000anm000, m000anm000, m000anm000,
+    m000anm000, m000anm000, m000anm000, m000anm000, m000anm000, m000anm107,
+    NULL,
+};
+
+ANI_CODE *m010anm_tbl[] = {
+    arei_anm,   arei_anm,   m010anm002, arei_anm,   arei_anm,
+    arei_anm,   m010anm006, m010anm007, m010anm006, m010anm009,
+    m010anm010, m010anm011, m010anm012, m010anm013, NULL,
+};
+
+ANI_CODE *m011anm_tbl[] = {
+    arei_anm,   arei_anm,   m011anm002, arei_anm,   arei_anm,   arei_anm,
+    m011anm006, m011anm007, m011anm008, m011anm009, m011anm010, m011anm011,
+    m011anm012, m011anm013, m011anm014, NULL,
+};
+
+ANI_CODE *m012anm_tbl[] = {
+    m012anm000, arei_anm,   m012anm002, m012anm003, m012anm004,
+    arei_anm,   m012anm006, m012anm007, m012anm008, m012anm009,
+    m012anm010, m012anm011, m012anm012, m012anm013, NULL,
+};
+
+ANI_CODE *m013anm_tbl[] = {
+    arei_anm,   arei_anm,   m013anm002, arei_anm,   arei_anm,
+    arei_anm,   m013anm006, m013anm007, m013anm008, m013anm009,
+    m013anm010, m013anm011, m013anm012, NULL,
+};
+
+ANI_CODE *m014anm_tbl[] = {
+    arei_anm,   arei_anm,   m014anm002, arei_anm,   arei_anm,
+    arei_anm,   m014anm006, m014anm007, m014anm008, m014anm009,
+    m014anm010, m014anm011, m014anm012, m014anm013, m014anm014,
+    m014anm015, m014anm016, m014anm017, m014anm018, NULL,
+};
+
+ANI_CODE *m015anm_tbl[] = {
+    m015anm000, arei_anm,   arei_anm,   m015anm003, m015anm004,
+    arei_anm,   m015anm006, m015anm007, m015anm008, m015anm009,
+    m015anm010, m015anm011, m015anm012, m015anm013, m015anm014,
+    m015anm015, m015anm016, m015anm017, NULL,
+};
+
+ANI_CODE *m016anm_tbl[] = {
+    arei_anm,   arei_anm,   m016anm002, arei_anm,   arei_anm,
+    arei_anm,   m016anm006, m016anm007, arei_anm,   m016anm009,
+    m016anm010, m016anm011, m016anm012, m016anm013, m016anm014,
+    m016anm015, m016anm016, m016anm017, m016anm018, NULL,
+};
+
+ANI_CODE *m018anm_tbl[] = {
+    m018anm000, arei_anm,   arei_anm,   m018anm003, m018anm004, arei_anm,
+    m018anm006, m018anm007, m018anm008, m018anm009, m018anm010, m018anm011,
+    m018anm012, m018anm013, m018anm014, m018anm015, m018anm016, NULL,
+};
+
+ANI_CODE *m019anm_tbl[] = {
+    m019anm000, m019anm001, m019anm002, arei_anm,   arei_anm,
+    arei_anm,   m019anm006, m019anm007, m019anm008, m019anm009,
+    m019anm010, m019anm011, m019anm012, m019anm013, NULL,
+};
+
+ANI_CODE *m020anm_tbl[] = {
+    m020anm000, arei_anm,   m020anm002, arei_anm,   arei_anm,   m020anm005,
+    m020anm006, m020anm007, m020anm008, m020anm009, m020anm010, m020anm011,
+    m020anm012, m020anm013, m020anm014, NULL,
+};
+
+ANI_CODE *m021anm_tbl[] = {
+    m021anm000, arei_anm, m021anm002, m021anm003, m021anm004,
+    m021anm005, arei_anm, arei_anm,   arei_anm,   m021anm009,
+    arei_anm,   arei_anm, arei_anm,   NULL,
+};
+
+ANI_CODE *m022anm_tbl[] = {
+    m022anm000, arei_anm,   m022anm002, arei_anm,   arei_anm,   arei_anm,
+    m022anm006, m022anm007, m022anm006, m022anm009, m022anm010, m022anm011,
+    m022anm012, m022anm013, m022anm014, m022anm015, NULL,
+};
+
+ANI_CODE *m023anm_tbl[] = {
+    m023anm000, arei_anm,   m023anm002, arei_anm,   arei_anm,
+    arei_anm,   m023anm006, m023anm007, m023anm006, m023anm009,
+    m023anm010, m023anm011, m023anm012, NULL,
+};
+
+ANI_CODE *m024anm_tbl[] = {
+    m024anm000, arei_anm,   m024anm002, arei_anm,   arei_anm,   arei_anm,
+    m024anm006, m024anm007, m024anm006, m024anm009, m024anm010, m024anm011,
+    m024anm012, m024anm013, m024anm014, m024anm015, m024anm016, NULL,
+};
+
+ANI_CODE *m025anm_tbl[] = {
+    m025anm000, arei_anm,   arei_anm,   arei_anm,   arei_anm,   arei_anm,
+    m025anm006, m025anm007, m025anm006, m025anm009, m025anm010, arei_anm,
+    arei_anm,   m025anm013, m025anm014, m025anm015, m025anm016, m025anm017,
+    m025anm018, m025anm019, m025anm020, NULL,
+};
+
+ANI_CODE *m027anm_tbl[] = {
+    m027anm000, m027anm001, m027anm002, m027anm003, m027anm004, arei_anm,
+    m027anm006, m027anm007, m027anm006, m027anm009, m027anm010, m027anm011,
+    m027anm012, m027anm013, m027anm014, m027anm015, m027anm016, NULL,
+};
+
+ANI_CODE *m028anm_tbl[] = {
+    m028anm000, m028anm001, m028anm002, arei_anm,   arei_anm,   arei_anm,
+    m028anm006, m028anm007, m028anm006, m028anm009, m028anm010, m028anm011,
+    m028anm012, m028anm013, m028anm014, m028anm015, NULL,
+};
+
+ANI_CODE *m031anm_tbl[] = {
+    m031anm000, m031anm001, m031anm002, m031anm003, m031anm004,
+    arei_anm,   m031anm006, arei_anm,   arei_anm,   arei_anm,
+    arei_anm,   m031anm011, m031anm012, NULL,
+};
+
+ANI_CODE *m032anm_tbl[] = {
+    m032anm000, arei_anm,   m032anm002, m032anm003, m032anm004, arei_anm,
+    m032anm006, m032anm007, m032anm008, m032anm009, m032anm010, m032anm011,
+    m032anm012, m032anm013, m032anm014, m032anm015, m032anm016, m032anm017,
+    m032anm018, m032anm019, NULL,
+};
+
+ANI_CODE *m033anm_tbl[] = {
+    m033anm000, arei_anm,   m033anm002, m033anm003, m033anm004, m033anm005,
+    m033anm006, m033anm007, m033anm008, m033anm009, m033anm010, m033anm011,
+    m033anm012, m033anm013, m033anm014, m033anm015, m033anm016, m033anm017,
+    m033anm018, m033anm019, NULL,
+};
+
+ANI_CODE *m034anm_tbl[] = {
+    m034anm000, arei_anm,   m034anm002, m034anm003, m034anm004, arei_anm,
+    m034anm006, m034anm007, m034anm008, m034anm009, m034anm010, m034anm011,
+    m034anm012, m034anm013, m034anm014, m034anm015, m034anm016, m034anm017,
+    m034anm018, m034anm019, NULL,
+};
+
+ANI_CODE *m035anm_tbl[] = {
+    m035anm000, arei_anm,   m035anm002, arei_anm,   arei_anm,   arei_anm,
+    m035anm006, m035anm007, m035anm008, m035anm009, m035anm010, m035anm011,
+    m035anm012, m035anm013, m035anm014, m035anm015, m035anm016, m035anm017,
+    m035anm018, m035anm019, NULL,
+};
+
+ANI_CODE *m036anm_tbl[] = {
+    m036anm000, arei_anm,   m036anm002, arei_anm,   arei_anm,   arei_anm,
+    m036anm006, m036anm007, m036anm008, m036anm009, m036anm010, m036anm011,
+    m036anm012, m036anm013, m036anm014, m036anm015, m036anm016, NULL,
+};
+
+ANI_CODE *m037anm_tbl[] = {
+    m037anm000, arei_anm,   m037anm002, arei_anm,   arei_anm,
+    arei_anm,   m037anm006, m037anm007, m037anm008, m037anm009,
+    m037anm010, m037anm011, m037anm012, m037anm013, m037anm014,
+    m037anm015, m037anm016, m037anm017, NULL,
+};
+
+ANI_CODE *m038anm_tbl[] = {
+    m038anm000, m038anm001, m038anm002, arei_anm,   arei_anm,
+    arei_anm,   m038anm006, m038anm007, m038anm008, m038anm009,
+    m038anm010, m038anm011, m038anm012, NULL,
+};
+
+ANI_CODE *m040anm_tbl[] = {
+    m040anm000, arei_anm,   m040anm002, arei_anm,   arei_anm,   arei_anm,
+    m040anm006, arei_anm,   arei_anm,   arei_anm,   arei_anm,   m040anm011,
+    arei_anm,   m040anm013, m040anm014, m040anm015, m040anm016, NULL,
+};
+
+ANI_CODE *m042anm_tbl[] = {
+    arei_anm,   arei_anm,   m042anm002, arei_anm,   arei_anm,
+    arei_anm,   m042anm006, m042anm007, m042anm008, m042anm009,
+    m042anm010, m042anm011, m042anm012, m042anm013, m042anm014,
+    m042anm015, m042anm016, m042anm017, NULL,
+};
+
+ANI_CODE *arei_anm_tbl[] = {
+    arei_anm,
+    NULL,
+};
+
+ANI_CODE *arei_loopanm_tbl[] = {
+    arei_loop_anm,
+    NULL,
+};
+
+ANI_CODE **anm_tbl[] = {
+    m000anm_tbl,      m001anm_tbl,      m010anm_tbl,      m011anm_tbl,
+    m012anm_tbl,      m013anm_tbl,      m014anm_tbl,      m015anm_tbl,
+    m016anm_tbl,      m018anm_tbl,      m019anm_tbl,      m020anm_tbl,
+    m021anm_tbl,      m022anm_tbl,      m023anm_tbl,      m024anm_tbl,
+    m025anm_tbl,      m027anm_tbl,      m028anm_tbl,      m031anm_tbl,
+    m032anm_tbl,      m033anm_tbl,      m034anm_tbl,      m035anm_tbl,
+    m036anm_tbl,      m037anm_tbl,      m038anm_tbl,      arei_anm_tbl,
+    m040anm_tbl,      arei_anm_tbl,     m042anm_tbl,      m042anm_tbl,
+    m042anm_tbl,      arei_loopanm_tbl, m019anm_tbl,      m019anm_tbl,
+    m020anm_tbl,      m021anm_tbl,      m027anm_tbl,      m028anm_tbl,
+    arei_anm_tbl,     arei_loopanm_tbl, arei_anm_tbl,     arei_anm_tbl,
+    arei_loopanm_tbl, arei_anm_tbl,     arei_anm_tbl,     arei_anm_tbl,
+    arei_loopanm_tbl, arei_anm_tbl,     arei_loopanm_tbl, arei_loopanm_tbl,
+    arei_anm_tbl,     arei_anm_tbl,     arei_anm_tbl,     arei_loopanm_tbl,
+    arei_loopanm_tbl, arei_anm_tbl,     arei_anm_tbl,     arei_loopanm_tbl,
+    arei_anm_tbl,     arei_anm_tbl,     arei_anm_tbl,     arei_anm_tbl,
+    arei_anm_tbl,     arei_loopanm_tbl, arei_anm_tbl,     arei_anm_tbl,
+    arei_anm_tbl,     arei_anm_tbl,     arei_anm_tbl,     arei_anm_tbl,
+    arei_anm_tbl,     arei_loopanm_tbl, arei_anm_tbl,     arei_anm_tbl,
+    arei_anm_tbl,
+};
+
+MANMDL_DAT manmdl_dat[] = {
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 13,
+        .waist_id = 21,
+        .leg_id = 10,
+        .wdat = m000_wmim_tbl,
+        .cdat = NULL,
+        .collision = m000_collision,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 13,
+        .waist_id = 21,
+        .leg_id = 10,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 13,
+        .waist_id = 21,
+        .leg_id = 10,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 13,
+        .waist_id = 21,
+        .leg_id = 10,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 13,
+        .waist_id = 21,
+        .leg_id = 10,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 13,
+        .waist_id = 21,
+        .leg_id = 10,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.772233009338379,
+        .neck_id = 13,
+        .waist_id = 21,
+        .leg_id = 10,
+        .wdat = NULL,
+        .cdat = m006_cloth,
+        .collision = m006_collision,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 13,
+        .waist_id = 21,
+        .leg_id = 10,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 0,
+        .waist_id = 0,
+        .leg_id = 0,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 8,
+        .waist_id = 13,
+        .leg_id = 6,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 11,
+        .waist_id = 19,
+        .leg_id = 8,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 11,
+        .waist_id = 19,
+        .leg_id = 8,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 13,
+        .waist_id = 21,
+        .leg_id = 10,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 11,
+        .waist_id = 19,
+        .leg_id = 8,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 2.2970430850982666,
+        .neck_id = 11,
+        .waist_id = 25,
+        .leg_id = 16,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 11,
+        .waist_id = 19,
+        .leg_id = 8,
+        .wdat = NULL,
+        .cdat = m015_cloth,
+        .collision = m015_collision,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 11,
+        .waist_id = 19,
+        .leg_id = 8,
+        .wdat = NULL,
+        .cdat = m016_cloth,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 11,
+        .waist_id = 19,
+        .leg_id = 8,
+        .wdat = NULL,
+        .cdat = m017_cloth,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.5216089487075806,
+        .neck_id = 9,
+        .waist_id = 25,
+        .leg_id = 12,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 9,
+        .waist_id = 17,
+        .leg_id = 12,
+        .wdat = NULL,
+        .cdat = m019_cloth,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 13,
+        .waist_id = 17,
+        .leg_id = 10,
+        .wdat = NULL,
+        .cdat = m020_cloth,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 3,
+        .waist_id = 3,
+        .leg_id = 3,
+        .wdat = m021_wmim_tbl,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.0,
+        .neck_id = 11,
+        .waist_id = 19,
+        .leg_id = 8,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 9,
+        .waist_id = 17,
+        .leg_id = 12,
+        .wdat = m023_wmim_tbl,
+        .cdat = m023_cloth,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 11,
+        .waist_id = 19,
+        .leg_id = 8,
+        .wdat = NULL,
+        .cdat = m024_cloth,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.0,
+        .neck_id = 1,
+        .waist_id = 1,
+        .leg_id = 1,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 13,
+        .waist_id = 21,
+        .leg_id = 10,
+        .wdat = NULL,
+        .cdat = m026_cloth,
+        .collision = NULL,
+    },
+    {
+        .scale = 2.057827949523926,
+        .neck_id = 9,
+        .waist_id = 15,
+        .leg_id = 13,
+        .wdat = m027_wmim_tbl,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 2.057827949523926,
+        .neck_id = 9,
+        .waist_id = 15,
+        .leg_id = 13,
+        .wdat = m028_wmim_tbl,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 11,
+        .waist_id = 19,
+        .leg_id = 8,
+        .wdat = NULL,
+        .cdat = m029_cloth,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 13,
+        .waist_id = 19,
+        .leg_id = 10,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.0,
+        .neck_id = 1,
+        .waist_id = 1,
+        .leg_id = 1,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.7271000146865845,
+        .neck_id = 11,
+        .waist_id = 19,
+        .leg_id = 8,
+        .wdat = NULL,
+        .cdat = m032_cloth,
+        .collision = m032_collision,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 13,
+        .waist_id = 25,
+        .leg_id = 10,
+        .wdat = NULL,
+        .cdat = m033_cloth,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.7271000146865845,
+        .neck_id = 11,
+        .waist_id = 19,
+        .leg_id = 8,
+        .wdat = NULL,
+        .cdat = m034_cloth,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.7271000146865845,
+        .neck_id = 11,
+        .waist_id = 19,
+        .leg_id = 8,
+        .wdat = NULL,
+        .cdat = m035_cloth,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.7271000146865845,
+        .neck_id = 11,
+        .waist_id = 19,
+        .leg_id = 8,
+        .wdat = NULL,
+        .cdat = m036_cloth,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 11,
+        .waist_id = 22,
+        .leg_id = 8,
+        .wdat = NULL,
+        .cdat = m037_cloth,
+        .collision = m037_collision,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 11,
+        .waist_id = 19,
+        .leg_id = 8,
+        .wdat = NULL,
+        .cdat = m038_cloth,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.0,
+        .neck_id = 34,
+        .waist_id = 34,
+        .leg_id = 34,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.0,
+        .neck_id = 11,
+        .waist_id = 53,
+        .leg_id = 8,
+        .wdat = NULL,
+        .cdat = m040_cloth,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 11,
+        .waist_id = 19,
+        .leg_id = 8,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 8,
+        .waist_id = 14,
+        .leg_id = 9,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 8,
+        .waist_id = 14,
+        .leg_id = 9,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 8,
+        .waist_id = 14,
+        .leg_id = 9,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 13,
+        .waist_id = 21,
+        .leg_id = 10,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 11,
+        .waist_id = 19,
+        .leg_id = 8,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 13,
+        .waist_id = 21,
+        .leg_id = 10,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.0,
+        .neck_id = 1,
+        .waist_id = 1,
+        .leg_id = 1,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 10,
+        .waist_id = 16,
+        .leg_id = 10,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.0,
+        .neck_id = 1,
+        .waist_id = 1,
+        .leg_id = 1,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 11,
+        .waist_id = 19,
+        .leg_id = 8,
+        .wdat = NULL,
+        .cdat = m051_cloth,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 0,
+        .waist_id = 0,
+        .leg_id = 0,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 0,
+        .waist_id = 0,
+        .leg_id = 0,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 0,
+        .waist_id = 0,
+        .leg_id = 0,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 0,
+        .waist_id = 0,
+        .leg_id = 0,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 8,
+        .waist_id = 17,
+        .leg_id = 12,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.772233009338379,
+        .neck_id = 3,
+        .waist_id = 5,
+        .leg_id = 4,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 9,
+        .waist_id = 17,
+        .leg_id = 12,
+        .wdat = NULL,
+        .cdat = m058_cloth,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 11,
+        .waist_id = 22,
+        .leg_id = 8,
+        .wdat = NULL,
+        .cdat = m059_cloth,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 11,
+        .waist_id = 19,
+        .leg_id = 8,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 13,
+        .waist_id = 21,
+        .leg_id = 10,
+        .wdat = NULL,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 9,
+        .waist_id = 17,
+        .leg_id = 12,
+        .wdat = NULL,
+        .cdat = m019_cloth,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 13,
+        .waist_id = 17,
+        .leg_id = 10,
+        .wdat = NULL,
+        .cdat = m020_cloth,
+        .collision = NULL,
+    },
+    {
+        .scale = 1.9190000295639038,
+        .neck_id = 3,
+        .waist_id = 3,
+        .leg_id = 3,
+        .wdat = m021_wmim_tbl,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 2.057827949523926,
+        .neck_id = 9,
+        .waist_id = 15,
+        .leg_id = 13,
+        .wdat = m027_wmim_tbl,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+    {
+        .scale = 2.057827949523926,
+        .neck_id = 9,
+        .waist_id = 15,
+        .leg_id = 13,
+        .wdat = m028_wmim_tbl,
+        .cdat = NULL,
+        .collision = NULL,
+    },
+};

@@ -532,10 +532,6 @@ void mimSetVertex(ANI_CTRL *ani_ctrl)
     for (i = 0; i < 30; i++)
     {
         flg[i] = 1;
-
-        asm volatile ("nop");
-        asm volatile ("nop");
-        asm volatile ("nop");
     }
 
     for (i = 0; i < ani_ctrl->wmim_num; i++)
@@ -699,10 +695,6 @@ void SceneMimSetVertex(ANI_CTRL *ani_ctrl, u_int frame)
     for (i = 0; i < 30; i++)
     {
         flg[i] = 1;
-
-        asm volatile ("nop");
-        asm volatile ("nop");
-        asm volatile ("nop");
     }
 
     for (i = 0; i < ani_ctrl->wmim_num; i++)
@@ -757,10 +749,6 @@ void mimChodoInitWork()
         mim_chodo[i].furn_id = -1;
 
         mim_chodo_se[i] = 0xFF;
-
-        asm volatile ("nop");
-        asm volatile ("nop");
-        asm volatile ("nop");
     }
 }
 
@@ -846,10 +834,6 @@ void mimInitChodo(u_int *mim_p, u_short *furn_id, u_char room_id, u_short room_n
     i = 0;
     while (chodo_num[i] != 0xff)
     {
-        asm volatile ("nop");
-        asm volatile ("nop");
-        asm volatile ("nop");
-
         i++;
     }
 
@@ -875,10 +859,6 @@ void mimInitChodo(u_int *mim_p, u_short *furn_id, u_char room_id, u_short room_n
                     flg = 1;
                     break;
                 }
-
-                asm volatile ("nop");
-                asm volatile ("nop");
-                asm volatile ("nop");
             }
 
             if (flg)
@@ -1121,7 +1101,7 @@ void mimAddressMapping(u_int *top_addr)
 
     tbl_p = (MIM_ADDR_TABLE *)(head_p + 1);
 
-    if (*top_addr == 0x454D494D && head_p->map_flg != 1) // 0x454d494d is "EMIM" if interpreted as chars
+    if (*top_addr == /* EMIM */ 0x454D494D && head_p->map_flg != 1) // 0x454d494d is "EMIM" if interpreted as chars
     {
         for (i = 0; i < head_p->key_num; i++)
         {

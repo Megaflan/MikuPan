@@ -1989,6 +1989,22 @@ void SetTexDirect(SPRITE_DATA *sd, int atype)
         Change.CSA = 0;
         Change.CLD = 0;
     }
+
+    DISP_SPRT s;
+    s.tex0 = *(u_long*)&sd->g_GsTex0;
+    s.r = sd->r;
+    s.g = sd->g;
+    s.b = sd->b;
+    s.alpha = sd->alpha;
+    s.x = mx + 320;
+    s.y = my + 224;
+
+    s.u = 8;
+    s.v = 8;
+    s.w = sd->size_w;
+    s.h = sd->size_h;
+
+    MikuPan_Render2DTexture(&s);
     
     Reserve2DPacket(0xffffffff);
 
@@ -2381,6 +2397,7 @@ void ClearZBuffer()
         | SCE_GS_RGBAQ << (4 * 0) 
         | SCE_GS_XYZF2 << (4 * 1) 
         | SCE_GS_XYZF2 << (4 * 2);
+
     ndpkt++;
     
     for (i = 0; i < 10; i++)
@@ -2910,6 +2927,7 @@ void LocalCopyLtoL(int addr1, int addr2)
 {
 	int i;
     Q_WORDDATA *pbuf;
+    sceGsLoadImage load_image;
     
     Reserve2DPacket(0x1000);
     
@@ -2956,6 +2974,35 @@ void LocalCopyLtoL(int addr1, int addr2)
         pbuf[2].ul64[0] = SCE_GS_SET_TRXDIR(2);
         pbuf[2].ul64[1] = SCE_GS_TRXDIR;
     }
+
+
+    /// Setting up the BITBLTBUF tag
+    load_image.bitbltbuf.SBP = addr1;
+    load_image.bitbltbuf.SBW = 10;
+    load_image.bitbltbuf.SPSM = 0;
+    load_image.bitbltbuf.DBP = addr2;
+    load_image.bitbltbuf.DBW = 10;
+    load_image.bitbltbuf.DPSM = 0;
+    load_image.bitbltbufaddr = SCE_GS_BITBLTBUF;
+
+    /// Setting up the TRXPOS tag
+    load_image.trxpos.DIR = 0;
+    load_image.trxpos.DSAX = 0;
+    load_image.trxpos.DSAY = 0;
+    load_image.trxpos.SSAX = 0;
+    load_image.trxpos.SSAY = 0;
+    load_image.trxdiraddr = SCE_GS_TRXPOS;
+
+    /// Setting up the TRXREG tag
+    //load_image.trxreg.RRW = tph->ImageWidth;
+    //load_image.trxreg.RRH = tph->ImageHeight;
+    load_image.trxregaddr = SCE_GS_TRXREG;
+
+    /// Setting up the TRXDIR tag
+    load_image.trxdir.XDR = 0;
+    load_image.trxdiraddr = SCE_GS_TRXDIR;
+
+    //GsUpload(&load_image, (unsigned char*)img_addr);
     
     pbuf->ui32[0] = DMAcnt | 0; // DMAcnt - 0 QW worth of data (just the embedded data in the tag)
     pbuf->ui32[1] = 0;

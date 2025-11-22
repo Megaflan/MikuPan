@@ -545,13 +545,13 @@ void gra2dDrawDbgMenu()
         }
     }
 
-    if (*key_now[3] != 0)
+    if (DPAD_RIGHT_PRESSED() != 0)
     {
         ok = 0;
 
-        if (*key_now[9] == 0 || *key_now[3] == 1)
+        if (L2_PRESSED() == 0 || DPAD_RIGHT_PRESSED() == 1)
         {
-            pad = *key_now[10] != 0 ? 3 : 1;
+            pad = R1_PRESSED() != 0 ? 3 : 1;
 
             if (nlp->submenu[nlp->pos].subnum & 0x10000)
             {
@@ -569,7 +569,7 @@ void gra2dDrawDbgMenu()
             {
                 if (n >= 29 && n <= 34)
                 {
-                    if (*key_now[11] != 0)
+                    if (R2_PRESSED() != 0)
                     {
                         if (n >= 29 && n <= 31)
                         {
@@ -593,7 +593,7 @@ void gra2dDrawDbgMenu()
                 {
                     *dbgmenu_inttbl[n] = MIN(*dbgmenu_inttbl[n] + pad, nlp->submenu[nlp->pos].nmax);
                 }
-                else if (*key_now[3] == 1)
+                else if (DPAD_RIGHT_PRESSED() == 1)
                 {
                     *dbgmenu_inttbl[n] = MAX0(*dbgmenu_inttbl[n] + pad, nlp->submenu[nlp->pos].nmax);
                 }
@@ -601,13 +601,13 @@ void gra2dDrawDbgMenu()
         }
     }
 
-    if (*key_now[2] != 0)
+    if (DPAD_LEFT_PRESSED() != 0)
     {
         ok = 0;
 
-        if (*key_now[9] == 0 || *key_now[2] == 1)
+        if (L2_PRESSED() == 0 || DPAD_LEFT_PRESSED() == 1)
         {
-            pad = *key_now[10] != 0 ? 3 : 1;
+            pad = R1_PRESSED() != 0 ? 3 : 1;
 
             if (nlp->submenu[nlp->pos].subnum & 0x10000)
             {
@@ -746,7 +746,8 @@ void gra2dDrawDbgMenu()
     cam_custom_wrk.set_sub = dbg_wrk.cc_set_sub;
     cam_custom_wrk.set_spe = dbg_wrk.cc_set_spe;
 
-    ingame_wrk.clear_count = dbg_wrk.oth_sub_menu;
+    /// TODO: Reimplement some missing features
+    ingame_wrk.clear_count = 1;//dbg_wrk.oth_sub_menu;
 }
 
 void SetMaxNumber(int num1, int num2, int nmax)

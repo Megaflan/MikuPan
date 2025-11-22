@@ -3,6 +3,8 @@
 
 #include "typedefs.h"
 
+#include <stdint.h>
+
 typedef struct {
 	u_int *pk2;
 	u_int *near_sgd;

@@ -29,6 +29,7 @@ void BattleModeInfomationDisp()
 
 int CheckClearAllS()
 {
+    return 1;
 }
 
 void BattleModeClear()
@@ -41,14 +42,17 @@ void BattleModeScoreRecord(long int score)
 
 int isBattleModeGame()
 {
+    return 1;
 }
 
 int CheckClearAllFirst()
 {
+    return 1;
 }
 
 int CheckClearAll()
 {
+    return 1;
 }
 
 void SetBattleEnd()
