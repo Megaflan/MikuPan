@@ -35,6 +35,9 @@ u_char msn_title_flr_sp_num[] = {1, 2, 1, 1, 1};
 u_char msn_title_sp_ttl_no[] = {11, 11, 11, 11, 11};
 u_char msn_title_ttl_sp_num[] = {2, 1, 1, 1, 1};
 
+SPRT_SDAT stg_title_sp_bak[];
+SCN_LOAD_DAT *scn_load[];
+
 SPRT_SDAT msn_title00_sp_flr[] = {
     {
         .u = 0,
@@ -436,6 +439,2011 @@ MSN_LOAD_DAT msn0_title_load_dat[] = {
     },
 };
 
+MSN_LOAD_DAT scn0022_load[] = {
+    {
+        .file_no = 2,
+        .file_type = 12,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn0022_del_dat[] = {65535};
+
+SCN_LOAD_DAT scn_load0[] = {
+    {
+        .scn_no = 2,
+        .load_dat = scn0022_load,
+        .del_dat = scn0022_del_dat,
+    },
+    {
+        .scn_no = 255,
+        .load_dat = NULL,
+        .del_dat = NULL,
+    },
+};
+
+MSN_LOAD_DAT scn1010_load[] = {
+    {
+        .file_no = 802,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 14680064,
+    },
+    {
+        .file_no = 908,
+        .file_type = 10,
+        .tmp_no = 3,
+        .addr = 12845056,
+    },
+    {
+        .file_no = 1431,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 22,
+    },
+    {
+        .file_no = 947,
+        .file_type = 11,
+        .tmp_no = 0,
+        .addr = 16777216,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn1010_del_dat[] = {65535};
+
+MSN_LOAD_DAT scn1030_load[] = {
+    {
+        .file_no = 976,
+        .file_type = 11,
+        .tmp_no = 0,
+        .addr = 16908288,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn1030_del_dat[] = {908, 65535};
+
+MSN_LOAD_DAT scn1034_load[] = {
+    {
+        .file_no = 800,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 15728640,
+    },
+    {
+        .file_no = 910,
+        .file_type = 10,
+        .tmp_no = 3,
+        .addr = 12845056,
+    },
+    {
+        .file_no = 909,
+        .file_type = 10,
+        .tmp_no = 3,
+        .addr = 12877824,
+    },
+    {
+        .file_no = 924,
+        .file_type = 10,
+        .tmp_no = 1,
+        .addr = 12943360,
+    },
+    {
+        .file_no = 1430,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 23,
+    },
+    {
+        .file_no = 1434,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 24,
+    },
+    {
+        .file_no = 1442,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 25,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn1034_del_dat[] = {65535};
+
+MSN_LOAD_DAT scn1160_load[] = {
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn1160_del_dat[] = {976, 800, 924, 909, 1442, 1430, 65535};
+
+MSN_LOAD_DAT scn1070_load[] = {
+    {
+        .file_no = 808,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 15204352,
+    },
+    {
+        .file_no = 913,
+        .file_type = 10,
+        .tmp_no = 3,
+        .addr = 12877824,
+    },
+    {
+        .file_no = 932,
+        .file_type = 10,
+        .tmp_no = 9,
+        .addr = 12943360,
+    },
+    {
+        .file_no = 948,
+        .file_type = 11,
+        .tmp_no = 0,
+        .addr = 16777216,
+    },
+    {
+        .file_no = 1441,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 23,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn1070_del_dat[] = {947, 805, 65535};
+
+MSN_LOAD_DAT scn1090_load[] = {
+    {
+        .file_no = 848,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 15728640,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn1090_del_dat[] = {913, 65535};
+
+MSN_LOAD_DAT scn1100_load[] = {
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn1100_del_dat[] = {808, 932, 65535};
+
+MSN_LOAD_DAT scn1102_load[] = {
+    {
+        .file_no = 809,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 13107200,
+    },
+    {
+        .file_no = 869,
+        .file_type = 9,
+        .tmp_no = 10,
+        .addr = 10682368,
+    },
+    {
+        .file_no = 1363,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 16,
+    },
+    {
+        .file_no = 11,
+        .file_type = 12,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn1102_del_dat[] = {848, 65535};
+
+MSN_LOAD_DAT scn1120_load[] = {
+    {
+        .file_no = 911,
+        .file_type = 10,
+        .tmp_no = 10,
+        .addr = 12845056,
+    },
+    {
+        .file_no = 950,
+        .file_type = 11,
+        .tmp_no = 0,
+        .addr = 16777216,
+    },
+    {
+        .file_no = 955,
+        .file_type = 11,
+        .tmp_no = 0,
+        .addr = 16842752,
+    },
+    {
+        .file_no = 980,
+        .file_type = 11,
+        .tmp_no = 0,
+        .addr = 16973824,
+    },
+    {
+        .file_no = 1433,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 25,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn1120_del_dat[] = {802, 910, 948, 65535};
+
+MSN_LOAD_DAT scn1170_load[] = {
+    {
+        .file_no = 803,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 14680064,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn1170_del_dat[] = {950, 955, 980, 65535};
+
+MSN_LOAD_DAT scn1150_load[] = {
+    {
+        .file_no = 812,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 13107200,
+    },
+    {
+        .file_no = 872,
+        .file_type = 9,
+        .tmp_no = 13,
+        .addr = 10682368,
+    },
+    {
+        .file_no = 1381,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 16,
+    },
+    {
+        .file_no = 800,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 15204352,
+    },
+    {
+        .file_no = 859,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 16252928,
+    },
+    {
+        .file_no = 925,
+        .file_type = 10,
+        .tmp_no = 4,
+        .addr = 12845056,
+    },
+    {
+        .file_no = 917,
+        .file_type = 10,
+        .tmp_no = 4,
+        .addr = 12910592,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn1150_del_dat[] = {809, 869, 1363, 911, 1433, 65535};
+
+MSN_LOAD_DAT scn1180_load[] = {
+    {
+        .file_no = 864,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 13631488,
+    },
+    {
+        .file_no = 905,
+        .file_type = 9,
+        .tmp_no = 65,
+        .addr = 11403264,
+    },
+    {
+        .file_no = 1389,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 17,
+    },
+    {
+        .file_no = 805,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 15728640,
+    },
+    {
+        .file_no = 926,
+        .file_type = 10,
+        .tmp_no = 6,
+        .addr = 12910592,
+    },
+    {
+        .file_no = 946,
+        .file_type = 11,
+        .tmp_no = 0,
+        .addr = 16777216,
+    },
+    {
+        .file_no = 952,
+        .file_type = 11,
+        .tmp_no = 0,
+        .addr = 16908288,
+    },
+    {
+        .file_no = 1440,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 25,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn1180_del_dat[] = {917, 65535};
+
+MSN_LOAD_DAT scn1230_load[] = {
+    {
+        .file_no = 832,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 16252928,
+    },
+    {
+        .file_no = 927,
+        .file_type = 10,
+        .tmp_no = 4,
+        .addr = 12910592,
+    },
+    {
+        .file_no = 918,
+        .file_type = 10,
+        .tmp_no = 33,
+        .addr = 13041664,
+    },
+    {
+        .file_no = 823,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 15728640,
+    },
+    {
+        .file_no = 915,
+        .file_type = 10,
+        .tmp_no = 24,
+        .addr = 12976128,
+    },
+    {
+        .file_no = 982,
+        .file_type = 11,
+        .tmp_no = 0,
+        .addr = 17039360,
+    },
+    {
+        .file_no = 961,
+        .file_type = 11,
+        .tmp_no = 0,
+        .addr = 17235968,
+    },
+    {
+        .file_no = 1433,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 22,
+    },
+    {
+        .file_no = 1435,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 24,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn1230_del_dat[] = {872, 812, 1381, 905, 864, 1389, 800, 805, 859, 926, 1431, 1434, 65535};
+
+MSN_LOAD_DAT scn1220_load[] = {
+    {
+        .file_no = 817,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 13107200,
+    },
+    {
+        .file_no = 876,
+        .file_type = 9,
+        .tmp_no = 18,
+        .addr = 10682368,
+    },
+    {
+        .file_no = 1367,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 16,
+    },
+    {
+        .file_no = 862,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 13631488,
+    },
+    {
+        .file_no = 903,
+        .file_type = 9,
+        .tmp_no = 63,
+        .addr = 11403264,
+    },
+    {
+        .file_no = 1382,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 17,
+    },
+    {
+        .file_no = 810,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 14155776,
+    },
+    {
+        .file_no = 870,
+        .file_type = 9,
+        .tmp_no = 11,
+        .addr = 12124160,
+    },
+    {
+        .file_no = 1364,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 18,
+    },
+    {
+        .file_no = 804,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 15204352,
+    },
+    {
+        .file_no = 928,
+        .file_type = 10,
+        .tmp_no = 5,
+        .addr = 12910592,
+    },
+    {
+        .file_no = 929,
+        .file_type = 10,
+        .tmp_no = 63,
+        .addr = 12943360,
+    },
+    {
+        .file_no = 1437,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 25,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn1220_del_dat[] = {952, 927, 1440, 65535};
+
+MSN_LOAD_DAT scn1260_load[] = {
+    {
+        .file_no = 863,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 13107200,
+    },
+    {
+        .file_no = 904,
+        .file_type = 9,
+        .tmp_no = 64,
+        .addr = 10682368,
+    },
+    {
+        .file_no = 1384,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 16,
+    },
+    {
+        .file_no = 919,
+        .file_type = 10,
+        .tmp_no = 64,
+        .addr = 13025280,
+    },
+    {
+        .file_no = 805,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 14680064,
+    },
+    {
+        .file_no = 921,
+        .file_type = 10,
+        .tmp_no = 6,
+        .addr = 12894208,
+    },
+    {
+        .file_no = 920,
+        .file_type = 10,
+        .tmp_no = 5,
+        .addr = 12845056,
+    },
+    {
+        .file_no = 1432,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 23,
+    },
+    {
+        .file_no = 1440,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 25,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn1260_del_dat[] = {817, 876, 1367, 862, 903, 1382, 803, 925, 928, 929, 982, 1441, 1437, 65535};
+
+MSN_LOAD_DAT scn1250_load[] = {
+    {
+        .file_no = 816,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 14680064,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn1250_del_dat[] = {805, 920, 921, 1440, 65535};
+
+MSN_LOAD_DAT scn1280_load[] = {
+    {
+        .file_no = 811,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 13107200,
+    },
+    {
+        .file_no = 871,
+        .file_type = 9,
+        .tmp_no = 12,
+        .addr = 10682368,
+    },
+    {
+        .file_no = 1365,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 16,
+    },
+    {
+        .file_no = 829,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 13631488,
+    },
+    {
+        .file_no = 846,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 15728640,
+    },
+    {
+        .file_no = 923,
+        .file_type = 10,
+        .tmp_no = 47,
+        .addr = 12877824,
+    },
+    {
+        .file_no = 922,
+        .file_type = 10,
+        .tmp_no = 5,
+        .addr = 12845056,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn1280_del_dat[] = {810, 870, 1364, 863, 904, 1384, 919, 823, 915, 65535};
+
+MSN_LOAD_DAT scn1301_load[] = {
+    {
+        .file_no = 953,
+        .file_type = 11,
+        .tmp_no = 0,
+        .addr = 16777216,
+    },
+    {
+        .file_no = 25,
+        .file_type = 12,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn1301_del_dat[] = {846, 923, 804, 922, 832, 918, 946, 961, 65535};
+
+MSN_LOAD_DAT scn1320_load[] = {
+    {
+        .file_no = 954,
+        .file_type = 11,
+        .tmp_no = 0,
+        .addr = 16842752,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn1320_del_dat[] = {811, 871, 1365, 829, 65535};
+
+MSN_LOAD_DAT scn1330_load[] = {
+    {
+        .file_no = 839,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 13107200,
+    },
+    {
+        .file_no = 895,
+        .file_type = 9,
+        .tmp_no = 40,
+        .addr = 10682368,
+    },
+    {
+        .file_no = 1380,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 16,
+    },
+    {
+        .file_no = 838,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 15204352,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn1330_del_dat[] = {953, 65535};
+
+MSN_LOAD_DAT scn1410_load[] = {
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn1410_del_dat[] = {954, 65535};
+
+SCN_LOAD_DAT scn_load1[] = {
+    {
+        .scn_no = 6,
+        .load_dat = scn1010_load,
+        .del_dat = scn1010_del_dat,
+    },
+    {
+        .scn_no = 7,
+        .load_dat = scn1030_load,
+        .del_dat = scn1030_del_dat,
+    },
+    {
+        .scn_no = 9,
+        .load_dat = scn1034_load,
+        .del_dat = scn1034_del_dat,
+    },
+    {
+        .scn_no = 18,
+        .load_dat = scn1160_load,
+        .del_dat = scn1160_del_dat,
+    },
+    {
+        .scn_no = 10,
+        .load_dat = scn1070_load,
+        .del_dat = scn1070_del_dat,
+    },
+    {
+        .scn_no = 12,
+        .load_dat = scn1090_load,
+        .del_dat = scn1090_del_dat,
+    },
+    {
+        .scn_no = 13,
+        .load_dat = scn1100_load,
+        .del_dat = scn1100_del_dat,
+    },
+    {
+        .scn_no = 15,
+        .load_dat = scn1102_load,
+        .del_dat = scn1102_del_dat,
+    },
+    {
+        .scn_no = 16,
+        .load_dat = scn1120_load,
+        .del_dat = scn1120_del_dat,
+    },
+    {
+        .scn_no = 19,
+        .load_dat = scn1170_load,
+        .del_dat = scn1170_del_dat,
+    },
+    {
+        .scn_no = 17,
+        .load_dat = scn1150_load,
+        .del_dat = scn1150_del_dat,
+    },
+    {
+        .scn_no = 20,
+        .load_dat = scn1180_load,
+        .del_dat = scn1180_del_dat,
+    },
+    {
+        .scn_no = 22,
+        .load_dat = scn1230_load,
+        .del_dat = scn1230_del_dat,
+    },
+    {
+        .scn_no = 21,
+        .load_dat = scn1220_load,
+        .del_dat = scn1220_del_dat,
+    },
+    {
+        .scn_no = 25,
+        .load_dat = scn1260_load,
+        .del_dat = scn1260_del_dat,
+    },
+    {
+        .scn_no = 24,
+        .load_dat = scn1250_load,
+        .del_dat = scn1250_del_dat,
+    },
+    {
+        .scn_no = 26,
+        .load_dat = scn1280_load,
+        .del_dat = scn1280_del_dat,
+    },
+    {
+        .scn_no = 28,
+        .load_dat = scn1301_load,
+        .del_dat = scn1301_del_dat,
+    },
+    {
+        .scn_no = 29,
+        .load_dat = scn1320_load,
+        .del_dat = scn1320_del_dat,
+    },
+    {
+        .scn_no = 30,
+        .load_dat = scn1330_load,
+        .del_dat = scn1330_del_dat,
+    },
+    {
+        .scn_no = 34,
+        .load_dat = scn1410_load,
+        .del_dat = scn1410_del_dat,
+    },
+    {
+        .scn_no = 255,
+        .load_dat = NULL,
+        .del_dat = NULL,
+    },
+};
+
+MSN_LOAD_DAT scn2013_load[] = {
+    {
+        .file_no = 823,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 13107200,
+    },
+    {
+        .file_no = 882,
+        .file_type = 9,
+        .tmp_no = 24,
+        .addr = 10682368,
+    },
+    {
+        .file_no = 1366,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 16,
+    },
+    {
+        .file_no = 933,
+        .file_type = 10,
+        .tmp_no = 29,
+        .addr = 12845056,
+    },
+    {
+        .file_no = 1435,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 22,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn2013_del_dat[] = {65535};
+
+MSN_LOAD_DAT scn2160_load[] = {
+    {
+        .file_no = 812,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 13631488,
+    },
+    {
+        .file_no = 872,
+        .file_type = 9,
+        .tmp_no = 13,
+        .addr = 11403264,
+    },
+    {
+        .file_no = 1381,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 17,
+    },
+    {
+        .file_no = 825,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 15204352,
+    },
+    {
+        .file_no = 817,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 15728640,
+    },
+    {
+        .file_no = 832,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 16252928,
+    },
+    {
+        .file_no = 935,
+        .file_type = 10,
+        .tmp_no = 18,
+        .addr = 12877824,
+    },
+    {
+        .file_no = 936,
+        .file_type = 10,
+        .tmp_no = 26,
+        .addr = 12910592,
+    },
+    {
+        .file_no = 918,
+        .file_type = 10,
+        .tmp_no = 33,
+        .addr = 12959744,
+    },
+    {
+        .file_no = 1432,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 23,
+    },
+    {
+        .file_no = 1442,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 24,
+    },
+    {
+        .file_no = 1431,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 25,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn2160_del_dat[] = {954, 65535};
+
+MSN_LOAD_DAT scn2020_load[] = {
+    {
+        .file_no = 822,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 13107200,
+    },
+    {
+        .file_no = 881,
+        .file_type = 9,
+        .tmp_no = 23,
+        .addr = 10682368,
+    },
+    {
+        .file_no = 1368,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 16,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn2020_del_dat[] = {823, 882, 1366, 65535};
+
+MSN_LOAD_DAT scn2030_load[] = {
+    {
+        .file_no = 823,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 13631488,
+    },
+    {
+        .file_no = 882,
+        .file_type = 9,
+        .tmp_no = 24,
+        .addr = 11403264,
+    },
+    {
+        .file_no = 1366,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 17,
+    },
+    {
+        .file_no = 800,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 14680064,
+    },
+    {
+        .file_no = 934,
+        .file_type = 10,
+        .tmp_no = 1,
+        .addr = 13025280,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn2030_del_dat[] = {812, 872, 1381, 828, 933, 65535};
+
+MSN_LOAD_DAT scn2100_load[] = {
+    {
+        .file_no = 817,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 13107200,
+    },
+    {
+        .file_no = 876,
+        .file_type = 9,
+        .tmp_no = 18,
+        .addr = 10682368,
+    },
+    {
+        .file_no = 1367,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 16,
+    },
+    {
+        .file_no = 828,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 16777216,
+    },
+    {
+        .file_no = 805,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 15728640,
+    },
+    {
+        .file_no = 821,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 16252928,
+    },
+    {
+        .file_no = 933,
+        .file_type = 10,
+        .tmp_no = 29,
+        .addr = 12845056,
+    },
+    {
+        .file_no = 940,
+        .file_type = 10,
+        .tmp_no = 26,
+        .addr = 12877824,
+    },
+    {
+        .file_no = 915,
+        .file_type = 10,
+        .tmp_no = 24,
+        .addr = 12910592,
+    },
+    {
+        .file_no = 937,
+        .file_type = 10,
+        .tmp_no = 6,
+        .addr = 12943360,
+    },
+    {
+        .file_no = 1435,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 22,
+    },
+    {
+        .file_no = 1438,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 23,
+    },
+    {
+        .file_no = 1440,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 24,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn2100_del_dat[] = {822, 881, 1368, 934, 817, 935, 832, 918, 936, 1432, 1442, 1431, 65535};
+
+MSN_LOAD_DAT scn2040_load[] = {
+    {
+        .file_no = 821,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 13107200,
+    },
+    {
+        .file_no = 880,
+        .file_type = 9,
+        .tmp_no = 22,
+        .addr = 10682368,
+    },
+    {
+        .file_no = 1369,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 16,
+    },
+    {
+        .file_no = 813,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 14155776,
+    },
+    {
+        .file_no = 873,
+        .file_type = 9,
+        .tmp_no = 14,
+        .addr = 12124160,
+    },
+    {
+        .file_no = 1383,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 18,
+    },
+    {
+        .file_no = 939,
+        .file_type = 10,
+        .tmp_no = 26,
+        .addr = 12845056,
+    },
+    {
+        .file_no = 1434,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 25,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn2040_del_dat[] = {817, 876, 1367, 800, 828, 933, 940, 915, 805, 937, 1435, 1438, 1440, 65535};
+
+MSN_LOAD_DAT scn2170_load[] = {
+    {
+        .file_no = 832,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 13107200,
+    },
+    {
+        .file_no = 888,
+        .file_type = 9,
+        .tmp_no = 33,
+        .addr = 10682368,
+    },
+    {
+        .file_no = 1371,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 16,
+    },
+    {
+        .file_no = 967,
+        .file_type = 11,
+        .tmp_no = 0,
+        .addr = 16777216,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn2170_del_dat[] = {821, 821, 880, 1369, 823, 882, 1366, 65535};
+
+MSN_LOAD_DAT scn2060_load[] = {
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn2060_del_dat[] = {825, 939, 1434, 65535};
+
+MSN_LOAD_DAT scn2062_load[] = {
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn2062_del_dat[] = {65535};
+
+MSN_LOAD_DAT scn2070_load[] = {
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn2070_del_dat[] = {65535};
+
+MSN_LOAD_DAT scn2072_load[] = {
+    {
+        .file_no = 825,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 15204352,
+    },
+    {
+        .file_no = 938,
+        .file_type = 10,
+        .tmp_no = 26,
+        .addr = 12845056,
+    },
+    {
+        .file_no = 985,
+        .file_type = 11,
+        .tmp_no = 0,
+        .addr = 16908288,
+    },
+    {
+        .file_no = 1441,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 22,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn2072_del_dat[] = {65535};
+
+MSN_LOAD_DAT scn2090_load[] = {
+    {
+        .file_no = 823,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 13107200,
+    },
+    {
+        .file_no = 882,
+        .file_type = 9,
+        .tmp_no = 24,
+        .addr = 10682368,
+    },
+    {
+        .file_no = 1366,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 16,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn2090_del_dat[] = {832, 888, 1371, 825, 938, 967, 1441, 65535};
+
+MSN_LOAD_DAT scn2092_load[] = {
+    {
+        .file_no = 815,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 13631488,
+    },
+    {
+        .file_no = 875,
+        .file_type = 9,
+        .tmp_no = 16,
+        .addr = 11403264,
+    },
+    {
+        .file_no = 1370,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 17,
+    },
+    {
+        .file_no = 825,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 15204352,
+    },
+    {
+        .file_no = 939,
+        .file_type = 10,
+        .tmp_no = 26,
+        .addr = 12845056,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn2092_del_dat[] = {813, 873, 1383, 65535};
+
+MSN_LOAD_DAT scn2130_load[] = {
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn2130_del_dat[] = {823, 882, 1366, 815, 875, 1370, 825, 939, 985, 65535};
+
+MSN_LOAD_DAT scn2132_load[] = {
+    {
+        .file_no = 855,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 15728640,
+    },
+    {
+        .file_no = 957,
+        .file_type = 11,
+        .tmp_no = 0,
+        .addr = 16973824,
+    },
+    {
+        .file_no = 28,
+        .file_type = 12,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn2132_del_dat[] = {65535};
+
+MSN_LOAD_DAT scn2140_load[] = {
+    {
+        .file_no = 839,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 13631488,
+    },
+    {
+        .file_no = 895,
+        .file_type = 9,
+        .tmp_no = 40,
+        .addr = 11403264,
+    },
+    {
+        .file_no = 1380,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 17,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn2140_del_dat[] = {65535};
+
+MSN_LOAD_DAT scn2141_load[] = {
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn2141_del_dat[] = {855, 957, 65535};
+
+MSN_LOAD_DAT scn2150_load[] = {
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn2150_del_dat[] = {65535};
+
+SCN_LOAD_DAT scn_load2[] = {
+    {
+        .scn_no = 36,
+        .load_dat = scn2013_load,
+        .del_dat = scn2013_del_dat,
+    },
+    {
+        .scn_no = 60,
+        .load_dat = scn2160_load,
+        .del_dat = scn2160_del_dat,
+    },
+    {
+        .scn_no = 37,
+        .load_dat = scn2020_load,
+        .del_dat = scn2020_del_dat,
+    },
+    {
+        .scn_no = 38,
+        .load_dat = scn2030_load,
+        .del_dat = scn2030_del_dat,
+    },
+    {
+        .scn_no = 50,
+        .load_dat = scn2100_load,
+        .del_dat = scn2100_del_dat,
+    },
+    {
+        .scn_no = 39,
+        .load_dat = scn2040_load,
+        .del_dat = scn2040_del_dat,
+    },
+    {
+        .scn_no = 61,
+        .load_dat = scn2170_load,
+        .del_dat = scn2170_del_dat,
+    },
+    {
+        .scn_no = 41,
+        .load_dat = scn2060_load,
+        .del_dat = scn2060_del_dat,
+    },
+    {
+        .scn_no = 43,
+        .load_dat = scn2062_load,
+        .del_dat = scn2062_del_dat,
+    },
+    {
+        .scn_no = 44,
+        .load_dat = scn2070_load,
+        .del_dat = scn2070_del_dat,
+    },
+    {
+        .scn_no = 46,
+        .load_dat = scn2072_load,
+        .del_dat = scn2072_del_dat,
+    },
+    {
+        .scn_no = 47,
+        .load_dat = scn2090_load,
+        .del_dat = scn2090_del_dat,
+    },
+    {
+        .scn_no = 49,
+        .load_dat = scn2092_load,
+        .del_dat = scn2092_del_dat,
+    },
+    {
+        .scn_no = 52,
+        .load_dat = scn2130_load,
+        .del_dat = scn2130_del_dat,
+    },
+    {
+        .scn_no = 54,
+        .load_dat = scn2132_load,
+        .del_dat = scn2132_del_dat,
+    },
+    {
+        .scn_no = 55,
+        .load_dat = scn2140_load,
+        .del_dat = scn2140_del_dat,
+    },
+    {
+        .scn_no = 56,
+        .load_dat = scn2141_load,
+        .del_dat = scn2141_del_dat,
+    },
+    {
+        .scn_no = 59,
+        .load_dat = scn2150_load,
+        .del_dat = scn2150_del_dat,
+    },
+    {
+        .scn_no = 255,
+        .load_dat = NULL,
+        .del_dat = NULL,
+    },
+};
+
+MSN_LOAD_DAT scn3020_load[] = {
+    {
+        .file_no = 805,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 15204352,
+    },
+    {
+        .file_no = 979,
+        .file_type = 11,
+        .tmp_no = 0,
+        .addr = 16777216,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn3020_del_dat[] = {65535};
+
+MSN_LOAD_DAT scn3030_load[] = {
+    {
+        .file_no = 858,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 14680064,
+    },
+    {
+        .file_no = 941,
+        .file_type = 10,
+        .tmp_no = 59,
+        .addr = 12845056,
+    },
+    {
+        .file_no = 942,
+        .file_type = 10,
+        .tmp_no = 59,
+        .addr = 12910592,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn3030_del_dat[] = {800, 65535};
+
+MSN_LOAD_DAT scn3100_load[] = {
+    {
+        .file_no = 836,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 13107200,
+    },
+    {
+        .file_no = 866,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 13631488,
+    },
+    {
+        .file_no = 892,
+        .file_type = 9,
+        .tmp_no = 37,
+        .addr = 10682368,
+    },
+    {
+        .file_no = 1377,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 16,
+    },
+    {
+        .file_no = 960,
+        .file_type = 11,
+        .tmp_no = 0,
+        .addr = 16777216,
+    },
+    {
+        .file_no = 1352,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 1,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn3100_del_dat[] = {854, 897, 1379, 805, 979, 942, 65535};
+
+MSN_LOAD_DAT scn3050_load[] = {
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn3050_del_dat[] = {65535};
+
+MSN_LOAD_DAT scn3110_load[] = {
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn3110_del_dat[] = {960, 65535};
+
+MSN_LOAD_DAT scn3060_load[] = {
+    {
+        .file_no = 957,
+        .file_type = 11,
+        .tmp_no = 0,
+        .addr = 16777216,
+    },
+    {
+        .file_no = 31,
+        .file_type = 12,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn3060_del_dat[] = {858, 941, 65535};
+
+MSN_LOAD_DAT scn3070_load[] = {
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn3070_del_dat[] = {65535};
+
+MSN_LOAD_DAT scn4900_load[] = {
+    {
+        .file_no = 19,
+        .file_type = 12,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn4900_del_dat[] = {65535};
+
+MSN_LOAD_DAT scn4901_load[] = {
+    {
+        .file_no = 31,
+        .file_type = 12,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn4901_del_dat[] = {65535};
+
+SCN_LOAD_DAT scn_load3[] = {
+    {
+        .scn_no = 64,
+        .load_dat = scn3020_load,
+        .del_dat = scn3020_del_dat,
+    },
+    {
+        .scn_no = 65,
+        .load_dat = scn3030_load,
+        .del_dat = scn3030_del_dat,
+    },
+    {
+        .scn_no = 73,
+        .load_dat = scn3100_load,
+        .del_dat = scn3100_del_dat,
+    },
+    {
+        .scn_no = 67,
+        .load_dat = scn3050_load,
+        .del_dat = scn3050_del_dat,
+    },
+    {
+        .scn_no = 74,
+        .load_dat = scn3110_load,
+        .del_dat = scn3110_del_dat,
+    },
+    {
+        .scn_no = 68,
+        .load_dat = scn3060_load,
+        .del_dat = scn3060_del_dat,
+    },
+    {
+        .scn_no = 69,
+        .load_dat = scn3070_load,
+        .del_dat = scn3070_del_dat,
+    },
+    {
+        .scn_no = 93,
+        .load_dat = scn4900_load,
+        .del_dat = scn4900_del_dat,
+    },
+    {
+        .scn_no = 94,
+        .load_dat = scn4901_load,
+        .del_dat = scn4901_del_dat,
+    },
+    {
+        .scn_no = 255,
+        .load_dat = NULL,
+        .del_dat = NULL,
+    },
+};
+
+MSN_LOAD_DAT scn4011_load[] = {
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn4011_del_dat[] = {65535};
+
+MSN_LOAD_DAT scn4020_load[] = {
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn4020_del_dat[] = {65535};
+
+MSN_LOAD_DAT scn4040_load[] = {
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn4040_del_dat[] = {65535};
+
+MSN_LOAD_DAT scn4042_load[] = {
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn4042_del_dat[] = {65535};
+
+MSN_LOAD_DAT scn4030_load[] = {
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn4030_del_dat[] = {65535};
+
+MSN_LOAD_DAT scn4050_load[] = {
+    {
+        .file_no = 816,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 15728640,
+    },
+    {
+        .file_no = 943,
+        .file_type = 10,
+        .tmp_no = 6,
+        .addr = 12845056,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn4050_del_dat[] = {863, 904, 1384, 65535};
+
+MSN_LOAD_DAT scn4070_load[] = {
+    {
+        .file_no = 839,
+        .file_type = 8,
+        .tmp_no = 0,
+        .addr = 13107200,
+    },
+    {
+        .file_no = 895,
+        .file_type = 9,
+        .tmp_no = 40,
+        .addr = 10682368,
+    },
+    {
+        .file_no = 1380,
+        .file_type = 2,
+        .tmp_no = 0,
+        .addr = 16,
+    },
+    {
+        .file_no = 17,
+        .file_type = 12,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+    {
+        .file_no = 0,
+        .file_type = 0,
+        .tmp_no = 0,
+        .addr = 0,
+    },
+};
+
+u_short scn4070_del_dat[] = {805, 856, 937, 943, 65535};
+
+u_char msn_start_floor[] = {1, 1, 1, 0, 2};
+
+SPRT_SDAT stg_title_sp_flr[] = {
+    {
+        .u = 0,
+        .v = 0,
+        .w = 156,
+        .h = 426,
+        .x = 458,
+        .y = 0,
+        .pri = 20,
+        .alp = 128,
+    },
+};
+
+SPRT_SDAT stg_title_sp_ttl[] = {
+    {
+        .u = 80,
+        .v = 0,
+        .w = 49,
+        .h = 133,
+        .x = 552,
+        .y = 35,
+        .pri = 10,
+        .alp = 128,
+    },
+    {
+        .u = 0,
+        .v = 0,
+        .w = 78,
+        .h = 212,
+        .x = 471,
+        .y = 98,
+        .pri = 10,
+        .alp = 128,
+    },
+};
+
 MSN_LOAD_DAT msn1_title_load_dat[] = {
     {
         .file_no = 26,
@@ -769,8 +2777,6 @@ MSN_LOAD_DAT msn4_title_load_dat[] = {
 MSN_LOAD_DAT *msn_title_load_dat[] = {
     msn0_title_load_dat, msn1_title_load_dat, msn2_title_load_dat, msn3_title_load_dat, msn4_title_load_dat,
 };
-
-static u_char msn_start_floor[] = {1, 1, 1, 0, 2};
 
 void MissionTitleInit(int msn_no)
 {
@@ -1213,6 +3219,32 @@ void MissionTitleDisp(int msn_no)
 
 void StageTitleDisp(int msn_no)
 {
+	int i;
+	u_char alp_rate;
+	SPRT_SDAT ssd;
+
+    SetSprFile(SPR_FILE_ADDRESS);
+
+    if (mttl_wrk.mode == 1)
+    {
+        alp_rate = (30 - mttl_wrk.time) * 100 / 30;
+    }
+
+    else if (mttl_wrk.mode == 3 || mttl_wrk.mode == 4)
+    {
+        alp_rate = mttl_wrk.time * 100 / 30;
+    }
+    else
+    {
+        alp_rate = 100;
+    }
+  
+    for (i = 0; i < 11; i++)
+    {
+        SimpleDispSprt(&stg_title_sp_bak[i], SPR_FILE_ADDRESS, i, NULL, NULL, alp_rate);
+    } 
+  
+    return;
 }
 
 void EventLoadDataInit()
@@ -1222,15 +3254,151 @@ void EventLoadDataInit()
 }
 
 int EventLoadData(u_char load_no)
-{
+{	
+    SCN_LOAD_DAT *sld;
+	MSN_LOAD_DAT *mld;
+	int i;
+  
+    if (ev_load_wrk.mode == EV_LOAD_MODE_END)
+    {
+        return 1;
+    }
+
+    sld = scn_load[ingame_wrk.msn_no];
+
+    i = 0;
+
+    while (1)
+    {
+        if (sld[i].scn_no == 0xff)
+        {
+            ev_load_wrk.mode = EV_LOAD_MODE_END;
+            return 1;
+        }
+
+        if (load_no == sld[i].scn_no)
+        {
+            load_no = i;
+            break;
+        }
+
+        i++;
+    }
+
+    mld = &sld[load_no].load_dat[ev_load_wrk.count];
+
+    if (mld->file_type == 0 && ev_load_wrk.mode != 0)
+    {
+        ev_load_wrk.mode = EV_LOAD_MODE_END;
+        return 1;
+    }
+
+    if (ev_load_wrk.mode == EV_LOAD_MODE_REQ)
+    {
+        if (mld->file_type == 13)
+        {
+            SceneDataLoadReq(mld->file_no, (u_int *)mld->addr);
+
+            ev_load_wrk.mode = EV_LOAD_MODE_SCENE;
+
+            return 0;
+        }
+        else if (mld->file_type == 12)
+        {
+            RoomLoadReq(mld->file_no);
+
+            ev_load_wrk.mode = EV_LOAD_MODE_ROOM;
+
+            return 0;
+        }
+    }
+  
+    switch(ev_load_wrk.mode)
+    {
+    case EV_LOAD_MODE_READY:
+        for (i = 0; sld[load_no].del_dat[i] != 0xffff; i++) 
+        {
+            DelDataLoadWrk(sld[load_no].del_dat[i]);
+        }
+
+        ev_load_wrk.mode = EV_LOAD_MODE_REQ;
+    break;
+    case EV_LOAD_MODE_SCENE:
+        if (SceneDataLoadWait() != 0)
+        {
+            SetDataLoadWrk(mld);
+
+            ev_load_wrk.mode = EV_LOAD_MODE_REQ;
+            ev_load_wrk.count++;
+        }
+    break;
+    case EV_LOAD_MODE_ROOM:
+        if (RoomMdlLoadWait() != 0)
+        {
+            ev_load_wrk.mode = EV_LOAD_MODE_REQ;
+            ev_load_wrk.count++;
+        }
+    break;
+    case EV_LOAD_MODE_REQ:
+        ev_load_wrk.load_id = MissionDataLoadReq(mld);
+        ev_load_wrk.mode = EV_LOAD_MODE_LOAD;
+    break;
+    case EV_LOAD_MODE_LOAD:
+        if (IsLoadEnd(ev_load_wrk.load_id) != 0)
+        {
+            MissionDataLoadAfterInit(mld);
+            SetDataLoadWrk(mld);
+
+            ev_load_wrk.mode = EV_LOAD_MODE_REQ;
+            ev_load_wrk.count++;
+        }
+    break;
+    }
+
+    return 0;
 }
 
 int GetLoadGhostInfo(u_char* load_inf)
-{
+{	
+    int i;
+	int count;
+
+    count = 0;
+
+    for (i = 0; i < 40; i++)
+    {
+        if (load_dat_wrk[i].file_type == 8)
+        {
+            switch (load_dat_wrk[i].addr)
+            {
+            case 0xc80000:
+                load_inf[0] = 1;
+                count++;
+            break;
+            case 0xd00000:
+                load_inf[1] = 1;
+                count++;
+            break;
+            case 0xd80000:
+                load_inf[2] = 1;
+                count++;
+            break;
+            }
+        }
+    }
+
+    return count;
 }
 
 void MikuCGDisp()
-{
+{	
+    int i;
+	SPRT_SDAT ssd;
+
+    for (i = 0; i < 11; i ++)
+    {
+        SimpleDispSprt(&msn_title_sp_bak[i], SPR_FILE_ADDRESS, i, NULL, NULL, 0x64);
+    }
 }
 
 void RoomLoadReq(int load_room)
