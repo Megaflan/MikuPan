@@ -1551,7 +1551,7 @@ static u_int* motGetFrameDataAddr(u_int *top_addr, u_int frame)
 
     addr = &addr[frame];
 
-    return (u_int *)*addr;
+    return (u_int *)addr;
 }
 
 static void motGetFrameData(RST_DATA *rst, u_int *top_addr, u_int frame)
@@ -1659,7 +1659,7 @@ static u_int motGetTransId(u_int *top_addr, u_int id)
 
 static u_int motGetParentId(u_int *top_addr, u_int id)
 {
-    top_addr = (u_int *)((int)top_addr + 0x20);
+    top_addr = (u_int *)((int64_t)top_addr + 0x20);
 
     return ((u_char *)top_addr)[id * 2];
 }
@@ -1678,6 +1678,7 @@ void motSetHierarchy(SgCOORDUNIT *coord, u_int *top_addr)
     {
         parent_id = motGetParentId(top_addr, i);
 
+        /// TODO: POTENTIALLY WRONG 64bits COVNERSION
         if (parent_id == 0xff)
         {
             //coord[i+1].parent = NULL;

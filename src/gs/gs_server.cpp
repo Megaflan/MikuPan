@@ -285,7 +285,7 @@ unsigned char* DownloadGsTexture(sceGsTex0* tex0)
 
     /// TODO: Move code somewhere prettier
     /// TODO: Add TextureManager code here once implemented or else...
-    auto image_data = new unsigned int[width * height];
+    auto image_data = (unsigned int*)malloc(width * height * 4);
     auto rawPixel = (unsigned int*) img.data();
 
     struct RGBA

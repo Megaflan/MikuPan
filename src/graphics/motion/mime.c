@@ -492,6 +492,7 @@ u_int* mimSetMimeDat(MIME_DAT *mdat, u_int *mim_p, u_int *tmp_buf, u_int *mdl_p)
     mdat->pkt = GetOffsetPtr((HeaderSection*)mdl_p, ph->pUniqVertex);
     //mdat->vtx = (sceVu0FVECTOR *)tmp_buf;
 
+    info_log("Allocating %d bytes", (ph->pUniqNormal - ph->pUniqVertex));
     mdat->vtx = malloc((ph->pUniqNormal - ph->pUniqVertex));
     // count how many `sceVu0FVECTOR` is `pUniqVertex` made of by subtracting it's start address
     // `mdat->pkt` (actually `ph->pUniqVertex`) from it's end address `ph->pUniqNormal`

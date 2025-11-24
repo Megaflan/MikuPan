@@ -1030,11 +1030,11 @@ int MissionDataLoadReq(MSN_LOAD_DAT* dat)
             //LoadEneDmgTex(dat->tmp_no, (u_int *)(dat->addr + 0x98000));
             LoadEneDmgTex(dat->tmp_no, (u_int*)&dat->addr);
 
-            ret = LoadReq(dat->file_no, &dat->addr);
+            ret = LoadReq(dat->file_no, (int64_t)&dat->addr);
         }
         else
         {
-            ret = LoadReq(dat->file_no, &dat->addr);
+            ret = LoadReq(dat->file_no, (int64_t)&dat->addr);
         }
     }
 
