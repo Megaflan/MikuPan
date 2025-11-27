@@ -17,7 +17,7 @@
 #include "ingame/menu/ig_menu.h"
 #include "ingame/event/ev_main.h"
 // #include "ingame/plyr/plyr_ctl.h" // do not include the declaration for `FinderEndSet`
-#include "common/memory_addresses.h"
+#include "mikupan/mikupan_memory.h"
 
 #include <string.h>
 
@@ -2850,7 +2850,7 @@ int BtlAnmInit(/* s0 16 */ int anm_no)
 #ifdef BUILD_EU_VERSION
             LoadReqLanguage(M_SLCT_STY_DMY_E_PK2, 0x1e90000);
 #else
-            LoadReq(M_SLCT_STY_DMY_PK2, &MISSION_TITLE_CARD_ADDRESS);
+            LoadReq(M_SLCT_STY_DMY_PK2, MISSION_TITLE_CARD_ADDRESS);
 #endif
             anm_load_id = 1;
             break;
@@ -2858,7 +2858,7 @@ int BtlAnmInit(/* s0 16 */ int anm_no)
 #ifdef BUILD_EU_VERSION
             LoadReqLanguage(TX_BTL_DMY_E_PK2, 0x1e90000);
 #else
-            LoadReq(TX_BTL_DMY_PK2, &MISSION_TITLE_CARD_ADDRESS);
+            LoadReq(TX_BTL_DMY_PK2, MISSION_TITLE_CARD_ADDRESS);
 #endif
             LoadReq(TX_BTL_RES_PK2, 0x1f108b0);
             anm_load_id = 1;
@@ -2868,7 +2868,7 @@ int BtlAnmInit(/* s0 16 */ int anm_no)
 #ifdef BUILD_EU_VERSION
             LoadReqLanguage(M_SLCT_BTL_CHR_E_PK2, 0x1e90000);
 #else
-            LoadReq(M_SLCT_BTL_CHR_PK2, &MISSION_TITLE_CARD_ADDRESS);
+            LoadReq(M_SLCT_BTL_CHR_PK2, MISSION_TITLE_CARD_ADDRESS);
 #endif
             anm_load_id = 1;
             break;
@@ -2876,9 +2876,9 @@ int BtlAnmInit(/* s0 16 */ int anm_no)
 #ifdef BUILD_EU_VERSION
             LoadReqLanguage(M_SLCT_STY_DMY_E_PK2, 0x1e90000);
 #else
-            LoadReq(M_SLCT_STY_DMY_PK2, &MISSION_TITLE_CARD_ADDRESS);
+            LoadReq(M_SLCT_STY_DMY_PK2, MISSION_TITLE_CARD_ADDRESS);
 #endif
-            LoadReq(S_MODE_CLEARBG_PK2, &MPEG_WORK_ADDRESS);
+            LoadReq(S_MODE_CLEARBG_PK2, MPEG_WORK_ADDRESS);
             anm_load_id = 1;
             break;
         case 0:
@@ -2886,7 +2886,7 @@ int BtlAnmInit(/* s0 16 */ int anm_no)
 #ifdef BUILD_EU_VERSION
             LoadReqLanguage(TX_BTL_DMY_E_PK2, 0x1e90000);
 #else
-            LoadReq(TX_BTL_DMY_PK2, &MISSION_TITLE_CARD_ADDRESS);
+            LoadReq(TX_BTL_DMY_PK2, MISSION_TITLE_CARD_ADDRESS);
 #endif
             do { anm_load_id = 1; } while (0); // HACK: fixes a reg-swap
             break;

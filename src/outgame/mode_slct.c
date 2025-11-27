@@ -4,7 +4,7 @@
 #include "enums.h"
 #include "mode_slct.h"
 
-#include "common/memory_addresses.h"
+#include "mikupan/mikupan_memory.h"
 
 #include <string.h>
 
@@ -56,7 +56,7 @@ void ModeSlctInit(u_char top, u_char end)
 #ifdef BUILD_EU_VERSION
     ms_load_id = LoadReqLanguage(M_SLCT_CMN_E_PK2, 0xc80000);
 #else
-    ms_load_id = LoadReq(M_SLCT_CMN_PK2, &M_SLCT_CMN_PK2_ADDRESS);
+    ms_load_id = LoadReq(M_SLCT_CMN_PK2, M_SLCT_CMN_PK2_ADDRESS);
 #endif
     memset(&dsp_ms, 0, sizeof(DSP_M_SLCT_WRK));
     dsp_ms.now_mode = top;
@@ -91,7 +91,7 @@ void ModeSlctCtrl(u_char mode)
 #ifdef BUILD_EU_VERSION
             ms_load_id = LoadReqLanguage(M_SLCT_CMN_E_PK2, 0xc80000);
 #else
-            ms_load_id = LoadReq(M_SLCT_CMN_PK2, &M_SLCT_CMN_PK2_ADDRESS);
+            ms_load_id = LoadReq(M_SLCT_CMN_PK2, M_SLCT_CMN_PK2_ADDRESS);
 #endif
         }
         adpcm_no = -1;
@@ -1551,11 +1551,11 @@ void MsLoadCtrl(u_char mode)
     switch(mode)
     {
     case 0:
-        ms_load_id = LoadReq(EFF001_PK2, &EFFECT_ADDRESS);
+        ms_load_id = LoadReq(EFF001_PK2, EFFECT_ADDRESS);
 #ifdef BUILD_EU_VERSION
         ms_load_id = LoadReqLanguage(M_SLCT_FSM_E_PK2,0xcc0470);
 #else
-        ms_load_id = LoadReq(M_SLCT_FSM_PK2,&M_SLCT_STY_PK2_ADDRESS);
+        ms_load_id = LoadReq(M_SLCT_FSM_PK2,M_SLCT_STY_PK2_ADDRESS);
 #endif
     break;
     case 1:
@@ -1563,7 +1563,7 @@ void MsLoadCtrl(u_char mode)
 #ifdef BUILD_EU_VERSION
         ms_load_id = LoadReqLanguage(M_SLCT_STY_E_PK2, 0xcc0470);
 #else
-        ms_load_id = LoadReq(M_SLCT_STY_PK2, &M_SLCT_STY_PK2_ADDRESS);
+        ms_load_id = LoadReq(M_SLCT_STY_PK2, M_SLCT_STY_PK2_ADDRESS);
 #endif
         if (ingame_wrk.difficult != 0x0)
         {
@@ -1577,8 +1577,8 @@ void MsLoadCtrl(u_char mode)
         ms_load_id = LoadReqLanguage(M_SLCT_BTL_E_PK2, 0xcc0470);
         ms_load_id = LoadReqLanguage(M_SLCT_BTL_CHR_E_PK2, 0xd4a850);
 #else
-        ms_load_id = LoadReq(M_SLCT_BTL_PK2, &M_SLCT_STY_PK2_ADDRESS);
-        ms_load_id = LoadReq(M_SLCT_BTL_CHR_PK2, &M_SLCT_BTL_CHR_PK2_ADDRESS);
+        ms_load_id = LoadReq(M_SLCT_BTL_PK2, M_SLCT_STY_PK2_ADDRESS);
+        ms_load_id = LoadReq(M_SLCT_BTL_CHR_PK2, M_SLCT_BTL_CHR_PK2_ADDRESS);
 #endif
         
     break;
@@ -1588,16 +1588,16 @@ void MsLoadCtrl(u_char mode)
         ms_load_id = LoadReqLanguage(PL_OPTI_E_PK2, 0xddc430);
         ms_load_id = LoadReqLanguage(PL_STTS_E_PK2, 0x1ce0000);
 #else
-        ms_load_id = LoadReq(M_SLCT_OPT_PK2, &M_SLCT_STY_PK2_ADDRESS);
-        ms_load_id = LoadReq(PL_OPTI_PK2, &PL_OPTI_PK2_ADDRESS);
-        ms_load_id = LoadReq(PL_STTS_PK2, &PL_STTS_PK2_ADDRESS);
+        ms_load_id = LoadReq(M_SLCT_OPT_PK2, M_SLCT_STY_PK2_ADDRESS);
+        ms_load_id = LoadReq(PL_OPTI_PK2, PL_OPTI_PK2_ADDRESS);
+        ms_load_id = LoadReq(PL_STTS_PK2, PL_STTS_PK2_ADDRESS);
 #endif
         break;
     case 4:
 #ifdef BUILD_EU_VERSION
         ms_load_id = LoadReqLanguage(M_SLCT_SND_E_PK2, 0xcc0470);
 #else
-        ms_load_id = LoadReq(M_SLCT_SND_PK2, &M_SLCT_STY_PK2_ADDRESS);
+        ms_load_id = LoadReq(M_SLCT_SND_PK2, M_SLCT_STY_PK2_ADDRESS);
 #endif
     break;
     case 7:
@@ -1610,9 +1610,9 @@ void MsLoadCtrl(u_char mode)
 #else
         if (cmn_tex_load == 0)
         {
-            ms_load_id = LoadReq(M_SLCT_BTL_PK2, &M_SLCT_STY_PK2_ADDRESS);
+            ms_load_id = LoadReq(M_SLCT_BTL_PK2, M_SLCT_STY_PK2_ADDRESS);
         }        
-        ms_load_id = LoadReq(M_SLCT_BTL_MSN_PK2, &M_SLCT_BTL_MSN_PK2_ADDRESS);
+        ms_load_id = LoadReq(M_SLCT_BTL_MSN_PK2, M_SLCT_BTL_MSN_PK2_ADDRESS);
 #endif
     break;
     case 8:
@@ -1624,10 +1624,10 @@ void MsLoadCtrl(u_char mode)
         ms_load_id = LoadReqLanguage(PL_STTS_E_PK2, 0x1ce0000);
         ms_load_id = LoadReqLanguage(PL_CAME_E_PK2, 0x1e90000);
 #else
-        ms_load_id = LoadReq(PL_BGBG_PK2, &PL_BGBG_PK2_ADDRESS);
+        ms_load_id = LoadReq(PL_BGBG_PK2, PL_BGBG_PK2_ADDRESS);
         ms_load_id = LoadReq(PL_MTOP_PK2, PL_MTOP_PK2_ADDRESS);
-        ms_load_id = LoadReq(PL_STTS_PK2, &PL_STTS_PK2_ADDRESS);
-        ms_load_id = LoadReq(PL_CAME_PK2, &MISSION_TITLE_CARD_ADDRESS);
+        ms_load_id = LoadReq(PL_STTS_PK2, PL_STTS_PK2_ADDRESS);
+        ms_load_id = LoadReq(PL_CAME_PK2, MISSION_TITLE_CARD_ADDRESS);
 #endif
     break;
     case 9:
@@ -1637,10 +1637,10 @@ void MsLoadCtrl(u_char mode)
         ms_load_id = LoadReqLanguage(PL_STTS_E_PK2, 0x1ce0000);
         ms_load_id = LoadReqLanguage(PL_PHOT_E_PK2, 0x1d51db0);
 #else
-        ms_load_id = LoadReq(PL_BGBG_PK2, &PL_BGBG_PK2_ADDRESS);
-        ms_load_id = LoadReq(PL_MTOP_PK2, &PL_MTOP_PK2_ADDRESS);
-        ms_load_id = LoadReq(PL_STTS_PK2, &PL_STTS_PK2_ADDRESS);
-        ms_load_id = LoadReq(PL_PHOT_PK2, &PL_PHOT_PK2_ADDRESS);
+        ms_load_id = LoadReq(PL_BGBG_PK2, PL_BGBG_PK2_ADDRESS);
+        ms_load_id = LoadReq(PL_MTOP_PK2, PL_MTOP_PK2_ADDRESS);
+        ms_load_id = LoadReq(PL_STTS_PK2, PL_STTS_PK2_ADDRESS);
+        ms_load_id = LoadReq(PL_PHOT_PK2, PL_PHOT_PK2_ADDRESS);
 #endif
         StartAlbumModeInit();
         OutGameInitPhoto();
@@ -1650,7 +1650,7 @@ void MsLoadCtrl(u_char mode)
 #ifdef BUILD_EU_VERSION
         ms_load_id = LoadReq(PL_BGBG_PK2, 0x1cfefc0);
 #else
-        ms_load_id = LoadReq(PL_BGBG_PK2, &PL_BGBG_PK2_ADDRESS);
+        ms_load_id = LoadReq(PL_BGBG_PK2, PL_BGBG_PK2_ADDRESS);
 #endif
         BtlModSaveInit();
     break;

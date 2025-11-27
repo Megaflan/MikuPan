@@ -4,9 +4,9 @@
 #include "SDL3/SDL_log.h"
 #include "common/utility.h"
 #include "graphics/graph2d/message.h"
-#include "gs/texture_manager_c.h"
 #include "graphics/ui/imgui_window_c.h"
 #include "gs/gs_server_c.h"
+#include "gs/texture_manager_c.h"
 
 #include <stdlib.h>
 
@@ -96,6 +96,7 @@ void MikuPan_Render2DTexture(DISP_SPRT* sprite)
     SDL_SetTextureColorMod(texture, AdjustAlpha(sprite->r), AdjustAlpha(sprite->g), AdjustAlpha(sprite->b));
 
     SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+    //SDL_RenderTextureRotated(renderer, texture, &src_rect, &dst_rect, sprite->rot, NULL, false);
     SDL_RenderTexture(renderer, texture, &src_rect, &dst_rect);
 }
 

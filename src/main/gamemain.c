@@ -3,7 +3,7 @@
 #include "enums.h"
 #include "gamemain.h"
 
-#include "common/memory_addresses.h"
+#include "mikupan/mikupan_memory.h"
 #include "main/glob.h"
 #include "outgame/title.h"
 #include "outgame/outgame.h"
@@ -166,7 +166,7 @@ int GameInitLoad()
 #ifdef BUILD_EU_VERSION
         init_load_id = LoadReqLanguage(IG_MSG_E_OBJ, IG_MSG_OBJ_ADDRESS);
 #else
-        init_load_id = LoadReq(IG_MSG_OBJ, &IG_MSG_OBJ_ADDRESS);
+        init_load_id = LoadReq(IG_MSG_OBJ, IG_MSG_OBJ_ADDRESS);
 #endif
         sys_wrk.load_mode = INGAME_INIT_WAIT_MENU;
     break;
@@ -180,9 +180,9 @@ int GameInitLoad()
 #ifdef BUILD_EU_VERSION
         init_load_id = LoadReqLanguage(FNT001_E_PK2, 0x1e30000);
 #else
-        init_load_id = LoadReq(FNT001_PK2, &FontTextAddress);
+        init_load_id = LoadReq(FNT001_PK2, FontTextAddress);
 #endif
-        init_load_id = LoadReq(EFF001_PK2, &EFFECT_ADDRESS);
+        init_load_id = LoadReq(EFF001_PK2, EFFECT_ADDRESS);
         sys_wrk.load_mode = INGAME_INIT_WAIT_EFCT;
     break;
     case INGAME_INIT_WAIT_EFCT:

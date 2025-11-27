@@ -21,7 +21,7 @@
 #include "mc/mc_main.h"
 #include "os/eeiop/eese.h"
 
-#include <common/memory_addresses.h>
+#include <mikupan/mikupan_memory.h>
 
 MC_ALBUM_SAVE mc_album_save = {0};
 MC_ALBUM_SAVE album_save_dat[2] = {0};

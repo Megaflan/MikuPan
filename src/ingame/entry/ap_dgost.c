@@ -16,7 +16,7 @@
 #include "os/eeiop/cdvd/eecdvd.h"
 #include "os/eeiop/eese.h"
 
-#include <common/memory_addresses.h>
+#include <mikupan/mikupan_memory.h>
 #include <graphics/motion/motion.h>
 // #include "graphics/motion/motion.h"
 
@@ -139,7 +139,7 @@ int DeadGhostLoad()
         dgst_wrk.load_mode = DGLOAD_MODE_START;
     break;
     case DGLOAD_MODE_START:
-        LoadReq(M055_SYOUALL_MDL, &M_SLCT_CMN_PK2_ADDRESS);
+        LoadReq(M055_SYOUALL_MDL, M_SLCT_CMN_PK2_ADDRESS);
 
         dgst_wrk.load_mode = DGLOAD_MODE_MDL;
     break;
@@ -147,8 +147,8 @@ int DeadGhostLoad()
         if (IsLoadEndAll() != 0)
         {
             motInitEnemyMdl((u_int *)M_SLCT_CMN_PK2_ADDRESS, M055_SYOUALL);
-            LoadEneDmgTex(42, (u_int *)&ENE_DMG_TEX_ADDRESS);
-            LoadReq(M042_SYOUKI2_ANM, &SPRITE_ADDRESS);
+            LoadEneDmgTex(42, (u_int *)ENE_DMG_TEX_ADDRESS);
+            LoadReq(M042_SYOUKI2_ANM, SPRITE_ADDRESS);
 
             dgst_wrk.load_mode = DGLOAD_MODE_MOT;
         }

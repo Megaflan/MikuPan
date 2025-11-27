@@ -1,9 +1,9 @@
 #include "gs_packet_handler.h"
 
-#include "gs_server_c.h"
-#include "common/logging_c.h"
-#include "common/memory_addresses.h"
+#include "../mikupan/logging_c.h"
+#include "mikupan/mikupan_memory.h"
 #include "ee/eestruct.h"
+#include "gs_server_c.h"
 #include "sce/libgraph.h"
 
 #include <stdint.h>

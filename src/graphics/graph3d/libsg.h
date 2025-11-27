@@ -3,7 +3,7 @@
 
 #include "common.h"
 #include "typedefs.h"
-#include "common/logging_c.h"
+#include "mikupan/logging_c.h"
 #include "graphics/graph3d/sglib.h"
 #include <stdlib.h>
 
@@ -378,6 +378,12 @@ static inline void Vu0MulVectorXYZ(sceVu0FVECTOR v, sceVu0FVECTOR v0, sceVu0FVEC
 // Line 412
 static inline void Vu0CopyMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1)
 {
+    for (int row = 0; row < 4; ++row) {
+        for (int col = 0; col < 4; ++col) {
+            m0[row][col] = m1[row][col];
+        }
+    }
+
     //asm volatile("             \n\
     //    lqc2    vf12, 0x00(%1) \n\
     //    lqc2    vf13, 0x10(%1) \n\

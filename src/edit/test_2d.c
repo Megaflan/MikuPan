@@ -3,7 +3,7 @@
 #include "enums.h"
 #include "test_2d.h"
 
-#include "common/memory_addresses.h"
+#include "mikupan/mikupan_memory.h"
 #include "os/fileload.h"
 #include "main/glob.h"
 #include "outgame/outgame.h"
@@ -16,7 +16,7 @@
 
 void LayoutTestInit()
 {
-    FileLoadB(TEST2D_PK2, &TEST2D_PK2_ADDRESS);
+    FileLoadB(TEST2D_PK2, TEST2D_PK2_ADDRESS);
 }
 
 void LayoutTestMain()

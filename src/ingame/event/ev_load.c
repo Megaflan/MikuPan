@@ -5,7 +5,7 @@
 #include "ev_spcl.h"
 #include "ingame/map/map_area.h"
 #include "ingame/entry/entry.h"
-#include "common/memory_addresses.h"
+#include "mikupan/mikupan_memory.h"
 #include "graphics/graph2d/effect_ene.h"
 #include "graphics/graph2d/tim2.h"
 #include "graphics/motion/mdlwork.h"
@@ -23,6 +23,7 @@
 #include "os/eeiop/cdvd/eecdvd.h"
 #include "outgame/btl_mode/btl_menu.h"
 
+#include <graphics/scene/scene.h>
 #include <string.h>
 
 MSN_TITLE_WRK mttl_wrk;
@@ -309,43 +310,43 @@ MSN_LOAD_DAT msn0_title_load_dat[] = {
         .file_no = 26,
         .file_type = 3,
         .tmp_no = 0,
-        .addr = &MSN_TITLE_DAT_ADDRESS,
+        .addr = MSN_TITLE_DAT_ADDRESS,
     },
     {
         .file_no = 29,
         .file_type = 4,
         .tmp_no = 0,
-        .addr = &MSN_TITLE_DAT_ADDRESS
+        .addr = MSN_TITLE_DAT_ADDRESS
     },
     {
         .file_no = 32,
         .file_type = 5,
         .tmp_no = 0,
-        .addr = &MSN_TITLE_DAT_ADDRESS,
+        .addr = MSN_TITLE_DAT_ADDRESS,
     },
     {
         .file_no = 35,
         .file_type = 6,
         .tmp_no = 0,
-        .addr = &MSN_TITLE_DAT_ADDRESS,
+        .addr = MSN_TITLE_DAT_ADDRESS,
     },
     {
         .file_no = 15,
         .file_type = 1,
         .tmp_no = 0,
-        .addr = &MSN_TITLE_DAT_ADDRESS,
+        .addr = MSN_TITLE_DAT_ADDRESS,
     },
     {
         .file_no = 21,
         .file_type = 1,
         .tmp_no = 0,
-        .addr = &MSN_TITLE_DAT_ADDRESS_1, // 0x7E0000
+        .addr = MSN_TITLE_DAT_ADDRESS_1, // 0x7E0000
     },
     {
         .file_no = 10,
         .file_type = 7,
         .tmp_no = 0,
-        .addr = &MSN_TITLE_DAT_ADDRESS_2,
+        .addr = MSN_TITLE_DAT_ADDRESS_2,
     },
     {
         .file_no = 1430,
@@ -375,13 +376,13 @@ MSN_LOAD_DAT msn0_title_load_dat[] = {
         .file_no = 857,
         .file_type = 8,
         .tmp_no = 0,
-        .addr = &M_SLCT_CMN_PK2_ADDRESS,
+        .addr = M_SLCT_CMN_PK2_ADDRESS,
     },
     {
         .file_no = 901,
         .file_type = 9,
         .tmp_no = 58,
-        .addr = &SPRITE_ADDRESS,
+        .addr = SPRITE_ADDRESS,
     },
     {
         .file_no = 1385,
@@ -393,43 +394,43 @@ MSN_LOAD_DAT msn0_title_load_dat[] = {
         .file_no = 860,
         .file_type = 8,
         .tmp_no = 0,
-        .addr = &MSN_TITLE_DAT_ADDRESS_3,
+        .addr = MSN_TITLE_DAT_ADDRESS_3,
     },
     {
         .file_no = 801,
         .file_type = 8,
         .tmp_no = 0,
-        .addr = &MSN_TITLE_DAT_ADDRESS_4,
+        .addr = MSN_TITLE_DAT_ADDRESS_4,
     },
     {
         .file_no = 920,
         .file_type = 10,
         .tmp_no = 2,
-        .addr = &MSN_TITLE_DAT_ADDRESS_5,
+        .addr = MSN_TITLE_DAT_ADDRESS_5,
     },
     {
         .file_no = 907,
         .file_type = 10,
         .tmp_no = 2,
-        .addr = &MSN_TITLE_DAT_ADDRESS_6,
+        .addr = MSN_TITLE_DAT_ADDRESS_6,
     },
     {
         .file_no = 925,
         .file_type = 10,
         .tmp_no = 61,
-        .addr = &MSN_TITLE_DAT_ADDRESS_7,
+        .addr = MSN_TITLE_DAT_ADDRESS_7,
     },
     {
         .file_no = 947,
         .file_type = 11,
         .tmp_no = 0,
-        .addr = &MSN_TITLE_DAT_ADDRESS_8,
+        .addr = MSN_TITLE_DAT_ADDRESS_8,
     },
     {
         .file_no = 949,
         .file_type = 11,
         .tmp_no = 0,
-        .addr = &MSN_TITLE_DAT_ADDRESS_9,
+        .addr = MSN_TITLE_DAT_ADDRESS_9,
     },
     {
         .file_no = 65535,
@@ -2482,13 +2483,13 @@ MSN_LOAD_DAT msn1_title_load_dat[] = {
         .file_no = 22,
         .file_type = 1,
         .tmp_no = 0,
-        .addr = &MSN_TITLE_DAT_ADDRESS_1,
+        .addr = MSN_TITLE_DAT_ADDRESS_1,
     },
     {
         .file_no = 11,
         .file_type = 7,
         .tmp_no = 0,
-        .addr = &MSN_TITLE_DAT_ADDRESS_2,
+        .addr = MSN_TITLE_DAT_ADDRESS_2,
     },
     {
         .file_no = 275,
@@ -2500,7 +2501,7 @@ MSN_LOAD_DAT msn1_title_load_dat[] = {
         .file_no = 805,
         .file_type = 8,
         .tmp_no = 0,
-        .addr = &MSN_TITLE_DAT_ADDRESS_4,
+        .addr = MSN_TITLE_DAT_ADDRESS_4,
     },
     {
         .file_no = 65535,
@@ -2545,25 +2546,25 @@ MSN_LOAD_DAT msn2_title_load_dat[] = {
         .file_no = 23,
         .file_type = 1,
         .tmp_no = 0,
-        .addr = &MSN_TITLE_DAT_ADDRESS_1,
+        .addr = MSN_TITLE_DAT_ADDRESS_1,
     },
     {
         .file_no = 12,
         .file_type = 7,
         .tmp_no = 0,
-        .addr = &MSN_TITLE_DAT_ADDRESS_2,
+        .addr = MSN_TITLE_DAT_ADDRESS_2,
     },
     {
         .file_no = 828,
         .file_type = 8,
         .tmp_no = 0,
-        .addr = &MSN_TITLE_DAT_ADDRESS_3,
+        .addr = MSN_TITLE_DAT_ADDRESS_3,
     },
     {
         .file_no = 954,
         .file_type = 11,
         .tmp_no = 0,
-        .addr = &MSN_TITLE_DAT_ADDRESS_8,
+        .addr = MSN_TITLE_DAT_ADDRESS_8,
     },
     {
         .file_no = 65535,
@@ -2608,13 +2609,13 @@ MSN_LOAD_DAT msn3_title_load_dat[] = {
         .file_no = 24,
         .file_type = 1,
         .tmp_no = 0,
-        .addr = &MSN_TITLE_DAT_ADDRESS_1,
+        .addr = MSN_TITLE_DAT_ADDRESS_1,
     },
     {
         .file_no = 13,
         .file_type = 7,
         .tmp_no = 0,
-        .addr = &MSN_TITLE_DAT_ADDRESS_2,
+        .addr = MSN_TITLE_DAT_ADDRESS_2,
     },
     {
         .file_no = 854,
@@ -2626,7 +2627,7 @@ MSN_LOAD_DAT msn3_title_load_dat[] = {
         .file_no = 897,
         .file_type = 9,
         .tmp_no = 55,
-        .addr = &SPRITE_ADDRESS,
+        .addr = SPRITE_ADDRESS,
     },
     {
         .file_no = 1379,
@@ -2644,7 +2645,7 @@ MSN_LOAD_DAT msn3_title_load_dat[] = {
         .file_no = 800,
         .file_type = 8,
         .tmp_no = 0,
-        .addr = &MSN_TITLE_DAT_ADDRESS_3,
+        .addr = MSN_TITLE_DAT_ADDRESS_3,
     },
     {
         .file_no = 65535,
@@ -2689,13 +2690,13 @@ MSN_LOAD_DAT msn4_title_load_dat[] = {
         .file_no = 25,
         .file_type = 1,
         .tmp_no = 0,
-        .addr = &MSN_TITLE_DAT_ADDRESS_1,
+        .addr = MSN_TITLE_DAT_ADDRESS_1,
     },
     {
         .file_no = 14,
         .file_type = 7,
         .tmp_no = 0,
-        .addr = &MSN_TITLE_DAT_ADDRESS_2,
+        .addr = MSN_TITLE_DAT_ADDRESS_2,
     },
     {
         .file_no = 826,
@@ -2749,7 +2750,7 @@ MSN_LOAD_DAT msn4_title_load_dat[] = {
         .file_no = 904,
         .file_type = 9,
         .tmp_no = 64,
-        .addr = &SPRITE_ADDRESS,
+        .addr = SPRITE_ADDRESS,
     },
     {
         .file_no = 1384,
@@ -2761,13 +2762,13 @@ MSN_LOAD_DAT msn4_title_load_dat[] = {
         .file_no = 805,
         .file_type = 8,
         .tmp_no = 0,
-        .addr = &MSN_TITLE_DAT_ADDRESS_3,
+        .addr = MSN_TITLE_DAT_ADDRESS_3,
     },
     {
         .file_no = 856,
         .file_type = 8,
         .tmp_no = 0,
-        .addr = &MSN_TITLE_DAT_ADDRESS_4,
+        .addr = MSN_TITLE_DAT_ADDRESS_4,
     },
     {
         .file_no = 65535,
@@ -2792,7 +2793,7 @@ void MissionTitleInit(int msn_no)
     if (ingame_wrk.game == 0)
     {
         map_wrk.floor = msn_start_floor[msn_no];
-        mttl_wrk.load_id = LoadReq(msn_no + MSN00TTL_PK2, &MISSION_TITLE_CARD_ADDRESS);
+        mttl_wrk.load_id = LoadReq(msn_no + MSN00TTL_PK2, MISSION_TITLE_CARD_ADDRESS);
     }
     else if (ingame_wrk.game == 1)
     {
@@ -3033,17 +3034,14 @@ int MissionDataLoadReq(MSN_LOAD_DAT* dat)
     }
     else
     {
-        dat->addr = 0;
         if (dat->file_type == 9)
         {
-            //LoadEneDmgTex(dat->tmp_no, (u_int *)(dat->addr + 0x98000));
-            LoadEneDmgTex(dat->tmp_no, (u_int*)&dat->addr);
-
-            ret = LoadReq(dat->file_no, (int64_t)&dat->addr);
+            LoadEneDmgTex(dat->tmp_no, (u_int *)(dat->addr + 0x98000));
+            ret = LoadReq(dat->file_no, (int64_t)dat->addr);
         }
         else
         {
-            ret = LoadReq(dat->file_no, (int64_t)&dat->addr);
+            ret = LoadReq(dat->file_no, (int64_t)dat->addr);
         }
     }
 
@@ -3055,21 +3053,21 @@ void MissionDataLoadAfterInit(MSN_LOAD_DAT* dat)
     switch (dat->file_type)
     {
         case 3:
-            memcpy(&map_cam_dat, (void *)dat->addr, sizeof(map_cam_dat));
+            memcpy(&map_cam_dat, (void *)MikuPan_GetHostAddress(dat->addr), sizeof(map_cam_dat));
             break;
 
         
         case 4:
-            memcpy(&map_cam_dat2, (void *)dat->addr, sizeof(map_cam_dat2));
+            memcpy(&map_cam_dat2, (void *)MikuPan_GetHostAddress(dat->addr), sizeof(map_cam_dat2));
             break;
 
         
         case 5:
-            memcpy(&map_cam_dat3, (void *)dat->addr, sizeof(map_cam_dat3));
+            memcpy(&map_cam_dat3, (void *)MikuPan_GetHostAddress(dat->addr), sizeof(map_cam_dat3));
             break;
 
         case 6:
-            memcpy(&map_cam_dat4, (void *)dat->addr, sizeof(map_cam_dat4));
+            memcpy(&map_cam_dat4, (void *)MikuPan_GetHostAddress(dat->addr), sizeof(map_cam_dat4));
             break;
 
         case 7:    
@@ -3078,16 +3076,16 @@ void MissionDataLoadAfterInit(MSN_LOAD_DAT* dat)
             break;
 
         case 8:
-            motInitEnemyMdl((void *)dat->addr, dat->file_no - 799);
+            motInitEnemyMdl((void *)MikuPan_GetHostAddress(dat->addr), dat->file_no - 799);
             break;
 
         case 9:
         case 10:
-            motInitEnemyAnm((void *)dat->addr, dat->tmp_no, dat->file_no - 867);
+            motInitEnemyAnm((void *)MikuPan_GetHostAddress(dat->addr), dat->tmp_no, dat->file_no - 867);
             break;
         
         case 11:
-            ItemLoadAfterInit(dat->file_no - 944, dat->addr);
+            ItemLoadAfterInit(dat->file_no - 944, MikuPan_GetHostAddress(dat->addr));
             break;
 
         default:
@@ -3206,16 +3204,16 @@ void MissionTitleDisp(int msn_no)
 
     for (i = 0; i < 11; i++)
     {
-        SimpleDispSprt(&msn_title_sp_bak[i], MISSION_TITLE_CARD_ADDRESS, i, NULL, NULL, alp_rate);
+        SimpleDispSprt(&msn_title_sp_bak[i], MikuPan_GetHostAddress(MISSION_TITLE_CARD_ADDRESS), i, NULL, NULL, alp_rate);
     }
 
     for (i = 0; i < msn_title_flr_sp_num[msn_no]; i++) {
-        SimpleDispAlphaSprt(&msn_title_sp_flr[msn_no][i], MISSION_TITLE_CARD_ADDRESS,
+        SimpleDispAlphaSprt(&msn_title_sp_flr[msn_no][i], MikuPan_GetHostAddress(MISSION_TITLE_CARD_ADDRESS),
                             msn_title_sp_flr_no[msn_no], ((alp_rate * 0x46) / 100), 0);
     }
 
     for (i = 0; i < msn_title_ttl_sp_num[msn_no]; i++) {    
-        SimpleDispSprt(&msn_title_sp_ttl[msn_no][i], MISSION_TITLE_CARD_ADDRESS, 
+        SimpleDispSprt(&msn_title_sp_ttl[msn_no][i], MikuPan_GetHostAddress(MISSION_TITLE_CARD_ADDRESS),
                        msn_title_sp_ttl_no[msn_no], NULL, NULL, alp_rate);    
     }
 }
@@ -3244,16 +3242,13 @@ void StageTitleDisp(int msn_no)
   
     for (i = 0; i < 11; i++)
     {
-        SimpleDispSprt(&stg_title_sp_bak[i], MISSION_TITLE_CARD_ADDRESS, i, NULL, NULL, alp_rate);
-    } 
-  
-    return;
+        SimpleDispSprt(&stg_title_sp_bak[i], MikuPan_GetHostAddress(MISSION_TITLE_CARD_ADDRESS), i, NULL, NULL, alp_rate);
+    }
 }
 
 void EventLoadDataInit()
 {
     memset(&ev_load_wrk, 0, 8);
-    return;
 }
 
 int EventLoadData(u_char load_no)
@@ -3400,7 +3395,7 @@ void MikuCGDisp()
 
     for (i = 0; i < 11; i ++)
     {
-        SimpleDispSprt(&msn_title_sp_bak[i], MISSION_TITLE_CARD_ADDRESS, i, NULL, NULL, 0x64);
+        SimpleDispSprt(&msn_title_sp_bak[i], MikuPan_GetHostAddress(MISSION_TITLE_CARD_ADDRESS), i, NULL, NULL, 0x64);
     }
 }
 

@@ -2,7 +2,7 @@
 
 extern "C"
 {
-#include "rendering/mikupan_renderer.h"
+#include "mikupan/rendering/mikupan_renderer.h"
 #include <stdlib.h>
 }
 

@@ -1,7 +1,7 @@
 #include "common.h"
 #include "typedefs.h"
 #include "enums.h"
-#include "common/memory_addresses.h"
+#include "mikupan/mikupan_memory.h"
 
 #ifdef MATCHING_DECOMP
 #define INCLUDING_FROM_MDLWORK_C
@@ -667,7 +667,7 @@ char MsnInitPlyr()
 
         plyr_init_ctrl.step = 2;
     case 2:
-        init_load_id = LoadReq(plyr_file_id[pk2_id].pk2, &PLYR_FILE_ADDRESS);
+        init_load_id = LoadReq(plyr_file_id[pk2_id].pk2, PLYR_FILE_ADDRESS);
         plyr_init_ctrl.step = 3;
         break;
     case 3:
@@ -676,7 +676,7 @@ char MsnInitPlyr()
             break;
         }
 
-        SetManmdlTm2((u_int*)PLYR_FILE_ADDRESS, 0, 1);
+        SetManmdlTm2((u_int*)MikuPan_GetHostAddress(PLYR_FILE_ADDRESS), 0, 1);
         plyr_init_ctrl.step = 4;
         sync_flg = 2;
         break;
@@ -687,7 +687,7 @@ char MsnInitPlyr()
             break;
         }
 
-        init_load_id = LoadReq(plyr_file_id[pk2_id].mpk, &PLYR_FILE_ADDRESS);
+        init_load_id = LoadReq(plyr_file_id[pk2_id].mpk, PLYR_FILE_ADDRESS);
         plyr_init_ctrl.step = 5;
         break;
     case 5:
@@ -699,19 +699,19 @@ char MsnInitPlyr()
 
         break;
     case 6:
-        init_load_id = LoadReq(plyr_file_id[pk2_id].acs, &PLYR_FILE_ACS_ADDRESS);
+        init_load_id = LoadReq(plyr_file_id[pk2_id].acs, init_load_adr);
         plyr_init_ctrl.step = 7;
         break;
     case 7:
         if (IsLoadEnd(init_load_id) != 0)
         {
-            init_load_adr = PlayerAccessoryInit(PLYR_FILE_ACS_ADDRESS);
+            init_load_adr = PlayerAccessoryInit(init_load_adr);
             plyr_init_ctrl.step = 8;
         }
 
         break;
     case 8:
-        init_load_id = LoadReq(plyr_file_id[pk2_id].bwc, &PLYR_FILE_BWC_ADDRESS);
+        init_load_id = LoadReq(plyr_file_id[pk2_id].bwc, init_load_adr);
         plyr_init_ctrl.step = 9;
         break;
     case 9:
@@ -720,12 +720,12 @@ char MsnInitPlyr()
             break;
         }
 
-        plyr_bwc_addr = (u_int*)PLYR_FILE_BWC_ADDRESS;
-        init_load_adr = (int64_t)GetPakTaleAddr((void*)PLYR_FILE_BWC_ADDRESS);
+        plyr_bwc_addr = (u_int*)init_load_adr;
+        init_load_adr = (int64_t)GetPakTaleAddr((void*)init_load_adr);
         plyr_init_ctrl.step = 10;
         break;
     case 10:
-        init_load_id = LoadReq(plyr_file_id[pk2_id].clt, &PLYR_FILE_CLT_ADDRESS);
+        init_load_id = LoadReq(plyr_file_id[pk2_id].clt, init_load_adr);
         plyr_init_ctrl.step = 11;
         break;
     case 11:
@@ -734,13 +734,13 @@ char MsnInitPlyr()
             break;
         }
 
-        plyr_clut_addr = (u_int*)PLYR_FILE_CLT_ADDRESS;
+        plyr_clut_addr = (u_int*)init_load_adr;
         init_load_adr = (int64_t)GetPakTaleAddr(plyr_bwc_addr);
         plyr_init_ctrl.step = 12;
         break;
     case 12:
         plyr_init_ctrl.step = 13;
-        init_load_id = LoadReq(plyr_file_id[pk2_id].anm, &PLAYER_ANM_ADDRESS);
+        init_load_id = LoadReq(plyr_file_id[pk2_id].anm, PLAYER_ANM_ADDRESS);
         break;
     case 13:
         if (IsLoadEnd(init_load_id) == 0)

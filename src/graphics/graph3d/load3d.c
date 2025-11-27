@@ -3,23 +3,25 @@
 #include "enums.h"
 #include "load3d.h"
 
-#include "main/glob.h"
-#include "ingame/ig_glob.h"
-#include "ingame/map/map_ctrl.h"
-#include "ingame/map/door_ctl.h"
-#include "ingame/map/furn_ctl.h"
-#include "ingame/event/ev_main.h"
-#include "os/eeiop/se_door.h"
-#include "os/eeiop/se_foot.h"
-#include "os/eeiop/se_event.h"
-#include "os/eeiop/se_srund.h"
-#include "os/eeiop/cdvd/eecdvd.h"
-#include "graphics/motion/mime.h"
-#include "graphics/motion/mim_dat.h"
 #include "graphics/graph3d/gra3d.h"
-#include "graphics/graph3d/sgsgd.h"
 #include "graphics/graph3d/mirror.h"
 #include "graphics/graph3d/sglight.h"
+#include "graphics/graph3d/sgsgd.h"
+#include "graphics/motion/mim_dat.h"
+#include "graphics/motion/mime.h"
+#include "ingame/event/ev_main.h"
+#include "ingame/ig_glob.h"
+#include "ingame/map/door_ctl.h"
+#include "ingame/map/furn_ctl.h"
+#include "ingame/map/map_ctrl.h"
+#include "main/glob.h"
+#include "os/eeiop/cdvd/eecdvd.h"
+#include "os/eeiop/se_door.h"
+#include "os/eeiop/se_event.h"
+#include "os/eeiop/se_foot.h"
+#include "os/eeiop/se_srund.h"
+
+#include <mikupan/mikupan_memory.h>
 
 ROOM_LOAD_BLOCK room_load_block[2] = {0};
 #include "data/load_furn_num.h" // static short int load_furn_num[];
@@ -59,7 +61,7 @@ u_int* RoomMdlLoadReq(u_int *addr, u_char blk_no, u_char msn_no, u_char room_no,
 
     if (addr == NULL)
     {
-        addr = (u_int *)(blk_no * 0x2f0000 + 0x14b0000);
+        addr = (u_int *)(MikuPan_GetHostAddress(blk_no * 0x2f0000 + 0x14b0000));
     }
 
     next_addr = (int64_t)addr;

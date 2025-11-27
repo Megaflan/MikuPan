@@ -1,11 +1,12 @@
-#include "common.h"
-#include "typedefs.h"
 #include "eecdvd.h"
-#include <stdint.h>
-#include "main/glob.h"
-#include "os/eeiop/eeiop.h"
+#include "common.h"
+#include "mikupan/mikupan_memory.h"
 #include "enums.h"
-#include "common/memory_addresses.h"
+#include "main/glob.h"
+#include "mikupan/logging_c.h"
+#include "os/eeiop/eeiop.h"
+#include "typedefs.h"
+#include <stdint.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -80,10 +81,9 @@ int64_t LoadReqGetAddr(int file_no, uint64_t addr, int64_t *id)
 {
     IMG_ARRANGEMENT *img_arng;
     int64_t ret;
-    
 
     img_arng = GetImgArrangementP(file_no);
-    *id = LoadReqNSector(file_no, img_arng->start, img_arng->size, &addr);
+    *id = LoadReqNSector(file_no, img_arng->start, img_arng->size, addr);
     ret = addr + img_arng->size;
     
     if (ret % 16)
@@ -116,6 +116,11 @@ int64_t LoadReqNSector(int file_no, int sector, int size, int64_t addr)
     int ret;
     
     ret = GetFreeId();
+
+    if (!MikuPan_IsPs2MemoryPointer(addr))
+    {
+        addr = MikuPan_GetHostAddress((int)addr);
+    }
     
     if (ret != -1)
     {
@@ -243,7 +248,7 @@ static int GetFreeId()
     ret = cdvd_rstat.req_pos;
     load_finish[ret].stat = 1;
     cdvd_rstat.req_pos = (cdvd_rstat.req_pos + 1) % 32;
-    cdvd_rstat.com_num ++;
+    cdvd_rstat.com_num++;
 
     return ret;
 }
@@ -251,7 +256,7 @@ static int GetFreeId()
 unsigned char* LoadImgHdFile();
 IMG_ARRANGEMENT *GetImgArrangementP(int file_no)
 {
-    return &((IMG_ARRANGEMENT*)ImgHdAddress)[file_no];
+    return &((IMG_ARRANGEMENT*)MikuPan_GetHostPointer(ImgHdAddress))[file_no];
 }
 
 #ifdef BUILD_EU_VERSION

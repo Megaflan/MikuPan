@@ -2,7 +2,7 @@
 #include "typedefs.h"
 #include "tim2.h"
 
-#include "common/memory_addresses.h"
+#include "mikupan/mikupan_memory.h"
 #include "ee/kernel.h"
 #include "ee/eekernel.h"
 #include "sce/libdma.h"
@@ -13,7 +13,7 @@
 #include "graphics/graph3d/sglib.h"
 #include "gs/gs_packet_handler.h"
 #include "gs/gs_server_c.h"
-#include "rendering/mikupan_renderer.h"
+#include "mikupan/rendering/mikupan_renderer.h"
 
 #include <stdlib.h>
 
@@ -1683,10 +1683,7 @@ void LoadSprFileToMainD(int no, int64_t addr)
 
 void SetSprFile(int64_t addr)
 {
-    if (addr == 0)
-    {
-        return;
-    }
+    addr = MikuPan_GetHostAddress(addr);
 
     SetSprFile2(addr, 0);
 }
@@ -1703,6 +1700,7 @@ void SetSprFile2(int64_t addr, u_int offset)
  */
 void SetSprFile3(int64_t addr, u_int offset)
 {
+    addr = MikuPan_GetHostAddress(addr);
     MakeTim2ClutDirect3(addr, -1, -1, offset);
 }
 
@@ -1712,6 +1710,8 @@ void SetETIM2File(int64_t addr)
     int texnum;
     int *offtop;
     SPRITE_DATA dummy;
+
+    addr = MikuPan_GetHostAddress(addr);
 
     texnum = ((int *)addr)[0];
     offtop = &((int *)addr)[4];
@@ -1724,6 +1724,7 @@ void SetETIM2File(int64_t addr)
 
 void SetFTIM2File(int64_t addr)
 {
+    addr = MikuPan_GetHostAddress(addr);
     CallFontTexSendPacket();
 }
 

@@ -3,6 +3,7 @@
 
 #include "typedefs.h"
 
+#include <mikupan/mikupan_memory.h>
 #include <stddef.h>
 #include <stdint.h>
 
@@ -140,7 +141,7 @@ typedef struct {
 
 inline static u_int * GetPHead(HeaderSection *hs)
 {
-	return (u_int *)((u_int)hs->phead + (int64_t)hs);
+	return (u_int*)MikuPan_GetHostAddress(hs->phead);
 }
 
 inline static void* GetOffsetPtr(void *p, int offset)
@@ -150,17 +151,17 @@ inline static void* GetOffsetPtr(void *p, int offset)
 
 inline static SgCOORDUNIT* GetCoordP(HeaderSection *hs)
 {
-    return (SgCOORDUNIT *)((int)hs->coordp + (int64_t)hs);
+	return (SgCOORDUNIT*)MikuPan_GetHostAddress(hs->coordp);
 }
 
 inline static SgCOORDUNIT* GetCoordPParent(SgCOORDUNIT* cp)
 {
-    return (SgCOORDUNIT *)((int)cp->parent + (int64_t)cp);
+	return (SgCOORDUNIT*)MikuPan_GetHostAddress(cp->parent);
 }
 
-inline static SgMaterial* GetMatP(HeaderSection *hs)
+inline static SgMaterial* GetMatP(const HeaderSection *hs)
 {
-    return (SgMaterial *)((int)hs->matp + (int64_t)hs);
+	return (SgMaterial*)MikuPan_GetHostAddress(hs->matp);
 }
 
 inline static SgMaterial* GetMaterialPtr(const HeaderSection *hs, int index)
@@ -170,7 +171,7 @@ inline static SgMaterial* GetMaterialPtr(const HeaderSection *hs, int index)
 		return NULL;
 	}
 
-	SgMaterial* pMaterial = (SgMaterial *) ((int64_t) hs + (int) hs->matp);
+	SgMaterial* pMaterial = GetMatP(hs);
 	return &pMaterial[index];
 }
 
@@ -178,8 +179,7 @@ inline static u_int* GetTopProcUnitHeaderPtr(HeaderSection *hs, int index)
 {
 	if (hs->primitives[index] != 0x0)
 	{
-		return (u_int*) ((int64_t) hs
-					      + (unsigned int) hs->primitives[index]);
+		return (u_int*)MikuPan_GetHostAddress(hs->primitives[index]);
 	}
 
 	return NULL;
@@ -189,7 +189,7 @@ static inline u_int* GetNextProcUnitHeaderPtr(const u_int *prim)
 {
 	if (prim[0] != 0x0)
 	{
-		return (u_int *) ((int64_t) prim + prim[0]);
+		return (u_int *) MikuPan_GetHostAddress(prim[0]);
 	}
 
 	return NULL;

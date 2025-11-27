@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "common/memory_addresses.h"
+#include "mikupan/mikupan_memory.h"
 #include "sce/libvu0.h"
 #include "sce/libdma.h"
 #include "sce/sifdev.h"
@@ -725,7 +725,7 @@ void SetLWS(SgCOORDUNIT *cp, SgCAMERA *camera)
         return;
     }
 
-    if (cp->parent == -1)
+    if (cp->parent == 0)
     {
         sceVu0CopyMatrix(cp->lwmtx, cp->matrix);
         sceVu0MulMatrix(cp->workm, camera->ws, cp->lwmtx);
@@ -875,7 +875,7 @@ int64_t PlayerModelInit()
     u_int *tmpp;
     u_int *p;
 
-    tmpp = (u_int *)PLYR_FILE_ADDRESS;
+    tmpp = (u_int *)MikuPan_GetHostAddress(PLYR_FILE_ADDRESS);
 
     pmanmodel[0] = &tmpp[0];
     pmanmpk[0] = &tmpp[0];

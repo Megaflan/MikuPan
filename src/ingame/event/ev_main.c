@@ -3,7 +3,7 @@
 #include "typedefs.h"
 #include "ev_main.h"
 
-#include "common/memory_addresses.h"
+#include "mikupan/mikupan_memory.h"
 
 #include <string.h>
 
@@ -57,7 +57,7 @@ EVENT_WRK ev_wrk = {0};
 
 #define DEG2RAD(x) ((float)(x)*PI/180.0f)
 
-#define DVD_DATA_ADDR ((u_char*)MSN_TITLE_DAT_ADDRESS)
+#define DVD_DATA_ADDR ((u_char*)MikuPan_GetHostPointer(MSN_TITLE_DAT_ADDRESS))
 
 void EventWrkInit()
 {
@@ -104,7 +104,7 @@ void EventMain()
     u_char *dat_adr;
     short int scene_no;
 
-    addr = (int *)MSN_TITLE_DAT_ADDRESS;
+    addr = (int *)MikuPan_GetHostPointer(MSN_TITLE_DAT_ADDRESS);
     addr++;
     addr = (int *)(*addr + DVD_DATA_ADDR + ev_wrk.evt_no * 4);
     dat_adr = (u_char *)(*addr + DVD_DATA_ADDR);
@@ -861,7 +861,7 @@ u_char EventOpenJudge(short int event_no)
     }
 
     addr = (int *)(DVD_DATA_ADDR);
-    addr = (int *)(*addr + (event_no * 4 + (int)addr));
+    addr = (int *)(*addr + (event_no * 4 + (int64_t)addr));
     addr = (int *)(*addr + DVD_DATA_ADDR);
 
     if (ap_wrk.zh_mode != 0 && ((u_char *)addr)[3] != 202)

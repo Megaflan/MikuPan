@@ -24,7 +24,8 @@ static int stack_light_num[9];
 #define GET_MESH_TYPE(intpointer) (char)((char*)intpointer)[13]
 #define GET_MESH_GLOOPS(intpointer) (int)((char*)intpointer)[14]
 
-#define SCRATCHPAD ((u_char *)0x70000000)
+//#define SCRATCHPAD ((u_char *)0x70000000)
+#define SCRATCHPAD ((u_char *)ps2_virtual_scratchpad)
 
 void SgPreRenderDbgOn()
 {
@@ -1889,7 +1890,7 @@ void SgPreRenderPrim(u_int *prim)
         break;
         }
 
-        prim = (u_int *)*prim;
+        prim = (u_int *)MikuPan_GetHostAddress(*prim);
     }
 }
 

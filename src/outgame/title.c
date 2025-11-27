@@ -1,13 +1,11 @@
 #include "common.h"
 #include "title.h"
 
-#include "enums.h"
-#include "memory_album.h"
-#include "outgame.h"
+#include "../mikupan/logging_c.h"
 #include "btl_mode/btl_menu.h"
-#include "common/logging_c.h"
-#include "common/memory_addresses.h"
+#include "mikupan/mikupan_memory.h"
 #include "ee/kernel.h"
+#include "enums.h"
 #include "graphics/graph2d/effect_obj.h"
 #include "graphics/graph2d/g2d_debug.h"
 #include "graphics/graph2d/tim2.h"
@@ -23,12 +21,14 @@
 #include "main/glob.h"
 #include "mc/mc_at.h"
 #include "mc/mc_main.h"
-#include "os/eeiop/eese.h"
+#include "memory_album.h"
 #include "os/eeiop/adpcm/ea_cmd.h"
 #include "os/eeiop/adpcm/ea_ctrl.h"
 #include "os/eeiop/adpcm/ea_dat.h"
 #include "os/eeiop/cdvd/eecdvd.h"
-#include "rendering/mikupan_renderer.h"
+#include "os/eeiop/eese.h"
+#include "outgame.h"
+#include "mikupan/rendering/mikupan_renderer.h"
 
 #include <math.h>
 #include <stdio.h>
@@ -408,7 +408,7 @@ SPRT_DAT title_sprt[11] = {
     case TITLE_INIT:
         ttl_dsp = (TTL_DSP_WRK){0};
 
-        title_wrk.load_id = LoadReq(TITLE_PK2, &SPRITE_ADDRESS);
+        title_wrk.load_id = LoadReq(TITLE_PK2, SPRITE_ADDRESS);
 
         InitOutDither();
         MakeOutDither();
@@ -495,7 +495,7 @@ SPRT_DAT title_sprt[11] = {
         }
     break;
     case TITLE_INIT_FROM_IN:
-        title_wrk.load_id = LoadReq(TITLE_PK2, &SPRITE_ADDRESS);
+        title_wrk.load_id = LoadReq(TITLE_PK2, SPRITE_ADDRESS);
 
         title_wrk.mode = TITLE_WAIT_FROM_IN;
     break;
@@ -669,7 +669,7 @@ SPRT_DAT title_sprt[11] = {
             mc_slot1 = mc_ctrl.port + 1;
             mc_file1 = mc_ctrl.sel_file + 1;
 
-            memcpy((void *)0xE80000, (void *)0x5a0000, 0x180000);
+            //memcpy((void *)0xE80000, (void *)0x5a0000, 0x180000);
 
             mcInit(6, (u_int *)MC_WORK_ADDRESS, 0);
 
@@ -699,12 +699,12 @@ SPRT_DAT title_sprt[11] = {
             //mc_atyp2 = mc_album_type;
             mc_slot2 = mc_ctrl.port + 1;
             //mc_file2 = mc_ctrl.sel_file + 1;
-            memcpy((void *)0x1000000, (void *)0x5a0000, 0x180000);
+            //memcpy((void *)0x1000000, (void *)0x5a0000, 0x180000);
 
             MemAlbmInit(1, mc_pnum1, mc_pnum2, mc_atyp1, mc_atyp2, mc_slot1, mc_slot2, mc_file1, mc_file2 & 0xff);
 
-            title_wrk.load_id = LoadReq(PL_ALBM_FSM_PK2, &PL_ALBM_FSM_PK2_ADDRESS);
-            title_wrk.load_id = LoadReq(PL_ALBM_PK2, &PL_SAVE_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_ALBM_FSM_PK2, PL_ALBM_FSM_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_ALBM_PK2, PL_SAVE_PK2_ADDRESS);
             title_wrk.load_id = AlbmDesignLoad(0, mc_atyp1);
             title_wrk.load_id = AlbmDesignLoad(1, mc_atyp2);
 
@@ -716,13 +716,13 @@ SPRT_DAT title_sprt[11] = {
             mc_slot2 = 0;
             //mc_file2 = 0;
 
-            memcpy((void *)0x1000000, (void *)0x5a0000, 0x180000);
+            //memcpy((void *)0x1000000, (void *)0x5a0000, 0x180000);
 
             //MemAlbmInit(1, mc_pnum1, mc_pnum2, mc_atyp1, mc_atyp2, mc_slot1, mc_slot2, mc_file1, mc_file2 & 0xff);
             NewAlbumInit(1);
 
-            title_wrk.load_id = LoadReq(PL_ALBM_FSM_PK2, &PL_ALBM_FSM_PK2_ADDRESS);
-            title_wrk.load_id = LoadReq(PL_ALBM_PK2, &PL_SAVE_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_ALBM_FSM_PK2, PL_ALBM_FSM_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_ALBM_PK2, PL_SAVE_PK2_ADDRESS);
             title_wrk.load_id = AlbmDesignLoad(0, mc_atyp1);
             title_wrk.load_id = AlbmDesignLoad(1, mc_atyp2);
 
@@ -749,50 +749,50 @@ SPRT_DAT title_sprt[11] = {
         {
         case 0: break;
         case 1:
-            memcpy((void *)0x5a0000, (void *)0xe80000, 0x180000);
+            //memcpy((void *)0x5a0000, (void *)0xe80000, 0x180000);
 
-            mcInit(2, (u_int *)MC_WORK_ADDRESS, 0);
+            mcInit(2, (u_int *)MikuPan_GetHostAddress(MC_WORK_ADDRESS), 0);
 
             title_wrk.load_side = 0;
 
-            title_wrk.load_id = LoadReq(PL_PSVP_PK2, &PL_PSVP_PK2_ADDRESS);
-            title_wrk.load_id = LoadReq(PL_SAVE_PK2, &PL_SAVE_PK2_ADDRESS);
-            title_wrk.load_id = LoadReq(PL_ALBM_SAVE_PK2, &SV_PHT_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_PSVP_PK2, PL_PSVP_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_SAVE_PK2, PL_SAVE_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_ALBM_SAVE_PK2, SV_PHT_PK2_ADDRESS);
 
             title_wrk.mode = TITLE_ALBM_SAVE_PRE;
         break;
         case 2:
-            memcpy((void *)0x5a0000, (void *)0x1000000, 0x180000);
+            //memcpy((void *)0x5a0000, (void *)0x1000000, 0x180000);
 
-            mcInit(2, (u_int *)MC_WORK_ADDRESS, 0);
+            mcInit(2, (u_int *)MikuPan_GetHostAddress(MC_WORK_ADDRESS), 0);
 
             title_wrk.load_side = 1;
 
-            title_wrk.load_id = LoadReq(PL_PSVP_PK2, &PL_PSVP_PK2_ADDRESS);
-            title_wrk.load_id = LoadReq(PL_SAVE_PK2, &PL_SAVE_PK2_ADDRESS);
-            title_wrk.load_id = LoadReq(PL_ALBM_SAVE_PK2, &SV_PHT_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_PSVP_PK2, PL_PSVP_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_SAVE_PK2, PL_SAVE_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_ALBM_SAVE_PK2, SV_PHT_PK2_ADDRESS);
 
             title_wrk.mode = TITLE_ALBM_SAVE_PRE;
         break;
         case 3:
-            title_wrk.load_id = LoadReq(PL_PSVP_PK2, &PL_PSVP_PK2_ADDRESS);
-            title_wrk.load_id = LoadReq(PL_SAVE_PK2, &PL_SAVE_PK2_ADDRESS);
-            title_wrk.load_id = LoadReq(PL_ALBM_SAVE_PK2, &SV_PHT_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_PSVP_PK2, PL_PSVP_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_SAVE_PK2, PL_SAVE_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_ALBM_SAVE_PK2, SV_PHT_PK2_ADDRESS);
 
             title_wrk.load_side = 0;
 
-            mcInit(5, (u_int *)MC_WORK_ADDRESS, 0);
+            mcInit(5, (u_int *)MikuPan_GetHostAddress(MC_WORK_ADDRESS), 0);
 
             title_wrk.mode = TITLE_ALBM_LOAD_MODE_PRE;
         break;
         case 4:
-            title_wrk.load_id = LoadReq(PL_PSVP_PK2, &PL_PSVP_PK2_ADDRESS);
-            title_wrk.load_id = LoadReq(PL_SAVE_PK2, &PL_SAVE_PK2_ADDRESS);
-            title_wrk.load_id = LoadReq(PL_ALBM_SAVE_PK2, &SV_PHT_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_PSVP_PK2, PL_PSVP_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_SAVE_PK2, PL_SAVE_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_ALBM_SAVE_PK2, SV_PHT_PK2_ADDRESS);
 
             title_wrk.load_side = 1;
 
-            mcInit(5, (u_int *)MC_WORK_ADDRESS, 0);
+            mcInit(5, (u_int *)MikuPan_GetHostAddress(MC_WORK_ADDRESS), 0);
 
             title_wrk.mode = TITLE_ALBM_LOAD_MODE_PRE;
         break;
@@ -828,7 +828,7 @@ SPRT_DAT title_sprt[11] = {
         case 1:
             if (title_wrk.load_side == 0)
             {
-                memcpy((void *)0xe80000, (void *)0x5a0000, 0x180000);
+                //memcpy((void *)0xe80000, (void *)0x5a0000, 0x180000);
 
                 mc_pnum1 = mc_photo_num;
                 //mc_atyp1 = mc_album_type;
@@ -841,7 +841,7 @@ SPRT_DAT title_sprt[11] = {
             }
             else
             {
-                memcpy((void *)0x1000000, (void *)0x5a0000, 0x180000);
+                //memcpy((void *)0x1000000, (void *)0x5a0000, 0x180000);
 
                 mc_pnum2 = mc_photo_num;
                 //mc_atyp2 = mc_album_type;
@@ -853,7 +853,7 @@ SPRT_DAT title_sprt[11] = {
 
             title_wrk.load_id = AlbmDesignLoad(0, mc_atyp1);
             title_wrk.load_id = AlbmDesignLoad(1, mc_atyp2);
-            title_wrk.load_id = LoadReq(PL_ALBM_PK2, &PL_SAVE_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_ALBM_PK2, PL_SAVE_PK2_ADDRESS);
 
             title_wrk.mode = TITLE_ALBM_MAIN_PRE;
         break;
@@ -862,7 +862,7 @@ SPRT_DAT title_sprt[11] = {
             AlbmDesignLoad(0, mc_atyp1);
             AlbmDesignLoad(1, mc_atyp2);
 
-            title_wrk.load_id = LoadReq(PL_ALBM_PK2, &PL_SAVE_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_ALBM_PK2, PL_SAVE_PK2_ADDRESS);
 
             title_wrk.mode = TITLE_ALBM_MAIN_PRE;
         break;
@@ -906,7 +906,7 @@ SPRT_DAT title_sprt[11] = {
             AlbmDesignLoad(0, mc_atyp1);
             AlbmDesignLoad(1, mc_atyp2);
 
-            title_wrk.load_id = LoadReq(PL_ALBM_PK2, &PL_SAVE_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_ALBM_PK2, PL_SAVE_PK2_ADDRESS);
 
             title_wrk.mode = TITLE_ALBM_MAIN_PRE;
         break;
@@ -916,7 +916,7 @@ SPRT_DAT title_sprt[11] = {
             AlbmDesignLoad(0, mc_atyp1);
             AlbmDesignLoad(1, mc_atyp2);
 
-            title_wrk.load_id = LoadReq(PL_ALBM_PK2, &PL_SAVE_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_ALBM_PK2, PL_SAVE_PK2_ADDRESS);
 
             title_wrk.mode = TITLE_ALBM_MAIN_PRE;
         break;
@@ -1023,11 +1023,11 @@ void TitleStartSlct()
     {
         if (title_wrk.csr != 0x0)
         {
-            title_wrk.load_id = LoadReq(PL_BGBG_PK2, &PL_BGBG_PK2_ADDRESS);
-            title_wrk.load_id = LoadReq(PL_STTS_PK2, &PL_STTS_PK2_ADDRESS);
-            title_wrk.load_id = LoadReq(PL_PSVP_PK2, &PL_PSVP_PK2_ADDRESS);
-            title_wrk.load_id = LoadReq(PL_SAVE_PK2, &PL_SAVE_PK2_ADDRESS);
-            title_wrk.load_id = LoadReq(SV_PHT_PK2, &SV_PHT_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_BGBG_PK2, PL_BGBG_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_STTS_PK2, PL_STTS_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_PSVP_PK2, PL_PSVP_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_SAVE_PK2, PL_SAVE_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(SV_PHT_PK2, SV_PHT_PK2_ADDRESS);
 
             title_wrk.mode = TITLE_LOAD_PRE;
 
@@ -1232,11 +1232,11 @@ void TitleStartSlctYW(u_char pad_off, u_char alp_max)
             SeStartFix(1, 0, 0x1000, 0x1000, 0);
         break;
         case 1:
-            title_wrk.load_id = LoadReq(PL_BGBG_PK2, &PL_BGBG_PK2_ADDRESS);
-            title_wrk.load_id = LoadReq(PL_STTS_PK2, &PL_STTS_PK2_ADDRESS);
-            title_wrk.load_id = LoadReq(PL_PSVP_PK2, &PL_PSVP_PK2_ADDRESS);
-            title_wrk.load_id = LoadReq(PL_SAVE_PK2, &PL_SAVE_PK2_ADDRESS);
-            title_wrk.load_id = LoadReq(SV_PHT_PK2, &SV_PHT_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_BGBG_PK2, PL_BGBG_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_STTS_PK2, PL_STTS_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_PSVP_PK2, PL_PSVP_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_SAVE_PK2, PL_SAVE_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(SV_PHT_PK2, SV_PHT_PK2_ADDRESS);
 
             ingame_wrk.stts |= 0x20;
 
@@ -1248,11 +1248,11 @@ void TitleStartSlctYW(u_char pad_off, u_char alp_max)
             EAdpcmFadeOut(60);
         break;
         case 2:
-            title_wrk.load_id = LoadReq(PL_BGBG_PK2, &PL_BGBG_PK2_ADDRESS);
-            title_wrk.load_id = LoadReq(PL_STTS_PK2, &PL_STTS_PK2_ADDRESS);
-            title_wrk.load_id = LoadReq(PL_PSVP_PK2, &PL_PSVP_PK2_ADDRESS);
-            title_wrk.load_id = LoadReq(PL_SAVE_PK2, &PL_SAVE_PK2_ADDRESS);
-            title_wrk.load_id = LoadReq(PL_ALBM_SAVE_PK2, &SV_PHT_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_BGBG_PK2, PL_BGBG_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_STTS_PK2, PL_STTS_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_PSVP_PK2, PL_PSVP_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_SAVE_PK2, PL_SAVE_PK2_ADDRESS);
+            title_wrk.load_id = LoadReq(PL_ALBM_SAVE_PK2, SV_PHT_PK2_ADDRESS);
 
             ingame_wrk.stts |= 0x20;
 
@@ -1895,12 +1895,12 @@ int AlbmDesignLoad(u_char side, u_char type)
 
     if (side == 0)
     {
-        addr = &PL_FNDR_PK2_ADDRESS;
+        addr = MikuPan_GetHostAddress(PL_FNDR_PK2_ADDRESS);
     }
 
     else if (side == 1)
     {
-        addr = &PL_ALBM_SIDE_1_ADDRESS;
+        addr = MikuPan_GetHostAddress(PL_ALBM_SIDE_1_ADDRESS);
     }
 
     switch(type)

@@ -2,7 +2,7 @@
 #include "typedefs.h"
 #include "g2d_debug.h"
 
-#include "common/memory_addresses.h"
+#include "mikupan/mikupan_memory.h"
 
 #include <string.h>
 
@@ -748,6 +748,7 @@ void gra2dDrawDbgMenu()
 
     /// TODO: Reimplement some missing features
     ingame_wrk.clear_count = 1;//dbg_wrk.oth_sub_menu;
+    SgPreRenderDbgOn();
 }
 
 void SetMaxNumber(int num1, int num2, int nmax)
@@ -1039,7 +1040,7 @@ void CheckHintTex()
 
     if (num != num_old)
     {
-        g2d_load_flg.hint = LoadReq(hint_tbl[num], &EFFECT_ADDRESS);
+        g2d_load_flg.hint = LoadReq(hint_tbl[num], EFFECT_ADDRESS);
     }
 
     MakeTim2ClutDirect4((int64_t)EFFECT_ADDRESS, 0, -1, -1, 0);

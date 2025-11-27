@@ -1,7 +1,7 @@
 #include "iopcdvd.h"
 
-#include "common/logging_c.h"
-#include "common/memory_addresses.h"
+#include "../../mikupan/logging_c.h"
+#include "mikupan/mikupan_memory.h"
 #include "iop/iopsys.h"
 #include "os/eeiop/eeiop.h"
 
@@ -54,7 +54,7 @@ void ICdvdInit(int reset)
         ICdvdInitOnce();
 }
 
-unsigned char *LoadImgHdFile();
+void LoadImgHdFile();
 void ICdvdInitOnce()
 {
     memset(&cdvd_stat, 0, sizeof(cdvd_stat));
@@ -72,7 +72,7 @@ void ICdvdInitOnce()
     cdvd_stat.fp = fopen("\\IMG.BD.BIN", "r");
     cdvd_stat.lock = SDL_CreateMutex();
 
-    ImgHdAddress = LoadImgHdFile();
+    LoadImgHdFile();
 }
 
 void ICdvdInitSoftReset()
@@ -83,7 +83,7 @@ void ICdvdInitSoftReset()
 }
 
 // --- these functions are more heavily modified for PC ---
-void ReadFileInArchive(int sector, int size, int64_t address);
+void ReadFileInArchive(int sector, int size, u_int *address);
 void ICdvdDoTransfer(CDVD_REQ_BUF *rq)
 {
     switch (rq->tmem)

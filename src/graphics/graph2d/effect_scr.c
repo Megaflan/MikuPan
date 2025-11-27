@@ -31,9 +31,9 @@
 #include "main/glob.h"
 #include "os/eeiop/cdvd/eecdvd.h"
 #include "outgame/btl_mode/btl_mode.h"
-#include "rendering/mikupan_renderer.h"
+#include "mikupan/rendering/mikupan_renderer.h"
 
-#include <common/memory_addresses.h>
+#include <mikupan/mikupan_memory.h>
 
 typedef struct { // 0x28
 	/* 0x00 */ u_int flow;
@@ -4213,7 +4213,7 @@ int SetGameOver()
         
         if (cnt >= sec5)
         {
-            cnt = LoadReq(G_OVER_PK2, &MISSION_TITLE_CARD_ADDRESS);
+            cnt = LoadReq(G_OVER_PK2, MISSION_TITLE_CARD_ADDRESS);
             gameover_flow = 2;
         }
     break;

@@ -2,7 +2,7 @@
 #include "common.h"
 #include "typedefs.h"
 
-#include "common/logging_c.h"
+#include "../../mikupan/logging_c.h"
 
 #include <stdio.h>
 
@@ -11,6 +11,8 @@
 #include "graphics/graph3d/sg_dat.h"
 #include "graphics/graph3d/sgdma.h"
 #include "graphics/graph3d/sglib.h"
+
+#include <mikupan/mikupan_memory.h>
 
 static int post_process = 0;
 static int PresetChk;
@@ -210,7 +212,7 @@ void MappingVertexList(VERTEXLIST *vli, PHEAD *ph)
 
     if (vnbuf_size < size)
     {
-        info_log("VNBuffer Over size %d needs %d\n", vnbuf_size, size);
+        info_log("VNBuffer Over size %d needs %d", vnbuf_size, size);
         ph->pUniqList = ph->pWeightedList = 0;
     }
 }
@@ -283,16 +285,19 @@ void SgMapUnit(void *sgd_top)
     {
         /// Overwrites data for 64bits PTR
         //hs->coordp = (SgCOORDUNIT *)((u_int)hs->coordp + (int)sgd_top);
+        hs->coordp = MikuPan_GetPs2OffsetFromHostPointer(sgd_top) + hs->coordp;
     }
 
     if ((u_int)hs->matp - 1 < 0x2fffffff)
     {
         /// Overwrites data for 64bits PTR
         //hs->matp = (SgMaterial *)((u_int)hs->matp + (int)sgd_top);
+        hs->matp = MikuPan_GetPs2OffsetFromHostPointer(sgd_top) + hs->matp;
     }
 
     /// Overwrites data for 64bits PTR
     //hs->phead = (u_int *)((u_int)hs->phead + (int)sgd_top);
+    hs->phead = MikuPan_GetPs2OffsetFromHostPointer(sgd_top) + hs->phead;
 
     pk = (int *)&hs->primitives;
 
@@ -301,7 +306,7 @@ void SgMapUnit(void *sgd_top)
         if (pk[i] != 0)
         {
             /// Overwrites data for 64bits PTR
-            //pk[i] = pk[i] + (int64_t)sgd_top;
+            pk[i] = MikuPan_GetPs2OffsetFromHostPointer(sgd_top) + pk[i];
         }
     }
 
@@ -315,12 +320,13 @@ void SgMapUnit(void *sgd_top)
             if ((int64_t)cp[i].parent < 0)
             {
                 /// Overwrites data for 64bits PTR. -1 is our only indicator of no parent
-                //cp[i].parent = NULL;
+                cp[i].parent = 0;
             }
             else if ((int64_t)cp[i].parent < (int64_t)cp)
             {
                 /// Overwrites data for 64bits PTR
                 //cp[i].parent = (int64_t)cp[i].parent + cp;
+                cp[i].parent = MikuPan_GetPs2OffsetFromHostPointer(cp) + (cp[i].parent * sizeof(SgCOORDUNIT));
             }
         }
     }
@@ -338,6 +344,7 @@ void SgMapUnit(void *sgd_top)
             if (*intpointer != 0)
             {
                 //*intpointer = *intpointer + (int64_t)sgd_top;
+                *intpointer = MikuPan_GetPs2OffsetFromHostPointer(sgd_top) + *intpointer;
             }
         }
     }

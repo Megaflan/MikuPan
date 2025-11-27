@@ -15,7 +15,7 @@
 #include "graphics/graph3d/sgdma.h"
 #include "graphics/graph3d/gra3d.h"
 #include "os/eeiop/adpcm/ea_cmd.h"
-#include "rendering/mikupan_renderer.h"
+#include "mikupan/rendering/mikupan_renderer.h"
 
 #define SDL_MAIN_USE_CALLBACKS 1  /* use the callbacks instead of main() */
 #include "graphics/ui/imgui_window_c.h"
@@ -24,6 +24,7 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <iop/iopsys.h>
+#include <mikupan/mikupan_memory.h>
 
 #include <sce/libpad.h>
 
@@ -33,6 +34,7 @@ const double TARGET_FRAME_TIME = 1000.0 / TARGET_FPS; // milliseconds per frame
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
 {
     SDL_AppResult result = MikuPan_Init();
+    MikuPan_InitPs2Memory();
 
     /// GAME LOGIC ///
     InitSystem();

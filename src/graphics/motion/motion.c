@@ -19,7 +19,7 @@
 #include "main/glob.h"
 #include "mdlact.h"
 
-#include <common/memory_addresses.h>
+#include <mikupan/mikupan_memory.h>
 
 typedef struct {
     u_char file_id[4];
@@ -63,9 +63,9 @@ void motInitPlayerAnm(char mdl_no)
 {
     u_int *pkt_p;
 
-    pkt_p = (u_int *)GetPakTaleAddr((void *)PLAYER_ANM_ADDRESS);
+    pkt_p = (u_int *)GetPakTaleAddr((void *)MikuPan_GetHostAddress(PLAYER_ANM_ADDRESS));
 
-    motInitAniCtrl(ani_mdl, (u_int *)PLAYER_ANM_ADDRESS, pmanmpk[0], pkt_p, mdl_no, A000_MIKU);
+    motInitAniCtrl(ani_mdl, (u_int *)MikuPan_GetHostAddress(PLAYER_ANM_ADDRESS), pmanmpk[0], pkt_p, mdl_no, A000_MIKU);
     mimLNigiriReq(M001_MIM_LHAND_NIGIRI, 0);
 
     ani_mdl[0].mot.reso = 1;
@@ -765,8 +765,6 @@ void* GetFileInPak(void *pak_head, int num)
 
 void* GetPakTaleAddr(void *pak_head)
 {
-    // Allocate 5mb to avoid issues
-    return malloc(1024*1024*5);
     int file_num;
     int file_size;
     int i;

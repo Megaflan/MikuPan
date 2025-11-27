@@ -33,7 +33,7 @@
 #include "os/eeiop/eese.h"
 #include "graphics/graph3d/sglib.h"
 // #include "ingame/map/map_area.h"
-#include "common/memory_addresses.h"
+#include "mikupan/mikupan_memory.h"
 
 #include <ctype.h>
 #include <stdbool.h>

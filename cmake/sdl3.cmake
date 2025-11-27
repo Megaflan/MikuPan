@@ -1,8 +1,9 @@
-find_package(SDL3)
-if(${SDL3_FOUND})
-        message(STATUS "Found SDL3")
+if(UNIX)
+        find_package(SDL3)
+        if(${SDL3_FOUND})
+                message(STATUS "Found SDL3")
+        endif()
 else()
-
         include(FetchContent)
 
         FetchContent_Declare(

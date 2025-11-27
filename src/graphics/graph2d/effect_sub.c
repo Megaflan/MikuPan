@@ -9,7 +9,7 @@
 #include "sce/libvu0.h"
 
 // #include "os/pad.h"
-#include "common/memory_addresses.h"
+#include "mikupan/mikupan_memory.h"
 #include "os/system.h"
 #include "main/glob.h"
 #include "ingame/ig_init.h"
@@ -22,7 +22,7 @@
 #include "graphics/graph3d/sglib.h"
 #include "graphics/graph3d/libsg.h"
 #include "gs/gs_server_c.h"
-#include "rendering/mikupan_renderer.h"
+#include "mikupan/rendering/mikupan_renderer.h"
 
 typedef struct {
 	int screen_flag;
@@ -1526,7 +1526,7 @@ void SetTexDirectS2(int pri, SPRITE_DATA *sd, DRAW_ENV *de, int type)
         Change.CLD = 0;
     }
 
-    DISP_SPRT s;
+    DISP_SPRT s = {0};
     s.tex0 = *(u_long*)&sd->g_GsTex0;
     s.r = sd->r;
     s.g = sd->g;
@@ -1545,6 +1545,7 @@ void SetTexDirectS2(int pri, SPRITE_DATA *sd, DRAW_ENV *de, int type)
     s.v = min_v_clamp; //min_v_clamp + ((rand() / RAND_MAX) * max_v_clamp);
     s.w = sd->size_w;
     s.h = sd->size_h;
+    s.rot = sd->angle;
 
     MikuPan_Render2DTexture(&s);
     //s.alpha = de->alpha;
@@ -2003,6 +2004,7 @@ void SetTexDirect(SPRITE_DATA *sd, int atype)
     s.v = 8;
     s.w = sd->size_w;
     s.h = sd->size_h;
+    s.rot = sd->angle;
 
     MikuPan_Render2DTexture(&s);
     

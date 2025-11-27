@@ -12,6 +12,7 @@ extern "C"
 #include "sce/libpad.h"
 #include "graphics/graph2d/g2d_debug.h"
 #include "graphics/graph2d/message.h"
+#include "graphics/graph3d/sglight.h"
 }
 
 #include <imgui.h>
@@ -44,7 +45,8 @@ public:
 
     void draw(const char* label = "Frame Time", ImVec2 size = ImVec2(0,0))
     {
-        if (times_.empty()) {
+        if (times_.empty())
+        {
             ImGui::TextUnformatted("No frame data yet");
             return;
         }
@@ -54,7 +56,7 @@ public:
         float maxv = times_[0];
 
         for (float v : times_)
-            {
+        {
             sum += v;
             if (v < minv) minv = v;
             if (v > maxv) maxv = v;
@@ -182,6 +184,7 @@ void DrawImGuiWindow()
             ImGui::Toggle("Performance Info", (bool*)&dbg_wrk.oth_perf, ImGuiToggleFlags_Animated);
             ImGui::Toggle("Packet Count", (bool*)&dbg_wrk.oth_pkt_num_sw, ImGuiToggleFlags_Animated);
             ImGui::Toggle("Controller Config", &controller_config, ImGuiToggleFlags_Animated);
+            ImGui::Toggle("Clear Game", (bool*)&ingame_wrk.clear_count, ImGuiToggleFlags_Animated);
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();

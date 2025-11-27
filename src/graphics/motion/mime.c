@@ -490,20 +490,15 @@ u_int* mimSetMimeDat(MIME_DAT *mdat, u_int *mim_p, u_int *tmp_buf, u_int *mdl_p)
     mdat->dat = mim_p;
     //mdat->pkt = ph->pUniqVertex;
     mdat->pkt = GetOffsetPtr((HeaderSection*)mdl_p, ph->pUniqVertex);
-    //mdat->vtx = (sceVu0FVECTOR *)tmp_buf;
+    mdat->vtx = (sceVu0FVECTOR *)tmp_buf;
 
-    info_log("Allocating %d bytes", (ph->pUniqNormal - ph->pUniqVertex));
-
-    mdat->vtx = malloc((ph->pUniqNormal - ph->pUniqVertex));
     // count how many `sceVu0FVECTOR` is `pUniqVertex` made of by subtracting it's start address
     // `mdat->pkt` (actually `ph->pUniqVertex`) from it's end address `ph->pUniqNormal`
     //mdat->vtx_num = (*(u_int *)&ph->pUniqNormal - *(u_int *)&mdat->pkt) / sizeof(sceVu0FVECTOR);
 
     mdat->vtx_num = (u_int)((ph->pUniqNormal - ph->pUniqVertex) / sizeof(sceVu0FVECTOR));
 
-    /// TODO: THIS CAUSES MEMORY CORRUPTION ISSUES, NEEDS FIXING
-    //return (u_int *)&mdat->vtx[mdat->vtx_num];
-    return malloc(1024*1024);
+    return (u_int *)&mdat->vtx[mdat->vtx_num];
 }
 
 void mimSetOriVertex(MIME_DAT *mdat)

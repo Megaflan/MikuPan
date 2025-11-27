@@ -140,7 +140,9 @@ int CheckMirrorModel(void *sgd_top)
 
     hs = (HeaderSection *)sgd_top;
 
-    prim = (u_int *)hs->primitives;
+    //prim = (u_int *)hs->primitives;
+
+    prim = GetTopProcUnitHeaderPtr(hs, 0);
 
     if (prim == NULL)
     {
@@ -154,7 +156,8 @@ int CheckMirrorModel(void *sgd_top)
             return prim[2];
         }
 
-        prim = (u_int *)prim[0];
+        //prim = (u_int *)prim[0];
+        prim = GetNextProcUnitHeaderPtr(prim);
     }
 }
 

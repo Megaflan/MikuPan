@@ -19,7 +19,7 @@
 
 #include <stdio.h>
 
-#include "common/memory_addresses.h"
+#include "mikupan/mikupan_memory.h"
 #include "graphics/graph2d/effect_sub.h"
 #include "graphics/graph2d/g2d_debug.h"
 #include "graphics/graph2d/g2d_main.h"
@@ -36,7 +36,7 @@ void OutGameCtrl(void)
     switch(outgame_wrk.mode)
     {
         case OUTGAME_MODE_INIT:
-            init_load_id = LoadReq(LOGO_PK2, &EFFECT_ADDRESS);
+            init_load_id = LoadReq(LOGO_PK2, EFFECT_ADDRESS);
             OutGameModeChange(OUTGAME_MODE_WAIT);
         break;
         case OUTGAME_MODE_WAIT:
@@ -176,7 +176,7 @@ void RoomSizeCheckCtrl()
 
         if (rsc_menu_csr == 2)
         {
-            LoadReq(rsc_no[0] + MSN00MAP_OBJ, &TEST_ROOM_CHECK_ADDRESS);
+            LoadReq(rsc_no[0] + MSN00MAP_OBJ, TEST_ROOM_CHECK_ADDRESS);
 
             end_addr = RoomMdlLoadReq(TEST_ROOM_CHECK_ADDRESS, 0, rsc_no[0], rsc_no[1], 0);
 

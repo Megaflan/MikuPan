@@ -3,7 +3,7 @@
 #include "message.h"
 
 #include "tim2_new.h"
-#include "common/memory_addresses.h"
+#include "mikupan/mikupan_memory.h"
 
 #include <stdarg.h>
 #include <stdio.h>
@@ -19,7 +19,7 @@
 #include "graphics/graph2d/effect_sub.h"
 #include "gs/gs_server_c.h"
 #include "gs/texture_manager_c.h"
-#include "rendering/mikupan_renderer.h"
+#include "mikupan/rendering/mikupan_renderer.h"
 #ifdef BUILD_EU_VERSION
 #include "graphics/graph2d/subtitles.h"
 #endif
@@ -2616,7 +2616,6 @@ void DrawMessageBox(u_int pri, float x, float y, float sizew, float sizeh, u_cha
         ds.tex1 = SCE_GS_SET_TEX1_1(1, 0, SCE_GS_LINEAR, SCE_GS_LINEAR_MIPMAP_LINEAR, 0, 0, 0);
         ds.x = px[i];
         ds.y = py[i];
-
         DispSprD(&ds);
     }
 
@@ -2663,6 +2662,7 @@ void DrawMessageBox(u_int pri, float x, float y, float sizew, float sizeh, u_cha
         ds.csy = py[i+4];
 
         DispSprD(&ds);
+        break;
     }
 
     SetSquareSN(
