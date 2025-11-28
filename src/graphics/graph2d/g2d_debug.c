@@ -1043,8 +1043,8 @@ void CheckHintTex()
         g2d_load_flg.hint = LoadReq(hint_tbl[num], EFFECT_ADDRESS);
     }
 
-    MakeTim2ClutDirect4((int64_t)EFFECT_ADDRESS, 0, -1, -1, 0);
-    MakeTim2ClutDirect4((int64_t)EFFECT_ADDRESS, 1, -1, -1, 0);
+    MakeTim2ClutDirect4((int64_t)MikuPan_GetHostAddress(EFFECT_ADDRESS), 0, -1, -1, 0);
+    MakeTim2ClutDirect4((int64_t)MikuPan_GetHostAddress(EFFECT_ADDRESS), 1, -1, -1, 0);
 
     if (*key_now[9] != 0)
     {

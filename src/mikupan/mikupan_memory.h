@@ -3,14 +3,13 @@
 
 #include <stdint.h>
 
-extern unsigned char ps2_virtual_ram[1024*1024*64];
-extern unsigned char ps2_virtual_scratchpad[1024*16];
+extern unsigned char ps2_virtual_ram[];
+extern unsigned char ps2_virtual_scratchpad[];
 
 int64_t MikuPan_GetHostAddress(int offset);
 void* MikuPan_GetHostPointer(int offset);
 void MikuPan_InitPs2Memory();
 int MikuPan_IsPs2MemoryPointer(int64_t address);
-int MikuPan_ConvertHostToPs2MemoryOffset(void* ptr);
 int MikuPan_SanitizePs2Address(int address);
 int MikuPan_IsPs2AddressMainMemoryRange(int address);
 int MikuPan_GetPs2OffsetFromHostPointer(void* ptr);
@@ -41,8 +40,6 @@ int MikuPan_GetPs2OffsetFromHostPointer(void* ptr);
 #define PL_LIFE_PK2_ADDRESS             0x01df2100
 #define ENEDMG_PK2_ADDRESS              0x01fa8000
 #define PHOTO001_PK2_ADDRESS            0x01e85000
-#define TEST2D_PK2_ADDRESS              0x04300000
-#define TEST_ROOM_CHECK_ADDRESS         0x04610000
 #define MPEG_WORK_ADDRESS               0x014b0000
 #define MISSION_TITLE_CARD_ADDRESS      0x01e90000
 #define PLYR_FILE_ADDRESS               0x009a0000
@@ -63,9 +60,15 @@ int MikuPan_GetPs2OffsetFromHostPointer(void* ptr);
 #define MSN_TITLE_DAT_ADDRESS_8         0x01000000
 #define MSN_TITLE_DAT_ADDRESS_9         0x01020000
 #define VNBufferAddress                 0x00420000
+#define MC_WORK_ADDRESS                 0x00420000
+
+/* DEVKIT EXTANDED RAM */
+#define TEST2D_PK2_ADDRESS              0x007F0000 /* 0x04300000 */
+#define TEST_ROOM_CHECK_ADDRESS         0x007F0000 /* 0x04610000 */
+/* DEVKIT EXTANDED RAM */
+
 #define CachedBuffer                    0x20000000
 #define UnCachedBuffer                  0x30000000
 #define VU0_ADDRESS                     0x11000000
-#define MC_WORK_ADDRESS                 0x00420000
 
 #endif //MIKUPAN_MEMORY_ADDRESSES_H

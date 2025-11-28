@@ -260,12 +260,12 @@ void GetVF2Register(float *vf2reg)
 
 void printVector(sceVu0FVECTOR v)
 {
-    printf("(%f %f %f %f)\n", v[0], v[1], v[2], v[3]);
+    info_log("(%f %f %f %f)", v[0], v[1], v[2], v[3]);
 }
 
 void printVectorC(sceVu0FVECTOR v, char *s)
 {
-    printf("%s (%ff,%ff,%ff,%ff)\n", s, v[0], v[1], v[2], v[3]);
+    info_log("%s (%ff,%ff,%ff,%ff)", s, v[0], v[1], v[2], v[3]);
 }
 
 void printMat(sceVu0FMATRIX m0)
@@ -274,13 +274,13 @@ void printMat(sceVu0FMATRIX m0)
 
     for(i = 0; i < 4; i++)
     {
-        printf("%f %f %f %f\n", m0[0][i], m0[1][i], m0[2][i], m0[3][i]);
+        info_log("%f %f %f %f", m0[0][i], m0[1][i], m0[2][i], m0[3][i]);
     }
 }
 
 void printMatC(sceVu0FMATRIX m0, char *s)
 {
-    printf("%s\n", s);
+    info_log("%s", s);
     printMat(m0);
 }
 
@@ -288,11 +288,11 @@ void printLMatC(sceVu0FMATRIX m0, char *str)
 {
     int i;
 
-    printf("%s\n",str);
+    info_log("%s",str);
 
     for(i = 0; i < 3; i++)
     {
-        printf("%f %f %f\n",m0[0][i], m0[1][i], m0[2][i]);
+        info_log("%f %f %f",m0[0][i], m0[1][i], m0[2][i]);
     }
 }
 

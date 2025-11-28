@@ -19,11 +19,13 @@
 
 #include <stdio.h>
 
-#include "mikupan/mikupan_memory.h"
 #include "graphics/graph2d/effect_sub.h"
 #include "graphics/graph2d/g2d_debug.h"
 #include "graphics/graph2d/g2d_main.h"
 #include "graphics/graph3d/load3d.h"
+#include "mikupan/mikupan_memory.h"
+
+#include <os/eeiop/eeiop.h>
 
 static int rsc_menu_csr = 0;
 static int rsc_no[2] = {0, 0};
@@ -178,11 +180,14 @@ void RoomSizeCheckCtrl()
         {
             LoadReq(rsc_no[0] + MSN00MAP_OBJ, TEST_ROOM_CHECK_ADDRESS);
 
-            end_addr = RoomMdlLoadReq(TEST_ROOM_CHECK_ADDRESS, 0, rsc_no[0], rsc_no[1], 0);
+            end_addr = RoomMdlLoadReq((u_int *)MikuPan_GetHostPointer(TEST_ROOM_CHECK_ADDRESS), 0, rsc_no[0], rsc_no[1], 0);
 
-            while (RoomMdlLoadWait() == 0) {}
+            while (RoomMdlLoadWait() == 0)
+            {
+                EiMain();
+            }
 
-            load_size = (uint64_t)end_addr - (uint64_t)TEST_ROOM_CHECK_ADDRESS;
+            load_size = (uint64_t)end_addr - (uint64_t)MikuPan_GetHostAddress(TEST_ROOM_CHECK_ADDRESS);
         }
     }
 

@@ -1,5 +1,17 @@
 #include "common.h"
 
+#include <common/ul_math.h>
+#include <graphics/graph2d/effect.h>
+#include <graphics/graph2d/effect_scr.h>
+#include <graphics/graph2d/message.h>
+#include <graphics/motion/mdlact.h>
+#include <ingame/event/wan_soul.h>
+#include <ingame/map/map_ctrl.h>
+#include <ingame/menu/sp_menu.h>
+#include <ingame/plyr/unit_ctl.h>
+#include <sce/libvu0.h>
+#include <sce/sifdev.h>
+
 #ifdef MATCHING_DECOMP
 #define INCLUDING_FROM_CAMERA_C
 #include "mdlwork.h"
@@ -3204,7 +3216,8 @@ void PlyrDmgCameraCtrl()
 
         camera.i[1] -= 500.0f;
 
-        GetTrgtRotFromPlyr(camera.p, tr, 3);
+        //GetTrgtRotFromPlyr(camera.p, tr, 3);
+        GetTrgtRotFromPlyr(camera.p, tr);
 
         tv[0] = 0.0f;
         tv[1] = 0.0f;

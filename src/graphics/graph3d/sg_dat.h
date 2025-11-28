@@ -189,7 +189,7 @@ static inline u_int* GetNextProcUnitHeaderPtr(const u_int *prim)
 {
 	if (prim[0] != 0x0)
 	{
-		return (u_int *) MikuPan_GetHostAddress(prim[0]);
+		return (u_int *) ((int64_t)prim + prim[0]);
 	}
 
 	return NULL;

@@ -13,7 +13,7 @@
 #include <stdio.h>
 
 static int stack_num = 0;
-static int dbg_flg = 0;
+static int dbg_flg = 1;
 
 static int write_counter;
 
@@ -472,7 +472,8 @@ void SetMaterialData(u_int *prim)
     sceVu0FVECTOR *dvec;
     float max_color;
 
-    pmatC = (SgMaterialC *)prim[2];
+    //pmatC = (SgMaterialC *)prim[2];
+    pmatC = (SgMaterialC *)MikuPan_GetHostAddress(prim[2]);
     pmatC->cache_on = 1;
 
     if (pmatC->primtype != 0)
@@ -1583,7 +1584,7 @@ void SetPreRenderTYPE2F(int gloops, u_int *prim)
 
     np = (float *)&vuvnprim[14];
 
-    vp = (float *)((u_int)np + ((short *)vuvnprim)[5] * 12);
+    vp = (float *)((int64_t)np + ((short *)vuvnprim)[5] * 12);
 
     i = ((short *)prim)[11];
 
@@ -1631,7 +1632,7 @@ void SetPreRenderTYPE2F(int gloops, u_int *prim)
 
                 if (dbg_flg != 0)
                 {
-                    printf("%f %f %f\n", pcol[0], pcol[1], pcol[2]);
+                    info_log("%f %f %f", pcol[0], pcol[1], pcol[2]);
                 }
 
                 ((float *)prim)[0] = pcol[0];
@@ -1866,7 +1867,7 @@ void SgPreRenderPrim(u_int *prim)
 
             if (dbg_flg != 0)
             {
-                printf("PNum %d(%d) SNum %d(%d)\n", SgPointGroupNum, SgPointNum, SgSpotGroupNum, SgSpotNum);
+                info_log("PNum %d(%d) SNum %d(%d)", SgPointGroupNum, SgPointNum, SgSpotGroupNum, SgSpotNum);
 
                 printVectorC(SgLightCoordp->Spot_pos[0], "pos0");
                 printVectorC(SgLightCoordp->Spot_pos[1], "pos1");
@@ -1890,7 +1891,7 @@ void SgPreRenderPrim(u_int *prim)
         break;
         }
 
-        prim = (u_int *)MikuPan_GetHostAddress(*prim);
+        prim = (u_int *)GetNextProcUnitHeaderPtr(prim);
     }
 }
 

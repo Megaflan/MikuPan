@@ -56,7 +56,7 @@ void ReadFileInArchive(int sector, int size, u_int *address)
         return;
     }
 
-    auto ps2_address = MikuPan_ConvertHostToPs2MemoryOffset(address);
+    auto ps2_address = MikuPan_GetPs2OffsetFromHostPointer(address);
 
     if (std::find(file_loaded_address.begin(), file_loaded_address.end(), ps2_address)
     != file_loaded_address.end())

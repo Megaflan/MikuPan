@@ -418,6 +418,7 @@ void SgMapUnit(void *sgd_top)
             case MATERIAL:
                 intpointer++;
                 //*intpointer = (u_int)&hs->matp[*intpointer];
+                *intpointer = MikuPan_GetPs2OffsetFromHostPointer(GetMaterialPtr(hs, *intpointer));
             break;
             case COORDINATE:
                 MappingCoordinateData(intpointer-1, hs);
