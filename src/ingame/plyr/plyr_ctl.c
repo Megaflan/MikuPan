@@ -1146,8 +1146,8 @@ void SetPlyrSpotLight(u_char id)
             tv[3] = 0.0f;
 
             RotFvector(plyr_wrk.move_box.rot, tv);
-            sceVu0AddVector(ts1.pos, camera.p, &tv);
-            sceVu0SubVector(&ts0.direction, camera.p, &camera.i);
+            sceVu0AddVector(ts1.pos, camera.p, tv);
+            sceVu0SubVector(ts0.direction, camera.p, camera.i);
 
             ts1.direction[0] = ts0.direction[0];
             ts1.direction[1] = ts0.direction[1];
@@ -1174,7 +1174,7 @@ void SetPlyrSpotLight(u_char id)
             tv[3] = 0.0f;
 
             RotFvector(plyr_wrk.move_box.rot, tv);
-            sceVu0AddVector(ts0.pos, &plyr_wrk.spot_pos, &tv);
+            sceVu0AddVector(ts0.pos, plyr_wrk.spot_pos, tv);
 
             tv[0] = 0.0f;
             tv[1] = 0.0f;
@@ -1182,7 +1182,7 @@ void SetPlyrSpotLight(u_char id)
             tv[3] = 0.0f;
 
             RotFvector(plyr_wrk.move_box.rot, tv);
-            sceVu0AddVector(ts1.pos, ts0.pos, &tv);
+            sceVu0AddVector(ts1.pos, ts0.pos, tv);
 
             rv[0] = plyr_wrk.spot_rot[0];
             rv[1] = plyr_wrk.spot_rot[1];
@@ -1218,8 +1218,8 @@ void SetPlyrSpotLight(u_char id)
             ts0.intens = 0.69999999f;
             ts1.intens = 0.4f;
         }
-        sceVu0ScaleVector(&ts0.diffuse, &ts0.diffuse, 0.001f);
-        sceVu0ScaleVector(&ts1.diffuse, &ts1.diffuse, 0.001f);
+        sceVu0ScaleVector(ts0.diffuse, ts0.diffuse, 0.001f);
+        sceVu0ScaleVector(ts1.diffuse, ts1.diffuse, 0.001f);
         ts0.power = 7000000.0f;
         ts1.power = 7000000.0f;
     }
