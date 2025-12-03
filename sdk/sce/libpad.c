@@ -49,14 +49,14 @@ int scePadGetState(int port, int slot)
 
 int scePadRead(int port, int slot, unsigned char* rdata)
 {
-    if (gamepad == NULL)
-    {
-        return 0;
-    }
-
     for (int i = 1; i < 32; i++)
     {
         rdata[i] = 0xFF;
+    }
+
+    if (gamepad == NULL)
+    {
+        return 0;
     }
 
     u_short* data = (u_short*)rdata;

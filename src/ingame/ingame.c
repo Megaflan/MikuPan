@@ -413,7 +413,7 @@ void InGameMain()
     {
         CameraMain();
     }
-
+    
     if ((ingame_wrk.stts & 0x20) == 0 || furn_disp_flg == 1)
     {
         PointLightCtrl();

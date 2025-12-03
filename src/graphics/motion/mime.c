@@ -1074,10 +1074,12 @@ float mimGetWavdata(u_int *mim_top, u_int key_no, u_int frame)
 
     if (mim_top[1] == 0)
     {
-        wav_addr = (u_int *)((int)wav_addr + (int)mim_top);
+        wav_addr = (u_int *)((int64_t)wav_addr + (int64_t)mim_top);
     }
 
-    wav_addr = (u_int *)wav_addr[0];
+    /// TODO: Possible that the 64 bits pointers have overwritten the original 32 bits pointers?
+    //wav_addr = (u_int *)MikuPan_GetHostPointer(wav_addr[0]);
+    wav_addr = (u_int *)((int64_t*) wav_addr)[0];
 
     return ((float *)wav_addr)[frame];
 }
@@ -1091,7 +1093,7 @@ sceVu0FVECTOR* mimGetKeymdlTop(u_int *mim_top, u_int key_no)
 
     if (mim_top[1] == 0)
     {
-        vtx_addr = (u_int *)((int)vtx_addr + (int)mim_top);
+        vtx_addr = (u_int *)((int64_t)vtx_addr + (int64_t)mim_top);
     }
 
     return ((sceVu0FVECTOR **)vtx_addr)[0];

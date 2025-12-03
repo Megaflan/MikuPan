@@ -1,16 +1,30 @@
 #include "plyr_ctl.h"
 #include "common.h"
 #include "enums.h"
-#include "ingame/entry/ap_rgost.h"
-#include "main/glob.h"
+#include "graphics/graph2d/effect.h"
 #include "graphics/graph2d/effect_sub.h"
 #include "ingame/enemy/ene_ctl.h"
-#include "ingame/map/find_ctl.h"
+#include "ingame/entry/ap_rgost.h"
 #include "ingame/event/ev_main.h"
-#include "graphics/graph2d/effect.h"
 #include "ingame/info/inf_disp.h"
+#include "ingame/map/find_ctl.h"
+#include "main/glob.h"
+#include "time_ctl.h"
+#include "unit_ctl.h"
 
+#include <common/ul_math.h>
+#include <graphics/graph2d/effect_ene.h>
+#include <graphics/graph2d/effect_scr.h>
+#include <graphics/graph2d/effect_sub2.h>
+#include <graphics/motion/motion.h>
+#include <ingame/map/door_ctl.h>
+#include <ingame/map/map_ctrl.h>
+#include <ingame/menu/gameover.h>
+#include <ingame/menu/item_get.h>
 #include <math.h>
+#include <os/eeiop/eese.h>
+#include <sce/libvu0.h>
+#include <string.h>
 
 u_short photo_dmg_tbl[] = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110};
 float circle_radius_tbl[] = {90.0f, 105.0f, 120.0f, 145.0f};
@@ -32,8 +46,10 @@ void PlyrCtrlMain()
     {
         plyr_wrk.spd = 27.5f;
     }
+
     PlyrLightSet();
     PlyrSpotLightOnChk();
+
     if (DBG_cam_id_move_chk == 0)
     {
         PlyrBattleChk();
@@ -86,6 +102,7 @@ int PlyrDoorOpenChk(void)
 {
     if (plyr_wrk.sta & 8)
         return 1;
+
     return 0;
 }
 
@@ -153,7 +170,6 @@ void PlyrCondChk()
             SetEffects(6, 1, 4, 0x32);
             break;
     }
-    return;
 }
 
 void PlyrDmgChk()
@@ -222,7 +238,6 @@ void PlyrDmgChk()
             }
         }
     }
-    return;
 }
 
 void PlyrVibCtrl(u_char time)
@@ -236,7 +251,6 @@ void PlyrVibCtrl(u_char time)
         VibrateRequest1(0, 1);
         plyr_vib_time -= 1;
     }
-    return;
 }
 
 void PlyrFinderModeChk()
@@ -431,7 +445,6 @@ void ClrEneSta()
     {
         ene_wrk[i].sta &= 0xfffff89f;
     }
-    return;
 }
 
 void PlyrHeightCtrl(float *tv)
@@ -446,7 +459,6 @@ void PlyrNormalCtrl(void)
     PlyrNAnimeCtrl();
     PlyrDWalkTmCtrl();
     PlyrSpotMoveCtrl();
-    return;
 }
 
 void PlyrSpotMoveCtrl()
@@ -776,7 +788,6 @@ void PlyrFinderEnd(void)
     {
         plyr_wrk.mode = PMODE_NORMAL;
     }
-    return;
 }
 
 void PlyrNAnimeCtrl()
@@ -1110,7 +1121,6 @@ void PlyrSpotLightOnChk()
     {
         SetEffects(EF_RENZFLARE, 1, 4, plyr_wrk.spot_pos, plyr_wrk.move_box.rot);
     }
-    return;
 }
 
 void SetPlyrSpotLight(u_char id)
@@ -2148,9 +2158,7 @@ void PlyrActionChk()
     if (*key_now[5] == 1)
     {
         DoorCheckOn(0);
-        return;
     }
-    return;
 }
 
 void PlyrNModeMoveCtrl()
@@ -2443,8 +2451,7 @@ void PlyrSpeAnimeCtrl()
         RotFvector(plyr_wrk.move_box.rot, tv);
         PlyrMoveHitChk(mb, tv, 1);
         PlyrPosSet(mb, tv); 
-    }    
-    return;
+    }
 }
 
 void PlyrDWalkTmCtrl()

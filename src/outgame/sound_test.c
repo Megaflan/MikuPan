@@ -3,8 +3,6 @@
 
 #include "scn_test.h"
 
-/* data 341790 */ SCN_TEST_WRK scn_test_wrk;
-
 void SoundTestForModeSlectInit()
 {
 }

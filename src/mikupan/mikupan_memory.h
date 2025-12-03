@@ -61,6 +61,8 @@ int MikuPan_GetPs2OffsetFromHostPointer(void* ptr);
 #define MSN_TITLE_DAT_ADDRESS_9         0x01020000
 #define VNBufferAddress                 0x00420000
 #define MC_WORK_ADDRESS                 0x00420000
+#define OBJ_WRK_ADDRESS                 0x0042fa00
+#define MIM_BUF_BASE_ADDRESS            0x01310000
 
 /* DEVKIT EXTANDED RAM */
 #define TEST2D_PK2_ADDRESS              0x007F0000 /* 0x04300000 */
@@ -70,5 +72,7 @@ int MikuPan_GetPs2OffsetFromHostPointer(void* ptr);
 #define CachedBuffer                    0x20000000
 #define UnCachedBuffer                  0x30000000
 #define VU0_ADDRESS                     0x11000000
+
+#define SCRATCHPAD_ADDRESS              0x70000000
 
 #endif //MIKUPAN_MEMORY_ADDRESSES_H

@@ -58,7 +58,7 @@ static int scn_load_id[2];
 extern sceVu0FMATRIX fod_cmn_mtx;
 extern FOD_EFF_PARAM eff_param;
 
-#define MIM_BUF_BASE_ADDR 0x1310000
+
 
 #define PI 3.1415927f
 
@@ -150,7 +150,7 @@ u_int* SceneDataLoadReq(int scene_no, u_int *load_addr)
 
     next_addr = LoadReqGetAddr(scn_file_no + 1, scn_addr, (int64_t *)&scn_load_id[scn_load_num]);
 
-    if (next_addr == NULL)
+    if (next_addr == 0)
     {
         sc->light_rev_addr = NULL;
         next_addr = (int64_t)scn_addr;
@@ -407,7 +407,7 @@ void SceneInitManMdl(SCN_ANM_MDL *sam, u_int *mot_addr, u_int *mim_addr, u_int m
     sam->mot_addr = SceneGetMotAddr(mot_addr, mdl_id, pfx);
     sam->mim_addr = SceneGetMimAddr(mim_addr, pfx);
 
-    sam->mim_buf_addr = (u_int *)(MIM_BUF_BASE_ADDR + mdl_id * 0x10000);
+    sam->mim_buf_addr = (u_int *)MikuPan_GetHostPointer(MIM_BUF_BASE_ADDRESS + mdl_id * 0x10000);
 
     if (sam->mdl_no == 1 && sc->chapter_no == 0)
     {
@@ -1104,6 +1104,8 @@ void SceneSetVibrate(int scene_no, int frame)
 
     vib_datp = scn_vib_tbl[scene_no];
 
+    if (vib_datp == NULL) return;
+
     for(i = 0; vib_datp[i].start != 0xFFFF; i++)
     {
         if (vib_datp[i].start <= frame && frame < vib_datp[i].end)
@@ -1343,7 +1345,7 @@ void SceneDrawOtherMdl(SCENE_CTRL *sc, SCN_ANM_MDL *sam)
 
     if (base_p != NULL)
     {
-        cp = ((HeaderSection *)base_p)->coordp;
+        cp = GetCoordP((HeaderSection *)base_p);
 
         sceVu0MulMatrix(cp->matrix, fod_cmn_mtx, cp->matrix);
         CalcCoordinate(cp, base_p[5] - 1);

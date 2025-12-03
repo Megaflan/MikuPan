@@ -856,8 +856,8 @@ void gra3dInitFirst()
     runit_mtx[2][2] = 25.0f;
 
     /// TODO : Correctly assign the VUVN buffers here
-    SgSetPacketBuffer(UNCACHED(0x42fa00), 0x17830, UNCACHED_ACCEL(tag_buffer), 0x1800);
-    SgSetVNBuffer((sceVu0FVECTOR *)VNBufferAddress, 4000);
+    SgSetPacketBuffer(MikuPan_GetHostAddress(OBJ_WRK_ADDRESS), 0x17830, tag_buffer, 0x1800);
+    SgSetVNBuffer((sceVu0FVECTOR *)MikuPan_GetHostAddress(VNBufferAddress), 4000);
 
     SgInit3D();
     objInit();
@@ -2026,6 +2026,7 @@ void gra3dDraw()
     MakeDebugValue();
     SgSetRefCamera(&camera);
 
+    disp3d_all = 1;
     if (disp3d_all == 0)
     {
         return;

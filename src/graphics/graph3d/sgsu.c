@@ -186,7 +186,7 @@ void SetVU1Header()
     sceVu0FVECTOR *dvec;
     int i;
 
-    svec = (sceVu0FVECTOR *)0x70000000;
+    svec = (sceVu0FVECTOR *)SCRATCHPAD;
     dvec = (sceVu0FVECTOR *)getObjWrk();
 
     for (i = 0; i < 13; i++)
@@ -566,7 +566,7 @@ void SgSortUnitPrim(u_int *prim)
         break;
         }
 
-        prim = (u_int *)prim[0];
+        prim = GetNextProcUnitHeaderPtr(prim);
     }
 }
 
@@ -606,7 +606,7 @@ void SgSortUnitPrimPost(u_int *prim)
             break;
         }
 
-        prim = (u_int *)prim[0];
+        prim = GetNextProcUnitHeaderPtr(prim);
     }
 }
 
@@ -642,7 +642,7 @@ void SgSortPreProcess(u_int *prim)
         break;
         }
 
-        prim = (u_int *)prim[0];
+        prim = GetNextProcUnitHeaderPtr(prim);
     }
 }
 
@@ -813,29 +813,29 @@ void SgSortUnit(void *sgd_top, int pnum)
 
     if (pnum < 0)
     {
-        SgSortPreProcess((u_int *)pk[0]);
+        SgSortPreProcess(GetTopProcUnitHeaderPtr(hs, 0));
 
         for (i = 1; i < blocksm - 1; i++)
         {
-            SgSortUnitPrim((u_int *)pk[i]);
+            SgSortUnitPrim(GetTopProcUnitHeaderPtr(hs, i));
         }
 
         if ((u_int *)pk[i] != NULL)
         {
-            SgSortUnitPrimPost((u_int *)pk[i]);
+            SgSortUnitPrimPost(GetTopProcUnitHeaderPtr(hs, i));
         }
     }
     else if (pnum == 0)
     {
-        SgSortPreProcess((u_int *)pk[pnum]);
+        SgSortPreProcess(GetTopProcUnitHeaderPtr(hs, pnum));
     }
     else if (pnum == blocksm - 1)
     {
-        SgSortUnitPrimPost((u_int *)pk[pnum]);
+        SgSortUnitPrimPost(GetTopProcUnitHeaderPtr(hs, pnum));
     }
     else
     {
-        SgSortUnitPrim((u_int *)pk[pnum]);
+        SgSortUnitPrim(GetTopProcUnitHeaderPtr(hs, pnum));
     }
 }
 

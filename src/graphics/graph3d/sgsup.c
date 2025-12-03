@@ -421,7 +421,7 @@ void SgSortUnitPrimP(u_int *prim)
             break;
             }
 
-            prim = (u_int*)*prim;
+            prim = GetNextProcUnitHeaderPtr(prim);
         }
     }
 }
@@ -485,7 +485,7 @@ void SgSortPreProcessP(u_int *prim)
             pGroupPacket = prim;
         }
 
-        prim = (u_int*)*prim;
+        prim = GetNextProcUnitHeaderPtr(prim);
     }
 }
 
@@ -526,22 +526,22 @@ void SgSortUnitP(void *sgd_top, int pnum)
 
     if (pnum < 0)
     {
-        SgSortPreProcessP((u_int*)pk[0]);
+        SgSortPreProcessP((u_int*)GetTopProcUnitHeaderPtr(hs, 0));
 
         for (i = 1; i < blocksm; i++)
         {
-            SgSortUnitPrimP((u_int*)pk[i]);
+            SgSortUnitPrimP((u_int*)GetTopProcUnitHeaderPtr(hs, i));
         }
     }
     else if (pnum == 0)
     {
         save_tri2_pointer = (u_int *)0xFFFFFFFF;
         save_bw_pointer = (u_int *)0xFFFFFFFF;
-        SgSortPreProcessP((u_int *)pk[pnum]);
+        SgSortPreProcessP((u_int *)GetTopProcUnitHeaderPtr(hs, pnum));
     }
     else
     {
-        SgSortUnitPrimP((u_int *)pk[pnum]);
+        SgSortUnitPrimP((u_int *)GetTopProcUnitHeaderPtr(hs, pnum));
     }
 }
 

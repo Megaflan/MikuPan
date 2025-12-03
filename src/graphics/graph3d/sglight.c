@@ -324,7 +324,7 @@ void SetMaterialDataVU(u_int *prim)
         old_tag_buf = tagswap;
     }
 
-    pmatC = (SgMaterialC *)prim[2];
+    pmatC = (SgMaterialC *)MikuPan_GetHostPointer(prim[2]);
 
     if (pmatC->cache_on >= 0)
     {
@@ -2015,7 +2015,8 @@ void SgClearPreRenderPrim(u_int *prim)
             ClearPreRenderMeshData(prim);
         }
 
-        prim = (u_int *)prim[0];
+        //prim = (u_int *)prim[0];
+        prim = (u_int *)GetNextProcUnitHeaderPtr(prim);
     }
 }
 
@@ -2037,11 +2038,11 @@ void SgClearPreRender(void *sgd_top, int pnum)
     {
         for (i = 1; i < blocksm; i++)
         {
-            SgClearPreRenderPrim((u_int *)pk[i]);
+            SgClearPreRenderPrim(GetTopProcUnitHeaderPtr(hs, i));
         }
     }
     else if (pnum != 0)
     {
-        SgClearPreRenderPrim((u_int *)pk[pnum]);
+        SgClearPreRenderPrim(GetTopProcUnitHeaderPtr(hs, pnum));
     }
 }

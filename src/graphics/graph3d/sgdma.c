@@ -302,7 +302,7 @@ void LoadTRI2Files(u_int *prim)
     tnum = prim[2];
     pads = prim[3];
 
-    prim = (u_int *)((u_int)prim + 16 + ((u_int)pads / 4) * 4);
+    prim = (u_int *)((int64_t)prim + 16 + ((int64_t)pads / 4) * 4);
 
     prim[2] = 0x11000000;
 
@@ -310,9 +310,9 @@ void LoadTRI2Files(u_int *prim)
     {
         tri2size = *(u_short *)(prim + 3);
 
-        AppendDmaTag((u_int)prim, tri2size + 1);
+        AppendDmaTag((int64_t)prim, tri2size + 1);
 
-        prim = (u_int *)((u_int)prim + 0x10 + (u_int)tri2size * 0x10);
+        prim = (u_int *)((int64_t)prim + 0x10 + (u_int)tri2size * 0x10);
 
         FlushModel(0);
     }

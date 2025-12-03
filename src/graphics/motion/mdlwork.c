@@ -36,8 +36,8 @@ void ManmdlSetAlpha(void *sgd_top, u_char alpha)
     u_int *phead;
     HeaderSection *hs = (HeaderSection *)sgd_top;
 
-    matp = hs->matp;
-    phead = hs->phead;
+    matp = GetMaterialPtr(hs, 0);
+    phead = GetPHead(hs);
 
     while (matp < (SgMaterial *)phead)
     {
@@ -1026,6 +1026,6 @@ void SetPlyrClut(int bw_flg)
 
     for (i = 0; i < num; i++)
     {
-        MakeTim2SendPacket((u_int)GetFileInPak(clut_addr, i), 0);
+        MakeTim2SendPacket((int64_t)GetFileInPak(clut_addr, i), 0);
     }
 }
