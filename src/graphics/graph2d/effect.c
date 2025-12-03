@@ -111,17 +111,17 @@ void InitEffectsEF()
     {
         if (msbtset.dt.sw != 0)
         {
-            SetEffects(2, 1, msbtset.dt.type, msbtset.dt.alp, msbtset.dt.spd, msbtset.dt.amax, msbtset.dt.cmax);
+            SetEffects(EF_DITHER, 1, msbtset.dt.type, msbtset.dt.alp, msbtset.dt.spd, msbtset.dt.amax, msbtset.dt.cmax);
         }
         
         if (msbtset.bl.sw != 0)
         {
-            SetEffects(3, 1, &msbtset.bl.alp, msbtset.bl.scl, msbtset.bl.rot, msbtset.bl.x, msbtset.bl.y);
+            SetEffects(EF_BLUR_N, 1, &msbtset.bl.alp, msbtset.bl.scl, msbtset.bl.rot, msbtset.bl.x, msbtset.bl.y);
         }
         
         if (msbtset.df.sw != 0)
         {
-            SetEffects(6, 1, msbtset.df.type, msbtset.df.rate);
+            SetEffects(EF_DEFORM, 1, msbtset.df.type, msbtset.df.rate);
         }
         
         if (msbtset.cn.sw != 0)
@@ -129,39 +129,39 @@ void InitEffectsEF()
             switch (msbtset.cn.type)
             {
                 case 1:
-                    SetEffects(0xd, 1, msbtset.cn.col, msbtset.cn.alp);
+                    SetEffects(EF_NCONTRAST, 1, msbtset.cn.col, msbtset.cn.alp);
                 break;
                 case 2:
-                    SetEffects(0xe, 1, msbtset.cn.col, msbtset.cn.alp);
+                    SetEffects(EF_NCONTRAST2, 1, msbtset.cn.col, msbtset.cn.alp);
                 break;
                 case 3:
-                    SetEffects(0xf, 1, msbtset.cn.col, msbtset.cn.alp);
+                    SetEffects(EF_NCONTRAST3, 1, msbtset.cn.col, msbtset.cn.alp);
                 break;
             }
         }
         
         if (msbtset.ff.sw != 0)
         {
-            SetEffects(9, 1, msbtset.ff.alp, 0x80000);
+            SetEffects(EF_FADEFRAME, 1, msbtset.ff.alp, 0x80000);
         }
         
         if (msbtset.ng.sw != 0)
         {
-            SetEffects(0xc, 1, msbtset.ng.col, msbtset.ng.alp, msbtset.ng.alp2);
+            SetEffects(EF_NEGA, 1, msbtset.ng.col, msbtset.ng.alp, msbtset.ng.alp2);
         }
         
         if (msbtset.mn.sw == 0)
         {
-            if (efcnt[45].dat.uc8[0] == 0)
+            if (efcnt[EF_MONO].dat.uc8[0] == 0)
             {
-                efcnt[45].dat.uc8[0] = 1;
+                efcnt[EF_MONO].dat.uc8[0] = 1;
                 ChangeMonochrome(0);
             }
         }
         
-        if (msbtset.mn.sw != 0 && efcnt[45].dat.uc8[0] == 0)
+        if (msbtset.mn.sw != 0 && efcnt[EF_MONO].dat.uc8[0] == 0)
         {
-            efcnt[45].dat.uc8[0] = 1;
+            efcnt[EF_MONO].dat.uc8[0] = 1;
             ChangeMonochrome(1);
         }
     }

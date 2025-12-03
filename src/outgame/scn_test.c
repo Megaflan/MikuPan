@@ -1905,9 +1905,9 @@ int SceneTestDraw(int cnt_flg)
     SceneDraw(scn_p->scene_no);
     SceneTestEffectTest();
 
-    gra2dDraw(4);
-    gra2dDraw(5);
-    gra2dDraw(6);
+    gra2dDraw(GRA2D_CALL_IG1E);
+    gra2dDraw(GRA2D_CALL_IG2);
+    gra2dDraw(GRA2D_CALL_IG3);
 
     if (scn_test_wrk.db_flg != 0)
     {
