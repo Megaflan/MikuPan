@@ -1131,7 +1131,6 @@ void GetCameraData(u_char kind, MAP_CAM_INFO *mci)
     }
 }
 
-
 float GetMCLocalPosPer(u_short cn, u_char kind, u_char id);
 
 void SetCamPos0(SgCAMERA *tc, MAP_CAM_INFO *mci)
@@ -1161,7 +1160,6 @@ void SetCamPos0(SgCAMERA *tc, MAP_CAM_INFO *mci)
     tc->roll = mci->mcd->roll[0];
     tc->fov = mci->mcd->fov[0];
 }
-
 
 void SetCamPos1(SgCAMERA *tc, MAP_CAM_INFO *mci)
 {

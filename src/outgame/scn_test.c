@@ -397,7 +397,7 @@ void ScnTestMdlLoadReq(u_int *addr)
     SCN_ANM_MDL *sam;
     int i;
     int hero_no;
-    int next_addr;
+    int64_t next_addr;
 
     for (i = 0; i < scn_p->man_mdl_num; i++)
     {
@@ -757,7 +757,7 @@ void ScnDispPrintVector(char *ttl, sceVu0FVECTOR v, float x, float y)
 {
     char tmp_str[256];
 
-    sprintf(tmp_str, "%s = %f : %f : %f", ttl, v[0], v[1], v[2]);
+    sprintf(tmp_str, "%s = %.3f : %.3f : %.3f", ttl, v[0], v[1], v[2]);
     SetASCIIString2(1, x, y, 1, 0x80, 0x80, 0x80, tmp_str);
 }
 
@@ -964,7 +964,7 @@ void SceneTestCameraMode()
 
         for (i = 0; i < 2; i++)
         {
-            ScnDispPrintVector(menu_str[i], pos[i], 32.0f, i * 24 + 64);
+            ScnDispPrintVector(menu_str[i], pos[i], 16.0f, i * 24 + 64);
         }
     }
 }

@@ -12,6 +12,7 @@
 #include "graphics/graph3d/sgdma.h"
 #include "graphics/graph3d/sglib.h"
 #include "graphics/graph3d/sgsu.h"
+#include "mikupan/rendering/mikupan_renderer.h"
 
 #include <math.h>
 
@@ -120,6 +121,8 @@ void SgSetRefCamera(SgCAMERA *camera)
     SgSetWsMtx(camera->ws);
     SgSetClipMtx(camera->wc);
     SgSetClipVMtx(camera->wcv);
+
+    MikuPan_Camera(camera);
 }
 
 void SetViewScreenClipMatrixOrtho(SgCAMERA *camera, float scrz)

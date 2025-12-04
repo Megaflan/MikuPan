@@ -89,7 +89,7 @@ SDL_AppResult SDL_AppIterate(void *appstate)
             sceGsSyncPath(0, 0);
             vfunc();
             DrawAll2DMes_P2();
-            //FlushModel(1);
+            FlushModel(1);
             ClearTextureCache();
             SeCtrlMain();
         }
@@ -99,10 +99,7 @@ SDL_AppResult SDL_AppIterate(void *appstate)
         InitGameFirst();
     }
 
-    DrawImGuiWindow();
-    RenderImGuiWindow(renderer);
-
-    SDL_RenderPresent(renderer);
+    MikuPan_EndFrame();
 
     uint64_t frameEnd = SDL_GetTicks();
     double frameTime = (double)(frameEnd - frameStart);
@@ -119,6 +116,7 @@ void SDL_AppQuit(void *appstate, SDL_AppResult result)
 {
     IopShutDown();
     ShutDownImGuiWindow();
+    MikuPan_Shutdown();
 }
 
 void InitGameFirst()

@@ -1,5 +1,5 @@
 #include "mikupan_renderer.h"
-
+#include "../mikupan_types.h"
 #include "SDL3/SDL_init.h"
 #include "SDL3/SDL_log.h"
 #include "common/utility.h"
@@ -7,7 +7,10 @@
 #include "graphics/ui/imgui_window_c.h"
 #include "gs/gs_server_c.h"
 #include "gs/texture_manager_c.h"
+#include "mikupan/logging_c.h"
 
+#include <SDL3/SDL_gpu.h>
+#include <mikupan/mikupan_memory.h>
 #include <stdlib.h>
 
 #define PS2_RESOLUTION_X_FLOAT 640.0f
@@ -20,6 +23,10 @@ int window_width = 640;
 int window_height = 448;
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
+SDL_GPUDevice* device = NULL;
+SDL_GPURenderPass* render_pass = NULL;
+SDL_GPUCommandBuffer* command_buffer = NULL;
+SDL_GPUTexture* swapchain_texture = NULL;
 
 SDL_Texture* fnt_texture[6] = {0};
 SDL_Texture *curr_fnt_texture = NULL;
@@ -28,19 +35,39 @@ SDL_AppResult MikuPan_Init()
 {
     SDL_SetAppMetadata("MikuPan", "1.0", "mikupan");
 
-    if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD | SDL_INIT_JOYSTICK | SDL_INIT_HAPTIC))
+    if (!SDL_Init(
+        SDL_INIT_VIDEO |
+        SDL_INIT_GAMEPAD |
+        SDL_INIT_JOYSTICK |
+        SDL_INIT_HAPTIC
+        ))
     {
-        SDL_Log("Couldn't initialize SDL: %s", SDL_GetError());
+        info_log("Couldn't initialize SDL: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
 
-    if (!SDL_CreateWindowAndRenderer("MikuPan", window_width, window_height, SDL_WINDOW_RESIZABLE, &window, &renderer))
-        {
-        SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
+    window = SDL_CreateWindow("MikuPan", window_width, window_height, SDL_WINDOW_RESIZABLE);
+
+    device = SDL_CreateGPUDevice(
+        SDL_GPU_SHADERFORMAT_SPIRV | SDL_GPU_SHADERFORMAT_MSL,
+        true,
+        NULL
+        );
+
+    renderer = SDL_CreateGPURenderer(device, window);
+
+    if (window == NULL || renderer == NULL || device == NULL)
+    {
+        info_log(SDL_GetError());
         return SDL_APP_FAILURE;
     }
 
-    SDL_SetRenderLogicalPresentation(renderer, window_width, window_height, SDL_LOGICAL_PRESENTATION_DISABLED);
+    SDL_SetRenderLogicalPresentation(
+        renderer,
+        window_width,
+        window_height,
+        SDL_LOGICAL_PRESENTATION_DISABLED);
+
     InitImGuiWindow(window, renderer);
 
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
@@ -53,6 +80,8 @@ void MikuPan_Clear()
 {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
+    command_buffer = SDL_AcquireGPUCommandBuffer(device);
+
 }
 
 void MikuPan_UpdateWindowSize(int width, int height)
@@ -212,4 +241,34 @@ void MikuPan_DeleteTexture(void *texture)
     }
 
     SDL_DestroyTexture((SDL_Texture*)texture);
+}
+
+void MikuPan_Camera(const SgCAMERA *camera)
+{
+    struct GRA3DSCRATCHPADLAYOUT * scratchpad = (struct GRA3DSCRATCHPADLAYOUT *)ps2_virtual_scratchpad;
+    return;
+    //unsigned int viewLoc = gl_context->GetUniformLocation(shaderProgram, "view");
+    //gl_context->UniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+
+    // Projection
+    //unsigned int projectionLoc = context->GetUniformLocation(shaderProgram, "projection");
+    //context->UniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+}
+
+void MikuPan_Shutdown()
+{
+    // destroy the GPU device
+    SDL_DestroyGPUDevice(device);
+
+    // destroy the window
+    SDL_DestroyWindow(window);
+}
+
+void MikuPan_EndFrame()
+{
+    DrawImGuiWindow();
+    RenderImGuiWindow(renderer);
+    //SDL_EndGPURenderPass(render_pass);
+    SDL_SubmitGPUCommandBuffer(command_buffer);
+    SDL_RenderPresent(renderer);
 }

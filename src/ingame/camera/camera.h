@@ -20,10 +20,18 @@ typedef struct {
 	sceVu0FMATRIX vs;
 	sceVu0FMATRIX vc;
 	sceVu0FMATRIX vcv;
+
+	/// World View matrix
 	sceVu0FMATRIX wv;
+
+	/// World -> Screen matrix
 	sceVu0FMATRIX ws;
+
+	/// World Clip matrix
 	sceVu0FMATRIX wc;
 	sceVu0FMATRIX wcv;
+
+	/// Look direction vectors
 	sceVu0FVECTOR zd;
 	sceVu0FVECTOR yd;
 } SgCAMERA;

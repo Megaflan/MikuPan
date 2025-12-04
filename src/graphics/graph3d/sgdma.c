@@ -142,11 +142,11 @@ void FlushModel(int signal)
 void AppendDmaTag(int64_t addr, int size)
 {
     SgSourceChainTag *ptag;
-    //ptag = &cachetag[vu1tag_num];
-    //ptag->pad[0] = ptag->pad[1] = 0;
-    //((int *)ptag)[0] = size | 0x30000000;
+    ptag = &cachetag[vu1tag_num];
+    ptag->pad[0] = ptag->pad[1] = 0;
+    ((int *)ptag)[0] = size | 0x30000000;
     //*(uint64_t*)&((int *)ptag)[1] = addr;
-    //((int *)ptag)[1] = addr;
+    ((int *)ptag)[1] = addr;
 
     vu1tag_num++;
 }

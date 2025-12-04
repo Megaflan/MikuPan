@@ -583,7 +583,7 @@ void MirrorPrim(u_int *prim)
         return;
     }
 
-    while (prim[0] != NULL)
+    while (prim[0] != 0)
     {
         switch(prim[1])
         {
@@ -613,7 +613,7 @@ void MirrorPrim(u_int *prim)
             LoadTRI2Files(prim);
         }
 
-        prim = (u_int *)prim[0];
+        prim = GetNextProcUnitHeaderPtr(prim);
     }
 }
 
@@ -627,7 +627,7 @@ int PreMirrorPrim(SgCAMERA *camera, u_int *prim)
         return 0;
     }
 
-    while (prim[0] != NULL)
+    while (prim[0] != 0)
     {
         switch (prim[1])
         {
@@ -655,7 +655,7 @@ int PreMirrorPrim(SgCAMERA *camera, u_int *prim)
         break;
         }
 
-        prim = (u_int *)prim[0];
+        prim = GetNextProcUnitHeaderPtr(prim);
     }
 
     return mir_flag;
@@ -811,7 +811,7 @@ void MirrorDraw(SgCAMERA *camera, void *sgd_top, void (*render_func)(/* paramete
 
     num = CheckMirrorModel(sgd_top);
 
-    if (num == 0 || PreMirrorPrim(camera, (u_int *)pk[num]) == 0)
+    if (num == 0 || PreMirrorPrim(camera, (u_int *)GetTopProcUnitHeaderPtr(hs, num)) == 0)
     {
         CalcMirrorMatrix(camera);
         return;
@@ -919,7 +919,7 @@ void MirrorDraw(SgCAMERA *camera, void *sgd_top, void (*render_func)(/* paramete
     ClearMaterialCache((HeaderSection *)sgd_top);
     SetUpSortUnit();
     SetClipValue(-1.0f, 1.0f, -1.0f, 1.0f);
-    MirrorPrim((u_int *)pk[num]);
+    MirrorPrim((u_int *)GetTopProcUnitHeaderPtr(hs, num));
 }
 
 sceVu0FMATRIX mir_mtx = {0};

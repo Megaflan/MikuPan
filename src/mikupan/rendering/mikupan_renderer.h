@@ -1,5 +1,6 @@
 #ifndef MIKUPAN_SDL_RENDERER_H
 #define MIKUPAN_SDL_RENDERER_H
+#include <ingame/camera/camera.h>
 
 extern int window_width;
 extern int window_height;
@@ -25,5 +26,8 @@ void MikuPan_SetupFntTexture();
 SDL_Texture* MikuPan_CreateTexture(sceGsTex0* tex0);
 void MikuPan_SetFontTexture(int fnt);
 void MikuPan_DeleteTexture(void* texture);
+void MikuPan_Camera(const SgCAMERA *camera);
+void MikuPan_Shutdown();
+void MikuPan_EndFrame();
 
 #endif //MIKUPAN_SDL_RENDERER_H

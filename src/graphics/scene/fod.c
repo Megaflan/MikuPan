@@ -872,9 +872,9 @@ void FodSetEffectParam(FOD_EFF_DATA *fed)
             eff_param.lenz_rot[2] = fed->lenz_f.z;
             eff_param.lenz_rot[3] = 0.0f;
 
-            eff_param.lenz_pos[0] = *(float *)((int)fed + 0x14);
-            eff_param.lenz_pos[1] = *(float *)((int)fed + 0x18);
-            eff_param.lenz_pos[2] = *(float *)((int)fed + 0x1c);
+            eff_param.lenz_pos[0] = *(float *)((int64_t)fed + 0x14);
+            eff_param.lenz_pos[1] = *(float *)((int64_t)fed + 0x18);
+            eff_param.lenz_pos[2] = *(float *)((int64_t)fed + 0x1c);
             eff_param.lenz_pos[3] = 0.0f;
 
             for (i = 0; i < 3; i++)

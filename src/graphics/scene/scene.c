@@ -558,7 +558,7 @@ void SceneDraw(int scene_no)
 
     for (i = 0; i < sc->man_mdl_num; i++)
     {
-        SceneDrawManMdl(sc, i);
+        //SceneDrawManMdl(sc, i);
     }
 
     for (i = 0; i < sc->furn_num; i++)

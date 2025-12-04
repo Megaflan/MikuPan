@@ -122,7 +122,7 @@ void DrawBoundingBox(sceVu0FVECTOR *box)
 
     datap = (u_int *)getObjWrk();
 
-    datap[0] = (float)0x11000000;
+    datap[0] = (u_int)0x11000000;
     datap[1] = 0;
     datap[2] = 0;
     datap[3] = 0x6c010005;
@@ -286,7 +286,7 @@ void SetVUMeshDataP(u_int *prim)
         AppendDmaBuffer(1);
     break;
     case 18:
-    case 50:
+    case 0x32:
         LoadSgProg(2);
 
         addr = (u_int)&vuvnprim[4];
@@ -377,7 +377,7 @@ void SgSortUnitPrimP(u_int *prim)
 {
     if (prim != NULL)
     {
-        while (*prim != NULL)
+        while (*prim != 0)
         {
             switch(prim[1])
             {
@@ -442,7 +442,7 @@ void SgSortPreProcessP(u_int *prim)
         return;
     }
 
-    while (*prim != NULL)
+    while (*prim != 0)
     {
         switch(prim[1])
         {
@@ -607,13 +607,13 @@ void SgSortGroupP(void *sgd_top, int gnum)
 
     SetUpSortUnit();
 
-    SgSortPreProcessP((u_int *)pk[0]);
+    SgSortPreProcessP(GetTopProcUnitHeaderPtr(hs, 0));
 
     if (pGroupPacket == NULL)
     {
         for (i = 1; i < blocksm; i++)
         {
-            SgSortUnitPrimP((u_int*)pk[i]);
+            SgSortUnitPrimP(GetTopProcUnitHeaderPtr(hs, i));
         }
     }
     else
@@ -625,12 +625,12 @@ void SgSortGroupP(void *sgd_top, int gnum)
 
         for (i = 0; i < gnum; i++)
         {
-            mgp = (ModelGroup *)((u_int)mgp + (mgp->Num + 2) * sizeof(short)); // mgp = (ModelGroup *)&mgp->Lists[mgp->Num]; :(
+            mgp = (ModelGroup *)((int64_t)mgp + (mgp->Num + 2) * sizeof(short)); // mgp = (ModelGroup *)&mgp->Lists[mgp->Num]; :(
         }
 
         for (i = 0; i < mgp->Num; i++)
         {
-            SgSortUnitPrimP((u_int *)pk[mgp->Lists[i]]);
+            SgSortUnitPrimP(GetTopProcUnitHeaderPtr(hs, mgp->Lists[i]));
         }
     }
 }

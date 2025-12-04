@@ -586,20 +586,20 @@ void SgdAddTexOffset(void *sgd_top, int offset)
     u_int i;
     u_int *p;
     u_int *nextprim;
-    u_int *pk;
+    //u_int *pk;
     HeaderSection* hs;
 
     hs = sgd_top;
 
-    pk = (u_int *)&hs->primitives;
+    //pk = (u_int *)&hs->primitives;
 
     for (i = 0; i < hs->blocks; i++)
     {
-        if (pk[i] != NULL)
+        if (GetTopProcUnitHeaderPtr(hs, i) != NULL)
         {
-            p = (u_int *)pk[i];
+            p = (u_int *)GetTopProcUnitHeaderPtr(hs, i);
 
-            while (p[0] != NULL)
+            while (p[0] != 0)
             {
                 nextprim = p;
                 p++;
@@ -610,7 +610,7 @@ void SgdAddTexOffset(void *sgd_top, int offset)
                     p[10] += offset * 32;
                 }
 
-                p = (u_int *)*nextprim;
+                p = GetNextProcUnitHeaderPtr(nextprim);
             }
         }
     }

@@ -253,7 +253,7 @@ void *SetEffects(int id, int fl, ...)
     int ret;
     va_list ap;
     EFFECT_CONT *ec;
-    
+    return;
     if (
         (ingame_wrk.stts & 0x20) &&
         ev_wrk.movie_on != 4 &&
@@ -1199,6 +1199,7 @@ void ResetEffectScrBuffer(int eno)
 
 void EffectControl(int no)
 {
+    return;
     static int fl;
     static void *ecw[3];
     EFFECT_CONT *ecm;
