@@ -190,7 +190,7 @@ void PlyrCondChk()
 {
     if (plyr_wrk.hp > 0 && plyr_wrk.hp <= 50 && plyr_wrk.se_deadly == -1)
     {
-        plyr_wrk.se_deadly = SeStartFix(36, 0, 0x1000, 0x1000, 0);
+        plyr_wrk.se_deadly = SeStartFix(SE_PLYR_DEADLY, 0, 0x1000, 0x1000, 0);
     }
     else if (plyr_wrk.se_deadly != -1)
     {
