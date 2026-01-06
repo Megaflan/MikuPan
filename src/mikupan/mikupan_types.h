@@ -1,7 +1,11 @@
 #ifndef MIKUPAN_TYPES_H
 #define MIKUPAN_TYPES_H
 
+#define GET_NUM_MESH(intpointer) (char)((char*)intpointer)[14]
+
 typedef float LMATRIX[3][4];
+typedef float VECTOR3[3];
+typedef unsigned int void_type[4];
 
 struct _LIGHT_POINT_AND_SPOT_NUM
 {
@@ -273,6 +277,140 @@ struct GRA3DSCRATCHPADLAYOUT
 {
   qword qwVif1Code0;
   union GRA3DVU1MEMLAYOUT Vu1Mem;
+};
+
+struct SGDVUMESHPOINTNUM
+{
+    struct G3DVIF1CODE_UNPACK VifUnpack;
+    unsigned int uiPointNum;
+};
+
+struct SGDMESHVERTEXDATA_TYPE2 { // 0x18
+    /* 0x00 */ float vVertex[3];
+    /* 0x0c */ float vNormal[3];
+};
+
+struct SGDVUVNDESC { // 0x8
+    /* 0x0 */ short int sNumVertex;
+    /* 0x2 */ short int sNumNormal;
+    /* 0x4 */ unsigned char ucSize;
+    /* 0x5 */ unsigned char ucVectorType;
+    /* 0x6 */ unsigned char aucPad[2];
+};
+
+struct SGDVUVNDATA_PRESET { // 0x40
+    /* 0x00 */ unsigned int aui[10];
+    /* 0x28 */ union { // 0x18
+        /* 0x28 */ struct SGDMESHVERTEXDATA_TYPE2 avt2[1];
+    };
+};
+
+struct _SGDVUMESHCOLORDATA { // 0x10
+    /* 0x0 */ struct G3DVIF1CODE_UNPACK VifUnpack;
+    /* 0x4 */ VECTOR3 avColor[1];
+};
+
+struct SGDVUMESHDESC { // 0x8
+    /* 0x0 */ int iTagSize;
+    /* 0x4 */ unsigned char ucPad0;
+    /* 0x5 */ union { // 0x1
+        /* 0x5 */ unsigned char ucMeshType;
+    };
+    /* 0x6 */ unsigned char ucNumMesh;
+    /* 0x7 */ unsigned char ucPad1;
+};
+
+struct SGDPROCUNITHEADER { // 0x10
+    /* 0x0 */ int pNext;
+    /* 0x4 */ int iCategory;
+    /* 0x8 */ union { // 0x8
+        /* 0x8 */ long int lPrimType;
+        /* 0x8 */ struct SGDVUVNDESC VUVNDesc;
+        /* 0x8 */ struct SGDVUMESHDESC VUMeshDesc;
+    };
+};
+
+struct SGDVUVNDATA {
+    /* 0x00 */ qword qwVif1Code;
+    /* 0x10 */ unsigned int uiVTop;
+    /* 0x14 */ unsigned int uiPTop;
+    /* 0x18 */ unsigned int uiWTop;
+    /* 0x1c */ unsigned int uiNumMesh;
+};
+
+struct SGDVUMESHDATA { // 0x20
+    /* 0x00 */ u_int qwVif1Code[4];
+    /* 0x10 */ sceGifTag GifTag;
+};
+
+struct SGDVUMESHDATA_PRESET { // 0x18
+    /* 0x00 */ short int asPad0[2];
+    /* 0x04 */ short int sOffsetToST;
+    /* 0x06 */ short int sOffsetToPrim;
+    /* 0x08 */ int aiPad1[2];
+    /* 0x10 */ long int alData[1];
+};
+
+struct SGDLIGHTDATA_DIRECTIONAL { // 0x20
+    /* 0x00 */ float vColor[4];
+    /* 0x10 */ float vDirection[4];
+};
+
+struct SGDLIGHTDATA_POINT { // 0x20
+    /* 0x00 */ float vColor[4];
+    /* 0x10 */ float vPosition[4];
+};
+
+struct SGDLIGHTDATA_SPOT { // 0x30
+    /* 0x00 */ float vColor[4];
+    /* 0x10 */ float vPosition[4];
+    /* 0x20 */ float vTarget[4];
+};
+
+struct SGDLIGHTDATA_AMBIENT { // 0x10
+    /* 0x0 */ float vColor[4];
+};
+
+struct SGDTEXTUREANIMATIONDESC { // 0x8
+    /* 0x0 */ unsigned char ucNumTexture;
+    /* 0x1 */ unsigned char ucPaddingSize;
+    /* 0x2 */ unsigned char bEnable;
+    /* 0x3 */ unsigned char ucStep;
+    /* 0x4 */ unsigned char ucCount;
+    /* 0x5 */ unsigned char bLoop;
+    /* 0x6 */ unsigned char aucPad[2];
+};
+
+struct SGDGSIMAGEDATA { // 0x30
+    /* 0x00 */ unsigned int auiVifCode[4];
+    /* 0x10 */ void_type GT;
+    /* 0x20 */ unsigned char aucData[1];
+};
+
+struct SGDVUMESHST
+{
+    float fS;
+    float fT;
+};
+
+struct SGDVUMESHSTDATA
+{
+    struct G3DVIF1CODE_UNPACK VifUnpack;
+    struct SGDVUMESHST astData[1];
+};
+
+union SGDPROCUNITDATA { // 0x80
+    /* 0x00 */ struct SGDVUVNDATA VUVNData;
+    /* 0x00 */ struct SGDVUMESHDATA VUMeshData;
+    /* 0x00 */ struct SGDVUVNDATA_PRESET VUVNData_Preset;
+    /* 0x00 */ struct SGDVUMESHDATA_PRESET VUMeshData_Preset;
+    /* 0x00 */ unsigned char aucGSImage;
+    /* 0x00 */ float avBB[8][4];
+    /* 0x00 */ struct SGDLIGHTDATA_DIRECTIONAL alightDirectional[1];
+    /* 0x00 */ struct SGDLIGHTDATA_POINT alightPoint[1];
+    /* 0x00 */ struct SGDLIGHTDATA_SPOT alightSpot[1];
+    /* 0x00 */ struct SGDLIGHTDATA_AMBIENT lightAmbient;
+    /* 0x00 */ struct SGDGSIMAGEDATA GSImage;
 };
 
 #endif //MIKUPAN_TYPES_H

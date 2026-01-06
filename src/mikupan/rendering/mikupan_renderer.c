@@ -13,39 +13,68 @@
 #include <SDL3/SDL_gpu.h>
 #include <mikupan/mikupan_memory.h>
 #include <stdlib.h>
+#include "cglm/cglm.h"
+
+#define GLAD_GL_IMPLEMENTATION
+#include <glad/gl.h>
+#include <graphics/graph3d/sglight.h>
+#include <graphics/graph3d/sgsu.h>
 
 #define PS2_RESOLUTION_X_FLOAT 640.0f
 #define PS2_RESOLUTION_X_INT 640
 #define PS2_RESOLUTION_Y_FLOAT 448.0f
 #define PS2_RESOLUTION_Y_INT 448
 
-float game_aspect_ratio = 4.0f/3.0f;
+// Vertex Shader source code
+const char *vertexShaderSource =
+    "#version 330 core\n"
+    "layout (location = 0) in vec3 aPos;\n"
+    "uniform mat4 model;\n"
+    "uniform mat4 view;\n"
+    "uniform mat4 projection;\n"
+    "void main()\n"
+    "{\n"
+    "   gl_Position = projection * view * model * vec4(aPos, 1.0f);\n"
+    "}\0";
+
+//Fragment Shader source code
+const char *fragmentShaderSource =
+    "#version 330 core\n"
+    "out vec4 FragColor;\n"
+    "void main()\n"
+    "{\n"
+    "   FragColor = vec4(1.0f, 0.0f, 0.0f, 0.0f);\n"
+    "}\n\0";
+
+float game_aspect_ratio = 4.0f / 3.0f;
 int window_width = 640;
 int window_height = 448;
+
+GLuint shaderProgram;
+
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
-SDL_GPURenderPass* render_pass = NULL;
-SDL_GPUCommandBuffer* command_buffer = NULL;
-SDL_GPUTexture* swapchain_texture = NULL;
-
-SDL_Texture* fnt_texture[6] = {0};
+GladGLContext *glad_context = NULL;
+SDL_Texture *fnt_texture[6] = {0};
 SDL_Texture *curr_fnt_texture = NULL;
 
 SDL_AppResult MikuPan_Init()
 {
-    SDL_SetAppMetadata("MikuPan", "1.0", "mikupan");
-    SDL_SetHint(SDL_HINT_MAIN_CALLBACK_RATE, "60");
-
-    if (!SDL_Init(
-        SDL_INIT_VIDEO |
-        SDL_INIT_GAMEPAD |
-        SDL_INIT_JOYSTICK |
-        SDL_INIT_HAPTIC
-        ))
+    if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD | SDL_INIT_JOYSTICK
+                  | SDL_INIT_HAPTIC))
     {
         info_log("Couldn't initialize SDL: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
+
+    SDL_SetAppMetadata("MikuPan", "1.0", "mikupan");
+    SDL_SetHint(SDL_HINT_MAIN_CALLBACK_RATE, "60");
+
+
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
+                        SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 
     int num_rend = SDL_GetNumRenderDrivers();
 
@@ -55,7 +84,10 @@ SDL_AppResult MikuPan_Init()
     }
 
     window = SDL_CreateWindow("MikuPan", window_width, window_height,
-        SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+                              SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+
+    SDL_GLContext ctx = SDL_GL_CreateContext(window);
+    SDL_GL_MakeCurrent(window, ctx);
 
     renderer = SDL_CreateRenderer(window, "opengl");
 
@@ -65,16 +97,49 @@ SDL_AppResult MikuPan_Init()
         return SDL_APP_FAILURE;
     }
 
-    SDL_SetRenderLogicalPresentation(
-        renderer,
-        window_width,
-        window_height,
-        SDL_LOGICAL_PRESENTATION_DISABLED);
+    glad_context = (GladGLContext *) calloc(1, sizeof(GladGLContext));
+
+    int version = gladLoadGLContext(glad_context, SDL_GL_GetProcAddress);
+
+    SDL_SetRenderLogicalPresentation(renderer, window_width, window_height,
+                                     SDL_LOGICAL_PRESENTATION_DISABLED);
 
     InitImGuiWindow(window, renderer);
 
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     SDL_SetRenderVSync(renderer, 1);
+
+    GLuint vertexShader = glad_context->CreateShader(GL_VERTEX_SHADER);
+    glad_context->ShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+
+    // Compile the Vertex Shader into machine code
+    glad_context->CompileShader(vertexShader);
+
+    // Create Fragment Shader Object and get its reference
+    GLuint fragmentShader = glad_context->CreateShader(GL_FRAGMENT_SHADER);
+
+    // Attach Fragment Shader source to the Fragment Shader Object
+    glad_context->ShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+
+    // Compile the Vertex Shader into machine code
+    glad_context->CompileShader(fragmentShader);
+
+    // Create Shader Program Object and get its reference
+    shaderProgram = glad_context->CreateProgram();
+
+    // Attach the Vertex and Fragment Shaders to the Shader Program
+    glad_context->AttachShader(shaderProgram, vertexShader);
+    glad_context->AttachShader(shaderProgram, fragmentShader);
+
+    // Wrap-up/Link all the shaders together into the Shader Program
+    glad_context->LinkProgram(shaderProgram);
+
+    // Delete the now useless Vertex and Fragment Shader objects
+    glad_context->DeleteShader(vertexShader);
+    glad_context->DeleteShader(fragmentShader);
+
+    // Tell OpenGL which Shader Program we want to use
+    glad_context->UseProgram(shaderProgram);
 
     return SDL_APP_CONTINUE;
 }
@@ -91,16 +156,16 @@ void MikuPan_UpdateWindowSize(int width, int height)
     window_height = height;
 }
 
-void MikuPan_Render2DTexture(DISP_SPRT* sprite)
+void MikuPan_Render2DTexture(DISP_SPRT *sprite)
 {
     if (!IsFirstUploadDone())
     {
         return;
     }
 
-    sceGsTex0* tex0 = (sceGsTex0*)&sprite->tex0;
+    sceGsTex0 *tex0 = (sceGsTex0 *) &sprite->tex0;
 
-    SDL_Texture* texture = (SDL_Texture*)GetSDLTexture(tex0);
+    SDL_Texture *texture = (SDL_Texture *) GetSDLTexture(tex0);
 
     if (texture == NULL)
     {
@@ -116,14 +181,15 @@ void MikuPan_Render2DTexture(DISP_SPRT* sprite)
     src_rect.w = sprite->w;
     src_rect.h = sprite->h;
 
-    dst_rect.x = (float)window_width * (sprite->x / PS2_RESOLUTION_X_FLOAT);
-    dst_rect.y = (float)window_height * (sprite->y / PS2_RESOLUTION_Y_FLOAT);
+    dst_rect.x = (float) window_width * (sprite->x / PS2_RESOLUTION_X_FLOAT);
+    dst_rect.y = (float) window_height * (sprite->y / PS2_RESOLUTION_Y_FLOAT);
 
-    dst_rect.w = (float)window_width * (sprite->w / PS2_RESOLUTION_X_FLOAT);
-    dst_rect.h = (float)window_height * (sprite->h / PS2_RESOLUTION_Y_FLOAT);
+    dst_rect.w = (float) window_width * (sprite->w / PS2_RESOLUTION_X_FLOAT);
+    dst_rect.h = (float) window_height * (sprite->h / PS2_RESOLUTION_Y_FLOAT);
 
     SDL_SetTextureAlphaMod(texture, AdjustAlpha(sprite->alpha));
-    SDL_SetTextureColorMod(texture, AdjustAlpha(sprite->r), AdjustAlpha(sprite->g), AdjustAlpha(sprite->b));
+    SDL_SetTextureColorMod(texture, AdjustAlpha(sprite->r),
+                           AdjustAlpha(sprite->g), AdjustAlpha(sprite->b));
 
     SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
     //SDL_RenderTextureRotated(renderer, texture, &src_rect, &dst_rect, sprite->rot, NULL, false);
@@ -156,42 +222,50 @@ void MikuPan_Render2DMessage(DISP_SPRT *sprite)
     src_rect.w = sprite->w;
     src_rect.h = sprite->h;
 
-    dst_rect.x = (float)window_width * (sprite->x / PS2_RESOLUTION_X_FLOAT);
-    dst_rect.y = (float)window_height * (sprite->y / PS2_RESOLUTION_Y_FLOAT);
+    dst_rect.x = (float) window_width * (sprite->x / PS2_RESOLUTION_X_FLOAT);
+    dst_rect.y = (float) window_height * (sprite->y / PS2_RESOLUTION_Y_FLOAT);
 
-    dst_rect.w = (float)window_width * (sprite->w / PS2_RESOLUTION_X_FLOAT);
-    dst_rect.h = (float)window_height * (sprite->h / PS2_RESOLUTION_Y_FLOAT);
+    dst_rect.w = (float) window_width * (sprite->w / PS2_RESOLUTION_X_FLOAT);
+    dst_rect.h = (float) window_height * (sprite->h / PS2_RESOLUTION_Y_FLOAT);
 
-    SDL_Texture* texture = curr_fnt_texture;
+    SDL_Texture *texture = curr_fnt_texture;
 
     SDL_SetTextureAlphaMod(texture, AdjustAlpha(sprite->alpha));
-    SDL_SetTextureColorMod(texture, AdjustAlpha(sprite->r), AdjustAlpha(sprite->g), AdjustAlpha(sprite->b));
+    SDL_SetTextureColorMod(texture, AdjustAlpha(sprite->r),
+                           AdjustAlpha(sprite->g), AdjustAlpha(sprite->b));
     SDL_RenderTexture(renderer, texture, &src_rect, &dst_rect);
 }
 
 void MikuPan_RenderSquare(float x1, float y1, float x2, float y2, float x3,
-                          float y3, float x4, float y4, u_char r, u_char g, u_char b, u_char a)
+                          float y3, float x4, float y4, u_char r, u_char g,
+                          u_char b, u_char a)
 {
-    SDL_SetRenderDrawColor(renderer, AdjustAlpha(r), AdjustAlpha(g), AdjustAlpha(b), AdjustAlpha(a));
+    SDL_SetRenderDrawColor(renderer, AdjustAlpha(r), AdjustAlpha(g),
+                           AdjustAlpha(b), AdjustAlpha(a));
 
     SDL_FRect rect;
 
-    rect.x = (float)window_width * (x1 / PS2_RESOLUTION_X_FLOAT);
-    rect.y = (float)window_height * (y1 / PS2_RESOLUTION_Y_FLOAT);
+    rect.x = (float) window_width * (x1 / PS2_RESOLUTION_X_FLOAT);
+    rect.y = (float) window_height * (y1 / PS2_RESOLUTION_Y_FLOAT);
 
-    rect.w = (float)window_width * ((x4 - x1) / PS2_RESOLUTION_X_FLOAT);
-    rect.h = (float)window_height * ((y4 - y1) / PS2_RESOLUTION_Y_FLOAT);
+    rect.w = (float) window_width * ((x4 - x1) / PS2_RESOLUTION_X_FLOAT);
+    rect.h = (float) window_height * ((y4 - y1) / PS2_RESOLUTION_Y_FLOAT);
     SDL_RenderFillRect(renderer, &rect);
 }
 
-void MikuPan_RenderLine(float x1, float y1, float x2, float y2, u_char r, u_char g, u_char b, u_char a)
+void MikuPan_RenderLine(float x1, float y1, float x2, float y2, u_char r,
+                        u_char g, u_char b, u_char a)
 {
     SDL_SetRenderDrawColor(renderer, r, g, b, AdjustAlpha(a));
 
-    float dst_x1 = (float)window_width *  (300.0f+x1) / PS2_RESOLUTION_X_FLOAT;
-    float dst_y1 = (float)window_height * (200.0f+y1) / PS2_RESOLUTION_Y_FLOAT;
-    float dst_x2 = (float)window_width *  (300.0f+x2) / PS2_RESOLUTION_X_FLOAT;
-    float dst_y2 = (float)window_height * (200.0f+y2) / PS2_RESOLUTION_Y_FLOAT;
+    float dst_x1 =
+        (float) window_width * (300.0f + x1) / PS2_RESOLUTION_X_FLOAT;
+    float dst_y1 =
+        (float) window_height * (200.0f + y1) / PS2_RESOLUTION_Y_FLOAT;
+    float dst_x2 =
+        (float) window_width * (300.0f + x2) / PS2_RESOLUTION_X_FLOAT;
+    float dst_y2 =
+        (float) window_height * (200.0f + y2) / PS2_RESOLUTION_Y_FLOAT;
 
     SDL_RenderLine(renderer, dst_x1, dst_y1, dst_x2, dst_y2);
 }
@@ -202,7 +276,8 @@ void MikuPan_SetupFntTexture()
     {
         if (fnt_texture[i] == NULL)
         {
-            fnt_texture[i] = MikuPan_CreateTexture((sceGsTex0*)&fntdat[i].tex0);
+            fnt_texture[i] =
+                MikuPan_CreateTexture((sceGsTex0 *) &fntdat[i].tex0);
         }
     }
 }
@@ -241,18 +316,40 @@ void MikuPan_DeleteTexture(void *texture)
         }
     }
 
-    SDL_DestroyTexture((SDL_Texture*)texture);
+    SDL_DestroyTexture((SDL_Texture *) texture);
 }
 
 void MikuPan_Camera(const SgCAMERA *camera)
 {
-    struct GRA3DSCRATCHPADLAYOUT * scratchpad = (struct GRA3DSCRATCHPADLAYOUT *)ps2_virtual_scratchpad;
-    //unsigned int viewLoc = gl_context->GetUniformLocation(shaderProgram, "view");
-    //gl_context->UniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+    struct GRA3DSCRATCHPADLAYOUT *scratchpad =
+        (struct GRA3DSCRATCHPADLAYOUT *) ps2_virtual_scratchpad;
+
+    mat4 mtx = {0};
+    vec3 center = {camera->p[0] + 0.0f, camera->p[1] + 0.0f, camera->p[2] + -1.0f}; // vec3 {camera->p[0] + 0.0, camera->p[1] + 0.0f, camera->p[2] + -1.0f}
+    vec3 up = {0.0f, 1.0f, 0.0f};
+
+    glm_lookat(*(vec3*)&camera->p,
+        center,
+        up,
+        mtx);
+
+    unsigned int viewLoc =
+        glad_context->GetUniformLocation(shaderProgram, "view");
+
+    glad_context->UniformMatrix4fv(
+        viewLoc, 1, GL_FALSE,
+        mtx);
 
     // Projection
-    //unsigned int projectionLoc = context->GetUniformLocation(shaderProgram, "projection");
-    //context->UniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+    mat4 projection = {0};
+    glm_perspective(camera->fov, (float)window_width / (float)window_height, camera->nearz, camera->farz, projection);
+
+    unsigned int projectionLoc =
+        glad_context->GetUniformLocation(shaderProgram, "projection");
+
+    glad_context->UniformMatrix4fv(
+        projectionLoc, 1, GL_FALSE,
+        projection);
 }
 
 void MikuPan_Shutdown()
@@ -267,7 +364,139 @@ void MikuPan_EndFrame()
 {
     DrawImGuiWindow();
     RenderImGuiWindow(renderer);
-    //SDL_EndGPURenderPass(render_pass);
-    SDL_SubmitGPUCommandBuffer(command_buffer);
     SDL_RenderPresent(renderer);
+}
+
+void MikuPan_SetModelTransform(unsigned int *prim)
+{
+    unsigned int modelLoc =
+        glad_context->GetUniformLocation(shaderProgram, "model");
+
+    glad_context->UniformMatrix4fv(
+        modelLoc, 1, GL_FALSE,
+        lcp[prim[2]].workm);
+}
+
+void MikuPan_RenderMeshType0x32(struct SGDPROCUNITHEADER *pVUVN, struct SGDPROCUNITHEADER *pPUHead)
+{
+    union SGDPROCUNITDATA *pVUVNData = (union SGDPROCUNITDATA *) &pVUVN[1];
+    union SGDPROCUNITDATA * pProcData = (union SGDPROCUNITDATA *) &pPUHead[1];
+
+    struct SGDVUMESHPOINTNUM *pMeshInfo =
+        (struct SGDVUMESHPOINTNUM *) &pPUHead[4];
+
+    struct SGDVUMESHSTDATA *sgdMeshData = (struct SGDVUMESHSTDATA *)((int64_t)pVUVNData + (pVUVNData->VUMeshData_Preset.sOffsetToST - 1) * 4);
+
+    struct _SGDVUMESHCOLORDATA * pVMCD =
+        (struct _SGDVUMESHCOLORDATA *) (&pPUHead->pNext
+                                 + pProcData->VUMeshData_Preset.sOffsetToPrim);
+
+    int vertexOffset = 0;
+
+    for (int i = 0; i < GET_NUM_MESH(pPUHead); i++)
+    {
+        pVMCD = (struct _SGDVUMESHCOLORDATA *) GetNextUnpackAddr((u_int *) pVMCD);
+
+        GLfloat *vertices =
+            (GLfloat *) (pVUVNData->VUVNData_Preset.aui
+                         + (vertexOffset + pVUVN->VUVNDesc.sNumNormal) * 3
+                         + 10);
+
+        GLuint VAO, VBO;
+
+        glad_context->GenVertexArrays(1, &VAO);
+        glad_context->GenBuffers(1, &VBO);
+
+        // Make the VAO the current Vertex Array Object by binding it
+        glad_context->BindVertexArray(VAO);
+
+        // Bind the VBO specifying it's a GL_ARRAY_BUFFER
+        glad_context->BindBuffer(GL_ARRAY_BUFFER, VBO);
+
+        // Introduce the vertices into the VBO
+        glad_context->BufferData(GL_ARRAY_BUFFER,
+                                 pVMCD->VifUnpack.NUM * sizeof(float[3]),
+                                 vertices, GL_STATIC_DRAW);
+
+        // Configure the Vertex Attribute so that OpenGL knows how to read the VBO
+        glad_context->VertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+
+        // Enable the Vertex Attribute so that OpenGL knows to use it
+        glad_context->EnableVertexAttribArray(0);
+
+        // Bind both the VBO and VAO to 0 so that we don't accidentally modify the VAO and VBO we created
+        glad_context->BindBuffer(GL_ARRAY_BUFFER, 0);
+        glad_context->BindVertexArray(0);
+
+        // Bind the VAO so OpenGL knows to use it
+        glad_context->BindVertexArray(VAO);
+
+        // Draw the triangle using the GL_TRIANGLE_STRIP primitive
+        glad_context->DrawArrays(GL_TRIANGLE_STRIP, 0, pVMCD->VifUnpack.NUM);
+
+        glad_context->DeleteVertexArrays(1, &VAO);
+        glad_context->DeleteBuffers(1, &VBO);
+
+        vertexOffset += pVMCD->VifUnpack.NUM;
+        pVMCD = (struct _SGDVUMESHCOLORDATA *) &pVMCD->avColor[pVMCD->VifUnpack.NUM];
+    }
+}
+
+void MikuPan_RenderMeshType0x82(unsigned int *pVUVN, unsigned int *pPUHead)
+{
+    struct SGDVUVNDATA_PRESET *pVUVNData = (struct SGDVUVNDATA_PRESET *) &(
+        ((struct SGDPROCUNITHEADER *) pVUVN)[1]);
+    struct SGDVUMESHPOINTNUM *pMeshInfo = (struct SGDVUMESHPOINTNUM *) &(
+        ((struct SGDPROCUNITHEADER *) pPUHead)[4]);
+
+    int vertexOffset = 0;
+
+    for (int i = 0; i < GET_NUM_MESH(pPUHead); i++)
+    {
+        if (pMeshInfo[i].uiPointNum == 0)
+        {
+            continue;
+        }
+
+        GLuint VAO, VBO;
+
+        glad_context->GenVertexArrays(1, &VAO);
+        glad_context->GenBuffers(1, &VBO);
+
+        // Make the VAO the current Vertex Array Object by binding it
+        glad_context->BindVertexArray(VAO);
+
+        // Bind the VBO specifying it's a GL_ARRAY_BUFFER
+        glad_context->BindBuffer(GL_ARRAY_BUFFER, VBO);
+
+        // Introduce the vertices into the VBO
+        glad_context->BufferData(
+            GL_ARRAY_BUFFER,
+            pMeshInfo[i].uiPointNum * sizeof(struct SGDMESHVERTEXDATA_TYPE2),
+            &pVUVNData->avt2[vertexOffset], GL_STATIC_DRAW);
+
+        // Configure the Vertex Attribute so that OpenGL knows how to read the VBO
+        glad_context->VertexAttribPointer(
+            0, 3, GL_FLOAT, GL_FALSE, sizeof(struct SGDMESHVERTEXDATA_TYPE2),
+            NULL);
+
+        // Enable the Vertex Attribute so that OpenGL knows to use it
+        glad_context->EnableVertexAttribArray(0);
+
+        // Bind both the VBO and VAO to 0 so that we don't accidentally modify the VAO and VBO we created
+        glad_context->BindBuffer(GL_ARRAY_BUFFER, 0);
+        glad_context->BindVertexArray(0);
+
+        // Bind the VAO so OpenGL knows to use it
+        glad_context->BindVertexArray(VAO);
+
+        // Draw the triangle using the GL_TRIANGLE_STRIP primitive
+        auto render_type = true ? GL_LINE_STRIP : GL_TRIANGLE_STRIP;
+        glad_context->DrawArrays(render_type, 0, pMeshInfo[i].uiPointNum);
+
+        glad_context->DeleteVertexArrays(1, &VAO);
+        glad_context->DeleteBuffers(1, &VBO);
+
+        vertexOffset += pMeshInfo[i].uiPointNum;
+    }
 }

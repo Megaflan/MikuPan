@@ -19,6 +19,7 @@
 #include "graphics/graph3d/sglib.h"
 #include "graphics/graph3d/sglight.h"
 #include "graphics/graph3d/sgsu.h"
+#include "mikupan/rendering/mikupan_renderer.h"
 
 #include <enums.h>
 
@@ -261,7 +262,7 @@ void SetVUMeshDataP(u_int *prim)
 
     switch (mtype) {
     case 16:
-        LoadSgProg(1);
+        LoadSgProg(VUPROG_SG_PRESET0);
 
         AppendDmaTag((u_int)&prim[8], prim[2]);
 
@@ -297,6 +298,11 @@ void SetVUMeshDataP(u_int *prim)
 
         datap = (u_int *)getObjWrk();
 
+        if (0x32 == mtype)
+        {
+            MikuPan_RenderMeshType0x32((struct SGDPROCUNITHEADER *)vuvnprim, (struct SGDPROCUNITHEADER *)prim);
+        }
+
         if (edge_check != 0)
         {
             datap[0] = 0x11000000;
@@ -317,6 +323,8 @@ void SetVUMeshDataP(u_int *prim)
     break;
     case 82:
     case 114:
+        MikuPan_RenderMeshType0x82(vuvnprim, prim);
+
         if (edge_check == 0)
         {
             AppendDmaTag((u_int)&prim[4], prim[2]);
@@ -362,6 +370,8 @@ int BoundingBoxCalcP(u_int *prim)
     }
 
     lcp[prim[2]].edge_check = edge_check;
+
+    MikuPan_SetModelTransform(prim);
 
     SelectLight(prim);
 

@@ -2,6 +2,7 @@
 #define MIKUPAN_SDL_RENDERER_H
 #include <ingame/camera/camera.h>
 
+struct SGDPROCUNITHEADER;
 extern int window_width;
 extern int window_height;
 #include "SDL3/SDL_init.h"
@@ -29,6 +30,8 @@ void MikuPan_DeleteTexture(void* texture);
 void MikuPan_Camera(const SgCAMERA *camera);
 void MikuPan_Shutdown();
 void MikuPan_EndFrame();
-void MikuPan_RenderIMTF_2();
+void MikuPan_SetModelTransform(unsigned int *prim);
+void MikuPan_RenderMeshType0x32(struct SGDPROCUNITHEADER *pVUVN, struct SGDPROCUNITHEADER *pPUHead);
+void MikuPan_RenderMeshType0x82(unsigned int* pVUVN, unsigned int *pPUHead);
 
 #endif //MIKUPAN_SDL_RENDERER_H
