@@ -43,7 +43,7 @@ const char *fragmentShaderSource =
     "out vec4 FragColor;\n"
     "void main()\n"
     "{\n"
-    "   FragColor = vec4(1.0f, 0.0f, 0.0f, 0.0f);\n"
+    "   FragColor = vec4(1.0f, 0.0f, 0.0f, 1.0f);\n"
     "}\n\0";
 
 float game_aspect_ratio = 4.0f / 3.0f;
@@ -374,7 +374,7 @@ void MikuPan_SetModelTransform(unsigned int *prim)
 
     glad_context->UniformMatrix4fv(
         modelLoc, 1, GL_FALSE,
-        lcp[prim[2]].workm);
+        lcp[prim[2]].lwmtx);
 }
 
 void MikuPan_RenderMeshType0x32(struct SGDPROCUNITHEADER *pVUVN, struct SGDPROCUNITHEADER *pPUHead)
@@ -432,7 +432,7 @@ void MikuPan_RenderMeshType0x32(struct SGDPROCUNITHEADER *pVUVN, struct SGDPROCU
         glad_context->BindVertexArray(VAO);
 
         // Draw the triangle using the GL_TRIANGLE_STRIP primitive
-        glad_context->DrawArrays(GL_TRIANGLE_STRIP, 0, pVMCD->VifUnpack.NUM);
+        glad_context->DrawArrays(GL_LINE_STRIP, 0, pVMCD->VifUnpack.NUM);
 
         glad_context->DeleteVertexArrays(1, &VAO);
         glad_context->DeleteBuffers(1, &VBO);
