@@ -86,9 +86,6 @@ SDL_AppResult MikuPan_Init()
     window = SDL_CreateWindow("MikuPan", window_width, window_height,
                               SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 
-    SDL_GLContext ctx = SDL_GL_CreateContext(window);
-    SDL_GL_MakeCurrent(window, ctx);
-
     renderer = SDL_CreateRenderer(window, "opengl");
 
     if (window == NULL || renderer == NULL)
@@ -325,7 +322,7 @@ void MikuPan_Camera(const SgCAMERA *camera)
         (struct GRA3DSCRATCHPADLAYOUT *) ps2_virtual_scratchpad;
 
     mat4 mtx = {0};
-    vec3 center = {camera->p[0] + 0.0f, camera->p[1] + 0.0f, camera->p[2] + -1.0f}; // vec3 {camera->p[0] + 0.0, camera->p[1] + 0.0f, camera->p[2] + -1.0f}
+    vec3 center = {camera->p[0] + 0.0f, camera->p[1] + 0.0f, camera->p[2] + -1.0f};
     vec3 up = {0.0f, 1.0f, 0.0f};
 
     glm_lookat(*(vec3*)&camera->p,
@@ -338,7 +335,7 @@ void MikuPan_Camera(const SgCAMERA *camera)
 
     glad_context->UniformMatrix4fv(
         viewLoc, 1, GL_FALSE,
-        mtx);
+        &mtx);
 
     // Projection
     mat4 projection = {0};
@@ -349,7 +346,7 @@ void MikuPan_Camera(const SgCAMERA *camera)
 
     glad_context->UniformMatrix4fv(
         projectionLoc, 1, GL_FALSE,
-        projection);
+        &projection);
 }
 
 void MikuPan_Shutdown()
@@ -374,7 +371,7 @@ void MikuPan_SetModelTransform(unsigned int *prim)
 
     glad_context->UniformMatrix4fv(
         modelLoc, 1, GL_FALSE,
-        lcp[prim[2]].lwmtx);
+        &lcp[prim[2]].matrix);
 }
 
 void MikuPan_RenderMeshType0x32(struct SGDPROCUNITHEADER *pVUVN, struct SGDPROCUNITHEADER *pPUHead)
