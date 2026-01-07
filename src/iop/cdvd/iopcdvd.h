@@ -1,43 +1,34 @@
 #ifndef IOPCDVD_H_
 #define IOPCDVD_H_
 
+#include "SDL3/SDL_mutex.h"
+#include "os/eeiop/eeiop.h"
+#include "sce/libcdvd.h"
 #include "typedefs.h"
-#include <SDL3/SDL_mutex.h>
+
 #include <stdio.h>
 
-enum CDVD_LOAD_STATUS
-{
-    CDVD_LS_FINISHED = 0,
-    CDVD_LS_WAIT = 1,
-    CDVD_LS_TRANS = 2,
-    CDVD_LS_TRANS_END = 3,
-    CDVD_LS_LOADING = 4
-};
-
-typedef struct
-{// 0x20
+typedef struct { // 0x20
     /* 0x00 */ int req_type;
     /* 0x04 */ int file_no;
     /* 0x08 */ int start_sector;
     /* 0x0c */ int size_sector;
     /* 0x10 */ int size_byte;
     /* 0x10:32 */ u_int id : 32;
-    /* 0x18 */ u_int *taddr;
+    /* 0x18 */ u_int* taddr;
     /* 0x1c */ u_char se_buf_no;
     /* 0x1d */ u_char tmem;
 } CDVD_REQ_BUF;
 
-typedef struct
-{// 0x10
-    /* 0x0 */ u_int *taddr;
+typedef struct { // 0x10
+    /* 0x0 */ u_int* taddr;
     /* 0x4 */ int start;
     /* 0x8 */ int file_no;
     /* 0xc */ int size_now;
 } CDVD_PCM;
 
-typedef struct
-{// 0x18
-    /* 0x00 */ u_int *taddr;
+typedef struct { // 0x18
+    /* 0x00 */ u_int* taddr;
     /* 0x04 */ int start;
     /* 0x08 */ int file_no;
     /* 0x0c */ int size_now;
@@ -48,8 +39,7 @@ typedef struct
     /* 0x17 */ u_char now_load;
 } CDVD_ADPCM;
 
-typedef struct
-{// 0xc
+typedef struct { // 0xc
     /* 0x0 */ int id;
     /* 0x4 */ int tid;
     /* 0x8 */ u_char ltrans;
@@ -57,16 +47,15 @@ typedef struct
     /* 0xa */ u_char tmem;
 } CDVD_TRANS_STAT;
 
-typedef struct
-{// 0x94
-    ///* 0x00 */ sceCdRMode rmode;
-    ///* 0x04 */ sceCdlFILE cdlf;
+typedef struct { // 0x94
+    //sceCdRMode rmode;
+    //sceCdlFILE cdlf;
     FILE *fp;
     SDL_Mutex *lock;
     SDL_Thread *thread;
     /* 0x28 */ CDVD_PCM pcm;
     /* 0x38 */ CDVD_ADPCM adpcm[2];
-    /* 0x60 */ u_int ctime;
+    /* 0x60:64 */ u_int ctime : 32;
     /* 0x6c */ int stat;
     /* 0x70 */ int start;
     /* 0x74 */ int id;
@@ -87,8 +76,7 @@ typedef struct
     /* 0x92 */ u_char error_cnt;
 } CDVD_STAT;
 
-enum CDVD_STATUS
-{
+enum CDVD_STATUS {
     CDVD_STAT_FREE = 0,
     CDVD_STAT_LOADING = 1,
     CDVD_STAT_STREAMING = 2,
@@ -96,6 +84,27 @@ enum CDVD_STATUS
     CDVD_STAT_SEEKING = 4
 };
 
-void ICdvdMain();
+enum ADPCM_LOADREQ_TYPE {
+    ADPCM_LDREQ_NO = 0,
+    ADPCM_LDREQ_PRELOAD_ONLY = 1,
+    ADPCM_LDREQ_STREAM = 2
+};
 
-#endif// IOPCDVD_H_
+enum CDVD_LOAD_STATUS {
+    CDVD_LS_FINISHED = 0,
+    CDVD_LS_WAIT = 1,
+    CDVD_LS_TRANS = 2,
+    CDVD_LS_TRANS_END = 3,
+    CDVD_LS_LOADING = 4
+};
+
+extern CDVD_STAT cdvd_stat;
+
+void ICdvdInit(int reset);
+void ICdvdCmd(IOP_COMMAND* icp);
+void ICdvdMain();
+void ICdvdBreak();
+
+void ICdvdLoadReqAdpcm(int lsn, u_int size_now, void* buf, u_char channel, int req_type, int endld_flg);
+
+#endif // IOPCDVD_H_

@@ -1,17 +1,15 @@
+#include "iopmain.h"
 #include "cdvd/iopcdvd.h"
-#include "iopsys.h"
-
+#include "enums.h"
 #include "os/eeiop/eeiop.h"
-
 #include <SDL3/SDL_timer.h>
 
 IOP_STAT iop_stat;
 IOP_MASTER_VOL iop_mv;
 IOP_SYS_CTRL iop_sys_ctrl;
+
 static int request_shutdown = 0;
-static void IopInitDevice();
-static int IopInitMain();
-static SDLCALL int IopMain(void *);
+
 
 void *IopDrvFunc(unsigned int command, void *data, int size)
 {

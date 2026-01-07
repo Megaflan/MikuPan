@@ -1,10 +1,13 @@
 #include "iopcdvd.h"
 
 #include "../../mikupan/logging_c.h"
+#include "SDL3/SDL_mutex.h"
+#include "enums.h"
+#include "iop/iopmain.h"
 #include "mikupan/mikupan_memory.h"
-#include "iop/iopsys.h"
 #include "os/eeiop/eeiop.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 
 CDVD_STAT cdvd_stat;

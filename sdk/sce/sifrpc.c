@@ -2,8 +2,8 @@
 #include <stdio.h>
 
 #include "enums.h"
+#include "iop/iopmain.h"
 #include "os/eeiop/eeiop.h"
-#include "iop/iopsys.h"
 
 #include <stdlib.h>
 #include <string.h>

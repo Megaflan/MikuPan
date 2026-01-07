@@ -23,7 +23,6 @@
 #include "os/eeiop/se_cmd.h"
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
-#include <iop/iopsys.h>
 #include <mikupan/mikupan_memory.h>
 #include <sce/libpad.h>
 
