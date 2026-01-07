@@ -6,8 +6,8 @@
 #include "common/utility.h"
 #include "graphics/graph2d/message.h"
 #include "graphics/ui/imgui_window_c.h"
-#include "gs/gs_server_c.h"
-#include "gs/texture_manager_c.h"
+#include "mikupan/gs/gs_server_c.h"
+#include "mikupan/gs/texture_manager_c.h"
 #include "mikupan/logging_c.h"
 
 #include <SDL3/SDL_gpu.h>
@@ -68,12 +68,13 @@ SDL_AppResult MikuPan_Init()
 
     SDL_SetAppMetadata("MikuPan", "1.0", "mikupan");
     SDL_SetHint(SDL_HINT_MAIN_CALLBACK_RATE, "60");
-
+    SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
                         SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
 
     int num_rend = SDL_GetNumRenderDrivers();
 
@@ -327,7 +328,7 @@ void MikuPan_Camera(const SgCAMERA *camera)
         up,
         mtx);
 
-    unsigned int viewLoc =
+    int viewLoc =
         glad_glGetUniformLocation(shaderProgram, "view");
 
     glad_glUniformMatrix4fv(
@@ -336,9 +337,9 @@ void MikuPan_Camera(const SgCAMERA *camera)
 
     // Projection
     mat4 projection = {0};
-    glm_perspective(camera->fov, (float)window_width / (float)window_height, camera->nearz, camera->farz, projection);
+    glm_perspective(glm_rad(110.0f), (float)window_width / (float)window_height, camera->nearz, camera->farz, projection);
 
-    unsigned int projectionLoc =
+    int projectionLoc =
         glad_glGetUniformLocation(shaderProgram, "projection");
 
     glad_glUniformMatrix4fv(
@@ -363,7 +364,7 @@ void MikuPan_EndFrame()
 
 void MikuPan_SetModelTransform(unsigned int *prim)
 {
-    unsigned int modelLoc =
+    int modelLoc =
         glad_glGetUniformLocation(shaderProgram, "model");
 
     glad_glUniformMatrix4fv(
@@ -485,7 +486,7 @@ void MikuPan_RenderMeshType0x82(unsigned int *pVUVN, unsigned int *pPUHead)
         glad_glBindVertexArray(VAO);
 
         // Draw the triangle using the GL_TRIANGLE_STRIP primitive
-        auto render_type = true ? GL_LINE_STRIP : GL_TRIANGLE_STRIP;
+        int render_type = true ? GL_LINE_STRIP : GL_TRIANGLE_STRIP;
         glad_glDrawArrays(render_type, 0, pMeshInfo[i].uiPointNum);
 
         glad_glDeleteVertexArrays(1, &VAO);

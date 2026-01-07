@@ -66,6 +66,9 @@ void OutGameCtrl(void)
         case OUTGAME_MODE_OPTION:
             ModeSlctLoop();
         break;
+        case OUTGAME_MODE_SOUND_TEST:
+            ModeSlctLoop();
+            break;
         case OUTGAME_MODE_SCENE_TEST:
           SceneTestCtrl();
         break;
@@ -92,24 +95,25 @@ void OutGameModeChange(u_char mode)
     {
         case OUTGAME_MODE_INIT:
             // do nothing ...
-        break;
+            break;
         case OUTGAME_MODE_BATTLE:
             BattleModeInit();
-        break;
+            break;
         case OUTGAME_MODE_OPTION:
             ModeSlctInit(3, 9);
-        break;
+            break;
         case OUTGAME_MODE_SOUND_TEST:
-            SoundTestForModeSlectInit();
+            ModeSlctInit(4, 9);
+            break;
         case OUTGAME_MODE_SCENE_TEST:
             scn_test_wrk.mode = 0;
-        break;
+            break;
         case OUTGAME_MODE_ROOM_SIZE_CHECK:
             RoomSizeCheckInit();
-        break;
+            break;
         case OUTGAME_MODE_LAYOUT_TEST:
             LayoutTestInit();
-        break;
+            break;
     }
 
     outgame_wrk.mode = mode;

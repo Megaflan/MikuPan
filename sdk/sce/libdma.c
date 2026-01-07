@@ -1,7 +1,5 @@
 #include "libdma.h"
 
-#include "gs/gs_packet_handler.h"
-
 #include <stdlib.h>
 
 sceDmaChan* dma_chan = NULL;

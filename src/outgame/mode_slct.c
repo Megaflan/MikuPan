@@ -744,7 +744,7 @@ char ModeSlctPad(u_char mode)
         {
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
             dsp_ms.next_mode = 0x2;
-            OutGameModeChange(0x8);
+            OutGameModeChange(OUTGAME_MODE_MODESEL);
             rtrn = 1;
         }
         else if (*key_now[5] == 1)
@@ -871,7 +871,7 @@ char ModeSlctPad(u_char mode)
         else
         {
             dsp_ms.next_mode = 2;
-            OutGameModeChange(8);
+            OutGameModeChange(OUTGAME_MODE_MODESEL);
             rtrn = 1;
         }
     break;
@@ -969,6 +969,7 @@ void ModeSlctDspChr(u_char alp, u_char mode)
     {
         flsh = SgSinf(((dsp_ms.mode_tmr % 0x3c) * 6.2831855f) / 60.0f);
         flsh = ((flsh + 1.0f) * 0.5f + 1.0f) * 0.5f;
+
         switch (mode)
         {
         case 0:

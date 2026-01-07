@@ -1,7 +1,7 @@
 #include "common.h"
 #include "title.h"
 
-#include "../mikupan/logging_c.h"
+#include "mikupan/logging_c.h"
 #include "btl_mode/btl_menu.h"
 #include "mikupan/mikupan_memory.h"
 #include "ee/kernel.h"
@@ -12,7 +12,7 @@
 #include "graphics/graph3d/sgdma.h"
 #include "graphics/motion/mdlwork.h"
 #include "graphics/mov/movie.h"
-#include "gs/gs_server_c.h"
+#include "mikupan/gs/gs_server_c.h"
 #include "ingame/menu/ig_album.h"
 #include "ingame/menu/ig_camra.h"
 #include "ingame/menu/ig_glst.h"
@@ -559,7 +559,7 @@ SPRT_DAT title_sprt[11] = {
     case TITLE_MEMCA_LOAD:
         if (title_wrk.sub_mode == 0)
         {
-            mcInit(1, (u_int *)MC_WORK_ADDRESS, 0);
+            mcInit(1, (u_int *)MikuPan_GetHostPointer(MC_WORK_ADDRESS), 0);
             title_wrk.sub_mode = 7;
         }
 
@@ -663,13 +663,13 @@ SPRT_DAT title_sprt[11] = {
         {
         case 0: break;
         case 1:
-            //album_save_dat[0] = mc_album_save;
+            album_save_dat[0] = mc_album_save;
             mc_pnum1 = mc_photo_num;
-            //mc_atyp1 = mc_album_type;
+            mc_atyp1 = mc_album_type;
             mc_slot1 = mc_ctrl.port + 1;
             mc_file1 = mc_ctrl.sel_file + 1;
 
-            //memcpy((void *)0xE80000, (void *)0x5a0000, 0x180000);
+            memcpy((void *)0xE80000, (void *)0x5a0000, 0x180000);
 
             mcInit(6, (u_int *)MC_WORK_ADDRESS, 0);
 
@@ -693,13 +693,13 @@ SPRT_DAT title_sprt[11] = {
             // do nothing ...
         break;
         case 1:
-            //album_save_dat[1] = mc_album_save;
+            album_save_dat[1] = mc_album_save;
 
             mc_pnum2 = mc_photo_num;
-            //mc_atyp2 = mc_album_type;
+            mc_atyp2 = mc_album_type;
             mc_slot2 = mc_ctrl.port + 1;
-            //mc_file2 = mc_ctrl.sel_file + 1;
-            //memcpy((void *)0x1000000, (void *)0x5a0000, 0x180000);
+            mc_file2 = mc_ctrl.sel_file + 1;
+            memcpy((void *)0x1000000, (void *)0x5a0000, 0x180000);
 
             MemAlbmInit(1, mc_pnum1, mc_pnum2, mc_atyp1, mc_atyp2, mc_slot1, mc_slot2, mc_file1, mc_file2 & 0xff);
 
@@ -714,11 +714,11 @@ SPRT_DAT title_sprt[11] = {
             mc_pnum2 = 0;
             mc_atyp2 = 5;
             mc_slot2 = 0;
-            //mc_file2 = 0;
+            mc_file2 = 0;
 
-            //memcpy((void *)0x1000000, (void *)0x5a0000, 0x180000);
+            memcpy((void *)0x1000000, (void *)0x5a0000, 0x180000);
 
-            //MemAlbmInit(1, mc_pnum1, mc_pnum2, mc_atyp1, mc_atyp2, mc_slot1, mc_slot2, mc_file1, mc_file2 & 0xff);
+            MemAlbmInit(1, mc_pnum1, mc_pnum2, mc_atyp1, mc_atyp2, mc_slot1, mc_slot2, mc_file1, mc_file2 & 0xff);
             NewAlbumInit(1);
 
             title_wrk.load_id = LoadReq(PL_ALBM_FSM_PK2, PL_ALBM_FSM_PK2_ADDRESS);
@@ -749,7 +749,7 @@ SPRT_DAT title_sprt[11] = {
         {
         case 0: break;
         case 1:
-            //memcpy((void *)0x5a0000, (void *)0xe80000, 0x180000);
+            memcpy((void *)0x5a0000, (void *)0xe80000, 0x180000);
 
             mcInit(2, (u_int *)MikuPan_GetHostAddress(MC_WORK_ADDRESS), 0);
 
@@ -762,7 +762,7 @@ SPRT_DAT title_sprt[11] = {
             title_wrk.mode = TITLE_ALBM_SAVE_PRE;
         break;
         case 2:
-            //memcpy((void *)0x5a0000, (void *)0x1000000, 0x180000);
+            memcpy((void *)0x5a0000, (void *)0x1000000, 0x180000);
 
             mcInit(2, (u_int *)MikuPan_GetHostAddress(MC_WORK_ADDRESS), 0);
 
@@ -828,27 +828,27 @@ SPRT_DAT title_sprt[11] = {
         case 1:
             if (title_wrk.load_side == 0)
             {
-                //memcpy((void *)0xe80000, (void *)0x5a0000, 0x180000);
+                memcpy((void *)0xe80000, (void *)0x5a0000, 0x180000);
 
                 mc_pnum1 = mc_photo_num;
-                //mc_atyp1 = mc_album_type;
+                mc_atyp1 = mc_album_type;
                 mc_slot1 = mc_ctrl.port + 1;
                 mc_file1 = mc_ctrl.sel_file + 1;
 
-                //album_save_dat[0] = mc_album_save;
+                album_save_dat[0] = mc_album_save;
 
                 MemAlbmInit2(0, mc_pnum1, mc_atyp1, mc_slot1, mc_file1);
             }
             else
             {
-                //memcpy((void *)0x1000000, (void *)0x5a0000, 0x180000);
+                memcpy((void *)0x1000000, (void *)0x5a0000, 0x180000);
 
                 mc_pnum2 = mc_photo_num;
-                //mc_atyp2 = mc_album_type;
+                mc_atyp2 = mc_album_type;
                 mc_slot2 = mc_ctrl.port + 1;
-                //mc_file2 = mc_ctrl.sel_file + 1;
-                //album_save_dat[1] = mc_album_save;
-                //MemAlbmInit2(1, mc_pnum2, mc_atyp2, mc_slot2, mc_file2);
+                mc_file2 = mc_ctrl.sel_file + 1;
+                album_save_dat[1] = mc_album_save;
+                MemAlbmInit2(1, mc_pnum2, mc_atyp2, mc_slot2, mc_file2);
             }
 
             title_wrk.load_id = AlbmDesignLoad(0, mc_atyp1);
@@ -888,7 +888,7 @@ SPRT_DAT title_sprt[11] = {
             if (title_wrk.load_side == 0)
             {
                 mc_pnum1 = mc_photo_num;
-                //mc_atyp1 = mc_album_type;
+                mc_atyp1 = mc_album_type;
                 mc_slot1 = mc_ctrl.port + 1;
                 mc_file1 = mc_ctrl.sel_file + 1;
 
@@ -897,10 +897,10 @@ SPRT_DAT title_sprt[11] = {
             else
             {
                 mc_pnum2 = mc_photo_num;
-                //mc_atyp2 = mc_album_type;
+                mc_atyp2 = mc_album_type;
                 mc_slot2 = mc_ctrl.port + 1;
-                //mc_file2 = mc_ctrl.sel_file + 1;
-                //MemAlbmInit2(1, mc_pnum2, mc_atyp2, mc_slot2, mc_file2);
+                mc_file2 = mc_ctrl.sel_file + 1;
+                MemAlbmInit2(1, mc_pnum2, mc_atyp2, mc_slot2, mc_file2);
             }
 
             AlbmDesignLoad(0, mc_atyp1);
@@ -1549,7 +1549,7 @@ void TitleSelectModeYW(u_char pad_off, u_char alp_max)
 
             title_wrk.mode = 27;
 
-            OutGameModeChange(8);
+            OutGameModeChange(OUTGAME_MODE_MODESEL);
             EAdpcmFadeOut(60);
         break;
         }

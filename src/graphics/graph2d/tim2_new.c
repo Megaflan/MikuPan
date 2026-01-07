@@ -6,16 +6,14 @@
 #include <stdio.h>
 
 #include "../../mikupan/logging_c.h"
-#include "mikupan/mikupan_memory.h"
 #include "graphics/graph2d/effect_sub.h"
 #include "graphics/graph2d/g2d_debug.h"
 #include "graphics/graph2d/message.h"
 #include "graphics/graph2d/tim2.h"
 #include "graphics/graph3d/sgdma.h"
-#include "gs/gs_packet_handler.h"
-#include "gs/gs_server_c.h"
-#include "gs/texture_manager_c.h"
 #include "main/glob.h"
+#include "mikupan/gs/gs_server_c.h"
+#include "mikupan/mikupan_memory.h"
 #include "mikupan/rendering/mikupan_renderer.h"
 
 u_int *tm2_end_pkt = NULL;

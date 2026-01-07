@@ -21,7 +21,7 @@
 #include "graphics/graph3d/sgdma.h"
 #include "graphics/graph3d/sglib.h"
 #include "graphics/graph3d/libsg.h"
-#include "gs/gs_server_c.h"
+#include "mikupan/gs/gs_server_c.h"
 #include "mikupan/rendering/mikupan_renderer.h"
 
 typedef struct {

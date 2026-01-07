@@ -210,18 +210,18 @@ set(MIKUPAN_SOURCES "src/mikupan/file_loading.cpp"
         src/graphics/ui/imgui_window.cpp
         src/mikupan/rendering/mikupan_renderer.c
         src/mikupan/rendering/mikupan_renderer.h
-        src/gs/gs_server.cpp
-        src/gs/gs_server.h
-        src/gs/texture_manager.cpp
-        src/gs/texture_manager.h
-        src/gs/gs_server_c.h
-        src/gs/texture_manager_c.h
+        src/mikupan/gs/gs_server.cpp
+        src/mikupan/gs/gs_server.h
+        src/mikupan/gs/texture_manager.cpp
+        src/mikupan/gs/texture_manager.h
+        src/mikupan/gs/gs_server_c.h
+        src/mikupan/gs/texture_manager_c.h
         src/graphics/ui/imgui_window_c.h
         src/mikupan/logging.cpp
         src/mikupan/logging.h
         src/mikupan/logging_c.h
-        src/gs/gs_packet_handler.c
-        src/gs/gs_packet_handler.h
+        src/mikupan/gs/gs_packet_handler.c
+        src/mikupan/gs/gs_packet_handler.h
         extern/imgui_toggle/imgui_toggle.cpp
         extern/imgui_toggle/imgui_toggle_palette.cpp
         extern/imgui_toggle/imgui_toggle_presets.cpp

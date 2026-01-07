@@ -11,8 +11,6 @@
 
 #include "graphics/graph2d/tim2_new.h"
 #include "graphics/graph3d/sglib.h"
-#include "gs/gs_packet_handler.h"
-#include "gs/gs_server_c.h"
 #include "mikupan/rendering/mikupan_renderer.h"
 
 #include <stdlib.h>

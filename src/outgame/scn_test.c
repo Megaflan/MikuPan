@@ -215,7 +215,7 @@ void SceneTestSelect()
     {
             if (sys_wrk.game_mode == GAME_MODE_OUTGAME)
             {
-                OutGameModeChange(4);
+                OutGameModeChange(OUTGAME_MODE_TITLE);
             }
 
             change_efbank = 1;

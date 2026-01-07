@@ -1,6 +1,6 @@
 #include "file_loading.h"
 
-#include "../gs/texture_manager.h"
+#include "gs/texture_manager.h"
 #include "logging.h"
 #include "spdlog/spdlog.h"
 

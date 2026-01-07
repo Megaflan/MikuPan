@@ -1,7 +1,7 @@
 #include "libgraph.h"
 
 #include "graphics/graph2d/sprt.h"
-#include "gs/gs_server_c.h"
+#include "mikupan/gs/gs_server_c.h"
 
 #include <stddef.h>
 #include <stdlib.h>
