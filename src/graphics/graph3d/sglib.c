@@ -228,7 +228,7 @@ float _TransSPower(float scale)
 
 void Set12Register()
 {
-    sceVu0FVECTOR vf[2];
+    sceVu0FVECTOR vf[2] = {0};
 
     vf[0][0] = 1.0f;
     vf[0][1] = 1.0f;
@@ -382,7 +382,7 @@ void SgSetProjection(float scrz)
 
 float SgGetProjection()
 {
-    sceVu0FVECTOR tmp;
+    sceVu0FVECTOR tmp = {0};
 
     //__asm__ volatile ("\n\
     //    sqc2 $vf1,0(%0)\n\
