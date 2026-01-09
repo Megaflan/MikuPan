@@ -43,7 +43,7 @@ const char *fragmentShaderSource =
     "out vec4 FragColor;\n"
     "void main()\n"
     "{\n"
-    "   FragColor = vec4(1.0f, 0.0f, 0.0f, 1.0f);\n"
+    "   FragColor = vec4(1.0f, 1.0f, 0.0f, 1.0f);\n"
     "}\n\0";
 
 float game_aspect_ratio = 4.0f / 3.0f;
@@ -71,8 +71,8 @@ SDL_AppResult MikuPan_Init()
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
                         SDL_GL_CONTEXT_PROFILE_CORE);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
 
     int num_rend = SDL_GetNumRenderDrivers();
@@ -146,8 +146,10 @@ SDL_AppResult MikuPan_Init()
 
 void MikuPan_Clear()
 {
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-    SDL_RenderClear(renderer);
+    //SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+    //SDL_RenderClear(renderer);
+    glad_glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glad_glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void MikuPan_UpdateWindowSize(int width, int height)
@@ -319,39 +321,6 @@ void MikuPan_DeleteTexture(void *texture)
     SDL_DestroyTexture((SDL_Texture *) texture);
 }
 
-void MikuPan_Camera(const SgCAMERA *camera)
-{
-    struct GRA3DSCRATCHPADLAYOUT *scratchpad =
-        (struct GRA3DSCRATCHPADLAYOUT *) ps2_virtual_scratchpad;
-
-    mat4 mtx = {0};
-    vec3 center = {camera->p[0] + 0.0f, camera->p[1] + 0.0f, camera->p[2] + -1.0f};
-    vec3 up = {0.0f, 1.0f, 0.0f};
-
-    glm_lookat(*(vec3*)&camera->p,
-        center,
-        up,
-        mtx);
-
-    int viewLoc =
-        glad_glGetUniformLocation(shaderProgram, "view");
-
-    glad_glUniformMatrix4fv(
-        viewLoc, 1, GL_FALSE,
-        (float*)mtx);
-
-    // Projection
-    mat4 projection = {0};
-    glm_perspective(glm_rad(110.0f), (float)window_width / (float)window_height, camera->nearz, camera->farz, projection);
-
-    int projectionLoc =
-        glad_glGetUniformLocation(shaderProgram, "projection");
-
-    glad_glUniformMatrix4fv(
-        projectionLoc, 1, GL_FALSE,
-        (float*)projection);
-}
-
 void MikuPan_Shutdown()
 {
     SDL_DestroyRenderer(renderer);
@@ -369,16 +338,71 @@ void MikuPan_EndFrame()
 
 void MikuPan_SetModelTransform(unsigned int *prim)
 {
+    GLint id;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &id);
+
+    glad_glUseProgram(shaderProgram);
     int modelLoc =
         glad_glGetUniformLocation(shaderProgram, "model");
 
     glad_glUniformMatrix4fv(
         modelLoc, 1, GL_FALSE,
-        (float*)&lcp[prim[2]].matrix[0]);
+        (float*)&lcp[prim[2]].lwmtx[0]);
+
+    glad_glUseProgram(id);
+}
+
+void MikuPan_Camera(const SgCAMERA *camera)
+{
+    struct GRA3DSCRATCHPADLAYOUT *scratchpad =
+        (struct GRA3DSCRATCHPADLAYOUT *) ps2_virtual_scratchpad;
+
+    GLint id;
+    glGetIntegerv(GL_CURRENT_PROGRAM,&id);
+
+    glad_glUseProgram(shaderProgram);
+    mat4 mtx = {0};
+    vec3 cam = {camera->p[1], camera->p[1], camera->p[2]};
+    vec3 center = {cam[0] + 0.0f, cam[1] + 0.0f, cam[2] + -1.0f};
+    vec3 up = {0.0f, 1.0f, 0.0f};
+
+    glm_lookat(cam,
+        center,
+        up,
+        mtx);
+
+    //glm_rotate(mtx, camera->roll, up);
+
+    int viewLoc =
+        glad_glGetUniformLocation(shaderProgram, "view");
+
+    glad_glUniformMatrix4fv(
+        viewLoc, 1, GL_FALSE,
+        (float*)&mtx);
+
+    // Projection
+    mat4 projection = {0};
+    glm_perspective(camera->fov, (float)window_width / (float)window_height, camera->nearz, camera->farz, projection);
+
+    int projectionLoc =
+        glad_glGetUniformLocation(shaderProgram, "projection");
+
+    glad_glUniformMatrix4fv(
+        projectionLoc, 1, GL_FALSE,
+        (float*)&projection);
+
+    glad_glUseProgram(id);
 }
 
 void MikuPan_RenderMeshType0x32(struct SGDPROCUNITHEADER *pVUVN, struct SGDPROCUNITHEADER *pPUHead)
 {
+    //glad_glEnable(GL_DEPTH_TEST);
+
+    GLint id;
+    glad_glGetIntegerv(GL_CURRENT_PROGRAM, &id);
+
+    glad_glUseProgram(shaderProgram);
+
     union SGDPROCUNITDATA *pVUVNData = (union SGDPROCUNITDATA *) &pVUVN[1];
     union SGDPROCUNITDATA * pProcData = (union SGDPROCUNITDATA *) &pPUHead[1];
 
@@ -432,7 +456,7 @@ void MikuPan_RenderMeshType0x32(struct SGDPROCUNITHEADER *pVUVN, struct SGDPROCU
         glad_glBindVertexArray(VAO);
 
         // Draw the triangle using the GL_TRIANGLE_STRIP primitive
-        glad_glDrawArrays(GL_LINE_STRIP, 0, pVMCD->VifUnpack.NUM);
+        glad_glDrawArrays(GL_TRIANGLE_STRIP, 0, pVMCD->VifUnpack.NUM);
 
         glad_glDeleteVertexArrays(1, &VAO);
         glad_glDeleteBuffers(1, &VBO);
@@ -440,6 +464,8 @@ void MikuPan_RenderMeshType0x32(struct SGDPROCUNITHEADER *pVUVN, struct SGDPROCU
         vertexOffset += pVMCD->VifUnpack.NUM;
         pVMCD = (struct _SGDVUMESHCOLORDATA *) &pVMCD->avColor[pVMCD->VifUnpack.NUM];
     }
+
+    glad_glUseProgram(id);
 }
 
 void MikuPan_RenderMeshType0x82(unsigned int *pVUVN, unsigned int *pPUHead)
@@ -450,6 +476,8 @@ void MikuPan_RenderMeshType0x82(unsigned int *pVUVN, unsigned int *pPUHead)
         ((struct SGDPROCUNITHEADER *) pPUHead)[4]);
 
     int vertexOffset = 0;
+
+    glad_glUseProgram(shaderProgram);
 
     for (int i = 0; i < GET_NUM_MESH(pPUHead); i++)
     {
