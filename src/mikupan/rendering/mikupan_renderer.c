@@ -456,7 +456,7 @@ void MikuPan_RenderMeshType0x32(struct SGDPROCUNITHEADER *pVUVN, struct SGDPROCU
         glad_glBindVertexArray(VAO);
 
         // Draw the triangle using the GL_TRIANGLE_STRIP primitive
-        glad_glDrawArrays(GL_TRIANGLE_STRIP, 0, pVMCD->VifUnpack.NUM);
+        glad_glDrawArrays(GL_LINE_STRIP, 0, pVMCD->VifUnpack.NUM);
 
         glad_glDeleteVertexArrays(1, &VAO);
         glad_glDeleteBuffers(1, &VBO);
