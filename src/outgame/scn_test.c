@@ -856,7 +856,7 @@ void SceneTestPadCamera()
 
     cam = scn_p->cam;
 
-    accel = 1.0f;
+    accel = 100.0f;
 
     sceVu0SubVector(dir, cam->i, cam->p);
 

@@ -49,7 +49,7 @@ void OutGameCtrl(void)
             }
         break;
         case OUTGAME_MODE_LOGO:
-            if (SetTecmoLogo() != 0)
+            if (SetTecmoLogo() != 0 || START_PRESSED())
             {
                 OutGameModeChange(OUTGAME_MODE_TITLE_TOP);
             }

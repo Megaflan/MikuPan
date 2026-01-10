@@ -363,7 +363,7 @@ void MikuPan_Camera(const SgCAMERA *camera)
     glad_glUseProgram(shaderProgram);
     mat4 mtx = {0};
     vec3 cam = {camera->p[1], camera->p[1], camera->p[2]};
-    vec3 center = {cam[0] + 0.0f, cam[1] + 0.0f, cam[2] + -1.0f};
+    vec3 center = {cam[0] - camera->i[0], cam[1] - camera->i[1], cam[2] - camera->i[2]};
     vec3 up = {0.0f, 1.0f, 0.0f};
 
     glm_lookat(cam,
