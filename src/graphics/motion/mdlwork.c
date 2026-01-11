@@ -86,7 +86,8 @@ void DrawGirlSubObj(u_int *mpk_p, u_char alpha)
 
     obj_num = *mpk_p;
 
-    cp = (SgCOORDUNIT*)mpk_p[10];
+    //cp = (SgCOORDUNIT*)mpk_p[10];
+    cp = (SgCOORDUNIT*)MikuPan_GetHostAddress(mpk_p[10]);
 
     GetVF2Register(vf2reg);
 
@@ -128,7 +129,8 @@ void DrawEneSubObj(u_int *mpk_p, u_char alpha1, u_char alpha2)
     u_char alpha;
 
     obj_num = mpk_p[0];
-    cp = (SgCOORDUNIT* )mpk_p[10];
+    //cp = (SgCOORDUNIT* )mpk_p[10];
+    cp = (SgCOORDUNIT*)MikuPan_GetHostAddress(mpk_p[10]);
 
     for (i = 1; i < obj_num; i++)
     {
@@ -175,7 +177,7 @@ void SortUnitRefCoordP(void *sgd_top, SgCOORDUNIT *coordp, int pnum)
 
     if (((u_int)coordp % 16)) // checking alignment? coordp->matrix is a sceVu0FMATRIX and should be 16 aligned!
     {
-        printf("SgSortUnitP Data broken. %x\n", (u_int)sgd_top);
+        info_log("SgSortUnitP Data broken. %x\n", (u_int)sgd_top);
         return;
     }
 
@@ -220,7 +222,8 @@ void SortUnitRefCoord(void *sgd_top, SgCOORDUNIT *coordp, int pnum)
 
     hs = (HeaderSection *)sgd_top;
 
-    lphead = (PHEAD *)hs->phead;
+    //lphead = (PHEAD *)hs->phead;
+    lphead = (PHEAD *)MikuPan_GetHostAddress(hs->phead);
     pk = (u_int *)&hs->primitives;
     blocksm = hs->blocks;
 
@@ -236,16 +239,20 @@ void SortUnitRefCoord(void *sgd_top, SgCOORDUNIT *coordp, int pnum)
 
     if (pnum < 0)
     {
-        SgSortPreProcess((u_int*)pk[0]);
+        //SgSortPreProcess((u_int*)pk[0]);
+        SgSortPreProcess(GetTopProcUnitHeaderPtr(hs, 0));
 
         for (i = 1; i < blocksm - 1; i++)
         {
-            SgSortUnitPrim((u_int*)pk[i]);
+            //SgSortUnitPrim((u_int*)pk[i]);
+            SgSortUnitPrim(GetTopProcUnitHeaderPtr(hs, i));
         }
 
-        if ((u_int*)pk[i] != NULL)
+        //if ((u_int*)pk[i] != NULL)
+        if ((GetTopProcUnitHeaderPtr(hs, i)) != NULL)
         {
-            SgSortUnitPrimPost((u_int*)pk[i]);
+            //SgSortUnitPrimPost((u_int*)pk[i]);
+            SgSortUnitPrimPost(GetTopProcUnitHeaderPtr(hs, i));
         }
 
         return;
@@ -253,17 +260,20 @@ void SortUnitRefCoord(void *sgd_top, SgCOORDUNIT *coordp, int pnum)
 
     if (pnum == 0)
     {
-        SgSortPreProcess((u_int *)pk[0]);
+        //SgSortPreProcess((u_int *)pk[0]);
+        SgSortPreProcess(GetTopProcUnitHeaderPtr(hs, 0));
         return;
     }
 
     if (pnum == blocksm - 1)
     {
-        SgSortUnitPrimPost((u_int *)pk[pnum]);
+        //SgSortUnitPrimPost((u_int *)pk[pnum]);
+        SgSortUnitPrimPost(GetTopProcUnitHeaderPtr(hs, pnum));
         return;
     }
 
-    SgSortUnitPrim((u_int *)pk[pnum]);
+    //SgSortUnitPrim((u_int *)pk[pnum]);
+    SgSortUnitPrim(GetTopProcUnitHeaderPtr(hs, pnum));
 }
 
 void InitEneVramCtrl()

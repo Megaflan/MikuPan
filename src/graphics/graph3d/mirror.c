@@ -1,19 +1,20 @@
+#include "mirror.h"
 #include "common.h"
 #include "typedefs.h"
-#include "mirror.h"
 
 #include "ee/eestruct.h"
 #include "sce/libvu0.h"
 
-#include "os/system.h"
+#include "graphics/graph3d/gra3d.h"
+#include "graphics/graph3d/libsg.h"
+#include "graphics/graph3d/sgcam.h"
+#include "graphics/graph3d/sgdma.h"
+#include "graphics/graph3d/sglib.h"
+#include "graphics/graph3d/sglight.h"
 #include "graphics/graph3d/sgsu.h"
 #include "graphics/graph3d/sgsup.h"
-#include "graphics/graph3d/gra3d.h"
-#include "graphics/graph3d/sgdma.h"
-#include "graphics/graph3d/libsg.h"
-#include "graphics/graph3d/sglib.h"
-#include "graphics/graph3d/sgcam.h"
-#include "graphics/graph3d/sglight.h"
+#include "mikupan/rendering/mikupan_renderer.h"
+#include "os/system.h"
 
 int mirror_points = 0;
 
@@ -24,14 +25,14 @@ static int mymin;
 static float mzmax;
 static float mzmin;
 
-#define GET_MESH_TYPE(intpointer) (((char*)intpointer)[13])
-#define GET_MESH_GLOOPS(intpointer) ((int)((char*)intpointer)[14])
-#define GET_MESH_UNK(intpointer) (((short*)intpointer)[11])
+#define GET_MESH_TYPE(intpointer) (((char *) intpointer)[13])
+#define GET_MESH_GLOOPS(intpointer) ((int) ((char *) intpointer)[14])
+#define GET_MESH_UNK(intpointer) (((short *) intpointer)[11])
 
-#define SCRATCHPAD ((u_char *)ps2_virtual_scratchpad)
+#define SCRATCHPAD ((u_char *) ps2_virtual_scratchpad)
 
-
-static inline void inline_asm__mirror_c_line_38(sceVu0FMATRIX m0) {
+static inline void inline_asm__mirror_c_line_38(sceVu0FMATRIX m0)
+{
     //asm volatile("\n\
     //    lqc2    $vf25, 0(%0)       \n\
     //    lqc2    $vf26, 0x10(%0)    \n\
@@ -41,7 +42,9 @@ static inline void inline_asm__mirror_c_line_38(sceVu0FMATRIX m0) {
     //);
 }
 
-static inline void inline_asm__mirror_c_line_47(sceVu0FVECTOR v0, sceVu0FVECTOR v1) {
+static inline void inline_asm__mirror_c_line_47(sceVu0FVECTOR v0,
+                                                sceVu0FVECTOR v1)
+{
     //asm volatile("                            \n\
     //    lqc2            $vf13, 0(%1)          \n\
     //    vmulax.xyzw     ACC,   $vf25, $vf13x  \n\
@@ -53,7 +56,8 @@ static inline void inline_asm__mirror_c_line_47(sceVu0FVECTOR v0, sceVu0FVECTOR 
     //);
 }
 
-static inline void inline_asm__mirror_c_line_62(MNODE *nm, sceVu0FVECTOR vp) {
+static inline void inline_asm__mirror_c_line_62(MNODE *nm, sceVu0FVECTOR vp)
+{
     //asm volatile("                            \n\
     //    lqc2            $vf13, 0(%1)          \n\
     //    vmulax.xyzw     ACC,   $vf25, $vf13x  \n\
@@ -87,7 +91,8 @@ static int MirrorLineClip(float *v0, float *v1)
     return ret;
 }
 
-static inline void inline_asm__mirror_c_line_96(sceVu0FVECTOR v0) {
+static inline void inline_asm__mirror_c_line_96(sceVu0FVECTOR v0)
+{
     //asm volatile("                     \n\
     //    lqc2          $vf13, 0(%0)     \n\
     //    vclipw.xyz    $vf13, $vf13w    \n\
@@ -112,7 +117,8 @@ static int GetClipValue()
     return ret;
 }
 
-static inline void inline_asm__mirror_c_line_120(qword base, sceVu0FVECTOR vp) {
+static inline void inline_asm__mirror_c_line_120(qword base, sceVu0FVECTOR vp)
+{
     //asm volatile("\n\
     //    lqc2            $vf12, 0(%1)             \n\
     //    vmulax.xyzw     ACC,   $vf8,     $vf12x  \n\
@@ -139,7 +145,7 @@ int CheckMirrorModel(void *sgd_top)
     u_int *prim;
     HeaderSection *hs;
 
-    hs = (HeaderSection *)sgd_top;
+    hs = (HeaderSection *) sgd_top;
 
     //prim = (u_int *)hs->primitives;
 
@@ -150,7 +156,7 @@ int CheckMirrorModel(void *sgd_top)
         return 0;
     }
 
-    while(prim[0])
+    while (prim[0])
     {
         if (prim[1] == 0x40)
         {
@@ -162,9 +168,8 @@ int CheckMirrorModel(void *sgd_top)
     }
 }
 
-
-
-static inline void inline_asm__mirror_c_line_207(MNODE *dst, MNODE *src) {
+static inline void inline_asm__mirror_c_line_207(MNODE *dst, MNODE *src)
+{
     Vu0CopyVector(dst->vp, src->vp);
     Vu0CopyVector(dst->clip, src->clip);
 }
@@ -174,10 +179,9 @@ void MirrorInterPNode(MNODE *dst, MNODE *inner, MNODE *outer, ClipData *cldata)
     float alpha;
     float ialpha;
 
-    alpha = (inner->clip[cldata->xyz] - cldata->sgn * inner->clip[3]) / (
-        (outer->clip[cldata->xyz] - cldata->sgn * outer->clip[3]) -
-        (inner->clip[cldata->xyz] - cldata->sgn * inner->clip[3])
-    );
+    alpha = (inner->clip[cldata->xyz] - cldata->sgn * inner->clip[3])
+            / ((outer->clip[cldata->xyz] - cldata->sgn * outer->clip[3])
+               - (inner->clip[cldata->xyz] - cldata->sgn * inner->clip[3]));
     alpha = __builtin_fabsf(alpha);
 
     ialpha = 1.0f - alpha;
@@ -209,7 +213,7 @@ void SliceMirrorPolygon(MFlipNode *fn, ClipData *cldata)
     for (i = 0; i < fn->nodes; i++)
     {
         currN = &fn->in[i];
-        nextN = &fn->in[i+1];
+        nextN = &fn->in[i + 1];
 
         clip = MirrorLineClip(currN->clip, nextN->clip);
 
@@ -260,7 +264,8 @@ static void CalcOuterProduct(float *out, int *p0)
     //);
 }
 
-void CalcScreenMirror(sceVu0FVECTOR vp0, sceVu0FVECTOR vp1, sceVu0FVECTOR vp2, float sgn)
+void CalcScreenMirror(sceVu0FVECTOR vp0, sceVu0FVECTOR vp1, sceVu0FVECTOR vp2,
+                      float sgn)
 {
     int i;
     int allclip;
@@ -272,14 +277,18 @@ void CalcScreenMirror(sceVu0FVECTOR vp0, sceVu0FVECTOR vp1, sceVu0FVECTOR vp2, f
     sceVu0FVECTOR v1;
     sceVu0FVECTOR v2;
     static ClipData cldata[6] = {
-        {16, 2, 1.0f}, {32, 2, -1.0f}, {1, 0, 1.0f},
-        {2, 0, -1.0f}, {4, 1, 1.0f}, {8, 1, -1.0f},
+        {16, 2,  1.0f},
+        {32, 2, -1.0f},
+        { 1, 0,  1.0f},
+        { 2, 0, -1.0f},
+        { 4, 1,  1.0f},
+        { 8, 1, -1.0f},
     };
 
-    fn = (MFlipNode *)&SCRATCHPAD[0x6c0];
+    fn = (MFlipNode *) &SCRATCHPAD[0x6c0];
 
-    fn->in = (MNODE *)fn;
-    fn->out = (MNODE *)&SCRATCHPAD[0x800];
+    fn->in = (MNODE *) fn;
+    fn->out = (MNODE *) &SCRATCHPAD[0x800];
 
     v0[0] = vp0[0];
     v0[1] = vp0[1];
@@ -343,7 +352,8 @@ void CalcScreenMirror(sceVu0FVECTOR vp0, sceVu0FVECTOR vp1, sceVu0FVECTOR vp2, f
     {
         pbase = screen_xyz;
 
-        for (i = 0; i < 3; i++) {
+        for (i = 0; i < 3; i++)
+        {
             inline_asm__mirror_c_line_120(*pbase, fn->in[i].vp);
             pbase += 3;
         }
@@ -384,14 +394,14 @@ void CalcScreenMirror(sceVu0FVECTOR vp0, sceVu0FVECTOR vp1, sceVu0FVECTOR vp2, f
                     mymin = pbase[0][1];
                 }
 
-                if (*(float *)&pbase[1][2] < mzmax)
+                if (*(float *) &pbase[1][2] < mzmax)
                 {
-                    mzmax = *(float *)&pbase[1][2];
+                    mzmax = *(float *) &pbase[1][2];
                 }
 
-                if (mzmin < *(float *)&pbase[1][2])
+                if (mzmin < *(float *) &pbase[1][2])
                 {
-                    mzmin = *(float *)&pbase[1][2];
+                    mzmin = *(float *) &pbase[1][2];
                     Vu0CopyVector(mir_center, fn->in[i].vp);
                 }
 
@@ -435,7 +445,6 @@ int MakeMirrorEnvironment(u_int *prim)
     mymin = 0xa800;
     mymax = 0;
 
-
     mtype = GET_MESH_TYPE(prim);
     gloops = GET_MESH_GLOOPS(prim);
 
@@ -454,93 +463,108 @@ int MakeMirrorEnvironment(u_int *prim)
 
     switch (mtype)
     {
-    case 18:
-        vp = (float *)&vuvnprim[14];
+        case 0x12:
+            vp = (float *) &vuvnprim[14];
 
-        for (j = 0; j < gloops; j++)
-        {
-            prim = GetNextUnpackAddr(prim);
-
-            loops = ((u_char *)prim)[2];
-            loops -= 2;
-
-            prim++;
-
-            vertex[0] = vp[0]; vertex[1] = vp[1]; vertex[2] = vp[2];
-            AppendLocalMPos(vertex);
-
-            vertex[0] = vp[6]; vertex[1] = vp[7]; vertex[2] = vp[8];
-            AppendLocalMPos(vertex);
-
-            prim += 6;
-            vp += 12;
-            sgn = 1.0f;
-
-            for (i = 0; i < loops; i++)
+            for (j = 0; j < gloops; j++)
             {
-                if (prim[0] != 1)
+                prim = GetNextUnpackAddr(prim);
+
+                loops = ((u_char *) prim)[2];
+                loops -= 2;
+
+                prim++;
+
+                vertex[0] = vp[0];
+                vertex[1] = vp[1];
+                vertex[2] = vp[2];
+                AppendLocalMPos(vertex);
+
+                vertex[0] = vp[6];
+                vertex[1] = vp[7];
+                vertex[2] = vp[8];
+                AppendLocalMPos(vertex);
+
+                prim += 6;
+                vp += 12;
+                sgn = 1.0f;
+
+                for (i = 0; i < loops; i++)
                 {
-                    vertex[0] = vp[0]; vertex[1] = vp[1]; vertex[2] = vp[2];
-                    AppendLocalMPos(vertex);
-
-                    CalcScreenMirror(&vp[-12], &vp[-6], &vp[0], sgn);
-
-                    if (mzmax > 1000000.0f)
+                    if (prim[0] != 1)
                     {
-                        disp_flg = 0;
-                    }
-                }
+                        vertex[0] = vp[0];
+                        vertex[1] = vp[1];
+                        vertex[2] = vp[2];
+                        AppendLocalMPos(vertex);
 
-                prim += 3;
+                        CalcScreenMirror(&vp[-12], &vp[-6], &vp[0], sgn);
+
+                        if (mzmax > 1000000.0f)
+                        {
+                            disp_flg = 0;
+                        }
+                    }
+
+                    prim += 3;
+                    vp += 6;
+                    sgn = -sgn;
+                }
+            }
+            break;
+        case 0x32:
+
+            MikuPan_RenderMeshType0x32((struct SGDPROCUNITHEADER *) vuvnprim,
+                                       (struct SGDPROCUNITHEADER *) prim);
+            vp = (float *) &vuvnprim[14];
+            vp = (float *) ((int64_t) vp + ((short *) vuvnprim)[5] * 12);
+
+            for (j = 0; j < gloops; j++)
+            {
+                prim = GetNextUnpackAddr(prim);
+
+                loops = ((u_char *) prim)[2];
+                loops -= 2;
+
+                prim++;
+
+                vertex[0] = vp[0];
+                vertex[1] = vp[1];
+                vertex[2] = vp[2];
+                AppendLocalMPos(vertex);
+
+                vertex[0] = vp[3];
+                vertex[1] = vp[4];
+                vertex[2] = vp[5];
+                AppendLocalMPos(vertex);
+
+                prim += 6;
                 vp += 6;
-                sgn = -sgn;
-            }
-        }
-    break;
-    case 50:
-        vp = (float *)&vuvnprim[14];
-        vp = (float *)((u_int)vp + ((short *)vuvnprim)[5] * 12);
+                sgn = 1.0f;
 
-        for (j = 0; j < gloops; j++)
-        {
-            prim = GetNextUnpackAddr(prim);
-
-            loops = ((u_char *)prim)[2];
-            loops -= 2;
-
-            prim++;
-
-            vertex[0] = vp[0]; vertex[1] = vp[1]; vertex[2] = vp[2];
-            AppendLocalMPos(vertex);
-
-            vertex[0] = vp[3]; vertex[1] = vp[4]; vertex[2] = vp[5];
-            AppendLocalMPos(vertex);
-
-            prim += 6;
-            vp += 6;
-            sgn = 1.0f;
-
-            for (i = 0; i < loops; i++)
-            {
-                if (prim[0] != 1)
+                for (i = 0; i < loops; i++)
                 {
-                    vertex[0] = vp[0]; vertex[1] = vp[1]; vertex[2] = vp[2];
-                    AppendLocalMPos(vertex);
-
-                    CalcScreenMirror(&vp[-6], &vp[-3], &vp[0], sgn);
-
-                    if (mzmax > 1000000.0f)
+                    if (prim[0] != 1)
                     {
-                        disp_flg = 0;
-                    }
-                }
+                        vertex[0] = vp[0];
+                        vertex[1] = vp[1];
+                        vertex[2] = vp[2];
+                        AppendLocalMPos(vertex);
 
-                prim += 3;
-                vp += 3;
-                sgn = -sgn;
+                        CalcScreenMirror(&vp[-6], &vp[-3], &vp[0], sgn);
+
+                        if (mzmax > 1000000.0f)
+                        {
+                            disp_flg = 0;
+                        }
+                    }
+
+                    prim += 3;
+                    vp += 3;
+                    sgn = -sgn;
+                }
             }
-        }
-    break;
+            break;
     }
 
     if (disp_flg == 0)
@@ -585,32 +609,34 @@ void MirrorPrim(u_int *prim)
 
     while (prim[0] != 0)
     {
-        switch(prim[1])
+        switch (prim[1])
         {
-        case 0:
-            vuvnprim = prim;
-        break;
-        case 1:
-            SetVUMeshDataP(prim);
-        break;
-        case 2:
-            SetMaterialDataVU(prim);
-        break;
-        case 3:
-            Vu0CopyMatrix(*(sceVu0FMATRIX *)&SCRATCHPAD[0x430], lcp[prim[2]].lwmtx);
-            _MulMatrix(*(sceVu0FMATRIX *)&SCRATCHPAD[0x90], SgWSMtx, *(sceVu0FMATRIX *)&SCRATCHPAD[0x430]);
-        break;
-        case 4:
-            if (BoundingBoxCalcP(prim) == 0)
-            {
-                return;
-            }
-        break;
-        case 5:
-            GsImageProcess(prim);
-        break;
-        case 10:
-            LoadTRI2Files(prim);
+            case 0:
+                vuvnprim = prim;
+                break;
+            case 1:
+                SetVUMeshDataP(prim);
+                break;
+            case 2:
+                SetMaterialDataVU(prim);
+                break;
+            case 3:
+                Vu0CopyMatrix(*(sceVu0FMATRIX *) &SCRATCHPAD[0x430],
+                              lcp[prim[2]].lwmtx);
+                _MulMatrix(*(sceVu0FMATRIX *) &SCRATCHPAD[0x90], SgWSMtx,
+                           *(sceVu0FMATRIX *) &SCRATCHPAD[0x430]);
+                break;
+            case 4:
+                if (BoundingBoxCalcP(prim) == 0)
+                {
+                    return;
+                }
+                break;
+            case 5:
+                GsImageProcess(prim);
+                break;
+            case 10:
+                LoadTRI2Files(prim);
         }
 
         prim = GetNextProcUnitHeaderPtr(prim);
@@ -631,28 +657,33 @@ int PreMirrorPrim(SgCAMERA *camera, u_int *prim)
     {
         switch (prim[1])
         {
-        case 0:
-            vuvnprim = prim;
-        break;
-        case 1:
-            mirror_points = 0;
+            case 0:
+                vuvnprim = prim;
+                break;
+            case 1:
+                mirror_points = 0;
 
-            _MulMatrix(tmpmat, camera->wv, *(sceVu0FMATRIX *)&SCRATCHPAD[0x430]);
-            Vu0LoadMatrix(tmpmat);
+                _MulMatrix(tmpmat, camera->wv,
+                           *(sceVu0FMATRIX *) &SCRATCHPAD[0x430]);
+                Vu0LoadMatrix(tmpmat);
 
-            inline_asm__mirror_c_line_38(*(sceVu0FMATRIX *)&SCRATCHPAD[0xd0]);
-            _SetRotTransPersMatrix(*(sceVu0FMATRIX *)&SCRATCHPAD[0x90]);
+                inline_asm__mirror_c_line_38(
+                    *(sceVu0FMATRIX *) &SCRATCHPAD[0xd0]);
+                _SetRotTransPersMatrix(*(sceVu0FMATRIX *) &SCRATCHPAD[0x90]);
 
-            return MakeMirrorEnvironment(prim);
-        break;
-        case 3:
-            Vu0CopyMatrix(*(sceVu0FMATRIX *)&SCRATCHPAD[0x430], lcp[prim[2]].lwmtx);
-            _MulMatrix(*(sceVu0FMATRIX *)&SCRATCHPAD[0x90], SgWSMtx, *(sceVu0FMATRIX *)&SCRATCHPAD[0x430]);
-        break;
-        case 4:
-            mir_flag = CheckBoundingBox(prim);
-            _MulMatrix(*(sceVu0FMATRIX *)&SCRATCHPAD[0xd0], SgCMVtx, *(sceVu0FMATRIX *)&SCRATCHPAD[0x430]);
-        break;
+                return MakeMirrorEnvironment(prim);
+                break;
+            case 3:
+                Vu0CopyMatrix(*(sceVu0FMATRIX *) &SCRATCHPAD[0x430],
+                              lcp[prim[2]].lwmtx);
+                _MulMatrix(*(sceVu0FMATRIX *) &SCRATCHPAD[0x90], SgWSMtx,
+                           *(sceVu0FMATRIX *) &SCRATCHPAD[0x430]);
+                break;
+            case 4:
+                mir_flag = CheckBoundingBox(prim);
+                _MulMatrix(*(sceVu0FMATRIX *) &SCRATCHPAD[0xd0], SgCMVtx,
+                           *(sceVu0FMATRIX *) &SCRATCHPAD[0x430]);
+                break;
         }
 
         prim = GetNextProcUnitHeaderPtr(prim);
@@ -665,7 +696,7 @@ void MirrorBufferFlush(int tlen)
 {
     u_int *datap;
 
-    datap = (u_int *)getObjWrk();
+    datap = (u_int *) getObjWrk();
 
     datap[0] = 0x11000000;
     datap[1] = 0;
@@ -677,7 +708,11 @@ void MirrorBufferFlush(int tlen)
     FlushModel(0);
 }
 
-static inline void inline_asm__mirror_c_line_639(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2, sceVu0FVECTOR v3) {
+static inline void inline_asm__mirror_c_line_639(sceVu0FVECTOR v0,
+                                                 sceVu0FVECTOR v1,
+                                                 sceVu0FVECTOR v2,
+                                                 sceVu0FVECTOR v3)
+{
     //asm volatile("                          \n\
     //    lqc2           $vf12, 0(%1)         \n\
     //    lqc2           $vf13, 0(%2)         \n\
@@ -717,11 +752,12 @@ void CalcMirrorMatrix(SgCAMERA *camera)
 
     sceVu0ScaleVector(centerpos, centerpos, 0.25f);
 
-    Vu0LoadMatrix(*(sceVu0FMATRIX *)&SCRATCHPAD[0x430]);
+    Vu0LoadMatrix(*(sceVu0FMATRIX *) &SCRATCHPAD[0x430]);
 
     Vu0ApplyVectorInline(centerpos, centerpos);
 
-    inline_asm__mirror_c_line_639(norm, mirror_lpos[0], mirror_lpos[1], mirror_lpos[2]);
+    inline_asm__mirror_c_line_639(norm, mirror_lpos[0], mirror_lpos[1],
+                                  mirror_lpos[2]);
 
     _ApplyRotMatrix(norm, norm);
     _NormalizeVector(norm, norm);
@@ -788,7 +824,8 @@ void CalcMirrorMatrix(SgCAMERA *camera)
     Vu0CopyMatrix(mir_mtx, tmpmat);
 }
 
-void MirrorDraw(SgCAMERA *camera, void *sgd_top, void (*render_func)(/* parameters unknown */))
+void MirrorDraw(SgCAMERA *camera, void *sgd_top,
+                void (*render_func)(/* parameters unknown */))
 {
     static sceVu0IVECTOR miccolor = {0x80, 0x80, 0x80, 0x80};
     qword *pedraw_buf;
@@ -800,18 +837,20 @@ void MirrorDraw(SgCAMERA *camera, void *sgd_top, void (*render_func)(/* paramete
     sceVu0FVECTOR tmpv;
     HeaderSection *hs;
 
-    hs = (HeaderSection *)sgd_top;
+    hs = (HeaderSection *) sgd_top;
 
     SetClipValue(-1.0f, 1.0f, -1.0f, 1.0f);
 
     lcp = GetCoordP(hs);
     blocksm = hs->blocks;
-    pk = (u_int *)&hs->primitives;
+    pk = (u_int *) &hs->primitives;
     sgd_top_addr = sgd_top;
 
     num = CheckMirrorModel(sgd_top);
 
-    if (num == 0 || PreMirrorPrim(camera, (u_int *)GetTopProcUnitHeaderPtr(hs, num)) == 0)
+    if (num == 0
+        || PreMirrorPrim(camera, (u_int *) GetTopProcUnitHeaderPtr(hs, num))
+               == 0)
     {
         CalcMirrorMatrix(camera);
         return;
@@ -824,7 +863,8 @@ void MirrorDraw(SgCAMERA *camera, void *sgd_top, void (*render_func)(/* paramete
 
     for (i = 0; i < mirror_points; i++)
     {
-        sceVu0DivVectorXYZ(tmpv, mirror_cval[i], __builtin_fabsf(mirror_cval[i][3]));
+        sceVu0DivVectorXYZ(tmpv, mirror_cval[i],
+                           __builtin_fabsf(mirror_cval[i][3]));
 
         if (tmpv[0] < clip_value[0])
         {
@@ -879,34 +919,40 @@ void MirrorDraw(SgCAMERA *camera, void *sgd_top, void (*render_func)(/* paramete
     SetEnvironment();
     MirrorRender(camera, render_func);
 
-    pedraw_buf = (qword *)getObjWrk() + 1;
+    pedraw_buf = (qword *) getObjWrk() + 1;
 
-    *(u_long *)&pedraw_buf[0][0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
-    *(u_long *)&pedraw_buf[0][2] = SCE_GIF_PACKED_AD;
+    *(u_long *) &pedraw_buf[0][0] =
+        SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
+    *(u_long *) &pedraw_buf[0][2] = SCE_GIF_PACKED_AD;
 
-    *(u_long *)&pedraw_buf[1][0] = SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_NEVER, 0, SCE_GS_AFAIL_ZB_ONLY, 0, 0, 1, SCE_GS_DEPTH_ALWAYS);
-    *(u_long *)&pedraw_buf[1][2] = SCE_GS_TEST_1;
+    *(u_long *) &pedraw_buf[1][0] =
+        SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_NEVER, 0, SCE_GS_AFAIL_ZB_ONLY, 0, 0,
+                          1, SCE_GS_DEPTH_ALWAYS);
+    *(u_long *) &pedraw_buf[1][2] = SCE_GS_TEST_1;
 
     pedraw_buf += 2;
 
-    *(u_long *)&pedraw_buf[0][0] = SCE_GS_SET_SCISSOR_2(0x8002, 0, 0x4000, 0x2027);
-    *(u_long *)&pedraw_buf[0][2] = SCE_GS_SCISSOR_2;
+    *(u_long *) &pedraw_buf[0][0] =
+        SCE_GS_SET_SCISSOR_2(0x8002, 0, 0x4000, 0x2027);
+    *(u_long *) &pedraw_buf[0][2] = SCE_GS_SCISSOR_2;
 
-    Vu0CopyVector(*(sceVu0FVECTOR *)&pedraw_buf[1], *(sceVu0FVECTOR *)&miccolor);
+    Vu0CopyVector(*(sceVu0FVECTOR *) &pedraw_buf[1],
+                  *(sceVu0FVECTOR *) &miccolor);
 
-    pedraw_buf[2][0] = mxmin -16;
-    pedraw_buf[2][1] = mymin -16;
+    pedraw_buf[2][0] = mxmin - 16;
+    pedraw_buf[2][1] = mymin - 16;
     pedraw_buf[2][2] = 0;
     pedraw_buf[2][3] = 0;
 
-    Vu0CopyVector(*(sceVu0FVECTOR *)&pedraw_buf[3], *(sceVu0FVECTOR *)miccolor);
+    Vu0CopyVector(*(sceVu0FVECTOR *) &pedraw_buf[3],
+                  *(sceVu0FVECTOR *) miccolor);
 
     pedraw_buf[4][0] = mxmax + 16;
     pedraw_buf[4][1] = mymax + 16;
     pedraw_buf[4][2] = 0;
     pedraw_buf[4][3] = 0;
 
-    AppendDmaBufferFromEndAddress((qword *)(pedraw_buf + 5));
+    AppendDmaBufferFromEndAddress((qword *) (pedraw_buf + 5));
 
     pdrawenv->scissor1 = bak_scissor;
 
@@ -916,10 +962,10 @@ void MirrorDraw(SgCAMERA *camera, void *sgd_top, void (*render_func)(/* paramete
     blocksm = hs->blocks;
     sgd_top_addr = sgd_top;
 
-    ClearMaterialCache((HeaderSection *)sgd_top);
+    ClearMaterialCache((HeaderSection *) sgd_top);
     SetUpSortUnit();
     SetClipValue(-1.0f, 1.0f, -1.0f, 1.0f);
-    MirrorPrim((u_int *)GetTopProcUnitHeaderPtr(hs, num));
+    MirrorPrim((u_int *) GetTopProcUnitHeaderPtr(hs, num));
 }
 
 sceVu0FMATRIX mir_mtx = {0};
@@ -928,7 +974,8 @@ sceVu0FVECTOR mir_center = {0};
 sceVu0FVECTOR mirror_lpos[5] = {0};
 sceVu0FVECTOR mirror_cval[5] = {0};
 
-void MirrorRender(SgCAMERA *camera, void (*render_func)(/* parameters unknown */))
+void MirrorRender(SgCAMERA *camera,
+                  void (*render_func)(/* parameters unknown */))
 {
     sceVu0FVECTOR rreg;
     SgCAMERA mir_camera;

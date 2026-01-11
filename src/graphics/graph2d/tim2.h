@@ -193,7 +193,7 @@ void LoadTIM2File();
 void SetScissor(int pri, int x, int y, int w, int h);
 void ResetScissor(int pri);
 void CopySprDToSpr(DISP_SPRT *s, SPRT_DAT *d);
-void _ftoi0(int *out, float *in);
+
 void _ftoi4(int *out, float *in);
 void DispSprD(DISP_SPRT *s);
 void CopySqrDToSqr(DISP_SQAR *s, SQAR_DAT *d);

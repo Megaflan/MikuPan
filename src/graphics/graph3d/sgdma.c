@@ -126,14 +126,14 @@ void FlushModel(int signal)
     {
         if (model_buffer_size <= sbuffer_p || model_buffer_size - 10 <= vu1tag_num)
         {
-            info_log("Serious Buffer Over %d %d", sbuffer_p, vu1tag_num);
+            //info_log("Serious Buffer Over %d %d", sbuffer_p, vu1tag_num);
 
             InitialDmaBuffer();
             SetDebugSign(1);
             return;
         }
 
-        info_log("Buffer Over %d %d", sbuffer_p, vu1tag_num);
+        //info_log("Buffer Over %d %d", sbuffer_p, vu1tag_num);
 
         FlushBuffer();
     }

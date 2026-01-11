@@ -410,6 +410,8 @@ int CheckBoundingBox(u_int *prim)
 
     lcp[prim[2]].camin = 0;
 
+    MikuPan_SetModelTransform(prim);
+
     asm_1__CheckBoundingBox(SgCMVtx, SgCMtx, lcp[prim[2]].lwmtx);
 
     pvec = (sceVu0FVECTOR *)&prim[4];

@@ -493,6 +493,8 @@ void MikuPan_RenderMeshType0x82(unsigned int *pVUVN, unsigned int *pPUHead)
 
     int vertexOffset = 0;
 
+    GLint id;
+    glGetIntegerv(GL_CURRENT_PROGRAM,&id);
     glad_glUseProgram(shaderProgram);
 
     for (int i = 0; i < GET_NUM_MESH(pPUHead); i++)
@@ -521,7 +523,7 @@ void MikuPan_RenderMeshType0x82(unsigned int *pVUVN, unsigned int *pPUHead)
 
         // Configure the Vertex Attribute so that OpenGL knows how to read the VBO
         glad_glVertexAttribPointer(
-            0, 3, GL_FLOAT, GL_FALSE, sizeof(struct SGDMESHVERTEXDATA_TYPE2),
+            0, 3, GL_FLOAT, GL_FALSE, sizeof(float[3]),
             NULL);
 
         // Enable the Vertex Attribute so that OpenGL knows to use it
@@ -535,7 +537,7 @@ void MikuPan_RenderMeshType0x82(unsigned int *pVUVN, unsigned int *pPUHead)
         glad_glBindVertexArray(VAO);
 
         // Draw the triangle using the GL_TRIANGLE_STRIP primitive
-        int render_type = true ? GL_LINE_STRIP : GL_TRIANGLE_STRIP;
+        int render_type = IsWireframeRendering() ? GL_LINE_STRIP : GL_TRIANGLE_STRIP;
         glad_glDrawArrays(render_type, 0, pMeshInfo[i].uiPointNum);
 
         glad_glDeleteVertexArrays(1, &VAO);
@@ -543,4 +545,6 @@ void MikuPan_RenderMeshType0x82(unsigned int *pVUVN, unsigned int *pPUHead)
 
         vertexOffset += pMeshInfo[i].uiPointNum;
     }
+
+    glad_glUseProgram(id);
 }

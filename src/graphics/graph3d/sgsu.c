@@ -9,10 +9,11 @@
 #include "ee/eestruct.h"
 
 #include "graphics/graph3d/libsg.h"
-#include "graphics/graph3d/sglib.h"
-#include "graphics/graph3d/sgdma.h"
 #include "graphics/graph3d/sgcam.h"
+#include "graphics/graph3d/sgdma.h"
+#include "graphics/graph3d/sglib.h"
 #include "graphics/graph3d/sglight.h"
+#include "mikupan/rendering/mikupan_renderer.h"
 
 extern void DRAWTYPE2() __attribute__((section(".vutext")));
 extern void DRAWTYPE2W() __attribute__((section(".vutext")));
@@ -225,14 +226,16 @@ void CalcVertexBuffer(u_int *prim)
         return;
     }
 
-    vli = (VERTEXLIST *)lphead->pWeightedList;
+    //vli = (VERTEXLIST *)lphead->pWeightedList;
+    vli = (VERTEXLIST*)MikuPan_GetHostAddress(lphead->pWeightedList);
 
     if (vli == NULL)
     {
         return;
     }
 
-    vps = lphead->pWeightedVertex;
+    //vps = lphead->pWeightedVertex;
+    vps = (sceVu0FVECTOR *)MikuPan_GetHostAddress(lphead->pWeightedVertex);
     vpd = vertex_buffer;
 
     for (i = 0; i < vli->list_num; i++)
@@ -246,7 +249,8 @@ void CalcVertexBuffer(u_int *prim)
         }
     }
 
-    vps = lphead->pWeightedNormal;
+    //vps = lphead->pWeightedNormal;
+    vps = (sceVu0FVECTOR *)MikuPan_GetHostAddress(lphead->pWeightedNormal);
     vpd = normal_buffer;
 
     vli = (VERTEXLIST *)&vli->lists[vli->list_num];
@@ -305,7 +309,8 @@ u_int* SetVUVNDataPost(u_int *prim)
     switch (vh->vtype)
     {
     case 2:
-        if (lphead->pWeightedList != 0)
+
+        if (MikuPan_GetHostAddress(lphead->pWeightedList) != 0)
         {
             for (i = 0; i < vh->vnum; i++, vp += 2, prim += 2)
             {
@@ -326,7 +331,7 @@ u_int* SetVUVNDataPost(u_int *prim)
         }
     break;
     case 3:
-        if (lphead->pWeightedList != 0)
+        if (MikuPan_GetHostAddress(lphead->pWeightedList) != 0)
         {
             for (i = 0; i < vh->vnum; i++, vp += 2, prim += 2)
             {
@@ -398,7 +403,7 @@ void SetVUMeshData(u_int *prim)
         AppendDmaBuffer(((u_char *)vuvnprim)[12]);
         FlushModel(0);
     break;
-    case 128:
+    case 0x80:
         AppendDmaTag((u_int)&prim[4], prim[2]);
         AppendDmaTag((u_int)&((u_char *)vuvnprim)[16], ((u_char *)vuvnprim)[12]);
 
@@ -412,7 +417,8 @@ void SetVUMeshData(u_int *prim)
         AppendDmaBuffer(1);
         FlushModel(0);
     break;
-    case 130:
+    case 0x82:
+            MikuPan_RenderMeshType0x82(vuvnprim, prim);
         AppendDmaTag((u_int)&prim[4], prim[2]);
         AppendDmaTag((u_int)&((u_char *)vuvnprim)[16], ((u_char *)vuvnprim)[12]);
 
@@ -426,7 +432,7 @@ void SetVUMeshData(u_int *prim)
         AppendDmaBuffer(1);
         FlushModel(0);
     break;
-    case 66:
+    case 0x42:
         AppendDmaTag((u_int)&prim[4], prim[2]);
 
         read_p = (u_int *)getObjWrk();
@@ -577,7 +583,7 @@ void SgSortUnitPrimPost(u_int *prim)
         return;
     }
 
-    while (prim[0] != NULL)
+    while (prim[0] != 0)
     {
         switch(prim[1])
         {
@@ -624,7 +630,7 @@ void SgSortPreProcess(u_int *prim)
         return;
     }
 
-    while (prim[0] != NULL)
+    while (prim[0] != 0)
     {
         switch (prim[1])
         {
@@ -797,7 +803,8 @@ void SgSortUnit(void *sgd_top, int pnum)
     }
 
     blocksm = hs->blocks;
-    lphead = (PHEAD *)hs->phead;
+    //lphead = (PHEAD *)hs->phead;
+    lphead = (PHEAD *)MikuPan_GetHostAddress(hs->phead);
 
     sgd_top_addr = sgd_top;
 
@@ -820,7 +827,8 @@ void SgSortUnit(void *sgd_top, int pnum)
             SgSortUnitPrim(GetTopProcUnitHeaderPtr(hs, i));
         }
 
-        if ((u_int *)pk[i] != NULL)
+        //if ((u_int *)pk[i] != NULL)
+        if (GetTopProcUnitHeaderPtr(hs, i) != NULL)
         {
             SgSortUnitPrimPost(GetTopProcUnitHeaderPtr(hs, i));
         }

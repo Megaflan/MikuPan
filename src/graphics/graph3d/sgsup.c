@@ -371,8 +371,6 @@ int BoundingBoxCalcP(u_int *prim)
 
     lcp[prim[2]].edge_check = edge_check;
 
-    MikuPan_SetModelTransform(prim);
-
     SelectLight(prim);
 
     if (CheckCoordCache(prim[2]) == 0)

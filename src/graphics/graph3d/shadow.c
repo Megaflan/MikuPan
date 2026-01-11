@@ -1,28 +1,29 @@
+#include "shadow.h"
 #include "common.h"
 #include "typedefs.h"
-#include "shadow.h"
 
 #include "ee/eestruct.h"
 #include "sce/libvu0.h"
 
 #include "graphics/graph3d/libsg.h"
 #include "graphics/graph3d/sgdma.h"
-#include "graphics/graph3d/sgsup.h"
 #include "graphics/graph3d/sgsu.h"
+#include "graphics/graph3d/sgsup.h"
 // #include "graphics/graph3d/sgsu.h" // LoadSgProg, _SetLWMatrix0, _SetLWMatrix1 should be undeclared
 #include "graphics/graph3d/sgcam.h"
 
 #include "graphics/graph3d/sglib.h"
 
-#define SCRATCHPAD ((u_char *)ps2_virtual_scratchpad)
+#define SCRATCHPAD ((u_char *) ps2_virtual_scratchpad)
 
-#include "data/scamera.h" // SgCAMERA scamera;
+#include "data/scamera.h"// SgCAMERA scamera;
+#include "mikupan/rendering/mikupan_renderer.h"
 
 static int write_flg = 0;
-static sceVu0FMATRIX *LWSMtx = (sceVu0FMATRIX *)&SCRATCHPAD[0x90];
-static sceVu0FMATRIX *LCMtx = (sceVu0FMATRIX *)&SCRATCHPAD[0xd0];
-static sceVu0FMATRIX *LIPMatrix = (sceVu0FMATRIX *)&SCRATCHPAD[0x140];
-static sceVu0IVECTOR *shadow_col = (sceVu0IVECTOR *)&SCRATCHPAD[0x180];
+static sceVu0FMATRIX *LWSMtx = (sceVu0FMATRIX *) &SCRATCHPAD[0x90];
+static sceVu0FMATRIX *LCMtx = (sceVu0FMATRIX *) &SCRATCHPAD[0xd0];
+static sceVu0FMATRIX *LIPMatrix = (sceVu0FMATRIX *) &SCRATCHPAD[0x140];
+static sceVu0IVECTOR *shadow_col = (sceVu0IVECTOR *) &SCRATCHPAD[0x180];
 static u_int *common_vector = NULL;
 static int shadow_dbg_flg = 0;
 static int shadow_apgnum = -1;
@@ -41,11 +42,11 @@ extern void SHADOWDRAWTYPE2() __attribute__((section(".vutext")));
 extern void DIVPS_PROLOGUE() __attribute__((section(".vutext")));
 extern void DPS_PROLOGUE() __attribute__((section(".vutext")));
 
-#define SCREENX_TO_GSX_UL(x, swidth) (((2048-(swidth >> 1)) + (x)) << 4)
-#define SCREENY_TO_GSY_UL(y, sheight) (((2048-(sheight >> 1)) + (y)) << 4)
+#define SCREENX_TO_GSX_UL(x, swidth) (((2048 - (swidth >> 1)) + (x)) << 4)
+#define SCREENY_TO_GSY_UL(y, sheight) (((2048 - (sheight >> 1)) + (y)) << 4)
 
-#define SCREENX_TO_GSX_DR(x, swidth) (((2048+(swidth >> 1)) + (x)) << 4)
-#define SCREENY_TO_GSY_DR(y, sheight) (((2048+(sheight >> 1)) + (y)) << 4)
+#define SCREENX_TO_GSX_DR(x, swidth) (((2048 + (swidth >> 1)) + (x)) << 4)
+#define SCREENY_TO_GSY_DR(y, sheight) (((2048 + (sheight >> 1)) + (y)) << 4)
 
 void ShadowDbgOn()
 {
@@ -88,35 +89,40 @@ void SetShadowAssignGroup(int gnum)
 
 void TransShadowClut()
 {
-    #include "data/shadow_pal.h" // static qword shadow_pal[71];
+#include "data/shadow_pal.h"// static qword shadow_pal[71];
 
     shadow_pal[0][0] = 0;
     shadow_pal[0][1] = 0;
     shadow_pal[0][2] = 0;
-    shadow_pal[0][3] = DMAcall | (sizeof(shadow_pal) / sizeof(qword) - 1); // could also be a defined value - 1
+    shadow_pal[0][3] = DMAcall
+                       | (sizeof(shadow_pal) / sizeof(qword)
+                          - 1);// could also be a defined value - 1
 
-    *(u_long *)&shadow_pal[1][0] = SCE_GIF_SET_TAG(1, SCE_GS_FALSE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 4);
-    *(u_long *)&shadow_pal[1][2] = 0 \
-        | SCE_GIF_PACKED_AD << (0 * 4)
-        | SCE_GIF_PACKED_AD << (1 * 4)
-        | SCE_GIF_PACKED_AD << (2 * 4)
-        | SCE_GIF_PACKED_AD << (3 * 4);
+    *(u_long *) &shadow_pal[1][0] =
+        SCE_GIF_SET_TAG(1, SCE_GS_FALSE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 4);
+    *(u_long *) &shadow_pal[1][2] =
+        0 | SCE_GIF_PACKED_AD << (0 * 4) | SCE_GIF_PACKED_AD << (1 * 4)
+        | SCE_GIF_PACKED_AD << (2 * 4) | SCE_GIF_PACKED_AD << (3 * 4);
 
-    *(u_long *)&shadow_pal[2][0] = SCE_GS_SET_BITBLTBUF(0, 0, SCE_GS_PSMCT32, shadowtex.addr / 64, 1, SCE_GS_PSMCT32);
-    *(u_long *)&shadow_pal[2][2] = SCE_GS_BITBLTBUF;
+    *(u_long *) &shadow_pal[2][0] = SCE_GS_SET_BITBLTBUF(
+        0, 0, SCE_GS_PSMCT32, shadowtex.addr / 64, 1, SCE_GS_PSMCT32);
+    *(u_long *) &shadow_pal[2][2] = SCE_GS_BITBLTBUF;
 
-    *(u_long *)&shadow_pal[3][0] = SCE_GS_SET_TRXPOS(0, 0, 0, 0, 0);
-    *(u_long *)&shadow_pal[3][2] = SCE_GS_TRXPOS;
+    *(u_long *) &shadow_pal[3][0] = SCE_GS_SET_TRXPOS(0, 0, 0, 0, 0);
+    *(u_long *) &shadow_pal[3][2] = SCE_GS_TRXPOS;
 
-    *(u_long *)&shadow_pal[4][0] = SCE_GS_SET_TRXREG(16, 16);
-    *(u_long *)&shadow_pal[4][2] = SCE_GS_TRXREG;
+    *(u_long *) &shadow_pal[4][0] = SCE_GS_SET_TRXREG(16, 16);
+    *(u_long *) &shadow_pal[4][2] = SCE_GS_TRXREG;
 
-    *(u_long *)&shadow_pal[5][0] = SCE_GS_SET_TRXDIR(0);
-    *(u_long *)&shadow_pal[5][2] = SCE_GS_TRXDIR;
+    *(u_long *) &shadow_pal[5][0] = SCE_GS_SET_TRXDIR(0);
+    *(u_long *) &shadow_pal[5][2] = SCE_GS_TRXDIR;
 
-    *(u_long *)&shadow_pal[6][0] = SCE_GIF_SET_TAG(64, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_IMAGE, 0);
+    *(u_long *) &shadow_pal[6][0] =
+        SCE_GIF_SET_TAG(64, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_IMAGE, 0);
 
-    AppendDmaTag((u_int)shadow_pal, sizeof(shadow_pal) / sizeof(qword)); // could also be a defined value
+    AppendDmaTag((u_int) shadow_pal,
+                 sizeof(shadow_pal)
+                     / sizeof(qword));// could also be a defined value
 }
 
 void GetShadowTexture()
@@ -132,84 +138,83 @@ void DispShadowSprite()
 
     GetShadowTexture();
 
-    urp[0] = GS_X_COORD(320); // X (DISP_WIDTH/2 ?)
-    urp[1] = GS_Y_COORD(8);   // Y
-    urp[2] = 0x3A980;         // Z
-    urp[3] = 0;               // F
+    urp[0] = GS_X_COORD(320);// X (DISP_WIDTH/2 ?)
+    urp[1] = GS_Y_COORD(8);  // Y
+    urp[2] = 0x3A980;        // Z
+    urp[3] = 0;              // F
 
-    dlp[0] = GS_X_COORD(448); // X (DISP_HEIGHT ?)
-    dlp[1] = GS_Y_COORD(72);  // Y
-    dlp[2] = 0x3A980;         // Z
-    dlp[3] = 0;               // F
+    dlp[0] = GS_X_COORD(448);// X (DISP_HEIGHT ?)
+    dlp[1] = GS_Y_COORD(72); // Y
+    dlp[2] = 0x3A980;        // Z
+    dlp[3] = 0;              // F
 
-    base = (dword *)getObjWrk() + 1;
+    base = (dword *) getObjWrk() + 1;
 
-    base[0][0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 6, SCE_GIF_PACKED, 3);
-    base[0][1] = 0 \
-        | SCE_GS_RGBAQ << (0 * 4)
-        | SCE_GS_XYZF2 << (1 * 4)
-        | SCE_GS_XYZF2 << (2 * 4);
+    base[0][0] =
+        SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 6, SCE_GIF_PACKED, 3);
+    base[0][1] = 0 | SCE_GS_RGBAQ << (0 * 4) | SCE_GS_XYZF2 << (1 * 4)
+                 | SCE_GS_XYZF2 << (2 * 4);
 
     base++;
 
-    ((u_int *)base[0])[0] = 0;    // R
-    ((u_int *)base[0])[1] = 0x40; // G
-    ((u_int *)base[0])[2] = 0;    // B
-    ((u_int *)base[0])[3] = 0x80; // A
+    ((u_int *) base[0])[0] = 0;   // R
+    ((u_int *) base[0])[1] = 0x40;// G
+    ((u_int *) base[0])[2] = 0;   // B
+    ((u_int *) base[0])[3] = 0x80;// A
 
-    ((u_int *)base[1])[0] = urp[0] - 16; // X
-    ((u_int *)base[1])[1] = urp[1] - 16; // Y
-    ((u_int *)base[1])[2] = urp[2];      // Z
-    ((u_int *)base[1])[3] = 0;           // F
+    ((u_int *) base[1])[0] = urp[0] - 16;// X
+    ((u_int *) base[1])[1] = urp[1] - 16;// Y
+    ((u_int *) base[1])[2] = urp[2];     // Z
+    ((u_int *) base[1])[3] = 0;          // F
 
-    ((u_int *)base[2])[0] = dlp[0] + 16; // X
-    ((u_int *)base[2])[1] = dlp[1] + 16; // Y
-    ((u_int *)base[2])[2] = dlp[2];      // Z
-    ((u_int *)base[2])[3] = 0;           // F
+    ((u_int *) base[2])[0] = dlp[0] + 16;// X
+    ((u_int *) base[2])[1] = dlp[1] + 16;// Y
+    ((u_int *) base[2])[2] = dlp[2];     // Z
+    ((u_int *) base[2])[3] = 0;          // F
 
     base += 3;
 
-    base[0][0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 86, SCE_GIF_PACKED, 7);
-    base[0][1] = 0 \
-        | SCE_GS_TEX0_1 << (0 * 4)
-        | SCE_GS_ST     << (1 * 4)
-        | SCE_GS_RGBAQ  << (2 * 4)
-        | SCE_GS_XYZF2  << (3 * 4)
-        | SCE_GS_ST     << (4 * 4)
-        | SCE_GS_RGBAQ  << (5 * 4)
-        | SCE_GS_XYZF2  << (6 * 4);
+    base[0][0] =
+        SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 86, SCE_GIF_PACKED, 7);
+    base[0][1] = 0 | SCE_GS_TEX0_1 << (0 * 4) | SCE_GS_ST << (1 * 4)
+                 | SCE_GS_RGBAQ << (2 * 4) | SCE_GS_XYZF2 << (3 * 4)
+                 | SCE_GS_ST << (4 * 4) | SCE_GS_RGBAQ << (5 * 4)
+                 | SCE_GS_XYZF2 << (6 * 4);
 
-    base[1][0] = SCE_GS_SET_TEX0_1(shadowtex.addr / 64, shadowtex.width / 64, SCE_GS_PSMCT16, shadowtex.width_p, shadowtex.height_p, 1, SCE_GS_MODULATE, 0, SCE_GS_PSMCT32, 0, 0, 1);
+    base[1][0] =
+        SCE_GS_SET_TEX0_1(shadowtex.addr / 64, shadowtex.width / 64,
+                          SCE_GS_PSMCT16, shadowtex.width_p, shadowtex.height_p,
+                          1, SCE_GS_MODULATE, 0, SCE_GS_PSMCT32, 0, 0, 1);
 
     base += 2;
 
-    ((float *)base[0])[0] = 0.0f; // S
-    ((float *)base[0])[1] = 0.0f; // T
-    ((float *)base[0])[2] = 1.0f; // Q
-    ((float *)base[0])[3] = 0.0f; // <unused>
+    ((float *) base[0])[0] = 0.0f;// S
+    ((float *) base[0])[1] = 0.0f;// T
+    ((float *) base[0])[2] = 1.0f;// Q
+    ((float *) base[0])[3] = 0.0f;// <unused>
 
-    ((u_int *)base[1])[0] = 0x80; // R
-    ((u_int *)base[1])[1] = 0x80; // G
-    ((u_int *)base[1])[2] = 0x80; // B
-    ((u_int *)base[1])[3] = 0x80; // A
+    ((u_int *) base[1])[0] = 0x80;// R
+    ((u_int *) base[1])[1] = 0x80;// G
+    ((u_int *) base[1])[2] = 0x80;// B
+    ((u_int *) base[1])[3] = 0x80;// A
 
-    Vu0CopyVector(*(sceVu0FVECTOR *)base[2], *(sceVu0FVECTOR *)urp); // XYZF
+    Vu0CopyVector(*(sceVu0FVECTOR *) base[2], *(sceVu0FVECTOR *) urp);// XYZF
 
     base += 3;
 
-    ((float *)base[0])[0] = 1.0f; // S
-    ((float *)base[0])[1] = 1.0f; // T
-    ((float *)base[0])[2] = 1.0f; // Q
-    ((float *)base[0])[3] = 0.0f; // <unused>
+    ((float *) base[0])[0] = 1.0f;// S
+    ((float *) base[0])[1] = 1.0f;// T
+    ((float *) base[0])[2] = 1.0f;// Q
+    ((float *) base[0])[3] = 0.0f;// <unused>
 
-    ((u_int *)base[1])[0] = 0x80; // R
-    ((u_int *)base[1])[1] = 0x80; // G
-    ((u_int *)base[1])[2] = 0x80; // B
-    ((u_int *)base[1])[3] = 0x80; // A
+    ((u_int *) base[1])[0] = 0x80;// R
+    ((u_int *) base[1])[1] = 0x80;// G
+    ((u_int *) base[1])[2] = 0x80;// B
+    ((u_int *) base[1])[3] = 0x80;// A
 
-    Vu0CopyVector(*(sceVu0FVECTOR *)base[2], *(sceVu0FVECTOR *)dlp); // XYZF
+    Vu0CopyVector(*(sceVu0FVECTOR *) base[2], *(sceVu0FVECTOR *) dlp);// XYZF
 
-    AppendDmaBufferFromEndAddress((qword*)(base + 3));
+    AppendDmaBufferFromEndAddress((qword *) (base + 3));
 }
 
 void GetInverseMatrix(sceVu0FMATRIX inv, sceVu0FMATRIX org)
@@ -250,8 +255,8 @@ void SetVU1HeaderShadow()
     sceVu0FVECTOR *dvec;
     int i;
 
-    svec = (sceVu0FVECTOR *)getObjWrk();
-    dvec = (sceVu0FVECTOR *)&SCRATCHPAD[0];
+    svec = (sceVu0FVECTOR *) getObjWrk();
+    dvec = (sceVu0FVECTOR *) &SCRATCHPAD[0];
 
     for (i = 0; i < 26; svec++, dvec++, i++)
     {
@@ -334,7 +339,7 @@ void CalcVertexBufferShadow(u_int *prim)
         return;
     }
 
-    vli = (VERTEXLIST *)lphead->pWeightedList;
+    vli = (VERTEXLIST *) lphead->pWeightedList;
 
     if (vli == NULL)
     {
@@ -354,10 +359,9 @@ void CalcVertexBufferShadow(u_int *prim)
             _CalcWeightedVertexSM(*vpd, *vps);
         }
     }
-
 }
 
-u_int* SetVUVNDataShadowModel(u_int *prim)
+u_int *SetVUVNDataShadowModel(u_int *prim)
 {
     int i;
     VUVN_PRIM *vh;
@@ -365,83 +369,83 @@ u_int* SetVUVNDataShadowModel(u_int *prim)
     sceVu0FVECTOR tmpvec;
     char *cn;
 
-    vh = (VUVN_PRIM *)&prim[2];
-    vp = (sceVu0FVECTOR *)getObjWrk();
+    vh = (VUVN_PRIM *) &prim[2];
+    vp = (sceVu0FVECTOR *) getObjWrk();
 
-    ((u_int *)&vp[0])[0] = 0x1000404;
-    ((u_int *)&vp[0])[1] = 0x6C018000;
-    ((u_int *)&vp[0])[2] = prim[8];
-    ((u_int *)&vp[0])[3] = prim[9];
+    ((u_int *) &vp[0])[0] = 0x1000404;
+    ((u_int *) &vp[0])[1] = 0x6C018000;
+    ((u_int *) &vp[0])[2] = prim[8];
+    ((u_int *) &vp[0])[3] = prim[9];
 
-    ((u_int *)&vp[1])[0] = prim[10];
-    ((u_int *)&vp[1])[1] = prim[11];
-    ((u_int *)&vp[1])[2] = 0x1000102;
-    ((u_int *)&vp[1])[3] = (*(short *)&prim[2] << 0x10) | 0x6c008001;
+    ((u_int *) &vp[1])[0] = prim[10];
+    ((u_int *) &vp[1])[1] = prim[11];
+    ((u_int *) &vp[1])[2] = 0x1000102;
+    ((u_int *) &vp[1])[3] = (*(short *) &prim[2] << 0x10) | 0x6c008001;
 
     prim = &prim[12];
     vp = vp + 2;
 
-    switch (((char *)vh)[5])
+    switch (((char *) vh)[5])
     {
-    case 0:
-        _SetLWMatrix0((float (*) [4])0x70000430);
+        case 0:
+            _SetLWMatrix0((float (*)[4]) 0x70000430);
 
-        for (i = 0; i < vh->vnum; vp++, prim += 2, i++)
-        {
-            Vu0CopyVector(vp[0], *(sceVu0FVECTOR *)*prim);
-        }
-    break;
-    case 2:
-        if (lphead->pWeightedList != NULL)
-        {
-            for (i = 0; i < vh->vnum; i++, vp++, prim += 2)
+            for (i = 0; i < vh->vnum; vp++, prim += 2, i++)
             {
-                Vu0CopyVector(vp[0], *(sceVu0FVECTOR *)*prim);
+                Vu0CopyVector(vp[0], *(sceVu0FVECTOR *) *prim);
             }
-        }
-        else
-        {
-            cn = (char *)*prim;
+            break;
+        case 2:
+            if (lphead->pWeightedList != NULL)
+            {
+                for (i = 0; i < vh->vnum; i++, vp++, prim += 2)
+                {
+                    Vu0CopyVector(vp[0], *(sceVu0FVECTOR *) *prim);
+                }
+            }
+            else
+            {
+                cn = (char *) *prim;
 
-            _SetLWMatrix0(lcp[cn[0x1c]].workm);
-            _SetLWMatrix1(lcp[cn[0x1d]].workm);
-
-            for (i = 0; i < vh->vnum; i++, vp++, prim += 2)
-            {
-                _CalcWeightedVertexSM(*vp, *(sceVu0FVECTOR *)*prim);
-            }
-        }
-    break;
-    case 3:
-        if (lphead->pWeightedList != NULL)
-        {
-            for (i = 0; i < vh->vnum; i++, vp++, prim += 2)
-            {
-                Vu0CopyVector(vp[0], *(sceVu0FVECTOR *)*prim);
-            }
-        }
-        else
-        {
-            for (i = 0; i < vh->vnum; i++)
-            {
-                cn = (char *)*prim;
                 _SetLWMatrix0(lcp[cn[0x1c]].workm);
                 _SetLWMatrix1(lcp[cn[0x1d]].workm);
-                _CalcWeightedVertexSM(*vp, *(sceVu0FVECTOR *)*prim);
-                vp++;
-                prim += 2;
+
+                for (i = 0; i < vh->vnum; i++, vp++, prim += 2)
+                {
+                    _CalcWeightedVertexSM(*vp, *(sceVu0FVECTOR *) *prim);
+                }
             }
-        }
-    break;
-    default:
-        for (i = 0; i < vh->vnum; i++, vp++, prim += 2)
-        {
-            Vu0CopyVector(*vp, *(sceVu0FVECTOR *)*prim);
-        }
-    break;
+            break;
+        case 3:
+            if (lphead->pWeightedList != NULL)
+            {
+                for (i = 0; i < vh->vnum; i++, vp++, prim += 2)
+                {
+                    Vu0CopyVector(vp[0], *(sceVu0FVECTOR *) *prim);
+                }
+            }
+            else
+            {
+                for (i = 0; i < vh->vnum; i++)
+                {
+                    cn = (char *) *prim;
+                    _SetLWMatrix0(lcp[cn[0x1c]].workm);
+                    _SetLWMatrix1(lcp[cn[0x1d]].workm);
+                    _CalcWeightedVertexSM(*vp, *(sceVu0FVECTOR *) *prim);
+                    vp++;
+                    prim += 2;
+                }
+            }
+            break;
+        default:
+            for (i = 0; i < vh->vnum; i++, vp++, prim += 2)
+            {
+                Vu0CopyVector(*vp, *(sceVu0FVECTOR *) *prim);
+            }
+            break;
     }
 
-    return (u_int *)vp;
+    return (u_int *) vp;
 }
 
 void ShadowModelMesh(u_int *prim)
@@ -450,63 +454,66 @@ void ShadowModelMesh(u_int *prim)
     u_int *read_p;
     short *tmp;
 
-    tmp = (short *)vuvnprim;
+    tmp = (short *) vuvnprim;
 
-    mtype = ((u_char *)prim)[13];
+    mtype = ((u_char *) prim)[13];
 
-    switch (mtype & (0x1 | 0x2 | 0x10 | 0x40 | 0x80)) // 0xd3
+    switch (mtype & (0x1 | 0x2 | 0x10 | 0x40 | 0x80))// 0xd3
     {
-    case 0:
-        read_p = SetVUVNDataShadowModel(vuvnprim);
+        case 0:
+            read_p = SetVUVNDataShadowModel(vuvnprim);
 
-        read_p[0] = 0x14000000 | ((u_int)SHADOWDRAWTYPE0 >> 3);
-        read_p[1] = 0x17000000;
-        read_p[2] = 0x11000000;
-        read_p[3] = 0x17000000;
+            read_p[0] = 0x14000000 | ((u_int) SHADOWDRAWTYPE0 >> 3);
+            read_p[1] = 0x17000000;
+            read_p[2] = 0x11000000;
+            read_p[3] = 0x17000000;
 
-        AppendDmaTag((u_int)&prim[4], prim[2]);
-        AppendDmaBuffer(tmp[4] + 3);
-        FlushModel(0);
-    break;
-    case 2:
-        read_p = SetVUVNDataShadowModel(vuvnprim);
+            AppendDmaTag((u_int) &prim[4], prim[2]);
+            AppendDmaBuffer(tmp[4] + 3);
+            FlushModel(0);
+            break;
+        case 2:
+            read_p = SetVUVNDataShadowModel(vuvnprim);
 
-        read_p[0] = 0x14000000 | ((u_int)SHADOWDRAWTYPE2 >> 3);
-        read_p[1] = 0x17000000;
-        read_p[2] = 0x11000000;
-        read_p[3] = 0x17000000;
+            read_p[0] = 0x14000000 | ((u_int) SHADOWDRAWTYPE2 >> 3);
+            read_p[1] = 0x17000000;
+            read_p[2] = 0x11000000;
+            read_p[3] = 0x17000000;
 
-        AppendDmaTag((u_int)&prim[4], prim[2]);
-        AppendDmaBuffer(tmp[4] + 3);
-        FlushModel(0);
-    break;
-    case 128:
-        AppendDmaTag((u_int)&prim[4], prim[2]);
-        AppendDmaTag((u_int)&((u_char *)vuvnprim)[16], ((u_char *)vuvnprim)[12]);
+            AppendDmaTag((u_int) &prim[4], prim[2]);
+            AppendDmaBuffer(tmp[4] + 3);
+            FlushModel(0);
+            break;
+        case 128:
+            AppendDmaTag((u_int) &prim[4], prim[2]);
+            AppendDmaTag((u_int) & ((u_char *) vuvnprim)[16],
+                         ((u_char *) vuvnprim)[12]);
 
-        read_p = (u_int *)getObjWrk();
-        read_p[0] = 0x14000000 | ((u_int)SHADOWDRAWTYPE0 >> 3);
-        read_p[1] = 0x17000000;
-        read_p[2] = 0x11000000;
-        read_p[3] = 0x17000000;
+            read_p = (u_int *) getObjWrk();
+            read_p[0] = 0x14000000 | ((u_int) SHADOWDRAWTYPE0 >> 3);
+            read_p[1] = 0x17000000;
+            read_p[2] = 0x11000000;
+            read_p[3] = 0x17000000;
 
-        AppendDmaBuffer(1);
-        FlushModel(0);
-    break;
-    case 130:
-        AppendDmaTag((u_int)&((u_char *)vuvnprim)[16], ((u_char *)vuvnprim)[12]);
-        AppendDmaTag((u_int)&prim[4], prim[2]);
+            AppendDmaBuffer(1);
+            FlushModel(0);
+            break;
+        case 130:
+            MikuPan_RenderMeshType0x82(vuvnprim, prim);
+            AppendDmaTag((u_int) & ((u_char *) vuvnprim)[16],
+                         ((u_char *) vuvnprim)[12]);
+            AppendDmaTag((u_int) &prim[4], prim[2]);
 
-        read_p = (u_int *)getObjWrk();
+            read_p = (u_int *) getObjWrk();
 
-        read_p[0] = 0x14000000 | ((u_int)SHADOWDRAWTYPE2 >> 3);
-        read_p[1] = 0x17000000;
-        read_p[2] = 0x11000000;
-        read_p[3] = 0x17000000;
+            read_p[0] = 0x14000000 | ((u_int) SHADOWDRAWTYPE2 >> 3);
+            read_p[1] = 0x17000000;
+            read_p[2] = 0x11000000;
+            read_p[3] = 0x17000000;
 
-        AppendDmaBuffer(1);
-        FlushModel(0);
-    break;
+            AppendDmaBuffer(1);
+            FlushModel(0);
+            break;
     }
 }
 
@@ -521,44 +528,45 @@ void DrawShadowModelPrim(u_int *prim)
 
     while (prim[0] != NULL)
     {
-        switch(prim[1])
+        switch (prim[1])
         {
-        case 0:
-            vuvnprim = prim;
-        break;
-        case 1:
-            ShadowModelMesh(prim);
-        break;
-        case 3:
-            if (prim[3] != 0)
-            {
-                CalcVertexBufferShadow(prim);
+            case 0:
+                vuvnprim = prim;
+                break;
+            case 1:
+                ShadowModelMesh(prim);
+                break;
+            case 3:
+                if (prim[3] != 0)
+                {
+                    CalcVertexBufferShadow(prim);
 
-                read_p = (u_int *)getObjWrk();
+                    read_p = (u_int *) getObjWrk();
+
+                    read_p[0] = 0;
+                    read_p[1] = 0;
+                    read_p[2] = 0x01000404;
+                    read_p[3] = 0x6c040008;
+
+                    Vu0CopyMatrix(*(sceVu0FMATRIX *) &read_p[4], SgWSMtx);
+                    AppendDmaBuffer(5);
+                }
+                break;
+            case 4:
+                read_p = (u_int *) getObjWrk();
 
                 read_p[0] = 0;
                 read_p[1] = 0;
                 read_p[2] = 0x01000404;
                 read_p[3] = 0x6c040008;
 
-                Vu0CopyMatrix(*(sceVu0FMATRIX *)&read_p[4], SgWSMtx);
+                _MulMatrix(*(sceVu0FMATRIX *) &read_p[4], SgWSMtx,
+                           lcp[prim[2]].lwmtx);
                 AppendDmaBuffer(5);
-            }
-        break;
-        case 4:
-            read_p = (u_int *)getObjWrk();
-
-            read_p[0] = 0;
-            read_p[1] = 0;
-            read_p[2] = 0x01000404;
-            read_p[3] = 0x6c040008;
-
-            _MulMatrix(*(sceVu0FMATRIX *)&read_p[4], SgWSMtx, lcp[prim[2]].lwmtx);
-            AppendDmaBuffer(5);
-        break;
+                break;
         }
 
-        prim = (u_int *)prim[0];
+        prim = (u_int *) prim[0];
     }
 }
 
@@ -568,7 +576,7 @@ void SetUpShadowModel()
 
     LoadSgProg(3);
 
-    datap = (u_int *)getObjWrk();
+    datap = (u_int *) getObjWrk();
 
     datap[0] = 0x11000000;
     datap[1] = 0;
@@ -577,24 +585,22 @@ void SetUpShadowModel()
 
     datap += 4;
 
-    *((u_long *)&datap[12]) = SCE_GIF_SET_TAG(0, SCE_GS_TRUE, SCE_GS_TRUE, 68, SCE_GIF_PACKED, 2);
-    datap[14] = 0 \
-        | SCE_GS_RGBAQ    << (0 * 4)
-        | SCE_GS_XYZF2 << (1 * 4);
+    *((u_long *) &datap[12]) =
+        SCE_GIF_SET_TAG(0, SCE_GS_TRUE, SCE_GS_TRUE, 68, SCE_GIF_PACKED, 2);
+    datap[14] = 0 | SCE_GS_RGBAQ << (0 * 4) | SCE_GS_XYZF2 << (1 * 4);
     datap[15] = 0;
 
-    *((u_long *)&datap[16]) = SCE_GIF_SET_TAG(0, SCE_GS_TRUE, SCE_GS_TRUE, 84, SCE_GIF_PACKED, 3);
-    datap[18] = 0 \
-        | SCE_GS_ST    << (0 * 4)
-        | SCE_GS_RGBAQ << (1 * 4)
-        | SCE_GS_XYZF2 << (2 * 4);
+    *((u_long *) &datap[16]) =
+        SCE_GIF_SET_TAG(0, SCE_GS_TRUE, SCE_GS_TRUE, 84, SCE_GIF_PACKED, 3);
+    datap[18] = 0 | SCE_GS_ST << (0 * 4) | SCE_GS_RGBAQ << (1 * 4)
+                | SCE_GS_XYZF2 << (2 * 4);
     datap[19] = 0;
 
-    Vu0CopyMatrix(*(sceVu0FMATRIX *)&datap[32], SgWSMtx);
-    Vu0CopyMatrix(*(sceVu0FMATRIX *)&datap[48], SgCMtx);
+    Vu0CopyMatrix(*(sceVu0FMATRIX *) &datap[32], SgWSMtx);
+    Vu0CopyMatrix(*(sceVu0FMATRIX *) &datap[48], SgCMtx);
 
-    Vu0CopyVector(*(sceVu0FVECTOR *)&datap[0], vf12reg[0]);
-    Vu0CopyVector(*(sceVu0FVECTOR *)&datap[4], vf12reg[1]);
+    Vu0CopyVector(*(sceVu0FVECTOR *) &datap[0], vf12reg[0]);
+    Vu0CopyVector(*(sceVu0FVECTOR *) &datap[4], vf12reg[1]);
 
     datap[64] = 0;
     datap[65] = 0;
@@ -603,16 +609,16 @@ void SetUpShadowModel()
 
     AppendDmaBuffer(18);
 
-    datap = (u_int *)getObjWrk();
+    datap = (u_int *) getObjWrk();
 
     datap[0] = 0x30000000;
-    ((float *)datap)[1] = 0.0f;
-    ((float *)datap)[2] = 0.0f;
-    ((float *)datap)[3] = 1.0f;
-    ((float *)datap)[4] = 1.0f;
-    ((float *)datap)[5] = 0.0f;
-    ((float *)datap)[6] = 0.0f;
-    ((float *)datap)[7] = 0.0f;
+    ((float *) datap)[1] = 0.0f;
+    ((float *) datap)[2] = 0.0f;
+    ((float *) datap)[3] = 1.0f;
+    ((float *) datap)[4] = 1.0f;
+    ((float *) datap)[5] = 0.0f;
+    ((float *) datap)[6] = 0.0f;
+    ((float *) datap)[7] = 0.0f;
 
     AppendDmaBuffer(2);
 }
@@ -623,33 +629,34 @@ void DrawShadowModel(void *sgd_top, int pnum)
     u_int i;
     HeaderSection *hs;
 
-    hs = (HeaderSection *)sgd_top;
+    hs = (HeaderSection *) sgd_top;
 
     lcp = GetCoordP(hs);
     blocksm = hs->blocks;
 
-    lphead = (PHEAD *)hs->phead;
+    //lphead = (PHEAD *)hs->phead;
+    lphead = (PHEAD *) MikuPan_GetHostAddress(hs->phead);
 
-    pk = (u_int *)&hs->primitives;
+    pk = (u_int *) &hs->primitives;
 
     SetUpShadowModel();
 
     if (pnum < 0)
     {
-        SgSortPreProcess((u_int *)pk[0]);
+        SgSortPreProcess((u_int *) pk[0]);
 
         for (i = 1; i < blocksm; i++)
         {
-            DrawShadowModelPrim((u_int *)pk[i]);
+            DrawShadowModelPrim((u_int *) pk[i]);
         }
     }
     else if (pnum == 0)
     {
-        SgSortPreProcess((u_int *)pk[0]);
+        SgSortPreProcess((u_int *) pk[0]);
     }
     else
     {
-        DrawShadowModelPrim((u_int *)pk[pnum]);
+        DrawShadowModelPrim((u_int *) pk[pnum]);
     }
 }
 
@@ -658,37 +665,38 @@ void ShadowMeshDataVU(u_int *prim)
     int mtype;
     u_int *datap;
 
-    mtype = ((char *)prim)[13];
+    mtype = ((char *) prim)[13];
 
-    switch (mtype  & (0x40 | 0x10 | 0x2 | 0x1))
+    switch (mtype & (0x40 | 0x10 | 0x2 | 0x1))
     {
-    case 0:
-        // values other than 0 are also ok
-    break;
-    case 18:
-    case 50:
-        AppendDmaTag((u_int)&((u_char *)vuvnprim)[16], ((u_char *)vuvnprim)[12]);
-        AppendDmaTag((u_int)&prim[8], prim[2]);
+        case 0:
+            // values other than 0 are also ok
+            break;
+        case 18:
+        case 50:
+            AppendDmaTag((u_int) & ((u_char *) vuvnprim)[16],
+                         ((u_char *) vuvnprim)[12]);
+            AppendDmaTag((u_int) &prim[8], prim[2]);
 
-        datap = (u_int *)getObjWrk();
+            datap = (u_int *) getObjWrk();
 
-        if (edge_check != 0)
-        {
-            datap[0] = 0x15000000 | ((u_int)DIVPS_PROLOGUE >> 3);
-            datap[2] = 0x17000000;
-            datap[1] = 0x11000000;
-            datap[3] = 0x17000000;
-        }
-        else
-        {
-            datap[0] = 0x14000000 | ((u_int)DPS_PROLOGUE >> 3);
-            datap[1] = 0x17000000;
-            datap[2] = 0x11000000;
-            datap[3] = 0x17000000;
-        }
+            if (edge_check != 0)
+            {
+                datap[0] = 0x15000000 | ((u_int) DIVPS_PROLOGUE >> 3);
+                datap[2] = 0x17000000;
+                datap[1] = 0x11000000;
+                datap[3] = 0x17000000;
+            }
+            else
+            {
+                datap[0] = 0x14000000 | ((u_int) DPS_PROLOGUE >> 3);
+                datap[1] = 0x17000000;
+                datap[2] = 0x11000000;
+                datap[3] = 0x17000000;
+            }
 
-        AppendDmaBuffer(1);
-        FlushModel(0);
+            AppendDmaBuffer(1);
+            FlushModel(0);
     }
 }
 
@@ -740,7 +748,8 @@ int ShadowBoundClip(float *v0, float *v1)
     return ret;
 }
 
-int AppendShadowClipCheck(sceVu0FVECTOR *sts, BoundLine *bl) {
+int AppendShadowClipCheck(sceVu0FVECTOR *sts, BoundLine *bl)
+{
     float bmin;
     float bmax;
     float smin;
@@ -806,7 +815,6 @@ int AppendShadowClipCheck(sceVu0FVECTOR *sts, BoundLine *bl) {
         {
             smin = tmp2;
         }
-
     }
 
     if (bmin > smax || smin > bmax)
@@ -817,20 +825,31 @@ int AppendShadowClipCheck(sceVu0FVECTOR *sts, BoundLine *bl) {
     return 1;
 }
 
-int CheckBoundingBoxShadowTrace(sceVu0FMATRIX lwmtx, sceVu0FVECTOR *tmpv, float *dir)
+int CheckBoundingBoxShadowTrace(sceVu0FMATRIX lwmtx, sceVu0FVECTOR *tmpv,
+                                float *dir)
 {
     int i;
     int clip;
     sceVu0FMATRIX tmpmat;
     static sceVu0FMATRIX clipmtx = {
-        {1.0f, 0.0f, 0.0f, 0.0f},
-        {0.0f, 1.0f, 0.0f, 0.0f},
-        {0.0f, 0.0f, 1.0f, 0.0f},
+        { 1.0f,  0.0f,  0.0f, 0.0f},
+        { 0.0f,  1.0f,  0.0f, 0.0f},
+        { 0.0f,  0.0f,  1.0f, 0.0f},
         {-0.5f, -0.5f, -0.5f, 0.5f},
     };
     static BoundLine boundline[12] = {
-        {0, 1}, {4, 5}, {2, 3}, {6, 7}, {0, 4}, {1, 5},
-        {2, 6}, {3, 7}, {1, 3}, {5, 7}, {4, 6}, {0, 2},
+        {0, 1},
+        {4, 5},
+        {2, 3},
+        {6, 7},
+        {0, 4},
+        {1, 5},
+        {2, 6},
+        {3, 7},
+        {1, 3},
+        {5, 7},
+        {4, 6},
+        {0, 2},
     };
     int clip0;
     int clip1;
@@ -840,14 +859,14 @@ int CheckBoundingBoxShadowTrace(sceVu0FMATRIX lwmtx, sceVu0FVECTOR *tmpv, float 
     _SetMulMatrix(CullingMatrix, lwmtx);
 
     clip = 0x2a;
-    clip &= ShadowBoundClip(((sceVu0FVECTOR *)&SCRATCHPAD[0x7a0])[0], tmpv[0]);
-    clip &= ShadowBoundClip(((sceVu0FVECTOR *)&SCRATCHPAD[0x7b0])[0], tmpv[1]);
-    clip &= ShadowBoundClip(((sceVu0FVECTOR *)&SCRATCHPAD[0x7c0])[0], tmpv[2]);
-    clip &= ShadowBoundClip(((sceVu0FVECTOR *)&SCRATCHPAD[0x7d0])[0], tmpv[3]);
-    clip &= ShadowBoundClip(((sceVu0FVECTOR *)&SCRATCHPAD[0x7e0])[0], tmpv[4]);
-    clip &= ShadowBoundClip(((sceVu0FVECTOR *)&SCRATCHPAD[0x7f0])[0], tmpv[5]);
-    clip &= ShadowBoundClip(((sceVu0FVECTOR *)&SCRATCHPAD[0x800])[0], tmpv[6]);
-    clip &= ShadowBoundClip(((sceVu0FVECTOR *)&SCRATCHPAD[0x810])[0], tmpv[7]);
+    clip &= ShadowBoundClip(((sceVu0FVECTOR *) &SCRATCHPAD[0x7a0])[0], tmpv[0]);
+    clip &= ShadowBoundClip(((sceVu0FVECTOR *) &SCRATCHPAD[0x7b0])[0], tmpv[1]);
+    clip &= ShadowBoundClip(((sceVu0FVECTOR *) &SCRATCHPAD[0x7c0])[0], tmpv[2]);
+    clip &= ShadowBoundClip(((sceVu0FVECTOR *) &SCRATCHPAD[0x7d0])[0], tmpv[3]);
+    clip &= ShadowBoundClip(((sceVu0FVECTOR *) &SCRATCHPAD[0x7e0])[0], tmpv[4]);
+    clip &= ShadowBoundClip(((sceVu0FVECTOR *) &SCRATCHPAD[0x7f0])[0], tmpv[5]);
+    clip &= ShadowBoundClip(((sceVu0FVECTOR *) &SCRATCHPAD[0x800])[0], tmpv[6]);
+    clip &= ShadowBoundClip(((sceVu0FVECTOR *) &SCRATCHPAD[0x810])[0], tmpv[7]);
 
     if (clip != 0)
     {
@@ -862,7 +881,9 @@ int CheckBoundingBoxShadowTrace(sceVu0FMATRIX lwmtx, sceVu0FVECTOR *tmpv, float 
 
     for (i = 0; i < 8; i++)
     {
-        clip = ShadowBoundClip(((sceVu0FVECTOR *)&SCRATCHPAD[0x7a0] + i)[0], tmpv[i]) & 0xf;
+        clip = ShadowBoundClip(((sceVu0FVECTOR *) &SCRATCHPAD[0x7a0] + i)[0],
+                               tmpv[i])
+               & 0xf;
 
         if (clip == 0)
         {
@@ -878,12 +899,15 @@ int CheckBoundingBoxShadowTrace(sceVu0FMATRIX lwmtx, sceVu0FVECTOR *tmpv, float 
         return 0;
     }
 
-    if ((clip1 & 0xf) != 0xf) {
+    if ((clip1 & 0xf) != 0xf)
+    {
 
-        if (
-            AppendShadowClipCheck(((sceVu0FVECTOR *)&SCRATCHPAD[0x7a0]), &boundline[0]) == 0 ||
-            AppendShadowClipCheck(((sceVu0FVECTOR *)&SCRATCHPAD[0x7a0]), &boundline[4]) == 0
-        )
+        if (AppendShadowClipCheck(((sceVu0FVECTOR *) &SCRATCHPAD[0x7a0]),
+                                  &boundline[0])
+                == 0
+            || AppendShadowClipCheck(((sceVu0FVECTOR *) &SCRATCHPAD[0x7a0]),
+                                     &boundline[4])
+                   == 0)
         {
 
             return 0;
@@ -895,7 +919,9 @@ int CheckBoundingBoxShadowTrace(sceVu0FMATRIX lwmtx, sceVu0FVECTOR *tmpv, float 
 
 int CheckBoundingBoxShadow(u_int *prim)
 {
-    if (CheckBoundingBoxShadowTrace(lcp[prim[2]].lwmtx, (sceVu0FVECTOR *)&prim[4], ndirection) != 0)
+    if (CheckBoundingBoxShadowTrace(lcp[prim[2]].lwmtx,
+                                    (sceVu0FVECTOR *) &prim[4], ndirection)
+        != 0)
     {
         edge_check = lcp[prim[2]].edge_check;
 
@@ -920,72 +946,76 @@ void AssignShadowPrim(u_int *prim)
     {
         switch (prim[1])
         {
-        case 0:
-            vuvnprim = prim;
-        break;
-        case 1:
-            ShadowMeshDataVU(prim);
-        break;
-        case 3:
-            // do nothing
-        break;
-        case 4:
-            if (CheckBoundingBoxShadow(prim) == 0)
-            {
-                return;
-            }
-
-            cn = prim[2];
-
-            if (ccahe.cache_on == 1 && ccahe.edge_check == edge_check)
-            {
-                for (i = 0; i < 4; i++)
+            case 0:
+                vuvnprim = prim;
+                break;
+            case 1:
+                ShadowMeshDataVU(prim);
+                break;
+            case 3:
+                // do nothing
+                break;
+            case 4:
+                if (CheckBoundingBoxShadow(prim) == 0)
                 {
-                    if (
-                        lcp[cn].lwmtx[i][0] != lcp[ccahe.cn0].lwmtx[i][0] ||
-                        lcp[cn].lwmtx[i][1] != lcp[ccahe.cn0].lwmtx[i][1] ||
-                        lcp[cn].lwmtx[i][2] != lcp[ccahe.cn0].lwmtx[i][2] ||
-                        lcp[cn].lwmtx[i][3] != lcp[ccahe.cn0].lwmtx[i][3]
-                    )
-                    {
-                        ccahe.cache_on = -1;
+                    return;
+                }
 
-                        break;
+                cn = prim[2];
+
+                if (ccahe.cache_on == 1 && ccahe.edge_check == edge_check)
+                {
+                    for (i = 0; i < 4; i++)
+                    {
+                        if (lcp[cn].lwmtx[i][0] != lcp[ccahe.cn0].lwmtx[i][0]
+                            || lcp[cn].lwmtx[i][1] != lcp[ccahe.cn0].lwmtx[i][1]
+                            || lcp[cn].lwmtx[i][2] != lcp[ccahe.cn0].lwmtx[i][2]
+                            || lcp[cn].lwmtx[i][3]
+                                   != lcp[ccahe.cn0].lwmtx[i][3])
+                        {
+                            ccahe.cache_on = -1;
+
+                            break;
+                        }
                     }
                 }
-            }
 
-            if (ccahe.cache_on != 1)
-            {
-                ccahe.cache_on = 1;
-                ccahe.edge_check = edge_check;
-                ccahe.cn0 = cn;
+                if (ccahe.cache_on != 1)
+                {
+                    ccahe.cache_on = 1;
+                    ccahe.edge_check = edge_check;
+                    ccahe.cn0 = cn;
 
-                Vu0CopyMatrix((sceVu0FVECTOR *)&SCRATCHPAD[0x430], lcp[cn].lwmtx);
+                    Vu0CopyMatrix((sceVu0FVECTOR *) &SCRATCHPAD[0x430],
+                                  lcp[cn].lwmtx);
 
-                GetInverseMatrix(*LIPMatrix, (sceVu0FVECTOR *)&SCRATCHPAD[0x430]);
+                    GetInverseMatrix(*LIPMatrix,
+                                     (sceVu0FVECTOR *) &SCRATCHPAD[0x430]);
 
-                _ApplyMatrixXYZ(tmpvec, *LIPMatrix, ndirection);
+                    _ApplyMatrixXYZ(tmpvec, *LIPMatrix, ndirection);
 
-                _MulMatrix(*LIPMatrix, IPMatrix, (sceVu0FVECTOR *)&SCRATCHPAD[0x430]);
-                _MulMatrix(*LWSMtx, SgWSMtx, (sceVu0FVECTOR *)&SCRATCHPAD[0x430]);
-                _MulMatrix(*LCMtx, SgCMtx, (sceVu0FVECTOR *)&SCRATCHPAD[0x430]);
+                    _MulMatrix(*LIPMatrix, IPMatrix,
+                               (sceVu0FVECTOR *) &SCRATCHPAD[0x430]);
+                    _MulMatrix(*LWSMtx, SgWSMtx,
+                               (sceVu0FVECTOR *) &SCRATCHPAD[0x430]);
+                    _MulMatrix(*LCMtx, SgCMtx,
+                               (sceVu0FVECTOR *) &SCRATCHPAD[0x430]);
 
-                (*LIPMatrix)[0][3] = -tmpvec[0];
-                (*LIPMatrix)[1][3] = -tmpvec[1];
-                (*LIPMatrix)[2][3] = -tmpvec[2];
-                (*LIPMatrix)[3][3] = 0.0f;
+                    (*LIPMatrix)[0][3] = -tmpvec[0];
+                    (*LIPMatrix)[1][3] = -tmpvec[1];
+                    (*LIPMatrix)[2][3] = -tmpvec[2];
+                    (*LIPMatrix)[3][3] = 0.0f;
 
-                (*LWSMtx)[3][2] += 10000.0f;
+                    (*LWSMtx)[3][2] += 10000.0f;
 
-                SetVU1HeaderShadow();
-            }
-        break;
-        case 0xFF:
-            // dummy case
-        break;
+                    SetVU1HeaderShadow();
+                }
+                break;
+            case 0xFF:
+                // dummy case
+                break;
         }
-        prim = (u_int *)*prim;
+        prim = (u_int *) *prim;
     }
 }
 
@@ -1000,14 +1030,14 @@ void AssignShadowPreProcess(u_int *prim)
 
     pGroupPacket = NULL;
 
-    while(prim[0] != NULL)
+    while (prim[0] != NULL)
     {
         if (prim[1] == 14)
         {
             pGroupPacket = prim;
         }
 
-        prim = (u_int *)prim[0];
+        prim = (u_int *) prim[0];
     }
 }
 
@@ -1019,24 +1049,24 @@ void AssignShadow(void *sgd_top, int except_num)
     ModelGroup *mgp;
     HeaderSection *hs;
 
-    hs = (HeaderSection *)sgd_top;
+    hs = (HeaderSection *) sgd_top;
 
     ccahe.cache_on = -1;
     lcp = GetCoordP(hs);
     blocksm = hs->blocks;
 
-    pk = (u_int *)&hs->primitives;
+    pk = (u_int *) &hs->primitives;
 
     if (except_num == -1)
     {
         if (shadow_apgnum >= 0)
         {
-            AssignShadowPreProcess((u_int *)pk[0]);
+            AssignShadowPreProcess((u_int *) pk[0]);
 
             if (pGroupPacket != NULL)
             {
                 groups = pGroupPacket[2];
-                mgp = (ModelGroup *)&pGroupPacket[4];
+                mgp = (ModelGroup *) &pGroupPacket[4];
 
                 if (groups < shadow_apgnum)
                 {
@@ -1045,7 +1075,8 @@ void AssignShadow(void *sgd_top, int except_num)
 
                 for (i = 0; i < shadow_apgnum; i++)
                 {
-                    mgp = (ModelGroup *)((u_int)mgp + (mgp->Num + 2) * sizeof(short));
+                    mgp = (ModelGroup *) ((u_int) mgp
+                                          + (mgp->Num + 2) * sizeof(short));
                 }
 
                 for (i = 0; i < mgp->Num != 0; i++)
@@ -1054,7 +1085,7 @@ void AssignShadow(void *sgd_top, int except_num)
 
                     if (lcp[groups].camin != 0)
                     {
-                        AssignShadowPrim((u_int *)pk[groups]);
+                        AssignShadowPrim((u_int *) pk[groups]);
                     }
                 }
             }
@@ -1065,7 +1096,7 @@ void AssignShadow(void *sgd_top, int except_num)
             {
                 if (lcp[i].camin != 0)
                 {
-                    AssignShadowPrim((u_int *)pk[i]);
+                    AssignShadowPrim((u_int *) pk[i]);
                 }
             }
         }
@@ -1076,7 +1107,7 @@ void AssignShadow(void *sgd_top, int except_num)
         {
             if (lcp[i].camin != 0 && i != except_num)
             {
-                AssignShadowPrim((u_int *)pk[i]);
+                AssignShadowPrim((u_int *) pk[i]);
             }
         }
     }
@@ -1089,56 +1120,57 @@ void SetUpShadow(ShadowHandle *shandle)
     static sceDmaTag tag[2][3];
     static sceDmaTag *tp;
 
-    *(u_int *)&SCRATCHPAD[0] = 0;
-    *(u_int *)&SCRATCHPAD[4] = 0;
-    *(u_int *)&SCRATCHPAD[8] = 0x01000404;
-    *(u_int *)&SCRATCHPAD[12] = 0x6c190000;
+    *(u_int *) &SCRATCHPAD[0] = 0;
+    *(u_int *) &SCRATCHPAD[4] = 0;
+    *(u_int *) &SCRATCHPAD[8] = 0x01000404;
+    *(u_int *) &SCRATCHPAD[12] = 0x6c190000;
 
-    datap = (u_int *)&SCRATCHPAD[16];
+    datap = (u_int *) &SCRATCHPAD[16];
 
-    *(float *)&datap[12] = 0.0f;
-    *(float *)&datap[13] = 0.0f;
-    *(float *)&datap[14] = 625.0f;
-    *(float *)&datap[15] = 0.0f;
+    *(float *) &datap[12] = 0.0f;
+    *(float *) &datap[13] = 0.0f;
+    *(float *) &datap[14] = 625.0f;
+    *(float *) &datap[15] = 0.0f;
 
-    *(u_long *)&datap[16] = SCE_GIF_SET_TAG(0, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 0, 1, 1, 1, 0, 0, 0, 0), SCE_GIF_PACKED, 3);
-    datap[18] = 0 \
-        | SCE_GS_ST    << (0 * 4)
-        | SCE_GS_RGBAQ << (1 * 4)
-        | SCE_GS_XYZF2 << (2 * 4);
+    *(u_long *) &datap[16] = SCE_GIF_SET_TAG(
+        0, SCE_GS_TRUE, SCE_GS_TRUE,
+        SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 0, 1, 1, 1, 0, 0, 0, 0),
+        SCE_GIF_PACKED, 3);
+    datap[18] = 0 | SCE_GS_ST << (0 * 4) | SCE_GS_RGBAQ << (1 * 4)
+                | SCE_GS_XYZF2 << (2 * 4);
     datap[19] = 0;
 
-    *(u_long *)&datap[20] = SCE_GIF_SET_TAG(0, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRIFAN, 0, 1, 1, 1, 0, 0, 0, 0), SCE_GIF_PACKED, 3);
-    datap[22] = 0 \
-        | SCE_GS_ST    << (0 * 4)
-        | SCE_GS_RGBAQ << (1 * 4)
-        | SCE_GS_XYZF2 << (2 * 4);
+    *(u_long *) &datap[20] = SCE_GIF_SET_TAG(
+        0, SCE_GS_TRUE, SCE_GS_TRUE,
+        SCE_GS_SET_PRIM(SCE_GS_PRIM_TRIFAN, 0, 1, 1, 1, 0, 0, 0, 0),
+        SCE_GIF_PACKED, 3);
+    datap[22] = 0 | SCE_GS_ST << (0 * 4) | SCE_GS_RGBAQ << (1 * 4)
+                | SCE_GS_XYZF2 << (2 * 4);
     datap[23] = 0;
 
-    Vu0CopyVector(*(sceVu0FVECTOR *)&SCRATCHPAD[16], vf12reg[0]);
-    Vu0CopyVector(*(sceVu0FVECTOR *)&SCRATCHPAD[32], vf12reg[1]);
+    Vu0CopyVector(*(sceVu0FVECTOR *) &SCRATCHPAD[16], vf12reg[0]);
+    Vu0CopyVector(*(sceVu0FVECTOR *) &SCRATCHPAD[32], vf12reg[1]);
 
     datap[8] = 0x60;
     datap[9] = 0x230;
 
-    Vu0CopyVector(*(sceVu0FVECTOR *)&SCRATCHPAD[0x190], fog_value);
+    Vu0CopyVector(*(sceVu0FVECTOR *) &SCRATCHPAD[0x190], fog_value);
 
     LoadSgProg(3);
 
-    datap = (u_int *)getObjWrk();
+    datap = (u_int *) getObjWrk();
 
     datap[0] = 0;
     datap[1] = 0;
     datap[2] = 0;
     datap[3] = DMAcall | 4;
 
-    base = (dword *)&datap[4];
+    base = (dword *) &datap[4];
 
-    base[0][0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 3);
-    base[0][1] = 0 \
-        | SCE_GIF_PACKED_AD << (0 * 4)
-        | SCE_GIF_PACKED_AD << (1 * 4)
-        | SCE_GIF_PACKED_AD << (2 * 4);
+    base[0][0] =
+        SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 3);
+    base[0][1] = 0 | SCE_GIF_PACKED_AD << (0 * 4) | SCE_GIF_PACKED_AD << (1 * 4)
+                 | SCE_GIF_PACKED_AD << (2 * 4);
 
     base[1][0] = shandle->shadow_tex0;
     base[1][1] = SCE_GS_TEX0_1;
@@ -1146,131 +1178,167 @@ void SetUpShadow(ShadowHandle *shandle)
     base[2][0] = SCE_GS_SET_CLAMP_1(SCE_GS_CLAMP, SCE_GS_CLAMP, 0, 0, 0, 0);
     base[2][1] = SCE_GS_CLAMP_1;
 
-    base[3][0] = SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_GEQUAL, 1, SCE_GS_AFAIL_KEEP, 0, 1, 1, SCE_GS_DEPTH_GEQUAL);
+    base[3][0] = SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_GEQUAL, 1, SCE_GS_AFAIL_KEEP,
+                                   0, 1, 1, SCE_GS_DEPTH_GEQUAL);
     base[3][1] = SCE_GS_TEST_1;
 
     AppendDmaBuffer(5);
 
-    datap = (u_int *)getObjWrk();
+    datap = (u_int *) getObjWrk();
 
-    ((u_int *)datap)[0] = DMAref;
-    ((float *)datap)[1] = 0.0f;
-    ((float *)datap)[2] = 0.0f;
-    ((float *)datap)[3] = 1.0f;
-    ((float *)datap)[4] = 1.0f;
-    ((float *)datap)[5] = 0.0f;
-    ((float *)datap)[6] = 0.0f;
-    ((float *)datap)[7] = 0.0f;
+    ((u_int *) datap)[0] = DMAref;
+    ((float *) datap)[1] = 0.0f;
+    ((float *) datap)[2] = 0.0f;
+    ((float *) datap)[3] = 1.0f;
+    ((float *) datap)[4] = 1.0f;
+    ((float *) datap)[5] = 0.0f;
+    ((float *) datap)[6] = 0.0f;
+    ((float *) datap)[7] = 0.0f;
 
     AppendDmaBuffer(2);
     FlushModel(0);
 
-    Vu0CopyVector(*(sceVu0FVECTOR *)shadow_col, *(sceVu0FVECTOR *)&shandle->color);
+    Vu0CopyVector(*(sceVu0FVECTOR *) shadow_col,
+                  *(sceVu0FVECTOR *) &shandle->color);
 }
 
 void ClearShadowFrame()
 {
     dword *base;
 
-    base = (dword *)getObjWrk();
+    base = (dword *) getObjWrk();
 
-    base[1][0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_SPRITE, 0, 0, 0, 0, 0, 0, 0, 0), SCE_GIF_PACKED, 3);
-    base[1][1] = 0 \
-        | SCE_GS_RGBAQ << (0 * 4)
-        | SCE_GS_XYZF2 << (1 * 4)
-        | SCE_GS_XYZF2 << (2 * 4);
+    base[1][0] = SCE_GIF_SET_TAG(
+        1, SCE_GS_TRUE, SCE_GS_TRUE,
+        SCE_GS_SET_PRIM(SCE_GS_PRIM_SPRITE, 0, 0, 0, 0, 0, 0, 0, 0),
+        SCE_GIF_PACKED, 3);
+    base[1][1] = 0 | SCE_GS_RGBAQ << (0 * 4) | SCE_GS_XYZF2 << (1 * 4)
+                 | SCE_GS_XYZF2 << (2 * 4);
 
     base += 2;
 
-    ((u_int *)&base[0])[0] = 0; // R
-    ((u_int *)&base[0])[1] = 0; // G
-    ((u_int *)&base[0])[2] = 0; // B
-    ((u_int *)&base[0])[3] = 0; // A
+    ((u_int *) &base[0])[0] = 0;// R
+    ((u_int *) &base[0])[1] = 0;// G
+    ((u_int *) &base[0])[2] = 0;// B
+    ((u_int *) &base[0])[3] = 0;// A
 
-    ((u_int *)&base[1])[0] = SCREENX_TO_GSX_UL(0, shadowtex.width);  // X
-    ((u_int *)&base[1])[1] = SCREENY_TO_GSY_UL(0, shadowtex.height); // Y
-    ((u_int *)&base[1])[2] = 0x3a980;                                // Z
-    ((u_int *)&base[1])[3] = 0;                                      // F
+    ((u_int *) &base[1])[0] = SCREENX_TO_GSX_UL(0, shadowtex.width); // X
+    ((u_int *) &base[1])[1] = SCREENY_TO_GSY_UL(0, shadowtex.height);// Y
+    ((u_int *) &base[1])[2] = 0x3a980;                               // Z
+    ((u_int *) &base[1])[3] = 0;                                     // F
 
-    ((u_int *)&base[2])[0] = SCREENX_TO_GSX_DR(0, shadowtex.width);  // X
-    ((u_int *)&base[2])[1] = SCREENY_TO_GSY_DR(0, shadowtex.height); // Y
-    ((u_int *)&base[2])[2] = 0x3a980;                                // Z
-    ((u_int *)&base[2])[3] = 0;                                      // F
+    ((u_int *) &base[2])[0] = SCREENX_TO_GSX_DR(0, shadowtex.width); // X
+    ((u_int *) &base[2])[1] = SCREENY_TO_GSY_DR(0, shadowtex.height);// Y
+    ((u_int *) &base[2])[2] = 0x3a980;                               // Z
+    ((u_int *) &base[2])[3] = 0;                                     // F
 
-    AppendDmaBufferFromEndAddress((qword *)(base + 3));
+    AppendDmaBufferFromEndAddress((qword *) (base + 3));
 }
 
 void SetShadowEnvironment()
 {
     qword *base;
 
-    base = (qword *)getObjWrk() + 1;
+    base = (qword *) getObjWrk() + 1;
 
-    base[0][0] = (int)(SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 9) >>  0);
-    base[0][1] = (int)(SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 9) >> 32);
-    base[0][2] = 0 \
-        | SCE_GIF_PACKED_AD << (0 * 4)
-        | SCE_GIF_PACKED_AD << (1 * 4)
-        | SCE_GIF_PACKED_AD << (2 * 4)
-        | SCE_GIF_PACKED_AD << (3 * 4)
-        | SCE_GIF_PACKED_AD << (4 * 4)
-        | SCE_GIF_PACKED_AD << (5 * 4)
-        | SCE_GIF_PACKED_AD << (6 * 4)
-        | SCE_GIF_PACKED_AD << (7 * 4);
-    base[0][3] = 0 \
-        | SCE_GIF_PACKED_AD << (0 * 4);
+    base[0][0] = (int) (SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_FALSE, 0,
+                                        SCE_GIF_PACKED, 9)
+                        >> 0);
+    base[0][1] = (int) (SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_FALSE, 0,
+                                        SCE_GIF_PACKED, 9)
+                        >> 32);
+    base[0][2] = 0 | SCE_GIF_PACKED_AD << (0 * 4) | SCE_GIF_PACKED_AD << (1 * 4)
+                 | SCE_GIF_PACKED_AD << (2 * 4) | SCE_GIF_PACKED_AD << (3 * 4)
+                 | SCE_GIF_PACKED_AD << (4 * 4) | SCE_GIF_PACKED_AD << (5 * 4)
+                 | SCE_GIF_PACKED_AD << (6 * 4) | SCE_GIF_PACKED_AD << (7 * 4);
+    base[0][3] = 0 | SCE_GIF_PACKED_AD << (0 * 4);
 
     base[1][2] = SCE_GS_TEXFLUSH;
 
     base[2][2] = SCE_GS_ALPHA_1;
-    base[2][0] = (int)(SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_AS, SCE_GS_ALPHA_CD, 0x40) >>  0);
-    base[2][1] = (int)(SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_AS, SCE_GS_ALPHA_CD, 0x40) >> 32);
+    base[2][0] =
+        (int) (SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD,
+                                  SCE_GS_ALPHA_AS, SCE_GS_ALPHA_CD, 0x40)
+               >> 0);
+    base[2][1] =
+        (int) (SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD,
+                                  SCE_GS_ALPHA_AS, SCE_GS_ALPHA_CD, 0x40)
+               >> 32);
 
     base[3][2] = SCE_GS_TEX1_1;
-    base[3][0] = (int)(SCE_GS_SET_TEX1_1(0, 0, SCE_GS_LINEAR, SCE_GS_LINEAR, 0, 0, 0) >>  0);
+    base[3][0] =
+        (int) (SCE_GS_SET_TEX1_1(0, 0, SCE_GS_LINEAR, SCE_GS_LINEAR, 0, 0, 0)
+               >> 0);
 
     base[4][2] = SCE_GS_CLAMP_1;
-    base[4][0] = (int)(SCE_GS_SET_CLAMP_1(SCE_GS_REPEAT, SCE_GS_REPEAT, 0, 0, 0, 0) >>  0);
-    base[4][1] = (int)(SCE_GS_SET_CLAMP_1(SCE_GS_REPEAT, SCE_GS_REPEAT, 0, 0, 0, 0) >> 32);
+    base[4][0] =
+        (int) (SCE_GS_SET_CLAMP_1(SCE_GS_REPEAT, SCE_GS_REPEAT, 0, 0, 0, 0)
+               >> 0);
+    base[4][1] =
+        (int) (SCE_GS_SET_CLAMP_1(SCE_GS_REPEAT, SCE_GS_REPEAT, 0, 0, 0, 0)
+               >> 32);
 
     base[5][2] = SCE_GS_TEST_1;
-    base[5][0] = (int)(SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_ALWAYS, 128, SCE_GS_AFAIL_KEEP, 0, 0, 1, SCE_GS_DEPTH_ALWAYS) >> 0);
+    base[5][0] =
+        (int) (SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_ALWAYS, 128, SCE_GS_AFAIL_KEEP,
+                                 0, 0, 1, SCE_GS_DEPTH_ALWAYS)
+               >> 0);
 
     base[6][2] = SCE_GS_SCISSOR_1;
-    base[6][0] = (shadowtex.width - 1) << 16; // SCE_GS_SET_SCISSOR(0, shadowtex.width - 1, 0, shadowtex.height - 1)
-    base[6][1] = (shadowtex.height - 1) << 16; // SCE_GS_SET_SCISSOR(0, shadowtex.width - 1, 0, shadowtex.height - 1)
+    base[6][0] =
+        (shadowtex.width - 1)
+        << 16;// SCE_GS_SET_SCISSOR(0, shadowtex.width - 1, 0, shadowtex.height - 1)
+    base[6][1] =
+        (shadowtex.height - 1)
+        << 16;// SCE_GS_SET_SCISSOR(0, shadowtex.width - 1, 0, shadowtex.height - 1)
 
     base[7][2] = SCE_GS_ZBUF_1;
-    base[7][0] = (int)(SCE_GS_SET_ZBUF_1(0, SCE_GS_PSMCT32, 1) >>  0);
-    base[7][1] = (int)(SCE_GS_SET_ZBUF_1(0, SCE_GS_PSMCT32, 1) >> 32);
+    base[7][0] = (int) (SCE_GS_SET_ZBUF_1(0, SCE_GS_PSMCT32, 1) >> 0);
+    base[7][1] = (int) (SCE_GS_SET_ZBUF_1(0, SCE_GS_PSMCT32, 1) >> 32);
 
     base[8][2] = SCE_GS_FRAME_1;
-    base[8][0] = (shadowtex.addr >> 11 | (shadowtex.width >> 6) << 16 | SCE_GS_PSMCT16 << 24); // SCE_GS_SET_FRAME(shadowtex.addr >> 11, shadowtex.width >> 6, SCE_GS_PSMCT16, 0)
-    base[8][1] = 0; // SCE_GS_SET_FRAME(shadowtex.addr >> 11, shadowtex.width >> 6, SCE_GS_PSMCT16, 0)
+    base[8][0] =
+        (shadowtex.addr >> 11 | (shadowtex.width >> 6) << 16
+         | SCE_GS_PSMCT16
+               << 24);// SCE_GS_SET_FRAME(shadowtex.addr >> 11, shadowtex.width >> 6, SCE_GS_PSMCT16, 0)
+    base[8][1] =
+        0;// SCE_GS_SET_FRAME(shadowtex.addr >> 11, shadowtex.width >> 6, SCE_GS_PSMCT16, 0)
 
     base[9][2] = SCE_GS_XYOFFSET_1;
     base[9][0] = SCREENX_TO_GSX_UL(0, shadowtex.width);
     base[9][1] = SCREENY_TO_GSY_UL(0, shadowtex.height);
 
-    AppendDmaBufferFromEndAddress((qword *)(base + 10));
+    AppendDmaBufferFromEndAddress((qword *) (base + 10));
 
     ClearShadowFrame();
 
-    base = (qword *)getObjWrk() + 1;
-    base[0][0] = (int)(SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 2) >>  0);
-    base[0][1] = (int)(SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 2) >> 32);
-    base[0][2] = 0 \
-        | SCE_GIF_PACKED_AD << (0 * 4)
-        | SCE_GIF_PACKED_AD << (1 * 4);
+    base = (qword *) getObjWrk() + 1;
+    base[0][0] = (int) (SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_FALSE, 0,
+                                        SCE_GIF_PACKED, 2)
+                        >> 0);
+    base[0][1] = (int) (SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_FALSE, 0,
+                                        SCE_GIF_PACKED, 2)
+                        >> 32);
+    base[0][2] =
+        0 | SCE_GIF_PACKED_AD << (0 * 4) | SCE_GIF_PACKED_AD << (1 * 4);
 
     base[1][2] = SCE_GS_TEST_1;
-    base[1][0] = (int)(SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_GEQUAL, 1, SCE_GS_AFAIL_KEEP, 0, 0, 1, SCE_GS_DEPTH_ALWAYS) >>  0);
+    base[1][0] =
+        (int) (SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_GEQUAL, 1, SCE_GS_AFAIL_KEEP,
+                                 0, 0, 1, SCE_GS_DEPTH_ALWAYS)
+               >> 0);
 
     base[2][2] = SCE_GS_SCISSOR_1;
-    base[2][0] = 1 | (shadowtex.width - 2) << 16;  // SCE_GS_SET_SCISSOR(1, shadowtex.width - 2, 1, shadowtex.height - 2)
-    base[2][1] = 1 | (shadowtex.height - 2) << 16; // SCE_GS_SET_SCISSOR(1, shadowtex.width - 2, 1, shadowtex.height - 2)
+    base[2][0] =
+        1
+        | (shadowtex.width - 2)
+              << 16;// SCE_GS_SET_SCISSOR(1, shadowtex.width - 2, 1, shadowtex.height - 2)
+    base[2][1] =
+        1
+        | (shadowtex.height - 2)
+              << 16;// SCE_GS_SET_SCISSOR(1, shadowtex.width - 2, 1, shadowtex.height - 2)
 
-    AppendDmaBufferFromEndAddress((qword *)(base + 3));
+    AppendDmaBufferFromEndAddress((qword *) (base + 3));
 }
 
 void GetRotMatrixYZPlain(sceVu0FMATRIX rmat, sceVu0FVECTOR vec)
@@ -1316,7 +1384,8 @@ void GetRotMatrixZAxis(sceVu0FMATRIX rmat, sceVu0FVECTOR vec)
     }
 }
 
-void CalcShadowMatrix(ShadowHandle *shandle, sceVu0FVECTOR center, float ax, float ay)
+void CalcShadowMatrix(ShadowHandle *shandle, sceVu0FVECTOR center, float ax,
+                      float ay)
 {
     sceVu0FMATRIX touei;
     sceVu0FMATRIX tmpmat;
@@ -1328,8 +1397,8 @@ void CalcShadowMatrix(ShadowHandle *shandle, sceVu0FVECTOR center, float ax, flo
 
     sceVu0UnitMatrix(touei);
 
-    touei[0][0] = (shadowtex.scale / (float)shadowtex.width) * ax;
-    touei[1][1] = (-shadowtex.scale / (float)shadowtex.height) * ay;
+    touei[0][0] = (shadowtex.scale / (float) shadowtex.width) * ax;
+    touei[1][1] = (-shadowtex.scale / (float) shadowtex.height) * ay;
     touei[2][2] = -1.0f;
 
     sceVu0UnitMatrix(tmpmat);
@@ -1478,7 +1547,7 @@ void SetShadowCamera(float *center, sceVu0FVECTOR *bbox, SgCOORDUNIT *cp)
     sceVu0FMATRIX tmpmat;
     sceVu0FMATRIX quat;
 
-    cbbox = (sceVu0FVECTOR *)&SCRATCHPAD[0x6a0];
+    cbbox = (sceVu0FVECTOR *) &SCRATCHPAD[0x6a0];
 
     Vu0LoadMatrix(cp->lwmtx);
 
@@ -1604,15 +1673,18 @@ void DrawShadow(ShadowHandle *shandle, EnvFuncCallback env_func)
 
     _NormalizeVector(ndirection, shandle->direction);
 
-    hs = (HeaderSection *)shandle->shadow_model;
+    hs = (HeaderSection *) shandle->shadow_model;
 
     SetShadowCamera(center, shandle->bbox, GetCoordP(hs));
 
-    shandle->shadow_tex0 = SCE_GS_SET_TEX0_1(shadowtex.addr >> 6, shadowtex.width >> 6, SCE_GS_PSMCT16, shadowtex.width_p, shadowtex.height_p, 1, SCE_GS_MODULATE, shadowtex.addr >> 6, SCE_GS_PSMCT32, 0, 0, 1);
+    shandle->shadow_tex0 = SCE_GS_SET_TEX0_1(
+        shadowtex.addr >> 6, shadowtex.width >> 6, SCE_GS_PSMCT16,
+        shadowtex.width_p, shadowtex.height_p, 1, SCE_GS_MODULATE,
+        shadowtex.addr >> 6, SCE_GS_PSMCT32, 0, 0, 1);
 
     SetShadowEnvironment();
 
-    DrawShadowModel(hs,shandle->smodel_num);
+    DrawShadowModel(hs, shandle->smodel_num);
 
     SgSetWsMtx(shandle->camera->ws);
     SgSetClipMtx(shandle->camera->wc);
@@ -1620,5 +1692,5 @@ void DrawShadow(ShadowHandle *shandle, EnvFuncCallback env_func)
 
     env_func();
 
-    CalcShadowMatrix(shandle,center, scamera.ax, scamera.ay);
+    CalcShadowMatrix(shandle, center, scamera.ax, scamera.ay);
 }
