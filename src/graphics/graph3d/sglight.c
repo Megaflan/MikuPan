@@ -1189,13 +1189,13 @@ void SgReadLights(void *sgd_top, void *light_top, float *Ambient, SgLIGHT *Iligh
         scale = 1.0f;
     }
 
-    //pk = (u_int *)&((HeaderSection *)light_top)->primitives;
-    pk = GetPrimitiveAddr(light_top, 0);
+    pk = (u_int *)&((HeaderSection *)light_top)->primitives;
+    //pk = GetPrimitiveAddr(light_top, 0);
 
     if (light_top == NULL)
     {
-        //pk = (u_int *)&((HeaderSection *)sgd_top)->primitives;
-        pk = GetPrimitiveAddr(sgd_top, 0);
+        pk = (u_int *)&((HeaderSection *)sgd_top)->primitives;
+        //pk = GetPrimitiveAddr(sgd_top, 0);
     }
 
     if (Ilight != NULL)
@@ -1216,7 +1216,7 @@ void SgReadLights(void *sgd_top, void *light_top, float *Ambient, SgLIGHT *Iligh
     Vu0ZeroVector(Ambient);
 
     //prim = (u_int *)*pk;
-    prim = GetTopProcUnitHeaderPtr(light_top == NULL ? sgd_top : light_top, 0);
+    prim = (u_int *)MikuPan_GetHostPointer((int)*pk);
 
     while (prim != NULL)
     {
@@ -1851,7 +1851,7 @@ void SgPreRenderPrim(u_int *prim)
         return;
     }
 
-    while (prim[0] != NULL)
+    while (prim[0] != 0)
     {
         switch(prim[1])
         {
@@ -1902,6 +1902,11 @@ void SgPreRender(void *sgd_top, int pnum)
     int i;
     u_int *pk;
     HeaderSection *hs;
+
+    if (sgd_top == NULL)
+    {
+        return;
+    }
 
     Set12Register();
 
@@ -2014,7 +2019,7 @@ void SgClearPreRenderPrim(u_int *prim)
         return;
     }
 
-    while (prim[0] != NULL)
+    while (prim[0] != 0)
     {
         if (prim[1] == 1)
         {
@@ -2031,6 +2036,11 @@ void SgClearPreRender(void *sgd_top, int pnum)
     int i;
     u_int *pk;
     HeaderSection *hs;
+
+    if (sgd_top == NULL)
+    {
+        return;
+    }
 
     hs = (HeaderSection *)sgd_top;
 

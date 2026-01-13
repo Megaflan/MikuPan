@@ -172,7 +172,7 @@ void InitEffectsEF()
         {
             if (e[i] == NULL)
             {
-                e[i] = SetEffects(0x22, 2, fly_wrk[i].move_box.pos, 0x50, 0x50, 0x5c, &aalp, i);
+                e[i] = SetEffects(EF_FACESPIRIT, 2, fly_wrk[i].move_box.pos, 0x50, 0x50, 0x5c, &aalp, i);
             }
         }
         else
@@ -202,12 +202,12 @@ void InitEffectsEF()
     {        
         if (r23_e1 == NULL)
         {
-            r23_e1 = SetEffects(0x1e, 2, canal1, 1, 250.0, 200, 0x80, 0x80, 0x80);
+            r23_e1 = SetEffects(EF_WATERDROP, 2, canal1, 1, 250.0, 200, 0x80, 0x80, 0x80);
         }
         
         if (r23_e2 == NULL)
         {
-            r23_e2 = SetEffects(0x1e, 2, canal2, 4, 250.0, 0x104, 0x80, 0x80, 0x80);
+            r23_e2 = SetEffects(EF_WATERDROP, 2, canal2, 4, 250.0, 0x104, 0x80, 0x80, 0x80);
         }
     }
     
@@ -250,10 +250,12 @@ void EffectEndSet()
 
 void *SetEffects(int id, int fl, ...)
 {
-    int ret;
     va_list ap;
+    va_start(ap, fl);
+
+    int ret;
     EFFECT_CONT *ec;
-    return NULL;
+
     if (
         (ingame_wrk.stts & 0x20) &&
         ev_wrk.movie_on != 4 &&
@@ -331,27 +333,25 @@ void *SetEffects(int id, int fl, ...)
     default:
     return NULL;
     }
-
-    va_start(ap, fl);
     
     switch(id)
     {
-    case 1:
+    case EF_Z_DEP:
         ec->dat.uc8[0] = 1;
         ec->dat.uc8[1] = fl;
     break;
-    case 36:
+    case EF_Z_DEP2:
         ec->dat.uc8[0] = 36;
         ec->dat.uc8[1] = fl;
     break;
-    case 2:
+    case EF_DITHER:
         ec->dat.uc8[0] = 2;
         ec->dat.uc8[1] = fl;
-        ec->dat.uc8[2] = va_arg(ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
         ec->dat.fl32[2] = va_arg(ap, double);
         ec->dat.fl32[3] = va_arg(ap, double);
-        ec->dat.uc8[3] = va_arg(ap, u_char);
-        ec->dat.uc8[4] = va_arg(ap, u_char);
+        ec->dat.uc8[3] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[4] = (u_char) va_arg(ap, int);
         
         if (fl & 4)
         {
@@ -362,14 +362,14 @@ void *SetEffects(int id, int fl, ...)
             ec->flow = (ec->in == 0 ? (ec->keep == 0 ? ec->out != 0 ? 2 : 3 : 1) : 0);
         }
     break;
-    case 35:
+    case EF_DITHER2:
         ec->dat.uc8[0] = 35;
         ec->dat.uc8[1] = fl;
-        ec->dat.uc8[2] = va_arg(ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
         ec->dat.fl32[1] = va_arg(ap, double);
         ec->dat.fl32[2] = va_arg(ap, double);
     break;
-    case 3:
+    case EF_BLUR_N:
         ec->dat.uc8[0] = 3;
         ec->dat.uc8[1] = fl;
         ec->dat.uc8[2] = 0;
@@ -379,7 +379,7 @@ void *SetEffects(int id, int fl, ...)
         ec->fw[0] = va_arg(ap, double);
         ec->fw[1] = va_arg(ap, double);
     break;
-    case 4:
+    case EF_BLUR_B:
         ec->dat.uc8[0] = 4;
         ec->dat.uc8[1] = fl;
         ec->dat.uc8[2] = 1;
@@ -389,7 +389,7 @@ void *SetEffects(int id, int fl, ...)
         ec->fw[0] = va_arg(ap, double);
         ec->fw[1] = va_arg(ap, double);
     break;
-    case 5:
+    case EF_BLUR_W:
         ec->dat.uc8[0] = 5;
         ec->dat.uc8[1] = fl;
         ec->dat.uc8[2] = 2;
@@ -399,11 +399,11 @@ void *SetEffects(int id, int fl, ...)
         ec->fw[0] = va_arg(ap, double);
         ec->fw[1] = va_arg(ap, double);
     break;
-    case 6:
+    case EF_DEFORM:
         ec->dat.uc8[0] = 6;
         ec->dat.uc8[1] = fl;
-        ec->dat.uc8[2] = va_arg(ap, u_char);
-        ec->dat.uc8[3] = va_arg(ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[3] = (u_char) va_arg(ap, int);
         ec->dat.uc8[4] = 0;
         
         if (fl & 4)
@@ -415,69 +415,69 @@ void *SetEffects(int id, int fl, ...)
             ec->out = va_arg(ap, u_int);
         }
     break;
-    case 7:
+    case EF_FOCUS:
         ec->dat.uc8[0] = 7;
         ec->dat.uc8[1] = fl;
-        ec->dat.uc8[2] = va_arg(ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
     break;
-    case 42:
+    case EF_STEALTH:
         ec->dat.uc8[0] = 42;
         ec->dat.uc8[1] = fl;
         ec->dat.uc8[2] = 0;
         ec->pnt[0] = va_arg(ap, void *);
     break;
-    case 43:
+    case EF_STEALTH2:
         ec->dat.uc8[0] = 42;
         ec->dat.uc8[1] = fl;
         ec->dat.uc8[2] = 1;
         ec->pnt[0] = va_arg(ap, void *);
     break;
-    case 44:
+    case EF_007:
         ec->dat.uc8[0] = 42;
         ec->dat.uc8[1] = fl;
         ec->dat.uc8[2] = 2;
         ec->pnt[0] = va_arg(ap, void *);
     break;
-    case 45:
+    case EF_MONO:
         ec->dat.uc8[0] = 45;
         ec->dat.uc8[1] = fl;
     break;
-    case 46:
+    case EF_SEPIA:
         ec->dat.uc8[0] = 46;
         ec->dat.uc8[1] = fl;
     break;
-    case 8:
+    case EF_OVERLAP:
         ec->dat.uc8[0] = 8;
         ec->dat.uc8[1] = fl;
-        ec->dat.uc8[2] = va_arg(ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
     break;
-    case 9:
+    case EF_FADEFRAME:
         ec->dat.uc8[0] = 9;
         ec->dat.uc8[1] = fl;
-        ec->dat.uc8[2] = va_arg(ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
         ec->dat.ui32[1] = va_arg(ap, u_int);
     break;
-    case 10:
+    case EF_RENZFLARE:
         ec->dat.uc8[0] = 10;
         ec->dat.uc8[1] = fl;
-        ec->dat.uc8[2] = va_arg(ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
         ec->pnt[0] = va_arg(ap, void *);
         ec->pnt[1] = va_arg(ap, void *);
     break;
-    case 37:
+    case EF_HAZE:
         ec->dat.uc8[0] = 37;
         ec->dat.uc8[1] = fl;
     break;
-    case 11:
+    case EF_BLACKFILTER:
         ec->dat.uc8[0] = 11;
         ec->dat.uc8[1] = fl;
-        ec->dat.uc8[2] = va_arg(ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
     break;
-    case 12:
+    case EF_NEGA:
         ec->dat.uc8[0] = 12;
         ec->dat.uc8[1] = fl;
-        ec->dat.uc8[2] = va_arg(ap, u_char);
-        ec->dat.uc8[3] = va_arg(ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[3] = (u_char) va_arg(ap, int);
         
         if (fl & 4)
         {
@@ -492,25 +492,25 @@ void *SetEffects(int id, int fl, ...)
             ec->pnt[0] = va_arg(ap, void *);
         }
     break;
-    case 13:
+    case EF_NCONTRAST:
         ec->dat.uc8[0] = 13;
         ec->dat.uc8[1] = fl;
-        ec->dat.uc8[2] = va_arg(ap, u_char);
-        ec->dat.uc8[3] = va_arg(ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[3] = (u_char) va_arg(ap, int);
     break;
-    case 14:
+    case EF_NCONTRAST2:
         ec->dat.uc8[0] = 14;
         ec->dat.uc8[1] = fl;
-        ec->dat.uc8[2] = va_arg(ap, u_char);
-        ec->dat.uc8[3] = va_arg(ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[3] = (u_char) va_arg(ap, int);
     break;
-    case 15:
+    case EF_NCONTRAST3:
         ec->dat.uc8[0] = 15;
         ec->dat.uc8[1] = fl;
-        ec->dat.uc8[2] = va_arg(ap, u_char);
-        ec->dat.uc8[3] = va_arg(ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[3] = (u_char) va_arg(ap, int);
     break;
-    case 16:
+    case EF_MAGATOKI:
         ec->dat.uc8[0] = 16;
         ec->dat.uc8[1] = fl;
         ec->dat.uc8[2] = fl;
@@ -519,56 +519,56 @@ void *SetEffects(int id, int fl, ...)
         ec->out = va_arg(ap, u_int);
         ec->pnt[0] = va_arg(ap, void *);
     break;
-    case 17:
+    case EF_ENEDMG1:
         ec->dat.uc8[0] = 17;
         ec->dat.uc8[1] = fl;
-        ec->dat.uc8[2] = va_arg (ap, char);
+        ec->dat.uc8[2] = (char) va_arg(ap, int);
     break;
-    case 18:
+    case EF_ENEDMG2:
         ec->dat.uc8[0] = 18;
         ec->dat.uc8[1] = fl;
-        ec->dat.uc8[2] = va_arg (ap, char);
+        ec->dat.uc8[2] = (char) va_arg(ap, int);
     break;
-    case 19:
+    case EF_SPIRIT:
         ec->dat.uc8[0] = 19;
         ec->dat.uc8[1] = fl;
-        ec->flow = va_arg (ap, char);
+        ec->flow = va_arg(ap, int);
         ec->pnt[0] = va_arg(ap, void *);
-        ec->dat.uc8[2] = va_arg (ap, u_char);
-        ec->dat.uc8[3] = va_arg (ap, u_char);
-        ec->dat.uc8[4] = va_arg (ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[3] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[4] = (u_char) va_arg(ap, int);
         ec->dat.fl32[2] = va_arg(ap, double);
-        ec->dat.uc8[5] = va_arg (ap, u_char);
-        ec->dat.uc8[6] = va_arg (ap, u_char);
-        ec->dat.uc8[7] = va_arg (ap, u_char);
+        ec->dat.uc8[5] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[6] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[7] = (u_char) va_arg(ap, int);
         ec->dat.fl32[3] = va_arg (ap, double);
         ec->pnt[1] = va_arg (ap, void *);
         ec->cnt = 0;
         ec->max = 0;
         ec->keep = 0;
     break;
-    case 38:
+    case EF_PBLUR:
         ec->dat.uc8[0] = 38;
         ec->dat.uc8[1] = fl;
-        ec->dat.uc8[2] = va_arg (ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
     break;
-    case 41:
+    case EF_LUMINE:
         ec->dat.uc8[0] = 41;
         ec->dat.uc8[1] = fl;
         ec->pnt[0] = va_arg(ap, void *);
     break;
-    case 23:
+    case EF_FIRE:
         ec->dat.uc8[0] = 23;
         ec->dat.uc8[1] = fl | 0x80;
-        ec->flow = va_arg(ap, char);
+        ec->flow = (char) va_arg(ap, int);
         ec->pnt[0] = va_arg(ap, void *);
-        ec->dat.uc8[2] = va_arg (ap, u_char);
-        ec->dat.uc8[3] = va_arg (ap, u_char);
-        ec->dat.uc8[4] = va_arg (ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[3] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[4] = (u_char) va_arg(ap, int);
         ec->dat.fl32[2] = va_arg(ap, double);
-        ec->dat.uc8[5] = va_arg (ap, u_char);
-        ec->dat.uc8[6] = va_arg (ap, u_char);
-        ec->dat.uc8[7] = va_arg (ap, u_char);
+        ec->dat.uc8[5] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[6] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[7] = (u_char) va_arg(ap, int);
         ec->dat.fl32[3] = va_arg (ap, double);
         
         if (ec->flow == 3)
@@ -585,18 +585,18 @@ void *SetEffects(int id, int fl, ...)
             ec->cnt = 0;
         }
     break;
-    case 24:
+    case EF_FIRE2:
         ec->dat.uc8[0] = 24;
         ec->dat.uc8[1] = fl | 0x80;
-        ec->flow = va_arg (ap, char);
+        ec->flow = va_arg(ap, int);
         ec->pnt[0] = va_arg(ap, void *);
-        ec->dat.uc8[2] = va_arg (ap, u_char);
-        ec->dat.uc8[3] = va_arg (ap, u_char);
-        ec->dat.uc8[4] = va_arg (ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[3] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[4] = (u_char) va_arg(ap, int);
         ec->dat.fl32[2] = va_arg(ap, double);
-        ec->dat.uc8[5] = va_arg (ap, u_char);
-        ec->dat.uc8[6] = va_arg (ap, u_char);
-        ec->dat.uc8[7] = va_arg (ap, u_char);
+        ec->dat.uc8[5] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[6] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[7] = (u_char) va_arg(ap, int);
         ec->dat.fl32[3] = va_arg (ap, double);
         ec->fw[0] = va_arg (ap, double);
         
@@ -613,35 +613,35 @@ void *SetEffects(int id, int fl, ...)
             ec->cnt = 0;
         }
     break;
-    case 20:
+    case EF_HALO:
         ec->dat.uc8[0] = 20;
         ec->dat.uc8[1] = fl | 0x80;
-        ec->dat.uc8[2] = va_arg (ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
         ec->pnt[0] = va_arg(ap, void *);
-        ec->dat.uc8[3] = va_arg (ap, u_char);
-        ec->dat.uc8[4] = va_arg (ap, u_char);
-        ec->dat.uc8[5] = va_arg (ap, u_char);
+        ec->dat.uc8[3] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[4] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[5] = (u_char) va_arg(ap, int);
         ec->dat.fl32[2] = va_arg(ap, double);
-        ec->dat.uc8[6] = va_arg (ap, u_char);
+        ec->dat.uc8[6] = (u_char) va_arg(ap, int);
     break;
-    case 21:
+    case EF_RIPPLE:
         ec->dat.uc8[0] = 21;
         ec->dat.uc8[1] = fl;
-        ec->dat.uc8[2] = va_arg (ap, u_char);
-        ec->dat.uc8[3] = va_arg (ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[3] = (u_char) va_arg(ap, int);
         ec->dat.uc8[4] = 0;
         ec->dat.uc8[7] = 0;
         ec->pnt[0] = va_arg(ap, void *);
     break;
-    case 22:
+    case EF_RIPPLE2:
         ec->dat.uc8[0] = 22;
         ec->dat.uc8[1] = fl;
-        ec->dat.uc8[2] = va_arg (ap, u_char);
-        ec->dat.uc8[3] = va_arg (ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[3] = (u_char) va_arg(ap, int);
         ec->cnt = 0;
-        ec->dat.uc8[4] = va_arg (ap, u_char);
-        ec->dat.uc8[5] = va_arg (ap, u_char);
-        ec->dat.uc8[6] = va_arg (ap, u_char);
+        ec->dat.uc8[4] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[5] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[6] = (u_char) va_arg(ap, int);
         ec->dat.uc8[7] = 0;
         ec->dat.fl32[2] = va_arg(ap, double);
         ec->dat.fl32[3] = va_arg (ap, double);
@@ -650,13 +650,13 @@ void *SetEffects(int id, int fl, ...)
         
         if (fl & 8)
         {
-            ec->dat.uc8[7] = va_arg (ap, u_char);
+            ec->dat.uc8[7] = (u_char) va_arg(ap, int);
         }
     break;
-    case 27:
+    case EF_PDEFORM:
         ec->dat.uc8[0] = 27;
         ec->dat.uc8[1] = fl | 0x80;
-        ec->dat.uc8[2] = va_arg (ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
         ec->max = va_arg(ap, u_int);
         ec->dat.uc8[4] = 0xff;
         ec->dat.fl32[2] = va_arg(ap, double);
@@ -678,11 +678,11 @@ void *SetEffects(int id, int fl, ...)
             ec->flow = (ec->in == 0 ? (ec->keep == 0 ? ec->out != 0 ? 2 : 3 : 1) : 0);
         }
     break;
-    case 39:
+    case EF_ENEIN:
         ec->dat.uc8[0] = 39;
         ec->dat.uc8[1] = fl | 0x80;
-        ec->dat.uc8[2] = va_arg (ap, u_char);
-        ec->dat.uc8[3] = va_arg (ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[3] = (u_char) va_arg(ap, int);
         ec->dat.uc8[4] = 0xff;
         ec->dat.fl32[3] = va_arg(ap, double);
         ec->pnt[0] = va_arg(ap, void *);
@@ -697,40 +697,40 @@ void *SetEffects(int id, int fl, ...)
             ec->flow = (ec->in == 0 ? (ec->keep == 0 ? ec->out != 0 ? 2 : 3 : 1) : 0);
         }
     break;
-    case 40:
+    case EF_ENEOUT:
         ec->dat.uc8[0] = 40;
         ec->dat.uc8[1] = fl;
         ec->dat.uc8[2] = 0;
         ec->dat.uc8[3] = 0;
         ec->dat.uc8[4] = 0;
-        ec->dat.uc8[6] = va_arg (ap, u_char);
-        ec->dat.uc8[5] = va_arg (ap, u_char);
+        ec->dat.uc8[6] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[5] = (u_char) va_arg(ap, int);
         ec->dat.uc8[7] = 0;
         ec->fw[0] = 2.0f;
         ec->fw[1] = 0.0f;
         ec->fw[2] = va_arg(ap, double);
         ec->pnt[0] = NULL;
     break;
-    case 29:
+    case EF_DUST:
         ec->dat.uc8[0] = 29;
         ec->dat.uc8[1] = fl | 0x80;
         ec->dat.uc8[2] = 1;
         ec->pnt[0] = va_arg(ap, void *);
     break;
-    case 30:
+    case EF_WATERDROP:
         ec->dat.uc8[0] = 30;
         ec->dat.uc8[1] = fl | 0x80;
         ec->pnt[0] = va_arg(ap, void *);
-        ec->dat.uc8[5] = va_arg (ap, u_char);
+        ec->dat.uc8[5] = (u_char) va_arg(ap, int);
         ec->dat.fl32[2] = va_arg(ap, double);
         ec->dat.ui32[3] = 0;
         ec->cnt = ec->max = va_arg(ap, u_int);
-        ec->dat.uc8[2] = va_arg (ap, u_char);
-        ec->dat.uc8[3] = va_arg (ap, u_char);
-        ec->dat.uc8[4] = va_arg (ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[3] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[4] = (u_char) va_arg(ap, int);
         ec->dat.uc8[6] = 0;
     break;
-    case 31:
+    case EF_SUNSHINE:
         ec->dat.uc8[0] = 31;
         ec->dat.uc8[1] = fl;
         ec->pnt[0] = va_arg(ap, void *);
@@ -740,14 +740,14 @@ void *SetEffects(int id, int fl, ...)
         ec->dat.fl32[2] = va_arg(ap, double);
         ec->dat.fl32[3] = va_arg(ap, double);
         ec->cnt = 0;
-        ec->dat.uc8[2] = va_arg (ap, u_char);
-        ec->dat.uc8[3] = va_arg (ap, u_char);
-        ec->dat.uc8[4] = va_arg (ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[3] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[4] = (u_char) va_arg(ap, int);
     break;
-    case 28:
+    case EF_ENEFIRE:
         ec->dat.uc8[0] = 28;
         ec->dat.uc8[1] = fl | 0x80;
-        ec->dat.uc8[2] = va_arg (ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
         ec->pnt[0] = va_arg(ap, void *);
         ec->pnt[4] = va_arg(ap, void *);
         ec->pnt[1] = va_arg(ap, void *);
@@ -756,59 +756,59 @@ void *SetEffects(int id, int fl, ...)
         ec->dat.ui32[3] = va_arg(ap, u_int);
         ec->pnt[5] = va_arg(ap, void *);
     break;
-    case 25:
+    case EF_TORCH:
         ec->dat.uc8[0] = 25;
         ec->dat.uc8[1] = fl | 0x80;
-        ec->dat.uc8[2] = va_arg (ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
         ec->dat.uc8[3] = 0;
         ec->pnt[0] = va_arg(ap, void *);
         ec->pnt[1] = NULL;
         ec->pnt[2] = va_arg(ap, void *);
         ec->pnt[3] = va_arg(ap, void *);
     break;
-    case 26:
+    case EF_SMOKE:
         ec->dat.uc8[0] = 26;
         ec->dat.uc8[1] = fl | 0x80;
         ec->pnt[0] = va_arg(ap, void *);
         ec->pnt[1] = NULL;
     break;
-    case 32:
+    case EF_NEGACIRCLE:
         ec->dat.uc8[0] = 32;
         ec->dat.uc8[1] = fl;
         ec->dat.fl32[1] = va_arg(ap, double);
         ec->dat.fl32[2] = va_arg(ap, double);
         ec->dat.fl32[3] = va_arg(ap, double);
-        ec->dat.uc8[3] = va_arg (ap, u_char);
+        ec->dat.uc8[3] = (u_char) va_arg(ap, int);
         ec->in = va_arg(ap, u_int);
         ec->keep = va_arg(ap, u_int);
         ec->out = va_arg(ap, u_int);
     break;
-    case 33:
+    case EF_ENEFACE:
         ec->dat.uc8[0] = 33;
         ec->dat.uc8[1] = fl;
-        ec->dat.uc8[2] = va_arg (ap, u_char);
-        ec->dat.uc8[3] = va_arg (ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[3] = (u_char) va_arg(ap, int);
         ec->dat.fl32[1] = va_arg (ap, double);
         ec->dat.fl32[2] = va_arg (ap, double);
         ec->dat.fl32[3] = va_arg (ap, double);
         ec->cnt = 0;
         ec->out = 0;
     break;
-    case 34:
+    case EF_FACESPIRIT:
         ec->dat.uc8[1] = fl;
         ec->dat.uc8[0] = 34;
         ec->pnt[0] = va_arg(ap, void *);
-        ec->dat.uc8[2] = va_arg(ap, u_char);
-        ec->dat.uc8[3] = va_arg(ap, u_char);
-        ec->dat.uc8[4] = va_arg(ap, u_char);
+        ec->dat.uc8[2] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[3] = (u_char) va_arg(ap, int);
+        ec->dat.uc8[4] = (u_char) va_arg(ap, int);
         ec->pnt[1] = va_arg(ap, void *);
-        ec->dat.uc8[5] = va_arg(ap, u_char);
+        ec->dat.uc8[5] = (u_char) va_arg(ap, int);
         ec->dat.uc8[6] = 0;
         ec->cnt = 0;
         ec->max = 0;
         ec->keep = 0;
     break;
-    case 0:
+    case EF_NULL:
         // do nothing ...
     break;
     }

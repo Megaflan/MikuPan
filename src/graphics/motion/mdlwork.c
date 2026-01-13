@@ -2,17 +2,8 @@
 #include "typedefs.h"
 #include "enums.h"
 #include "mikupan/mikupan_memory.h"
-
-#ifdef MATCHING_DECOMP
-#define INCLUDING_FROM_MDLWORK_C
 #include "mdlwork.h"
-#undef INCLUDING_FROM_MDLWORK_C
-#else
-#include "mdlwork.h"
-#endif
-
 #include "sce/misc/diei.h"
-
 #include "main/glob.h"
 #include "main/gamemain.h"
 #include "os/eeiop/eese.h"
@@ -27,7 +18,6 @@
 #include "graphics/motion/accessory.h"
 #include "graphics/graph2d/tim2_new.h"
 #include "outgame/mode_slct.h"
-
 #include "data/plyr_file_id.h" // static PLYR_FILE_ID plyr_file_id[];
 
 void ManmdlSetAlpha(void *sgd_top, u_char alpha)
@@ -590,7 +580,6 @@ void ManTexflush()
     return;
 }
 
-/// TODO: ADJUST FUNCTION FOR 64BITS!!!
 void SgdAddTexOffset(void *sgd_top, int offset)
 {
     u_int i;

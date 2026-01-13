@@ -1893,7 +1893,7 @@ int SceneTestDraw(int cnt_flg)
 
     if (scn_eff_ctrl[15].eff_flg != 0)
     {
-        //InitEffectsEF();
+        InitEffectsEF();
     }
     else
     {

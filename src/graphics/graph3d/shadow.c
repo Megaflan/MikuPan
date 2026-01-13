@@ -339,14 +339,16 @@ void CalcVertexBufferShadow(u_int *prim)
         return;
     }
 
-    vli = (VERTEXLIST *) lphead->pWeightedList;
+    //vli = (VERTEXLIST *) lphead->pWeightedList;
+    vli = (VERTEXLIST *) MikuPan_GetHostPointer(lphead->pWeightedList);
 
     if (vli == NULL)
     {
         return;
     }
 
-    vps = lphead->pWeightedVertex;
+    //vps = lphead->pWeightedVertex;
+    vps = (sceVu0FVECTOR *)MikuPan_GetHostPointer(lphead->pWeightedVertex);
     vpd = vertex_buffer;
 
     for (i = 0; i < vli->list_num; i++)
@@ -527,7 +529,7 @@ void DrawShadowModelPrim(u_int *prim)
         return;
     }
 
-    while (prim[0] != NULL)
+    while (prim[0] != 0)
     {
         switch (prim[1])
         {
@@ -953,7 +955,7 @@ void AssignShadowPrim(u_int *prim)
         return;
     }
 
-    while (prim[0] != NULL)
+    while (prim[0] != 0)
     {
         switch (prim[1])
         {
@@ -1041,7 +1043,7 @@ void AssignShadowPreProcess(u_int *prim)
 
     pGroupPacket = NULL;
 
-    while (prim[0] != NULL)
+    while (prim[0] != 0)
     {
         if (prim[1] == 14)
         {

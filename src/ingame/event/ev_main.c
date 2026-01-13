@@ -1187,10 +1187,10 @@ int EventSceneCtrl(short int scene_no)
                 scene_bg_load_flg = 0;
             }
 
-            gra2dDraw(3);
+            gra2dDraw(GRA2D_CALL_IG0E);
             SceneDraw(scene_no);
-            gra2dDraw(4);
-            gra2dDraw(5);
+            gra2dDraw(GRA2D_CALL_IG1E);
+            gra2dDraw(GRA2D_CALL_IG2);
 
             if (SceneIsEnd() != 0)
             {

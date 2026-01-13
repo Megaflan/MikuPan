@@ -93,8 +93,9 @@ void MikuPan_Clear()
 {
     //SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     //SDL_RenderClear(renderer);
+    //SDL_RenderPresent(renderer);
     glad_glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glad_glClear(GL_COLOR_BUFFER_BIT);
+    glad_glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
 void MikuPan_UpdateWindowSize(int width, int height)

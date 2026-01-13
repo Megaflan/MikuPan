@@ -4666,17 +4666,17 @@ void SetScreenSaver()
             DPAD_UP_PRESSED() +
             DPAD_DOWN_PRESSED() +
             DPAD_LEFT_PRESSED() +
-            *key_now[3] + 
-            *key_now[4] + 
-            *key_now[5] + 
-            *key_now[6] + 
-            *key_now[7] + 
-            *key_now[8] + 
-            *key_now[9] + 
-            *key_now[10] + 
-            *key_now[11] +
-            *key_now[13] + \
-            *key_now[12] + \
+            DPAD_RIGHT_PRESSED() +
+            TRIANGLE_PRESSED() +
+            CROSS_PRESSED() +
+            SQUARE_PRESSED() +
+            CIRCLE_PRESSED() +
+            L1_PRESSED() +
+            L2_PRESSED() +
+            R1_PRESSED() +
+            R2_PRESSED() +
+            START_PRESSED() +
+            SELECT_PRESSED() + \
             r3 +
             l3;
 

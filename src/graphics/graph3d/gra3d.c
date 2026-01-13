@@ -491,7 +491,6 @@ void ScenePrerender()
             SgPreRender(tmpModelp, -1);
         }
 
-
         for (i = 0; i < 60; i++)
         {
             disp_model = furn_wrk[i].furn_no;
@@ -507,7 +506,6 @@ void ScenePrerender()
 
                 if (tmpModelp != NULL && furn_wrk[i].room_id == disp_room)
                 {
-
                     SgClearPreRender(tmpModelp, -1);
                     SgPreRender(tmpModelp, -1);
                 }
@@ -1806,6 +1804,7 @@ void DrawFurniture(int disp_room)
                     {
                         grot = grot - PI2;
                     }
+
                     sceVu0RotMatrixZ(cp->matrix, cp->matrix, furn_wrk[j].rotate[2]);
                     sceVu0RotMatrixX(cp->matrix, cp->matrix, furn_wrk[j].rotate[0]);
                     sceVu0RotMatrixY(cp->matrix, cp->matrix, grot);
