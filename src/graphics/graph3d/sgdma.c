@@ -10,9 +10,11 @@
 #include "sce/libdma.h"
 #include "sce/devvif1.h"
 
-#include "graphics/graph3d/sglib.h"
 #include "graphics/graph3d/libsg.h"
+#include "graphics/graph3d/sglib.h"
 #include "graphics/graph3d/sgsu.h"
+#include "mikupan/gs/gs_server_c.h"
+#include "mikupan/mikupan_types.h"
 
 #define REG_VIF1_STAT        ((volatile u_int *)(0x10003c00))
 #define REG_DMAC_ENABLEW     ((volatile u_int *)(0x1000f590))
@@ -48,11 +50,11 @@ void SendDmaOFF()
 
 void ClearDMATrans()
 {
-    printf("Dma Trans Error %x\n", *REG_VIF1_STAT);
+    //printf("Dma Trans Error %x\n", *REG_VIF1_STAT);
 
-    *REG_DMAC_ENABLEW = 0x10000;
-    *REG_DMAC_1_VIF1_CHCR &= 0xfffffeff;
-    *REG_DMAC_ENABLEW = 0;
+    //*REG_DMAC_ENABLEW = 0x10000;
+    //*REG_DMAC_1_VIF1_CHCR &= 0xfffffeff;
+    //*REG_DMAC_ENABLEW = 0;
 
     sceDevVif1Reset();
 
@@ -302,13 +304,17 @@ void LoadTRI2Files(u_int *prim)
     tnum = prim[2];
     pads = prim[3];
 
-    prim = (u_int *)((int64_t)prim + 16 + ((int64_t)pads / 4) * 4);
+    /// SGDTRI2FILEHEADER
+    prim = (u_int *)((int64_t)prim + 0x10 + (pads / 4) * 4);
 
     prim[2] = 0x11000000;
 
     for (i = 0; i < tnum; i++)
     {
+        SGDTRI2FILEHEADER * tri2 = (SGDTRI2FILEHEADER *) prim;
         tri2size = *(u_short *)(prim + 3);
+
+        GsUpload(&tri2->gsli, (u_char*)&tri2[1]);
 
         AppendDmaTag((int64_t)prim, tri2size + 1);
 
@@ -504,14 +510,15 @@ TextureAnimation* GetTextureAnimation(void *sgd_top)
         return NULL;
     }
 
-    while(prim[0] != NULL)
+    while(prim[0] != 0)
     {
         if (prim[1] == 12)
         {
             return (TextureAnimation *)&prim[2];
         }
 
-        prim = (u_int *)prim[0];
+        //prim = (u_int *)prim[0];
+        prim = GetNextProcUnitHeaderPtr(prim);
     }
 
     return NULL;

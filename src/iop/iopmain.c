@@ -10,7 +10,6 @@ IOP_SYS_CTRL iop_sys_ctrl;
 
 static int request_shutdown = 0;
 
-
 void *IopDrvFunc(unsigned int command, void *data, int size)
 {
     IOP_COMMAND *icp;

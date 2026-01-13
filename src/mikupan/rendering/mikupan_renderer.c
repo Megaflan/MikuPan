@@ -368,6 +368,15 @@ void MikuPan_RenderMeshType0x32(struct SGDPROCUNITHEADER *pVUVN,
 
     int vertexOffset = 0;
 
+    sceGsTex0* mesh_tex_reg = (sceGsTex0*)((int64_t)pProcData + 0x18);
+
+    if (pProcData->VUMeshData.GifTag.NREG == 6)
+    {
+        mesh_tex_reg = (sceGsTex0*)((int64_t)pProcData + 0x28);
+    }
+
+    //unsigned char* img = DownloadGsTexture(mesh_tex_reg);
+
     for (int i = 0; i < GET_NUM_MESH(pPUHead); i++)
     {
         pVMCD =

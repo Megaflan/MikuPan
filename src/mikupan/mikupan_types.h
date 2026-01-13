@@ -413,4 +413,20 @@ union SGDPROCUNITDATA { // 0x80
     /* 0x00 */ struct SGDGSIMAGEDATA GSImage;
 };
 
+struct G3DVIF1CODE_DIRECT {
+    unsigned int size : 16;
+    unsigned int num : 8;
+    unsigned int cmd : 7;
+    unsigned int irq : 1;
+};
+
+typedef struct
+{
+    unsigned int uiVif1Code_NOP0;
+    unsigned int uiVif1Code_NOP1;
+    unsigned int uiVif1Code_FLUSH;
+    struct G3DVIF1CODE_DIRECT uiVif1Code_DIRECT;
+    sceGsLoadImage gsli;
+} SGDTRI2FILEHEADER;
+
 #endif //MIKUPAN_TYPES_H

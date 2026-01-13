@@ -9,7 +9,8 @@ GLuint backup_current_program = 0;
 u_int shader_list[MAX_SHADER_PROGRAMS] = {0};
 
 const char* shader_file_name[MAX_SHADER_PROGRAMS][2] = {
-    {"./shaders/default.vs", "./shaders/default.fs"}
+    {"./shaders/default.vert", "./shaders/default.frag"},
+    {"./shaders/simple_textured.vert", "./shaders/simple_textured.frag"}
 };
 
 int MikuPan_InitShaders()

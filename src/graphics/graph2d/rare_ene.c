@@ -123,7 +123,7 @@ void DrawRareEne_Sub(int mno, int dno, sceVu0FVECTOR pos, int tblno, int ani, in
 
     offset = dno * 256;
 
-    SetSprFile2(mno * 0x10000 + 0x1c90000, offset);
+    SetSprFile2(MikuPan_GetHostAddress(mno * 0x10000 + RARE_ENE_SPR_ADDRESS), offset);
 
     sceVu0UnitMatrix(wlm);
 
