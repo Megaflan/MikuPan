@@ -973,6 +973,7 @@ void motInitInterpAnime(ANI_CTRL *ani_ctrl, int flame)
 
 static void motSetInterpMatrix(ANI_CTRL *ani_ctrl, sceVu0FMATRIX *start, sceVu0FMATRIX *end)
 {
+    
     HeaderSection *hs;
     sceVu0FMATRIX m0;
     sceVu0FMATRIX m1;
@@ -1535,8 +1536,8 @@ static void motAddressMapping(u_int *top_addr)
 
     for (i = 0; i < frame_num; i++)
     {
-        GetOffsetPtr(top_addr, tbl_p->frame_addr);
         //tbl_p->frame_addr = (u_int *)((int)top_addr + (int)tbl_p->frame_addr);
+        tbl_p->frame_addr = MikuPan_GetPs2OffsetFromHostPointer((void*)((int64_t)top_addr + (u_int)tbl_p->frame_addr));
         tbl_p++;
     }
 

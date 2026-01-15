@@ -61,8 +61,8 @@ void MappingVUVNData(u_int *intpointer, HeaderSection *hs)
     case SVA_UNIQUE:
         //vp = ph->pUniqVertex;
         //np = ph->pUniqNormal;
-        vp = GetOffsetPtr(hs, ph->pUniqVertex);
-        np = GetOffsetPtr(hs, ph->pUniqNormal);
+        vp = MikuPan_GetHostPointer(ph->pUniqVertex);
+        np = MikuPan_GetHostPointer(ph->pUniqNormal);
 
         for (i = 0; i < vh->vnum; i++)
         {
@@ -71,8 +71,8 @@ void MappingVUVNData(u_int *intpointer, HeaderSection *hs)
 
             /// In order to make it 32bits compatible, the base reference needs to removed
             /// so now instead if will contain the offset from its vp/np
-            intpointer[0] = intpointer[0] * 16; intpointer++;
-            intpointer[0] = intpointer[0] * 16; intpointer++;
+            intpointer[0] = intpointer[0] * 16 + MikuPan_GetPs2OffsetFromHostPointer(vp); intpointer++;
+            intpointer[0] = intpointer[0] * 16 + MikuPan_GetPs2OffsetFromHostPointer(np); intpointer++;
         }
     break;
     case SVA_COMMON:    break;
@@ -90,16 +90,16 @@ void MappingVUVNData(u_int *intpointer, HeaderSection *hs)
 
                 /// In order to make it 32bits compatible, the base reference needs to removed
                 /// so now instead if will contain the offset from its vp/np
-                intpointer[0] = intpointer[0] * 16; intpointer++;
-                intpointer[0] = intpointer[0] * 16; intpointer++;
+                intpointer[0] = intpointer[0] * 16 + MikuPan_GetPs2OffsetFromHostPointer(vp); intpointer++;
+                intpointer[0] = intpointer[0] * 16 + MikuPan_GetPs2OffsetFromHostPointer(np); intpointer++;
             }
         }
         else
         {
             //vp = ph->pWeightedVertex;
             //np = ph->pWeightedNormal;
-            vp = GetOffsetPtr(hs, ph->pWeightedVertex);
-            np = GetOffsetPtr(hs, ph->pWeightedNormal);
+            vp = MikuPan_GetHostPointer(ph->pWeightedVertex);
+            np = MikuPan_GetHostPointer(ph->pWeightedNormal);
 
             for (i = 0; i < vh->vnum; i++)
             {
@@ -108,8 +108,8 @@ void MappingVUVNData(u_int *intpointer, HeaderSection *hs)
 
                 /// In order to make it 32bits compatible, the base reference needs to removed
                 /// so now instead if will contain the offset from its vp/np
-                intpointer[0] = intpointer[0] * 32; intpointer++;
-                intpointer[0] = intpointer[0] * 32; intpointer++;
+                intpointer[0] = intpointer[0] * 32 + MikuPan_GetPs2OffsetFromHostPointer(vp); intpointer++;
+                intpointer[0] = intpointer[0] * 32 + MikuPan_GetPs2OffsetFromHostPointer(np); intpointer++;
             }
         }
     break;
@@ -317,16 +317,16 @@ void SgMapUnit(void *sgd_top)
     {
         for (i = 0; i < hs->blocks - 1; i++)
         {
-            if ((int64_t)cp[i].parent < 0)
+            if (cp[i].parent < 0)
             {
                 /// Overwrites data for 64bits PTR. -1 is our only indicator of no parent
                 cp[i].parent = 0;
             }
-            else if ((int64_t)cp[i].parent < (int64_t)cp)
+            else if (cp[i].parent < MikuPan_GetPs2OffsetFromHostPointer(cp))
             {
                 /// Overwrites data for 64bits PTR
                 //cp[i].parent = (int64_t)cp[i].parent + cp;
-                cp[i].parent = MikuPan_GetPs2OffsetFromHostPointer(cp) + (cp[i].parent * sizeof(SgCOORDUNIT));
+                cp[i].parent = MikuPan_GetPs2OffsetFromHostPointer(&cp[cp[i].parent]);
             }
         }
     }
@@ -372,8 +372,8 @@ void SgMapUnit(void *sgd_top)
         if (ph->pWeightedList != 0)
         {
             //vli = ((VERTEXLIST *)ph->pWeightedList);
-            vli = ((VERTEXLIST *)GetOffsetPtr(hs, ph->pWeightedList));
-            MappingVertexList((VERTEXLIST *)GetOffsetPtr(hs, ph->pWeightedList), ph);
+            vli = ((VERTEXLIST *)MikuPan_GetHostPointer(ph->pWeightedList));
+            MappingVertexList((VERTEXLIST *)MikuPan_GetHostPointer(ph->pWeightedList), ph);
 
             vli = (VERTEXLIST *)(&vli->lists[vli->list_num]);
             MappingVertexList(vli, ph);

@@ -1663,6 +1663,7 @@ u_int* SearchBoundingBoxPacket(u_int *prim)
 
 void DrawRoomShadow()
 {
+    return;
     int i;
     int disp_room;
     SgCOORDUNIT *cp;

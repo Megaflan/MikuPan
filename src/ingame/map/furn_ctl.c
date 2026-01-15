@@ -63,6 +63,11 @@ int FurnIsHit(u_short id, u_char msn_no)
 
 void FurnPicExecStart()
 {
+    furn_disp_flg = 1;
+
+    FurnPicNoDspOff();
+    FurnPicDispOn();
+    FurnSortFurnWrk(1);
 }
 
 void FurnPicExecEnd()

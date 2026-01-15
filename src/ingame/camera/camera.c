@@ -1004,7 +1004,7 @@ void NormalCameraCtrl()
 
         tc2 = tc;
 
-        CompleCameraPos(&tc, &oc, &mci);
+        //CompleCameraPos(&tc, &oc, &mci);
 
         oc = tc2;
     }
@@ -1644,6 +1644,12 @@ void CompleCameraPos(SgCAMERA *tc, SgCAMERA *oc, MAP_CAM_INFO *mci)
                 tc0[3] = 0.0f;
 
                 tca1 = GetDistV(tc0, tc1);
+
+                if (tca0 == 0.0f)
+                {
+                    tca0 = 1.0f;
+                }
+
                 sceVu0DivVector(comple_adjp, tc1, tca1 / tca0);
             }
             if (mci->type == 0x4)

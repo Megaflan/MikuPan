@@ -3,6 +3,7 @@
 
 u_char PosInAreaJudgeSub(int* addr, u_short pos_x, u_short pos_y, u_char type)
 {
+    return 1;
 }
 
 void Get2DLinearConstFromPos(float* a, float* b, float* c, float x0, float y0, float x1, float y1)
