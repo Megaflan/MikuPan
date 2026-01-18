@@ -132,9 +132,11 @@ u_int GetFurnAttr(u_short id, u_char msn_no)
 
 u_char FurnHitCheck(u_char* dx_max, u_char* dz_max, float* pos, float* dst, u_char div, u_char room)
 {
+    return 0;
 }
 
 u_char FurnHitCheck2(u_short pos_x, u_short pos_y, u_char room_id)
 {
+    return 0;
 }
 

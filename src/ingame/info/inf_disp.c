@@ -20,6 +20,7 @@
 #include "outgame/btl_mode/btl_mode.h"
 #include "ingame/plyr/plyr_ctl.h"
 
+#include <string.h>
 
 static void FndrInit();
 static void SttsFade();

@@ -333,7 +333,7 @@ u_int* motInitAniCtrl(ANI_CTRL *ani_ctrl, u_int *anm_p, u_int *mdl_p, u_int *pkt
 u_int* motInitMotCtrl(MOT_CTRL *m_ctrl, u_int *mot_addr, u_int *rst_addr)
 {
     u_short i;
-    u_int *tale_addr;
+    u_int *tale_addr = NULL;
     u_int *top_addr;
 
     m_ctrl->play_id = 0;
@@ -1937,7 +1937,7 @@ void sceRotMatrixXYZ(sceVu0FMATRIX m0, sceVu0FMATRIX m1, sceVu0FVECTOR rot)
     sceVu0FMATRIX mat;
 
     sceVu0CopyMatrix(mat, m1);
-    sceVu0RotMatrixX(mat, mat, *rot);
+    sceVu0RotMatrixX(mat, mat, rot[0]);
     sceVu0RotMatrixY(mat, mat, rot[1]);
     sceVu0RotMatrixZ(mat, mat, rot[2]);
     sceVu0CopyMatrix(m0, mat);

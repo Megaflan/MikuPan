@@ -314,22 +314,22 @@ u_char FurnCoverCheck(u_short pos_x, short int pos_y, u_short pos_z,
     }
 
     addr = (u_int *) (map_wrk.dat_adr + 11 * 4);
-    addr = (u_int *) (*addr + BASE_ADDRESS);
+    addr = (u_int *) MikuPan_GetHostPointer(*addr + BASE_ADDRESS);
     addr = &addr[room_no] + 1;
-    addr_bak = addr = (u_int *) (*addr + BASE_ADDRESS);
+    addr_bak = addr = (u_int *) MikuPan_GetHostPointer(*addr + BASE_ADDRESS);
 
-    dt_num = *(u_char *) (*addr + BASE_ADDRESS);
+    dt_num = *(u_char *) MikuPan_GetHostPointer(*addr + BASE_ADDRESS);
 
     for (i = 0; i < dt_num; i++)
     {
         addr = &addr_bak[i] + 1;
-        addr = (u_int *) (*addr + BASE_ADDRESS);
+        addr = (u_int *) MikuPan_GetHostPointer(*addr + BASE_ADDRESS);
 
-        fedp = (FURN_DATA_POP *) (*addr + BASE_ADDRESS);
+        fedp = (FURN_DATA_POP *) MikuPan_GetHostPointer(*addr + BASE_ADDRESS);
 
         GetFurnAttr(fedp->id, ingame_wrk.msn_no);
 
-        addr = (u_int *) (addr[1] + BASE_ADDRESS);
+        addr = (u_int *) MikuPan_GetHostPointer(addr[1] + BASE_ADDRESS);
         type = ((u_char *) fedp)[25];
         if (PosInAreaJudgeSub((int *) addr, pos_z, pos_x, type) != 0)
         {

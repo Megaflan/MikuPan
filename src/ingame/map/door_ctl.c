@@ -169,6 +169,7 @@ u_char DoorHitCheck(u_char* dx_max, u_char* dz_max, float* dst, float* ppos, u_c
 
 u_char DoorHitCheck2(u_short pos_x, u_short pos_y, u_char room_id)
 {
+    return 0;
 }
 
 u_char DoorCoverCheck(u_short pos_x, short int pos_y, u_short pos_z, u_char room_id)
@@ -205,6 +206,7 @@ u_char ChkNextRoomIsInsite()
 
 u_char* GetDoorRoomNumP()
 {
+    return NULL;
 }
 
 u_char* GetDoorRoomNumPFloor(u_char floor)
