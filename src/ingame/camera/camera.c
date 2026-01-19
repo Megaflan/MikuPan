@@ -1,4 +1,5 @@
 #include "common.h"
+#include "graphics/graph3d/sglib.h"
 
 #include <common/ul_math.h>
 #include <graphics/graph2d/effect.h>

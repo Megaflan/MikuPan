@@ -13,6 +13,7 @@
 #include "graphics/graph3d/sgdma.h"
 #include "graphics/graph3d/sglib.h"
 #include "graphics/graph3d/sglight.h"
+#include "mikupan/mikupan_logging_c.h"
 #include "mikupan/rendering/mikupan_renderer.h"
 
 extern void DRAWTYPE2() __attribute__((section(".vutext")));
@@ -285,7 +286,7 @@ u_int *SetVUVNData(u_int *prim)
 
     for (i = 0; i < vh->vnum; i++, vp += 2, prim += 2)
     {
-        copy_skinned_data(vp, (float *) prim[0], (float *) prim[1]);
+        copy_skinned_data(vp, (float *) MikuPan_GetHostPointer(prim[0]), (float *) MikuPan_GetHostPointer(prim[1]));
     }
 
     return (u_int *) vp;
@@ -315,19 +316,19 @@ u_int *SetVUVNDataPost(u_int *prim)
             {
                 for (i = 0; i < vh->vnum; i++, vp += 2, prim += 2)
                 {
-                    copy_skinned_data(vp, (float *) prim[0], (float *) prim[1]);
+                    copy_skinned_data(vp, (float *) MikuPan_GetHostPointer(prim[0]), (float *) MikuPan_GetHostPointer(prim[1]));
                 }
             }
             else
             {
-                cn = (char *) prim[0];
+                cn = (char *) MikuPan_GetHostPointer(prim[0]);
 
                 load_matrix_0(lcp[cn[0x1c]].workm);
                 load_matrix_1(lcp[cn[0x1d]].workm);
 
                 for (i = 0; i < vh->vnum; vp += 2, prim += 2, i++)
                 {
-                    calc_skinned_data(vp, (float *) prim[0], (float *) prim[1]);
+                    calc_skinned_data(vp, (float *) MikuPan_GetHostPointer(prim[0]), (float *) MikuPan_GetHostPointer(prim[1]));
                 }
             }
             break;
@@ -336,25 +337,25 @@ u_int *SetVUVNDataPost(u_int *prim)
             {
                 for (i = 0; i < vh->vnum; i++, vp += 2, prim += 2)
                 {
-                    copy_skinned_data(vp, (float *) prim[0], (float *) prim[1]);
+                    copy_skinned_data(vp, (float *) MikuPan_GetHostPointer(prim[0]), (float *) MikuPan_GetHostPointer(prim[1]));
                 }
             }
             else
             {
                 for (i = 0; i < vh->vnum; i++, vp += 2, prim += 2)
                 {
-                    cn = (char *) prim[0];
+                    cn = (char *) MikuPan_GetHostPointer(prim[0]);
 
                     load_matrix_0(lcp[cn[0x1c]].workm);
                     load_matrix_1(lcp[cn[0x1d]].workm);
-                    calc_skinned_data(vp, (float *) prim[0], (float *) prim[1]);
+                    calc_skinned_data(vp, (float *) MikuPan_GetHostPointer(prim[0]), (float *) MikuPan_GetHostPointer(prim[1]));
                 }
             }
             break;
         default:
             for (i = 0; i < vh->vnum; i++, vp += 2, prim += 2)
             {
-                copy_skinned_data(vp, (float *) prim[0], (float *) prim[1]);
+                copy_skinned_data(vp, (float *) MikuPan_GetHostPointer(prim[0]), (float *) MikuPan_GetHostPointer(prim[1]));
             }
     }
 

@@ -371,7 +371,7 @@ label:
     base = (qword *)getObjWrk();
 
     old_pmatC = pmatC;
-    pmatC->tagd_addr = (u_int)base & 0x0fffffff;
+    pmatC->tagd_addr = (u_int)MikuPan_GetPs2OffsetFromHostPointer(base) & 0x0fffffff;
     qwc = 0;
 
     if (SgSpotGroupNum != 0)

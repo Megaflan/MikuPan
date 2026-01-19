@@ -19,6 +19,13 @@
 sceVu0FVECTOR clip_volume = {1920.0f, 896.0f, 256.0f, 16777000.0f};
 static sceVu0FVECTOR clip_volumev = {320.0f, 112.0f, 0.1f, 16777000.0f};
 
+#define VU0_CLIP_X_POS (1 << 0)
+#define VU0_CLIP_X_NEG (1 << 1)
+#define VU0_CLIP_Y_POS (1 << 2)
+#define VU0_CLIP_Y_NEG (1 << 3)
+#define VU0_CLIP_Z_POS (1 << 4)
+#define VU0_CLIP_Z_NEG (1 << 5)
+
 #define SCRATCHPAD ((u_char *)ps2_virtual_scratchpad)
 
 void SetViewScreenClipMatrix(SgCAMERA *camera, float scrz)
@@ -237,55 +244,59 @@ void printClipValue()
 
 int BoundClip(sceVu0FVECTOR ed, sceVu0FVECTOR v)
 {
-    int ret = 0.5f;
+    int ret = 0;
 
-    //asm volatile("                             \n\
-    //    lqc2            $vf12, 0(%1)           \n\
-    //    vmulax.xyzw     ACC,   $vf4,   $vf12x  \n\
-    //    vmadday.xyzw    ACC,   $vf5,   $vf12y  \n\
-    //    vmaddaz.xyzw    ACC,   $vf6,   $vf12z  \n\
-    //    vmaddw.xyzw     $vf14, $vf7,   $vf0w   \n\
-    //    vmulax.xyzw     ACC,   $vf8,   $vf12x  \n\
-    //    vmadday.xyzw    ACC,   $vf9,   $vf12y  \n\
-    //    vmaddaz.xyzw    ACC,   $vf10,  $vf12z  \n\
-    //    vmaddw.xyzw     $vf13, $vf11,  $vf0w   \n\
-    //    vclipw.xyz      $vf14, $vf14w          \n\
-    //    vnop                                   \n\
-    //    vnop                                   \n\
-    //    vnop                                   \n\
-    //    vnop                                   \n\
-    //    vnop                                   \n\
-    //    sqc2            $vf13, 0(%2)           \n\
-    //    cfc2            %0,    $vi18           \n\
-    //    ":"=r"(ret):"r"(v),"r"(ed)
-    //);
+    sceVu0FVECTOR *wk0 = work_matrix_0; // in [vf4:vf7]
+    sceVu0FVECTOR *wk1 = work_matrix_1; // in [vf8:vf11]
+    sceVu0FVECTOR v0;
+
+    v0[0] = (wk0[0][0] * v[0]) + (wk0[1][0] * v[1]) + (wk0[2][0] * v[2]) + (wk0[3][0] * 1.0f);
+    v0[1] = (wk0[0][1] * v[0]) + (wk0[1][1] * v[1]) + (wk0[2][1] * v[2]) + (wk0[3][1] * 1.0f);
+    v0[2] = (wk0[0][2] * v[0]) + (wk0[1][2] * v[1]) + (wk0[2][2] * v[2]) + (wk0[3][2] * 1.0f);
+    v0[3] = (wk0[0][3] * v[0]) + (wk0[1][3] * v[1]) + (wk0[2][3] * v[2]) + (wk0[3][3] * 1.0f);
+
+    ed[0] = (wk1[0][0] * v[0]) + (wk1[1][0] * v[1]) + (wk1[2][0] * v[2]) + (wk1[3][0] * 1.0f);
+    ed[1] = (wk1[0][1] * v[0]) + (wk1[1][1] * v[1]) + (wk1[2][1] * v[2]) + (wk1[3][1] * 1.0f);
+    ed[2] = (wk1[0][2] * v[0]) + (wk1[1][2] * v[1]) + (wk1[2][2] * v[2]) + (wk1[3][2] * 1.0f);
+    ed[3] = (wk1[0][3] * v[0]) + (wk1[1][3] * v[1]) + (wk1[2][3] * v[2]) + (wk1[3][3] * 1.0f);
+
+    if (v0[0] > +fabsf(v0[3])) ret |= VU0_CLIP_X_POS;
+    if (v0[0] < -fabsf(v0[3])) ret |= VU0_CLIP_X_NEG;
+    if (v0[1] > +fabsf(v0[3])) ret |= VU0_CLIP_Y_POS;
+    if (v0[1] < -fabsf(v0[3])) ret |= VU0_CLIP_Y_NEG;
+    if (v0[2] > +fabsf(v0[3])) ret |= VU0_CLIP_Z_POS;
+    if (v0[2] < -fabsf(v0[3])) ret |= VU0_CLIP_Z_NEG;
 
     return ret;
 }
 
 int BoundClipQ(sceVu0FVECTOR ed, sceVu0FVECTOR v0, sceVu0FVECTOR v1)
 {
-    int ret;
+    int ret = 0;
 
-    //asm volatile("                             \n\
-    //    lqc2            $vf12, 0(%1)           \n\
-    //    vmulax.xyzw     ACC,   $vf4,   $vf12x  \n\
-    //    vmadday.xyzw    ACC,   $vf5,   $vf12y  \n\
-    //    vmaddaz.xyzw    ACC,   $vf6,   $vf12z  \n\
-    //    vmaddw.xyzw     $vf14, $vf7,   $vf0w   \n\
-    //    vmulax.xyzw     ACC,   $vf8,   $vf12x  \n\
-    //    vmadday.xyzw    ACC,   $vf9,   $vf12y  \n\
-    //    vmaddaz.xyzw    ACC,   $vf10,  $vf12z  \n\
-    //    vdiv            Q,     $vf0w,  $vf14w  \n\
-    //    vclipw.xyz      $vf14, $vf14w          \n\
-    //    vmaddw.xyzw     $vf13, $vf11,  $vf0w   \n\
-    //    vwaitq                                 \n\
-    //    vmulq.xyz       $vf14, $vf14,  Q       \n\
-    //    sqc2            $vf13, 0(%2)           \n\
-    //    sqc2            $vf14, 0(%3)           \n\
-    //    cfc2            %0,    $vi18           \n\
-    //    ":"=r"(ret):"r"(v1),"r"(ed),"r"(v0)
-    //);
+    sceVu0FVECTOR *wk0 = work_matrix_0; // in [vf4:vf7]
+    sceVu0FVECTOR *wk1 = work_matrix_1; // in [vf8:vf11]
+
+    v0[0] = (wk0[0][0] * v1[0]) + (wk0[1][0] * v1[1]) + (wk0[2][0] * v1[2]) + (wk0[3][0] * 1.0f);
+    v0[1] = (wk0[0][1] * v1[0]) + (wk0[1][1] * v1[1]) + (wk0[2][1] * v1[2]) + (wk0[3][1] * 1.0f);
+    v0[2] = (wk0[0][2] * v1[0]) + (wk0[1][2] * v1[1]) + (wk0[2][2] * v1[2]) + (wk0[3][2] * 1.0f);
+    v0[3] = (wk0[0][3] * v1[0]) + (wk0[1][3] * v1[1]) + (wk0[2][3] * v1[2]) + (wk0[3][3] * 1.0f);
+
+    ed[0] = (wk1[0][0] * v1[0]) + (wk1[1][0] * v1[1]) + (wk1[2][0] * v1[2]) + (wk1[3][0] * 1.0f);
+    ed[1] = (wk1[0][1] * v1[0]) + (wk1[1][1] * v1[1]) + (wk1[2][1] * v1[2]) + (wk1[3][1] * 1.0f);
+    ed[2] = (wk1[0][2] * v1[0]) + (wk1[1][2] * v1[1]) + (wk1[2][2] * v1[2]) + (wk1[3][2] * 1.0f);
+    ed[3] = (wk1[0][3] * v1[0]) + (wk1[1][3] * v1[1]) + (wk1[2][3] * v1[2]) + (wk1[3][3] * 1.0f);
+
+    if (v0[0] > +fabsf(v0[3])) ret |= VU0_CLIP_X_POS;
+    if (v0[0] < -fabsf(v0[3])) ret |= VU0_CLIP_X_NEG;
+    if (v0[1] > +fabsf(v0[3])) ret |= VU0_CLIP_Y_POS;
+    if (v0[1] < -fabsf(v0[3])) ret |= VU0_CLIP_Y_NEG;
+    if (v0[2] > +fabsf(v0[3])) ret |= VU0_CLIP_Z_POS;
+    if (v0[2] < -fabsf(v0[3])) ret |= VU0_CLIP_Z_NEG;
+
+    v0[0] = v0[0] * (1.0f / v0[3]);
+    v0[1] = v0[1] * (1.0f / v0[3]);
+    v0[2] = v0[2] * (1.0f / v0[3]);
 
     return ret;
 }
@@ -313,31 +324,47 @@ int ClipCheck(sceVu0FVECTOR *vec)
 {
     int ret;
 
-    //asm volatile("\n\
-    //    lqc2          $vf12, 0(%1)       \n\
-    //    lqc2          $vf13, 0x10(%1)    \n\
-    //    lqc2          $vf14, 0x20(%1)    \n\
-    //    lqc2          $vf15, 0x30(%1)    \n\
-    //    vclipw.xyz    $vf12, $vf12w      \n\
-    //    vclipw.xyz    $vf13, $vf13w      \n\
-    //    vclipw.xyz    $vf14, $vf14w      \n\
-    //    vclipw.xyz    $vf15, $vf15w      \n\
-    //    vnop                             \n\
-    //    vnop                             \n\
-    //    vnop                             \n\
-    //    vnop                             \n\
-    //    vnop                             \n\
-    //    cfc2          %0,    $vi18       \n\
-    //    ":"=r"(ret):"r"(*vec)
-    //);
+    if (vec[0][0] > +fabsf(vec[0][3])) ret |= VU0_CLIP_X_POS;
+    if (vec[0][0] < -fabsf(vec[0][3])) ret |= VU0_CLIP_X_NEG;
+    if (vec[0][1] > +fabsf(vec[0][3])) ret |= VU0_CLIP_Y_POS;
+    if (vec[0][1] < -fabsf(vec[0][3])) ret |= VU0_CLIP_Y_NEG;
+    if (vec[0][2] > +fabsf(vec[0][3])) ret |= VU0_CLIP_Z_POS;
+    if (vec[0][2] < -fabsf(vec[0][3])) ret |= VU0_CLIP_Z_NEG;
+
+    ret <<= 6;
+
+    if (vec[1][0] > +fabsf(vec[1][3])) ret |= VU0_CLIP_X_POS;
+    if (vec[1][0] < -fabsf(vec[1][3])) ret |= VU0_CLIP_X_NEG;
+    if (vec[1][1] > +fabsf(vec[1][3])) ret |= VU0_CLIP_Y_POS;
+    if (vec[1][1] < -fabsf(vec[1][3])) ret |= VU0_CLIP_Y_NEG;
+    if (vec[1][2] > +fabsf(vec[1][3])) ret |= VU0_CLIP_Z_POS;
+    if (vec[1][2] < -fabsf(vec[1][3])) ret |= VU0_CLIP_Z_NEG;
+
+    ret <<= 6;
+
+    if (vec[2][0] > +fabsf(vec[2][3])) ret |= VU0_CLIP_X_POS;
+    if (vec[2][0] < -fabsf(vec[2][3])) ret |= VU0_CLIP_X_NEG;
+    if (vec[2][1] > +fabsf(vec[2][3])) ret |= VU0_CLIP_Y_POS;
+    if (vec[2][1] < -fabsf(vec[2][3])) ret |= VU0_CLIP_Y_NEG;
+    if (vec[2][2] > +fabsf(vec[2][3])) ret |= VU0_CLIP_Z_POS;
+    if (vec[2][2] < -fabsf(vec[2][3])) ret |= VU0_CLIP_Z_NEG;
+
+    ret <<= 6;
+
+    if (vec[3][0] > +fabsf(vec[3][3])) ret |= VU0_CLIP_X_POS;
+    if (vec[3][0] < -fabsf(vec[3][3])) ret |= VU0_CLIP_X_NEG;
+    if (vec[3][1] > +fabsf(vec[3][3])) ret |= VU0_CLIP_Y_POS;
+    if (vec[3][1] < -fabsf(vec[3][3])) ret |= VU0_CLIP_Y_NEG;
+    if (vec[3][2] > +fabsf(vec[3][3])) ret |= VU0_CLIP_Z_POS;
+    if (vec[3][2] < -fabsf(vec[3][3])) ret |= VU0_CLIP_Z_NEG;
 
     return ret;
 }
 
-// similar to: void _SetMulMatrixBB(sceVu0FMATRIX m0, sceVu0FMATRIX m1, sceVu0FMATRIX lw);
 static inline void asm_1__CheckBoundingBox(sceVu0FMATRIX m0, sceVu0FMATRIX m1, sceVu0FMATRIX lw)
 {
-    //asm volatile ("                              \n\
+    /**
+        //asm volatile ("                              \n\
     //    lqc2            $vf12, 0(%0)             \n\
     //    lqc2            $vf13, 0x10(%0)          \n\
     //    lqc2            $vf14, 0x20(%0)          \n\
@@ -384,6 +411,50 @@ static inline void asm_1__CheckBoundingBox(sceVu0FMATRIX m0, sceVu0FMATRIX m1, s
     //    vmaddw.xyzw     $vf11, $vf15,    $vf19w  \n\
     //    ": :"r"(m0),"r"(lw),"r"(m1)
     //);
+    */
+
+    sceVu0FVECTOR *wk0 = work_matrix_0; // in [vf4:vf7]
+    sceVu0FVECTOR *wk1 = work_matrix_1; // in [vf8:vf11]
+
+    wk0[0][0] = (m0[0][0] * lw[0][0]) + (m0[1][0] * lw[0][1]) + (m0[2][0] * lw[0][2]) + (m0[3][0] * lw[0][3]);
+    wk0[0][1] = (m0[0][1] * lw[0][0]) + (m0[1][1] * lw[0][1]) + (m0[2][1] * lw[0][2]) + (m0[3][1] * lw[0][3]);
+    wk0[0][2] = (m0[0][2] * lw[0][0]) + (m0[1][2] * lw[0][1]) + (m0[2][2] * lw[0][2]) + (m0[3][2] * lw[0][3]);
+    wk0[0][3] = (m0[0][3] * lw[0][0]) + (m0[1][3] * lw[0][1]) + (m0[2][3] * lw[0][2]) + (m0[3][3] * lw[0][3]);
+
+    wk0[1][0] = (m0[0][0] * lw[1][0]) + (m0[1][0] * lw[1][1]) + (m0[2][0] * lw[1][2]) + (m0[3][0] * lw[1][3]);
+    wk0[1][1] = (m0[0][1] * lw[1][0]) + (m0[1][1] * lw[1][1]) + (m0[2][1] * lw[1][2]) + (m0[3][1] * lw[1][3]);
+    wk0[1][2] = (m0[0][2] * lw[1][0]) + (m0[1][2] * lw[1][1]) + (m0[2][2] * lw[1][2]) + (m0[3][2] * lw[1][3]);
+    wk0[1][3] = (m0[0][3] * lw[1][0]) + (m0[1][3] * lw[1][1]) + (m0[2][3] * lw[1][2]) + (m0[3][3] * lw[1][3]);
+
+    wk0[2][0] = (m0[0][0] * lw[2][0]) + (m0[1][0] * lw[2][1]) + (m0[2][0] * lw[2][2]) + (m0[3][0] * lw[2][3]);
+    wk0[2][1] = (m0[0][1] * lw[2][0]) + (m0[1][1] * lw[2][1]) + (m0[2][1] * lw[2][2]) + (m0[3][1] * lw[2][3]);
+    wk0[2][2] = (m0[0][2] * lw[2][0]) + (m0[1][2] * lw[2][1]) + (m0[2][2] * lw[2][2]) + (m0[3][2] * lw[2][3]);
+    wk0[2][3] = (m0[0][3] * lw[2][0]) + (m0[1][3] * lw[2][1]) + (m0[2][3] * lw[2][2]) + (m0[3][3] * lw[2][3]);
+
+    wk0[3][0] = (m0[0][0] * lw[3][0]) + (m0[1][0] * lw[3][1]) + (m0[2][0] * lw[3][2]) + (m0[3][0] * lw[3][3]);
+    wk0[3][1] = (m0[0][1] * lw[3][0]) + (m0[1][1] * lw[3][1]) + (m0[2][1] * lw[3][2]) + (m0[3][1] * lw[3][3]);
+    wk0[3][2] = (m0[0][2] * lw[3][0]) + (m0[1][2] * lw[3][1]) + (m0[2][2] * lw[3][2]) + (m0[3][2] * lw[3][3]);
+    wk0[3][3] = (m0[0][3] * lw[3][0]) + (m0[1][3] * lw[3][1]) + (m0[2][3] * lw[3][2]) + (m0[3][3] * lw[3][3]);
+
+    wk1[0][0] = (m0[0][0] * m1[0][0]) + (m0[1][0] * m1[0][1]) + (m0[2][0] * m1[0][2]) + (m0[3][0] * m1[0][3]);
+    wk1[0][1] = (m0[0][1] * m1[0][0]) + (m0[1][1] * m1[0][1]) + (m0[2][1] * m1[0][2]) + (m0[3][1] * m1[0][3]);
+    wk1[0][2] = (m0[0][2] * m1[0][0]) + (m0[1][2] * m1[0][1]) + (m0[2][2] * m1[0][2]) + (m0[3][2] * m1[0][3]);
+    wk1[0][3] = (m0[0][3] * m1[0][0]) + (m0[1][3] * m1[0][1]) + (m0[2][3] * m1[0][2]) + (m0[3][3] * m1[0][3]);
+
+    wk1[1][0] = (m0[0][0] * m1[1][0]) + (m0[1][0] * m1[1][1]) + (m0[2][0] * m1[1][2]) + (m0[3][0] * m1[1][3]);
+    wk1[1][1] = (m0[0][1] * m1[1][0]) + (m0[1][1] * m1[1][1]) + (m0[2][1] * m1[1][2]) + (m0[3][1] * m1[1][3]);
+    wk1[1][2] = (m0[0][2] * m1[1][0]) + (m0[1][2] * m1[1][1]) + (m0[2][2] * m1[1][2]) + (m0[3][2] * m1[1][3]);
+    wk1[1][3] = (m0[0][3] * m1[1][0]) + (m0[1][3] * m1[1][1]) + (m0[2][3] * m1[1][2]) + (m0[3][3] * m1[1][3]);
+
+    wk1[2][0] = (m0[0][0] * m1[2][0]) + (m0[1][0] * m1[2][1]) + (m0[2][0] * m1[2][2]) + (m0[3][0] * m1[2][3]);
+    wk1[2][1] = (m0[0][1] * m1[2][0]) + (m0[1][1] * m1[2][1]) + (m0[2][1] * m1[2][2]) + (m0[3][1] * m1[2][3]);
+    wk1[2][2] = (m0[0][2] * m1[2][0]) + (m0[1][2] * m1[2][1]) + (m0[2][2] * m1[2][2]) + (m0[3][2] * m1[2][3]);
+    wk1[2][3] = (m0[0][3] * m1[2][0]) + (m0[1][3] * m1[2][1]) + (m0[2][3] * m1[2][2]) + (m0[3][3] * m1[2][3]);
+
+    wk1[3][0] = (m0[0][0] * m1[3][0]) + (m0[1][0] * m1[3][1]) + (m0[2][0] * m1[3][2]) + (m0[3][0] * m1[3][3]);
+    wk1[3][1] = (m0[0][1] * m1[3][0]) + (m0[1][1] * m1[3][1]) + (m0[2][1] * m1[3][2]) + (m0[3][1] * m1[3][3]);
+    wk1[3][2] = (m0[0][2] * m1[3][0]) + (m0[1][2] * m1[3][1]) + (m0[2][2] * m1[3][2]) + (m0[3][2] * m1[3][3]);
+    wk1[3][3] = (m0[0][3] * m1[3][0]) + (m0[1][3] * m1[3][1]) + (m0[2][3] * m1[3][2]) + (m0[3][3] * m1[3][3]);
 }
 
 int CheckBoundingBox(u_int *prim)
@@ -409,8 +480,6 @@ int CheckBoundingBox(u_int *prim)
     vec_6e0 = (sceVu0FVECTOR *)&SCRATCHPAD[0x6e0];
 
     lcp[prim[2]].camin = 0;
-
-    MikuPan_SetModelTransform(prim);
 
     asm_1__CheckBoundingBox(SgCMVtx, SgCMtx, lcp[prim[2]].lwmtx);
 
@@ -483,6 +552,7 @@ int CheckBoundingBox(u_int *prim)
 
     if (wscissor_flg != 0)
     {
+        MikuPan_SetModelTransform(prim);
         Vu0LoadMatrix(lcp[prim[2]].lwmtx);
 
         pvec = (sceVu0FVECTOR *)&prim[4];
@@ -605,51 +675,46 @@ void SgSetWScissorBox(float ax, float ay, float az, float bx, float by, float bz
 
 void _SetMulMatrixBB(sceVu0FMATRIX m0, sceVu0FMATRIX m1, sceVu0FMATRIX lw)
 {
-    //asm volatile("\n\
-    //    lqc2            $vf12, 0(%0)             \n\
-    //    lqc2            $vf13, 0x10(%0)          \n\
-    //    lqc2            $vf14, 0x20(%0)          \n\
-    //    lqc2            $vf15, 0x30(%0)          \n\
-    //    lqc2            $vf16, 0(%1)             \n\
-    //    lqc2            $vf17, 0x10(%1)          \n\
-    //    lqc2            $vf18, 0x20(%1)          \n\
-    //    lqc2            $vf19, 0x30(%1)          \n\
-    //    vmulax.xyzw     ACC,   $vf12,    $vf16x  \n\
-    //    vmadday.xyzw    ACC,   $vf13,    $vf16y  \n\
-    //    vmaddaz.xyzw    ACC,   $vf14,    $vf16z  \n\
-    //    vmaddw.xyzw     $vf4,  $vf15,    $vf16w  \n\
-    //    vmulax.xyzw     ACC,   $vf12,    $vf17x  \n\
-    //    vmadday.xyzw    ACC,   $vf13,    $vf17y  \n\
-    //    vmaddaz.xyzw    ACC,   $vf14,    $vf17z  \n\
-    //    vmaddw.xyzw     $vf5,  $vf15,    $vf17w  \n\
-    //    vmulax.xyzw     ACC,   $vf12,    $vf18x  \n\
-    //    vmadday.xyzw    ACC,   $vf13,    $vf18y  \n\
-    //    vmaddaz.xyzw    ACC,   $vf14,    $vf18z  \n\
-    //    vmaddw.xyzw     $vf6,  $vf15,    $vf18w  \n\
-    //    vmulax.xyzw     ACC,   $vf12,    $vf19x  \n\
-    //    vmadday.xyzw    ACC,   $vf13,    $vf19y  \n\
-    //    vmaddaz.xyzw    ACC,   $vf14,    $vf19z  \n\
-    //    vmaddw.xyzw     $vf7,  $vf15,    $vf19w  \n\
-    //    lqc2            $vf12, 0(%2)             \n\
-    //    lqc2            $vf13, 0x10(%2)          \n\
-    //    lqc2            $vf14, 0x20(%2)          \n\
-    //    lqc2            $vf15, 0x30(%2)          \n\
-    //    vmulax.xyzw     ACC,   $vf12,    $vf16x  \n\
-    //    vmadday.xyzw    ACC,   $vf13,    $vf16y  \n\
-    //    vmaddaz.xyzw    ACC,   $vf14,    $vf16z  \n\
-    //    vmaddw.xyzw     $vf8,  $vf15,    $vf16w  \n\
-    //    vmulax.xyzw     ACC,   $vf12,    $vf17x  \n\
-    //    vmadday.xyzw    ACC,   $vf13,    $vf17y  \n\
-    //    vmaddaz.xyzw    ACC,   $vf14,    $vf17z  \n\
-    //    vmaddw.xyzw     $vf9,  $vf15,    $vf17w  \n\
-    //    vmulax.xyzw     ACC,   $vf12,    $vf18x  \n\
-    //    vmadday.xyzw    ACC,   $vf13,    $vf18y  \n\
-    //    vmaddaz.xyzw    ACC,   $vf14,    $vf18z  \n\
-    //    vmaddw.xyzw     $vf10, $vf15,    $vf18w  \n\
-    //    vmulax.xyzw     ACC,   $vf12,    $vf19x  \n\
-    //    vmadday.xyzw    ACC,   $vf13,    $vf19y  \n\
-    //    vmaddaz.xyzw    ACC,   $vf14,    $vf19z  \n\
-    //    vmaddw.xyzw     $vf11, $vf15,    $vf19w  \n\
-    //    ": :"r"(m0),"r"(lw),"r"(m1)
-    //);
+    sceVu0FVECTOR *wk0 = work_matrix_0; // in [vf4:vf7]
+    sceVu0FVECTOR *wk1 = work_matrix_1; // in [vf8:vf11]
+
+    wk0[0][0] = (m0[0][0] * lw[0][0]) + (m0[1][0] * lw[0][1]) + (m0[2][0] * lw[0][2]) + (m0[3][0] * lw[0][3]);
+    wk0[0][1] = (m0[0][1] * lw[0][0]) + (m0[1][1] * lw[0][1]) + (m0[2][1] * lw[0][2]) + (m0[3][1] * lw[0][3]);
+    wk0[0][2] = (m0[0][2] * lw[0][0]) + (m0[1][2] * lw[0][1]) + (m0[2][2] * lw[0][2]) + (m0[3][2] * lw[0][3]);
+    wk0[0][3] = (m0[0][3] * lw[0][0]) + (m0[1][3] * lw[0][1]) + (m0[2][3] * lw[0][2]) + (m0[3][3] * lw[0][3]);
+
+    wk0[1][0] = (m0[0][0] * lw[1][0]) + (m0[1][0] * lw[1][1]) + (m0[2][0] * lw[1][2]) + (m0[3][0] * lw[1][3]);
+    wk0[1][1] = (m0[0][1] * lw[1][0]) + (m0[1][1] * lw[1][1]) + (m0[2][1] * lw[1][2]) + (m0[3][1] * lw[1][3]);
+    wk0[1][2] = (m0[0][2] * lw[1][0]) + (m0[1][2] * lw[1][1]) + (m0[2][2] * lw[1][2]) + (m0[3][2] * lw[1][3]);
+    wk0[1][3] = (m0[0][3] * lw[1][0]) + (m0[1][3] * lw[1][1]) + (m0[2][3] * lw[1][2]) + (m0[3][3] * lw[1][3]);
+
+    wk0[2][0] = (m0[0][0] * lw[2][0]) + (m0[1][0] * lw[2][1]) + (m0[2][0] * lw[2][2]) + (m0[3][0] * lw[2][3]);
+    wk0[2][1] = (m0[0][1] * lw[2][0]) + (m0[1][1] * lw[2][1]) + (m0[2][1] * lw[2][2]) + (m0[3][1] * lw[2][3]);
+    wk0[2][2] = (m0[0][2] * lw[2][0]) + (m0[1][2] * lw[2][1]) + (m0[2][2] * lw[2][2]) + (m0[3][2] * lw[2][3]);
+    wk0[2][3] = (m0[0][3] * lw[2][0]) + (m0[1][3] * lw[2][1]) + (m0[2][3] * lw[2][2]) + (m0[3][3] * lw[2][3]);
+
+    wk0[3][0] = (m0[0][0] * lw[3][0]) + (m0[1][0] * lw[3][1]) + (m0[2][0] * lw[3][2]) + (m0[3][0] * lw[3][3]);
+    wk0[3][1] = (m0[0][1] * lw[3][0]) + (m0[1][1] * lw[3][1]) + (m0[2][1] * lw[3][2]) + (m0[3][1] * lw[3][3]);
+    wk0[3][2] = (m0[0][2] * lw[3][0]) + (m0[1][2] * lw[3][1]) + (m0[2][2] * lw[3][2]) + (m0[3][2] * lw[3][3]);
+    wk0[3][3] = (m0[0][3] * lw[3][0]) + (m0[1][3] * lw[3][1]) + (m0[2][3] * lw[3][2]) + (m0[3][3] * lw[3][3]);
+
+    wk1[0][0] = (m0[0][0] * m1[0][0]) + (m0[1][0] * m1[0][1]) + (m0[2][0] * m1[0][2]) + (m0[3][0] * m1[0][3]);
+    wk1[0][1] = (m0[0][1] * m1[0][0]) + (m0[1][1] * m1[0][1]) + (m0[2][1] * m1[0][2]) + (m0[3][1] * m1[0][3]);
+    wk1[0][2] = (m0[0][2] * m1[0][0]) + (m0[1][2] * m1[0][1]) + (m0[2][2] * m1[0][2]) + (m0[3][2] * m1[0][3]);
+    wk1[0][3] = (m0[0][3] * m1[0][0]) + (m0[1][3] * m1[0][1]) + (m0[2][3] * m1[0][2]) + (m0[3][3] * m1[0][3]);
+
+    wk1[1][0] = (m0[0][0] * m1[1][0]) + (m0[1][0] * m1[1][1]) + (m0[2][0] * m1[1][2]) + (m0[3][0] * m1[1][3]);
+    wk1[1][1] = (m0[0][1] * m1[1][0]) + (m0[1][1] * m1[1][1]) + (m0[2][1] * m1[1][2]) + (m0[3][1] * m1[1][3]);
+    wk1[1][2] = (m0[0][2] * m1[1][0]) + (m0[1][2] * m1[1][1]) + (m0[2][2] * m1[1][2]) + (m0[3][2] * m1[1][3]);
+    wk1[1][3] = (m0[0][3] * m1[1][0]) + (m0[1][3] * m1[1][1]) + (m0[2][3] * m1[1][2]) + (m0[3][3] * m1[1][3]);
+
+    wk1[2][0] = (m0[0][0] * m1[2][0]) + (m0[1][0] * m1[2][1]) + (m0[2][0] * m1[2][2]) + (m0[3][0] * m1[2][3]);
+    wk1[2][1] = (m0[0][1] * m1[2][0]) + (m0[1][1] * m1[2][1]) + (m0[2][1] * m1[2][2]) + (m0[3][1] * m1[2][3]);
+    wk1[2][2] = (m0[0][2] * m1[2][0]) + (m0[1][2] * m1[2][1]) + (m0[2][2] * m1[2][2]) + (m0[3][2] * m1[2][3]);
+    wk1[2][3] = (m0[0][3] * m1[2][0]) + (m0[1][3] * m1[2][1]) + (m0[2][3] * m1[2][2]) + (m0[3][3] * m1[2][3]);
+
+    wk1[3][0] = (m0[0][0] * m1[3][0]) + (m0[1][0] * m1[3][1]) + (m0[2][0] * m1[3][2]) + (m0[3][0] * m1[3][3]);
+    wk1[3][1] = (m0[0][1] * m1[3][0]) + (m0[1][1] * m1[3][1]) + (m0[2][1] * m1[3][2]) + (m0[3][1] * m1[3][3]);
+    wk1[3][2] = (m0[0][2] * m1[3][0]) + (m0[1][2] * m1[3][1]) + (m0[2][2] * m1[3][2]) + (m0[3][2] * m1[3][3]);
+    wk1[3][3] = (m0[0][3] * m1[3][0]) + (m0[1][3] * m1[3][1]) + (m0[2][3] * m1[3][2]) + (m0[3][3] * m1[3][3]);
 }

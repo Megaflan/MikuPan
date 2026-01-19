@@ -10,9 +10,10 @@
 #include "sce/libvu0.h"
 
 #include "graphics/graph3d/sg_dat.h"
-#include "graphics/graph3d/sgdma.h"
 #include "graphics/graph3d/sgcam.h"
+#include "graphics/graph3d/sgdma.h"
 #include "graphics/graph3d/shadow.h"
+#include "mikupan/mikupan_logging_c.h"
 
 #define PI 3.1415925f
 
@@ -581,6 +582,12 @@ float SgACosf(float ccos)
     float sqrt;
 
     sqrt = SgSqrtf(1.0f - ccos * ccos);
+
+    if (isnan(sqrt))
+    {
+        sqrt = 0.0f;
+    }
+
     return SgAtan2f(sqrt, ccos);
 }
 
@@ -652,8 +659,6 @@ static void GetATanf(sceVu0FVECTOR *tmpv)
 
 float SgAtanf(float x)
 {
-    return atanf(x);
-
     sceVu0FVECTOR tmpv[3];
 
     // the followings are most likely polynomial coefficients
@@ -969,6 +974,7 @@ void _SetMulMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1)
         ": : "r"(m0), "r"(m1)
     );
     */
+
 }
 
 void _CalcLenASM(sceVu0FVECTOR out, sceVu0FVECTOR v0, sceVu0FVECTOR v1)
