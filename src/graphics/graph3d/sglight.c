@@ -10,6 +10,7 @@
 #include "graphics/graph3d/sgsu.h"
 #include "graphics/graph3d/sglight.h"
 
+#include "mikupan/mikupan_logging_c.h"
 #include "mikupan/rendering/mikupan_renderer.h"
 
 #include <stdio.h>
@@ -1986,7 +1987,7 @@ void ClearPreRenderMeshData(u_int *prim)
     case 0x32:
             if (0x32 == mtype)
             {
-                MikuPan_RenderMeshType0x32((struct SGDPROCUNITHEADER *)vuvnprim, (struct SGDPROCUNITHEADER *)prim);
+                //MikuPan_RenderMeshType0x32((struct SGDPROCUNITHEADER *)vuvnprim, (struct SGDPROCUNITHEADER *)prim);
             }
         for (j = 0; j < gloops; j++)
         {
