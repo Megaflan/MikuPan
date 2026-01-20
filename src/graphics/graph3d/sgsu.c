@@ -16,7 +16,7 @@
 #include "mikupan/mikupan_logging_c.h"
 #include "mikupan/rendering/mikupan_renderer.h"
 
-#include <minwindef.h>
+#define min(x, y) (((x) > (y))? (y): (x))
 
 extern void DRAWTYPE2() __attribute__((section(".vutext")));
 extern void DRAWTYPE2W() __attribute__((section(".vutext")));
