@@ -16,6 +16,8 @@
 #include "mikupan/mikupan_logging_c.h"
 #include "mikupan/rendering/mikupan_renderer.h"
 
+#include <minwindef.h>
+
 extern void DRAWTYPE2() __attribute__((section(".vutext")));
 extern void DRAWTYPE2W() __attribute__((section(".vutext")));
 extern void DRAWTYPE0() __attribute__((section(".vutext")));
@@ -35,15 +37,14 @@ static int dbg_flg = 0;
 static int debug_sign = 0;
 static int o0 = 0;
 static int o1 = 0;
+sceVu0FVECTOR work_vf18;
+sceVu0FVECTOR work_vf19;
 
 void _AddColor(float *v)
 {
-    //__asm__ volatile("\n\
-    //    lqc2     $vf12,0(%0)\n\
-    //    vadd.xyz $vf18xyz,$vf18xyz,$vf12xyz\n\
-    //    sqc2     $vf18,0(%0)\n\
-    //    ": : "r"(v)
-    //);
+    v[0] = work_vf18[0] + v[0];
+    v[1] = work_vf18[1] + v[1];
+    v[2] = work_vf18[2] + v[2];
 }
 
 void SgSuDebugOn()
@@ -229,7 +230,7 @@ void CalcVertexBuffer(u_int *prim)
     }
 
     //vli = (VERTEXLIST *)lphead->pWeightedList;
-    vli = (VERTEXLIST *) MikuPan_GetHostAddress(lphead->pWeightedList);
+    vli = (VERTEXLIST *) MikuPan_GetHostPointer(lphead->pWeightedList);
 
     if (vli == NULL)
     {
@@ -237,7 +238,7 @@ void CalcVertexBuffer(u_int *prim)
     }
 
     //vps = lphead->pWeightedVertex;
-    vps = (sceVu0FVECTOR *) MikuPan_GetHostAddress(lphead->pWeightedVertex);
+    vps = (sceVu0FVECTOR *) MikuPan_GetHostPointer(lphead->pWeightedVertex);
     vpd = vertex_buffer;
 
     for (i = 0; i < vli->list_num; i++)
@@ -247,12 +248,12 @@ void CalcVertexBuffer(u_int *prim)
 
         for (j = 0; j < vli->lists[i].vIdx; j++, vpd += 1, vps += 2)
         {
-            calc_skinned_position(*vpd, *vps);
+            calc_skinned_position(*vpd, vps);
         }
     }
 
     //vps = lphead->pWeightedNormal;
-    vps = (sceVu0FVECTOR *) MikuPan_GetHostAddress(lphead->pWeightedNormal);
+    vps = (sceVu0FVECTOR *) MikuPan_GetHostPointer(lphead->pWeightedNormal);
     vpd = normal_buffer;
 
     vli = (VERTEXLIST *) &vli->lists[vli->list_num];
@@ -264,7 +265,7 @@ void CalcVertexBuffer(u_int *prim)
 
         for (j = 0; j < vli->lists[i].vIdx; j++, vpd += 1, vps += 2)
         {
-            calc_skinned_normal(*vpd, *vps);
+            calc_skinned_normal(*vpd, vps);
         }
     }
 }
@@ -879,6 +880,8 @@ void _SetLWMatrix0(sceVu0FMATRIX m0)
     //    lqc2    $vf7,0x30(%0)\n\
     //    ": :"r"(m0)
     //);
+
+    memcpy(work_matrix_0, m0, sizeof(sceVu0FMATRIX));
 }
 
 void _SetLWMatrix1(sceVu0FMATRIX m0)
@@ -890,40 +893,34 @@ void _SetLWMatrix1(sceVu0FMATRIX m0)
     //    lqc2    $vf11,0x30(%0)\n\
     //    ": :"r"(m0)
     //);
+
+    memcpy(work_matrix_1, m0, sizeof(sceVu0FMATRIX));
 }
 
 void _SetRotTransPersMatrix(sceVu0FMATRIX m0)
 {
-    //__asm__ volatile ("\n\
-    //    lqc2    $vf8,0(%0)\n\
-    //    lqc2    $vf9,0x10(%0)\n\
-    //    lqc2    $vf10,0x20(%0)\n\
-    //    lqc2    $vf11,0x30(%0)\n\
-    //    ": :"r"(m0)
-    //);
+    memcpy(work_matrix_1, m0, sizeof(sceVu0FMATRIX));
 }
 
-void _CalcVertex(float *dp, float *v, float *n)
+void _CalcVertex(sceVu0FVECTOR *dp, float *v, float *n)
 {
-    //__asm__ volatile ("\n\
-    //    lqc2         $vf13,0(%1)\n\
-    //    vmulax.xyzw  ACCxyzw,$vf4xyzw,$vf13x\n\
-    //    vmadday.xyzw ACCxyzw,$vf5xyzw,$vf13y\n\
-    //    vmaddaz.xyzw ACCxyzw,$vf6xyzw,$vf13z\n\
-    //    vmaddw.xyzw  $vf12xyzw,$vf7xyzw,$vf13w\n\
-    //    lq           $6,0(%2)\n\
-    //    sq           $6,0x10(%0)\n\
-    //    sqc2         $vf12,0(%0)\n\
-    //    ": :"r"(dp), "r"(v), "r"(n) : "$6"
-    //);
+    sceVu0FVECTOR *wk0 = work_matrix_0; // in [vf4:vf7]
+
+    dp[1][0] = n[0];
+    dp[1][1] = n[1];
+    dp[1][2] = n[2];
+    dp[1][3] = n[3];
+
+    dp[0][0] = (wk0[0][0] * v[0]) + (wk0[1][0] * v[1]) + (wk0[2][0] * v[2]) + (wk0[3][0] * v[3]);
+    dp[0][1] = (wk0[0][1] * v[0]) + (wk0[1][1] * v[1]) + (wk0[2][1] * v[2]) + (wk0[3][1] * v[3]);
+    dp[0][2] = (wk0[0][2] * v[0]) + (wk0[1][2] * v[1]) + (wk0[2][2] * v[2]) + (wk0[3][2] * v[3]);
+    dp[0][3] = (wk0[0][3] * v[0]) + (wk0[1][3] * v[1]) + (wk0[2][3] * v[2]) + (wk0[3][3] * v[3]);
 }
 
 void _vfito0(int *v0)
 {
-    //__asm__ volatile ("\n\
-    //    vminiw.xyzw $vf18xyzw,$vf18xyzw,$vf19w\n\
-    //    vftoi0.xyzw $vf18xyzw,$vf18xyzw\n\
-    //    sqc2        $vf18,0(%0)\n\
-    //    ": :"r"(v0)
-    //);
+    v0[0] = (int)min(work_vf18[0], work_vf19[0]);
+    v0[1] = (int)min(work_vf18[1], work_vf19[1]);
+    v0[2] = (int)min(work_vf18[2], work_vf19[2]);
+    v0[3] = (int)min(work_vf18[3], work_vf19[3]);
 }

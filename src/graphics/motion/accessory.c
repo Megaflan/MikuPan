@@ -120,10 +120,6 @@ void acsInitRopeWork()
     for (i = 0; i < 20; i++)
     {
         rope_ctrl[i].furn_id = 0xffff;
-
-        asm volatile ("nop");
-        asm volatile ("nop");
-        asm volatile ("nop");
     }
 }
 
