@@ -643,8 +643,14 @@ void _CalcLenASM(sceVu0FVECTOR out, sceVu0FVECTOR v0, sceVu0FVECTOR v1)
 
 void _NormalizeVector(sceVu0FVECTOR v, sceVu0FVECTOR v0)
 {
+    float sum = sqrtf(POW2(v0[0]) + POW2(v0[1]) + POW2(v0[2]));
+    float val = 0.0f;
 
-    float val = 1.0f / sqrtf(POW2(v0[0]) + POW2(v0[1]) + POW2(v0[2]));
+    if (sum != 0.0f && !isnan(sum))
+    {
+        val = 1.0f / sum;
+    }
+
     v[0] = v0[0] * val;
     v[1] = v0[1] * val;
     v[2] = v0[2] * val;
@@ -653,7 +659,14 @@ void _NormalizeVector(sceVu0FVECTOR v, sceVu0FVECTOR v0)
 
 void _NormalizeVector2(sceVu0FVECTOR v, sceVu0FVECTOR v0)
 {
-    float val = 1.0f / sqrtf(POW2(v0[0]) + POW2(v0[1]) + POW2(v0[2]));
+    float sum = sqrtf(POW2(v0[0]) + POW2(v0[1]) + POW2(v0[2]));
+    float val = 0.0f;
+
+    if (sum != 0.0f && !isnan(sum))
+    {
+        val = 1.0f / sum;
+    }
+
     v[0] = v0[0] * val;
     v[1] = v0[1] * val;
     v[2] = v0[2] * val;

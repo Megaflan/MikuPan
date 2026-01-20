@@ -25,6 +25,7 @@
 #include "graphics/motion/mdldat.h"
 #include "graphics/motion/acs_dat.h"
 
+#include <c++/math.h>
 #include <string.h>
 
 // #include <cstdlib.h>
@@ -1094,7 +1095,15 @@ void acsMoveCloth(sceVu0FVECTOR *vtx, CLOTH_CTRL *cloth, SgCOORDUNIT *cp, COLLIS
             sceVu0SubVector(d, current[id0].p, current[id1].p);
             r0 = SgSqrtf(sceVu0InnerProduct(d, d));
             dr = spring[i].ldef;
-            sceVu0ScaleVector(force, d, ((dr - r0) * 0.5f) / r0);
+
+            float multiplier = 0.0f;
+
+            if (r0 != 0.0f && !isnan(r0))
+            {
+                multiplier = ((dr - r0) * 0.5f) / r0;
+            }
+
+            sceVu0ScaleVector(force, d, multiplier);
             sceVu0AddVector(current[id0].p, current[id0].p, force);
             sceVu0SubVector(current[id1].p, current[id1].p, force);
 
