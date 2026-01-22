@@ -250,7 +250,9 @@ void SgSetProjection(float scrz)
 {
     // Avoid division by zero
     if (scrz == 0.0f)
+    {
         return;
+    }
 
     // On PS2, vf1.w would now hold this value globally;
     // here we just simulate setting it in __work_vf01.
@@ -419,11 +421,13 @@ float SgACosf(float ccos)
 {
     float sqrt;
 
-    sqrt = SgSqrtf(1.0f - ccos * ccos);
-
-    if (isnan(sqrt))
+    if (isnan(1.0f - ccos * ccos))
     {
         sqrt = 0.0f;
+    }
+    else
+    {
+        sqrt = SgSqrtf(1.0f - ccos * ccos);
     }
 
     return SgAtan2f(sqrt, ccos);
@@ -455,52 +459,48 @@ static void GetATanf(sceVu0FVECTOR *tmpv)
 
 float SgAtanf(float x)
 {
-    sceVu0FVECTOR tmpv[3];
+    sceVu0FVECTOR tmpv[3] = {0};
 
     // the followings are most likely polynomial coefficients
     // used to approximate arctan(x)
 
-    if (x >= 0.0f)
-    {
-        if (x > 1.0f)
-        {
-            tmpv[0][0] = 1.0f / x;
-            tmpv[0][1] = +0.99999934f;
-            tmpv[0][2] = -0.33329856f;
-            tmpv[0][3] = +0.19946536f;
-            tmpv[1][0] = -0.13908534f;
-            tmpv[1][1] = +0.09642004f;
-            tmpv[1][2] = -0.055909887f;
-            tmpv[1][3] = +0.021861229f;
-            tmpv[2][0] = -0.0040540579f;
-            tmpv[2][1] = +(PI / 4);
-
-            GetATanf(tmpv);
-
-            return (PI / 2) - tmpv[0][0];
-        }
-        else
-        {
-            tmpv[0][0] = x;
-            tmpv[0][1] = +0.99999934f;
-            tmpv[0][2] = -0.33329856f;
-            tmpv[0][3] = +0.19946536f;
-            tmpv[1][0] = -0.13908534f;
-            tmpv[1][1] = +0.09642004f;
-            tmpv[1][2] = -0.055909887f;
-            tmpv[1][3] = +0.021861229f;
-            tmpv[2][0] = -0.0040540579f;
-            tmpv[2][1] = +(PI / 4);
-
-            GetATanf(tmpv);
-
-            return tmpv[0][0];
-        }
-    }
-    else
+    if (x < 0.0f)
     {
         return -SgAtanf(-x);
     }
+
+    if (x > 1.0f)
+    {
+        tmpv[0][0] = 1.0f / x;
+        tmpv[0][1] = +0.99999934f;
+        tmpv[0][2] = -0.33329856f;
+        tmpv[0][3] = +0.19946536f;
+        tmpv[1][0] = -0.13908534f;
+        tmpv[1][1] = +0.09642004f;
+        tmpv[1][2] = -0.055909887f;
+        tmpv[1][3] = +0.021861229f;
+        tmpv[2][0] = -0.0040540579f;
+        tmpv[2][1] = +(PI / 4);
+
+        GetATanf(tmpv);
+
+        return (PI / 2) - tmpv[0][0];
+    }
+
+    tmpv[0][0] = x;
+    tmpv[0][1] = +0.99999934f;
+    tmpv[0][2] = -0.33329856f;
+    tmpv[0][3] = +0.19946536f;
+    tmpv[1][0] = -0.13908534f;
+    tmpv[1][1] = +0.09642004f;
+    tmpv[1][2] = -0.055909887f;
+    tmpv[1][3] = +0.021861229f;
+    tmpv[2][0] = -0.0040540579f;
+    tmpv[2][1] = +(PI / 4);
+
+    GetATanf(tmpv);
+
+    return tmpv[0][0];
 }
 
 float SgAtan2f(float y, float x)
@@ -542,7 +542,10 @@ float SgSqrtf(float len)
 float SgRSqrtf(float len)
 {
     if (len == 0.0f)
-        return INFINITY;// handle divide by zero
+    {
+        return 0.0f;// handle divide by zero
+    }
+
     return 1.0f / sqrtf(len);
 }
 
@@ -586,12 +589,6 @@ void _MulRotMatrix(sceVu0FMATRIX ans, sceVu0FMATRIX m0, sceVu0FMATRIX m1)
         ans[i][2] = (m0[0][2] * m1[i][0]) + (m0[1][2] * m1[i][1])
                     + (m0[2][2] * m1[i][2]);
     }
-
-    // Optional: preserve last row as identity (for 4x4)
-    // ans[3][0] = 0.0f;
-    // ans[3][1] = 0.0f;
-    // ans[3][2] = 0.0f;
-    // ans[3][3] = 1.0f;
 }
 
 void _MulMatrix(sceVu0FMATRIX ans, sceVu0FMATRIX m0, sceVu0FMATRIX m1)

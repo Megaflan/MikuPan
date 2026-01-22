@@ -118,6 +118,11 @@ int scePadRead(int port, int slot, unsigned char* rdata)
         data[1] ^= key_states[SDL_SCANCODE_8]           ? sce_pad[13] : 0;
         data[1] ^= key_states[SDL_SCANCODE_9]           ? sce_pad[14] : 0;
         data[1] ^= key_states[SDL_SCANCODE_U]           ? sce_pad[15] : 0;
+
+        rdata[5] = 127;
+        rdata[4] = 127;
+        rdata[7] = 127;
+        rdata[6] = 127;
     }
 
     return 32;

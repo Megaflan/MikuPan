@@ -951,7 +951,7 @@ void AssignShadowPrim(u_int *prim)
 {
     int i;
     int cn;
-    sceVu0FVECTOR tmpvec;
+    sceVu0FVECTOR tmpvec = {0};
 
     if (prim == NULL)
     {
@@ -1031,7 +1031,9 @@ void AssignShadowPrim(u_int *prim)
                 // dummy case
                 break;
         }
-        prim = (u_int *) *prim;
+
+        //prim = (u_int *) *prim;
+        prim = (u_int *) GetNextProcUnitHeaderPtr(prim);
     }
 }
 
@@ -1077,7 +1079,8 @@ void AssignShadow(void *sgd_top, int except_num)
     {
         if (shadow_apgnum >= 0)
         {
-            AssignShadowPreProcess((u_int *) pk[0]);
+            //AssignShadowPreProcess((u_int *) pk[0]);
+            AssignShadowPreProcess((u_int *) GetTopProcUnitHeaderPtr(hs, 0));
 
             if (pGroupPacket != NULL)
             {
@@ -1091,7 +1094,7 @@ void AssignShadow(void *sgd_top, int except_num)
 
                 for (i = 0; i < shadow_apgnum; i++)
                 {
-                    mgp = (ModelGroup *) ((u_int) mgp
+                    mgp = (ModelGroup *) ((int64_t) mgp
                                           + (mgp->Num + 2) * sizeof(short));
                 }
 
@@ -1101,7 +1104,7 @@ void AssignShadow(void *sgd_top, int except_num)
 
                     if (lcp[groups].camin != 0)
                     {
-                        AssignShadowPrim((u_int *) pk[groups]);
+                        AssignShadowPrim((u_int *) GetTopProcUnitHeaderPtr(hs, groups));
                     }
                 }
             }
@@ -1112,7 +1115,7 @@ void AssignShadow(void *sgd_top, int except_num)
             {
                 if (lcp[i].camin != 0)
                 {
-                    AssignShadowPrim((u_int *) pk[i]);
+                    AssignShadowPrim((u_int *) GetTopProcUnitHeaderPtr(hs, i));
                 }
             }
         }
@@ -1123,7 +1126,7 @@ void AssignShadow(void *sgd_top, int except_num)
         {
             if (lcp[i].camin != 0 && i != except_num)
             {
-                AssignShadowPrim((u_int *) pk[i]);
+                AssignShadowPrim((u_int *) GetTopProcUnitHeaderPtr(hs, i));
             }
         }
     }

@@ -1,4 +1,5 @@
 #include "sgcam.h"
+#include "cglm/call/mat4.h"
 #include "common.h"
 #include "typedefs.h"
 
@@ -248,7 +249,7 @@ int BoundClip(sceVu0FVECTOR ed, sceVu0FVECTOR v)
 
     sceVu0FVECTOR *wk0 = work_matrix_0;// in [vf4:vf7]
     sceVu0FVECTOR *wk1 = work_matrix_1;// in [vf8:vf11]
-    sceVu0FVECTOR v0;
+    sceVu0FVECTOR v0 = {0};
 
     v0[0] = (wk0[0][0] * v[0]) + (wk0[1][0] * v[1]) + (wk0[2][0] * v[2])
             + (wk0[3][0] * 1.0f);
@@ -416,56 +417,6 @@ int ClipCheck(sceVu0FVECTOR *vec)
 static inline void asm_1__CheckBoundingBox(sceVu0FMATRIX m0, sceVu0FMATRIX m1,
                                            sceVu0FMATRIX lw)
 {
-    /**
-        //asm volatile ("                              \n\
-    //    lqc2            $vf12, 0(%0)             \n\
-    //    lqc2            $vf13, 0x10(%0)          \n\
-    //    lqc2            $vf14, 0x20(%0)          \n\
-    //    lqc2            $vf15, 0x30(%0)          \n\
-    //    lqc2            $vf16, 0(%1)             \n\
-    //    lqc2            $vf17, 0x10(%1)          \n\
-    //    lqc2            $vf18, 0x20(%1)          \n\
-    //    lqc2            $vf19, 0x30(%1)          \n\
-    //    vmulax.xyzw     ACC,   $vf12,    $vf16x  \n\
-    //    vmadday.xyzw    ACC,   $vf13,    $vf16y  \n\
-    //    vmaddaz.xyzw    ACC,   $vf14,    $vf16z  \n\
-    //    vmaddw.xyzw     $vf4,  $vf15,    $vf16w  \n\
-    //    vmulax.xyzw     ACC,   $vf12,    $vf17x  \n\
-    //    vmadday.xyzw    ACC,   $vf13,    $vf17y  \n\
-    //    vmaddaz.xyzw    ACC,   $vf14,    $vf17z  \n\
-    //    vmaddw.xyzw     $vf5,  $vf15,    $vf17w  \n\
-    //    vmulax.xyzw     ACC,   $vf12,    $vf18x  \n\
-    //    vmadday.xyzw    ACC,   $vf13,    $vf18y  \n\
-    //    vmaddaz.xyzw    ACC,   $vf14,    $vf18z  \n\
-    //    vmaddw.xyzw     $vf6,  $vf15,    $vf18w  \n\
-    //    vmulax.xyzw     ACC,   $vf12,    $vf19x  \n\
-    //    vmadday.xyzw    ACC,   $vf13,    $vf19y  \n\
-    //    vmaddaz.xyzw    ACC,   $vf14,    $vf19z  \n\
-    //    vmaddw.xyzw     $vf7,  $vf15,    $vf19w  \n\
-    //    lqc2            $vf12, 0(%2)             \n\
-    //    lqc2            $vf13, 0x10(%2)          \n\
-    //    lqc2            $vf14, 0x20(%2)          \n\
-    //    lqc2            $vf15, 0x30(%2)          \n\
-    //    vmulax.xyzw     ACC,   $vf12,    $vf16x  \n\
-    //    vmadday.xyzw    ACC,   $vf13,    $vf16y  \n\
-    //    vmaddaz.xyzw    ACC,   $vf14,    $vf16z  \n\
-    //    vmaddw.xyzw     $vf8,  $vf15,    $vf16w  \n\
-    //    vmulax.xyzw     ACC,   $vf12,    $vf17x  \n\
-    //    vmadday.xyzw    ACC,   $vf13,    $vf17y  \n\
-    //    vmaddaz.xyzw    ACC,   $vf14,    $vf17z  \n\
-    //    vmaddw.xyzw     $vf9,  $vf15,    $vf17w  \n\
-    //    vmulax.xyzw     ACC,   $vf12,    $vf18x  \n\
-    //    vmadday.xyzw    ACC,   $vf13,    $vf18y  \n\
-    //    vmaddaz.xyzw    ACC,   $vf14,    $vf18z  \n\
-    //    vmaddw.xyzw     $vf10, $vf15,    $vf18w  \n\
-    //    vmulax.xyzw     ACC,   $vf12,    $vf19x  \n\
-    //    vmadday.xyzw    ACC,   $vf13,    $vf19y  \n\
-    //    vmaddaz.xyzw    ACC,   $vf14,    $vf19z  \n\
-    //    vmaddw.xyzw     $vf11, $vf15,    $vf19w  \n\
-    //    ": :"r"(m0),"r"(lw),"r"(m1)
-    //);
-    */
-
     sceVu0FVECTOR *wk0 = work_matrix_0;// in [vf4:vf7]
     sceVu0FVECTOR *wk1 = work_matrix_1;// in [vf8:vf11]
 
