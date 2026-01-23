@@ -46,6 +46,8 @@
 #include "ingame/map/map_area.h"
 #include "graphics/scene/scene.h"
 
+#include <stdlib.h>
+
 #ifdef BUILD_EU_VERSION
 char *mpegName[][40] = {
       {
@@ -2023,11 +2025,11 @@ void setD4_CHCR(u_int val)
 {
     DIntr();
 
-    *D_ENABLEW = ((*D_ENABLER)|0x00010000);
+    //*D_ENABLEW = ((*D_ENABLER)|0x00010000);
 
-    *D4_CHCR = val;
+    //*D4_CHCR = val;
 
-    *D_ENABLEW = ((*D_ENABLER)&~0x00010000);
+    //*D_ENABLEW = ((*D_ENABLER)&~0x00010000);
 
     EIntr();
 }
@@ -2083,7 +2085,7 @@ int viBufReset(ViBuf *f)
     for (i = 0; i < f->n; i++)
     {
         scTag2(
-            (QWORD*)(f->tag + i),
+            (QWORD*)MikuPan_GetHostPointer(f->tag + i),
             DmaAddr((char*)f->data + VIBUF_ELM_SIZE * i),
             DMA_ID_REF,
             VIBUF_ELM_SIZE / 16
@@ -2097,9 +2099,9 @@ int viBufReset(ViBuf *f)
         0
     );
 
-    *D4_QWC = 0;
-    *D4_MADR = (u_int)DmaAddr(f->data);
-    *D4_TADR = (u_int)DmaAddr(f->tag);
+    //*D4_QWC = 0;
+    //*D4_MADR = (u_int)DmaAddr(f->data);
+    //*D4_TADR = (u_int)DmaAddr(f->tag);
 
     setD4_CHCR((0 << 8) | (1 << 2) | 1);
 

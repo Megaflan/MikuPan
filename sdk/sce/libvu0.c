@@ -155,8 +155,7 @@ void sceVu0CopyMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1)
 
 void sceVu0RotMatrixZ(sceVu0FMATRIX m0, sceVu0FMATRIX m1, float rz)
 {
-    //glm_rotate_z(m1, rz, m0);
-
+    mat4 out = {0};
     float cos_r = SgCosf(rz);
     float sin_r = SgSinf(rz);
 
@@ -172,11 +171,13 @@ void sceVu0RotMatrixZ(sceVu0FMATRIX m0, sceVu0FMATRIX m1, float rz)
 
     for (int i = 0; i < 4; i++)
     {
-        m0[i][0] = m1[i][0] * cos_r - m1[i][1] * sin_r;
-        m0[i][1] = m1[i][0] * sin_r + m1[i][1] * cos_r;
-        m0[i][2] = m1[i][2];
-        m0[i][3] = m1[i][3];
+        out[i][0] = m1[i][0] * cos_r - m1[i][1] * sin_r;
+        out[i][1] = m1[i][0] * sin_r + m1[i][1] * cos_r;
+        out[i][2] = m1[i][2];
+        out[i][3] = m1[i][3];
     }
+
+    sceVu0CopyMatrix(m0, out);
 }
 
 void sceVu0ApplyMatrix(sceVu0FVECTOR v0, sceVu0FMATRIX m, sceVu0FVECTOR v1)
@@ -186,9 +187,10 @@ void sceVu0ApplyMatrix(sceVu0FVECTOR v0, sceVu0FMATRIX m, sceVu0FVECTOR v1)
 
 void sceVu0RotMatrixX(sceVu0FMATRIX m0, sceVu0FMATRIX m1, float rx)
 {
-    //glm_rotate_x(m1, rx, m0);
     float cos_r = SgCosf(rx);
     float sin_r = SgSinf(rx);
+
+    mat4 out = {0};
 
     if (fabsf(cos_r) == 1.0f)
     {
@@ -202,17 +204,18 @@ void sceVu0RotMatrixX(sceVu0FMATRIX m0, sceVu0FMATRIX m1, float rx)
 
     for (int i = 0; i < 4; i++)
     {
-        m0[i][0] = m1[i][0];                           // X unchanged
-        m0[i][1] = m1[i][1] * cos_r - m1[i][2] * sin_r;// Y
-        m0[i][2] = m1[i][1] * sin_r + m1[i][2] * cos_r;// Z
-        m0[i][3] = m1[i][3];                           // W unchanged
+        out[i][0] = m1[i][0];                           // X unchanged
+        out[i][1] = m1[i][1] * cos_r - m1[i][2] * sin_r;// Y
+        out[i][2] = m1[i][1] * sin_r + m1[i][2] * cos_r;// Z
+        out[i][3] = m1[i][3];                           // W unchanged
     }
+
+    sceVu0CopyMatrix(m0, out);
 }
 
 void sceVu0RotMatrixY(sceVu0FMATRIX m0, sceVu0FMATRIX m1, float ry)
 {
-    //glm_rotated_y(m1, ry, m0);
-
+    mat4 out = {0};
     float cos_r = SgCosf(ry);
     float sin_r = SgSinf(ry);
 
@@ -228,11 +231,13 @@ void sceVu0RotMatrixY(sceVu0FMATRIX m0, sceVu0FMATRIX m1, float ry)
 
     for (int i = 0; i < 4; i++)
     {
-        m0[i][0] = m1[i][0] * cos_r + m1[i][2] * sin_r; // X
-        m0[i][1] = m1[i][1];                            // Y unchanged
-        m0[i][2] = -m1[i][0] * sin_r + m1[i][2] * cos_r;// Z
-        m0[i][3] = m1[i][3];                            // W unchanged
+        out[i][0] = m1[i][0] * cos_r + m1[i][2] * sin_r; // X
+        out[i][1] = m1[i][1];                            // Y unchanged
+        out[i][2] = -m1[i][0] * sin_r + m1[i][2] * cos_r;// Z
+        out[i][3] = m1[i][3];                            // W unchanged
     }
+
+    sceVu0CopyMatrix(m0, out);
 }
 
 void sceVu0TransMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1, sceVu0FVECTOR tv)

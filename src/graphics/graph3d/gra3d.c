@@ -2152,9 +2152,6 @@ int CheckModelBoundingBox(sceVu0FMATRIX lwmtx, sceVu0FVECTOR *bbox)
 
     _SetMulMatrix(SgCMVtx, lwmtx);
 
-    //MikuPan_SetModelTransformMatrix((sceVu0FVECTOR*)work_matrix_0);
-    //DrawBoundingBox(bbox);
-
     return 1;
 
     if (clip_value_check != 0)

@@ -813,15 +813,13 @@ void MikuPan_RenderMeshType0x82(unsigned int *pVUVN, unsigned int *pPUHead)
         // Draw the triangle using the GL_TRIANGLE_STRIP primitive
         int render_type =
             MikuPan_IsWireframeRendering() ? GL_LINE_STRIP : GL_TRIANGLE_STRIP;
-        glad_glDrawArrays(render_type, 0, pMeshInfo[i].uiPointNum);
+        glad_glDrawArrays(GL_TRIANGLE_STRIP, 0, pMeshInfo[i].uiPointNum);
 
         glad_glDeleteVertexArrays(1, &VAO);
         glad_glDeleteBuffers(1, &VBO);
 
         vertexOffset += pMeshInfo[i].uiPointNum;
     }
-
-    MikuPan_RestoreCurrentShaderProgram();
 }
 
 void MikuPan_RenderMeshType0x2(unsigned int *pVUVN, unsigned int *pPUHead)

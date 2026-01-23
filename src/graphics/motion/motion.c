@@ -439,7 +439,7 @@ u_char motSetCoord(ANI_CTRL *ani_ctrl, u_char work_id)
 
     m_ctrl = &ani_ctrl->mot;
 
-    //motSetInterpMatrix(ani_ctrl, m_start, m_end);
+    motSetInterpMatrix(ani_ctrl, m_start, m_end);
     motInterpAnm(ani_ctrl, m_start, m_end);
 
     ani_end = 0;
@@ -1959,13 +1959,14 @@ void motPrintVector(char *str, sceVu0FVECTOR vec)
 
 void sceRotMatrixXYZ(sceVu0FMATRIX m0, sceVu0FMATRIX m1, sceVu0FVECTOR rot)
 {
-    sceVu0FMATRIX mat;
+    sceVu0FMATRIX mat = {0};
 
     sceVu0CopyMatrix(mat, m1);
+
     sceVu0RotMatrixX(mat, mat, rot[0]);
     sceVu0RotMatrixY(mat, mat, rot[1]);
     sceVu0RotMatrixZ(mat, mat, rot[2]);
-    sceVu0CopyMatrix(m0, mat);
+    sceVu0CopyMatrix(m0, m1);
 }
 
 MIME_CTRL mim_chodo[20] = {0};
