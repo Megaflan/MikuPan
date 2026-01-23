@@ -3,16 +3,17 @@
 
 #include "typedefs.h"
 
-typedef struct {
+typedef struct
+{
     u_char mode;
     u_char load_id;
     u_char load_num;
     u_char load_no;
 } FG_LOAD_WRK;
 
-// extern int load_mdl_addr[0];
-// extern int load_mot_addr[0];
-// extern int load_se_addr[0];
+extern int load_mdl_addr[];
+extern int load_mot_addr[];
+extern int load_se_addr[];
 extern FG_LOAD_WRK fg_load_wrk;
 
 void FloatGhostAppearInit();
@@ -37,4 +38,4 @@ void GetFloatGhostSELoad();
 void FloatGhostAppearStop();
 void FloatGhostAppearStart();
 
-#endif // INGAME_ENTRY_AP_FGOST_H
+#endif// INGAME_ENTRY_AP_FGOST_H

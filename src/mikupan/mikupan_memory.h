@@ -73,6 +73,11 @@ int MikuPan_GetPs2OffsetFromHostPointer(void* ptr);
 #define RARE_ENE_SPR_ADDRESS            0x01c90000
 #define MAP_DATA_ADDRESS                0x007F8000
 
+#define ENE_DMG_TEX_BASE_ADDRESS        0x98000000
+#define FLY_MDL_ADDRESS                 0xd8000000
+#define MSN00TTL_PK2_ADDRESS            0x1e900000
+#define STORY_WORK_SAVE_ADDRESS         0x10900000
+
 /* DEVKIT EXTANDED RAM */
 #define TEST2D_PK2_ADDRESS              0x007F0000 /* 0x04300000 */
 #define TEST_ROOM_CHECK_ADDRESS         0x007F0000 /* 0x04610000 */

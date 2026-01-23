@@ -1,18 +1,31 @@
 #ifndef OUTGAME_BTL_MODE_BTL_MENU_H
 #define OUTGAME_BTL_MODE_BTL_MENU_H
 
-#include "typedefs.h"
 #include "btl_mode.h"
+#include "typedefs.h"
+#include "ingame/event/ev_load.h"
 
-// extern MSN_LOAD_DAT stage_load_dat0[0];
-// extern MSN_LOAD_DAT stage_load_dat1[0];
-// extern MSN_LOAD_DAT stage_load_dat2[0];
-// extern MSN_LOAD_DAT stage_load_dat3[0];
-// extern MSN_LOAD_DAT stage_load_dat4[0];
-// extern MSN_LOAD_DAT *stage_load_dat[0];
-// extern FREE_DAT free_dat[0];
-// extern BTL_SAVE_STR btl_save_str[0];
-// extern u_long btl_save_str_num;
+typedef struct
+{
+    u_char *addr;
+    int size;
+} BTL_SAVE_STR;
+
+typedef struct
+{
+    sceVu0FVECTOR pos;
+    u_char floor;
+} FREE_DAT;
+
+extern MSN_LOAD_DAT stage_load_dat0[];
+extern MSN_LOAD_DAT stage_load_dat1[];
+extern MSN_LOAD_DAT stage_load_dat2[];
+extern MSN_LOAD_DAT stage_load_dat3[];
+extern MSN_LOAD_DAT stage_load_dat4[];
+extern MSN_LOAD_DAT *stage_load_dat[];
+extern FREE_DAT free_dat[];
+extern BTL_SAVE_STR btl_save_str[];
+extern u_long btl_save_str_num;
 
 void FreeModeMain();
 void FreeModePosSet();
@@ -26,4 +39,4 @@ void StageGhostLoadAfter();
 void SaveStoryWrk();
 void LoadStoryWrk();
 
-#endif // OUTGAME_BTL_MODE_BTL_MENU_H
+#endif// OUTGAME_BTL_MODE_BTL_MENU_H

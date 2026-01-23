@@ -20,16 +20,16 @@ typedef struct {
 	long int best_shot;
 } STAGE_WRK;
 
-// extern int rank_dat[0];
-extern int battle_scr_effct[0];
-// extern int btlBonus[0];
+extern int rank_dat[];
+extern int battle_scr_effct[];
+extern int btlBonus[];
 extern BTL_MODE_WRK btl_wrk;
 extern STAGE_WRK stage_wrk[20];
 extern long int msn_high_score;
 extern long int msn_total_score;
 extern long int msn_bonus;
-// extern int stage_all_clear_bak;
-// extern int btl_mode_bgm_init;
+extern int stage_all_clear_bak;
+extern int btl_mode_bgm_init;
 extern int btl_clear_disp;
 
 void BattleModeStageInit();
