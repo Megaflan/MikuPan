@@ -1132,7 +1132,7 @@ int EventSceneCtrl(short int scene_no)
             {
                 if (SceneDecisionMovie(scene_no) == 0)
                 {
-                    SceneDataLoadReq(scene_no, SCENE_LOAD_ADDRESS);
+                    SceneDataLoadReq(scene_no, MikuPan_GetHostPointer(SCENE_LOAD_ADDRESS));
 
                     change_efbank = 0;
                     ev_wrk.movie_on = 2;
@@ -1368,7 +1368,7 @@ void LockBattleDoorOpen(void)
     }
     else if (ev_wrk.btl_lock == 4)
     {
-        plyr_wrk.mode = 4;
+        plyr_wrk.mode = PMODE_MSG_DISP;
 
         ReqEneStop(1, 0);
     }

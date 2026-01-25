@@ -5,6 +5,7 @@
 #include "iop/cdvd/iopcdvd.h"
 #include "iop/iopmain.h"
 #include "mikupan/mikupan_file_c.h"
+#include "mikupan/mikupan_logging_c.h"
 #include "typedefs.h"
 
 #define min(a, b) (((a) < (b)) ? (a) : (b))
@@ -90,12 +91,11 @@ void IAdpcmPreLoad(ADPCM_CMD *cmd)
 
     iop_adpcm[0].tune_no = cmd->tune_no;
 
-    info_log("adpcm read(%x, %x, %p)", cmd->first, cmd->size,
-             &iop_adpcm[0].data);
-    info_log("p: %x", cmd->pitch);
+    //info_log("adpcm read(%x, %x, %p)", cmd->first, cmd->size, &iop_adpcm[0].data);
+    //info_log("p: %x", cmd->pitch);
     MikuPan_ReadFileInArchive64(cmd->first, cmd->size, &iop_adpcm[0].data);
 
-    info_log("chunks: %d", chunks);
+    //info_log("chunks: %d", chunks);
 
     s16 *src = iop_adpcm[0].data;
     s16 *dst;

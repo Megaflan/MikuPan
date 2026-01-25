@@ -1,10 +1,11 @@
 #include "iopmain.h"
-#include "iop/adpcm/iopadpcm.h"
 #include "cdvd/iopcdvd.h"
 #include "enums.h"
+#include "iop/adpcm/iopadpcm.h"
+#include "mikupan/mikupan_logging_c.h"
 #include "os/eeiop/eeiop.h"
-#include <SDL3/SDL_timer.h>
 #include <SDL3/SDL_init.h>
+#include <SDL3/SDL_timer.h>
 
 IOP_STAT iop_stat;
 IOP_MASTER_VOL iop_mv;
@@ -87,6 +88,7 @@ static void IopInitDevice()
     {
         info_log("%s", SDL_GetError());
     }
+
     SDL_ResumeAudioDevice(audio_dev);
 
     //sceSdInit(0);

@@ -4343,7 +4343,6 @@ void PlyrBattleChk()
             }
         }
     }
-    return;
 }
 
 void PlyrLightSet()
@@ -4470,7 +4469,6 @@ void PlyrSpeAnimeCtrl()
         PlyrMoveHitChk(mb, tv, 1);
         PlyrPosSet(mb, tv);
     }
-    return;
 }
 
 void PlyrDWalkTmCtrl()

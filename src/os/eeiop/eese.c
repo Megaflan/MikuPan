@@ -935,7 +935,7 @@ static int SeGetFreeVoice(int start_no, int get)
 int SeStopAll()
 {
     SeInitSeWrk();
-    SetIopCmdSm(8, 0, 0, 0);
+    SetIopCmdSm(IC_SE_ALLSTOP, 0, 0, 0);
     return 0;
 }
 

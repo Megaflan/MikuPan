@@ -32,6 +32,8 @@
 #include "os/eeiop/se_srund.h"
 #include "os/eeiop/se_trans.h"
 
+#include <string.h>
+
 static short int SearchAcDoor(int door_id);
 static short int SearchNcDoor(int door_id);
 static void InitDoorOpenCtrl();
@@ -158,7 +160,7 @@ void ClearDoorAttrFlg()
 
 void InitDoorAttrFlg()
 {
-    int addr_map;
+    int64_t addr_map;
     int *addr_si0;
     int *addr_si1;
     u_short *addr_us;
@@ -172,22 +174,22 @@ void InitDoorAttrFlg()
     {
         if (floor_exist[ingame_wrk.msn_no][k] != 0)
         {
-            addr_si0 = (int *)(k * 4 + BASE_ADDRESS);
-            addr_map = (int)(*addr_si0 + BASE_ADDRESS);
-            addr_si0 = (int *)(((int *)addr_map)[10] + BASE_ADDRESS);
+            addr_si0 = (int *)MikuPan_GetHostPointer(k * 4 + BASE_ADDRESS);
+            addr_map = (int64_t)MikuPan_GetHostPointer(*addr_si0 + BASE_ADDRESS);
+            addr_si0 = (int *)MikuPan_GetHostPointer(((int *)addr_map)[10] + BASE_ADDRESS);
 
-            addr_si1 = (int *)(*addr_si0 + BASE_ADDRESS);
+            addr_si1 = (int *)MikuPan_GetHostPointer(*addr_si0 + BASE_ADDRESS);
 
-            addr_us = (u_short *)(addr_si1[1] + BASE_ADDRESS);
+            addr_us = (u_short *)MikuPan_GetHostPointer(addr_si1[1] + BASE_ADDRESS);
             dat_num = *addr_us;
             addr_us++;
 
-            addr_si0 = (int *)(addr_si0[2] + BASE_ADDRESS);
+            addr_si0 = (int *)MikuPan_GetHostPointer(addr_si0[2] + BASE_ADDRESS);
 
             for (i = 0; i < dat_num; i++)
             {
-                addr_si1 = (int *)(addr_si0[i] + BASE_ADDRESS);
-                addr_si1 = (int *)(*addr_si1 + BASE_ADDRESS);
+                addr_si1 = (int *)MikuPan_GetHostPointer(addr_si0[i] + BASE_ADDRESS);
+                addr_si1 = (int *)MikuPan_GetHostPointer(*addr_si1 + BASE_ADDRESS);
 
                 door_keep[*addr_us].attr = GetDoorTypeDatP(((u_short *)addr_si1)[6])->attribute;
                 door_keep[*addr_us].room_id = GetDoorTypeDatP(((u_short *)addr_si1)[6])->room_id;
@@ -224,10 +226,10 @@ void DoorPassRoom(u_char room_id)
     }
 
     addr_si0 = (int *)(map_wrk.dat_adr + 0x28);
-    addr_si0 = (int *)(*addr_si0 + BASE_ADDRESS);
-    addr_si0 = (int *)(addr_si0[1] + BASE_ADDRESS);
+    addr_si0 = (int *)MikuPan_GetHostPointer(*addr_si0 + BASE_ADDRESS);
+    addr_si0 = (int *)MikuPan_GetHostPointer(addr_si0[1] + BASE_ADDRESS);
 
-    addr_uc0 = (u_char *)(addr_si0[room_no] + BASE_ADDRESS);
+    addr_uc0 = (u_char *)MikuPan_GetHostPointer(addr_si0[room_no] + BASE_ADDRESS);
 
     dr_num = *addr_uc0;
 
@@ -365,10 +367,10 @@ void DoorCtrlInit()
     }
 
     addr = (int *)(map_wrk.dat_adr + 10 * 4);
-    addr = (int *)(*addr + BASE_ADDRESS);
-    addr = (int *)(*addr + BASE_ADDRESS);
+    addr = (int *)MikuPan_GetHostPointer(*addr + BASE_ADDRESS);
+    addr = (int *)MikuPan_GetHostPointer(*addr + BASE_ADDRESS);
 
-    addr_us = (u_short *)(addr[2] + BASE_ADDRESS);
+    addr_us = (u_short *)MikuPan_GetHostPointer(addr[2] + BASE_ADDRESS);
 
     ncd_num = *addr_us;
 
@@ -427,8 +429,8 @@ void DoorDataInit()
     }
 
     addr_si = (int *)(map_wrk.dat_adr + 10 * 4);
-    addr_si = (int *)(*addr_si + BASE_ADDRESS);
-    addr_si = (int *)(addr_si[1] + BASE_ADDRESS);
+    addr_si = (int *)MikuPan_GetHostPointer(*addr_si + BASE_ADDRESS);
+    addr_si = (int *)MikuPan_GetHostPointer(addr_si[1] + BASE_ADDRESS);
 
     room_id = GetRoomIdFromRoomNo(0, room_wrk.room_no);
     room_no = GetDataRoom(10, room_id);
@@ -438,12 +440,12 @@ void DoorDataInit()
         return;
     }
 
-    addr_si = (int *)(addr_si[room_no] + BASE_ADDRESS);
+    addr_si = (int *)MikuPan_GetHostPointer(addr_si[room_no] + BASE_ADDRESS);
 
     SetUpRoomCoordinate(room_id, room_wrk.pos[0]);
 
     dr_num = *(u_char *)addr_si;
-    addr_uc = (u_char *)((int)addr_si + 2);
+    addr_uc = (u_char *)((int64_t)addr_si + 2);
 
     no_use_fw = 0;
     no_use_dw = 0;
@@ -494,10 +496,10 @@ void DoorDataInit()
         }
 
         addr_si = (int *)(map_wrk.dat_adr + 10 * 4);
-        addr_si = (int *)(*addr_si + BASE_ADDRESS);
-        addr_si = (int *)(addr_si[2] + BASE_ADDRESS);
-        addr_si = (int *)(addr_si[dr_no] + BASE_ADDRESS);
-        addr_si = (int *)(*addr_si + BASE_ADDRESS);
+        addr_si = (int *)MikuPan_GetHostPointer(*addr_si + BASE_ADDRESS);
+        addr_si = (int *)MikuPan_GetHostPointer(addr_si[2] + BASE_ADDRESS);
+        addr_si = (int *)MikuPan_GetHostPointer(addr_si[dr_no] + BASE_ADDRESS);
+        addr_si = (int *)MikuPan_GetHostPointer(*addr_si + BASE_ADDRESS);
 
         SetDoorWrk(no_use_dw, (u_int*)addr_si, dr_id, no_use_fw);
 
@@ -905,19 +907,19 @@ int GetRoomDoorID(u_char room_id, u_short *door_id, u_char msn_no)
 
         adr_drrm_top = (u_int *)GetFloorTopAddr(k);
 
-        adr_door_data_top = (u_int *)(adr_drrm_top[10] + BASE_ADDRESS);
+        adr_door_data_top = (u_int *)MikuPan_GetHostPointer(adr_drrm_top[10] + BASE_ADDRESS);
 
-        addr_cmn = (u_int *)(adr_door_data_top[0] + BASE_ADDRESS);
-        adr_rtmp = (u_char *)(addr_cmn[0] + BASE_ADDRESS);
+        addr_cmn = (u_int *)MikuPan_GetHostPointer(adr_door_data_top[0] + BASE_ADDRESS);
+        adr_rtmp = (u_char *)MikuPan_GetHostPointer(addr_cmn[0] + BASE_ADDRESS);
 
         dr_room_num = adr_rtmp[0];
 
-        adr_drnum = (u_short *)(addr_cmn[1] + BASE_ADDRESS);
+        adr_drnum = (u_short *)MikuPan_GetHostPointer(addr_cmn[1] + BASE_ADDRESS);
 
         all_door_num = adr_drnum[0];
 
-        adr_drrm_top = (u_int *)(adr_door_data_top[1] + BASE_ADDRESS);
-        adr_drdt_top = (u_int *)(adr_door_data_top[2] + BASE_ADDRESS);
+        adr_drrm_top = (u_int *)MikuPan_GetHostPointer(adr_door_data_top[1] + BASE_ADDRESS);
+        adr_drdt_top = (u_int *)MikuPan_GetHostPointer(adr_door_data_top[2] + BASE_ADDRESS);
 
         adr_rmnum = adr_rtmp + 1;
 
@@ -928,7 +930,7 @@ int GetRoomDoorID(u_char room_id, u_short *door_id, u_char msn_no)
                 continue;
             }
 
-            adr_dr_tmp = (u_char *)(adr_drrm_top[i] + BASE_ADDRESS);
+            adr_dr_tmp = (u_char *)MikuPan_GetHostPointer(adr_drrm_top[i] + BASE_ADDRESS);
 
             door_num = adr_dr_tmp[0];
             adr_dr_tmp += 2;
@@ -941,8 +943,8 @@ int GetRoomDoorID(u_char room_id, u_short *door_id, u_char msn_no)
                 {
                     if ((*((u_short *)adr_dr_tmp)) == adr_dtmp[0])
                     {
-                        adr_dd_tmp = (u_int *)(adr_drdt_top[k] + BASE_ADDRESS);
-                        adr_tmp_uc0 = (u_char *)(adr_dd_tmp[0] + BASE_ADDRESS);
+                        adr_dd_tmp = (u_int *)MikuPan_GetHostPointer(adr_drdt_top[k] + BASE_ADDRESS);
+                        adr_tmp_uc0 = (u_char *)MikuPan_GetHostPointer(adr_dd_tmp[0] + BASE_ADDRESS);
 
                         door_id[0] = adr_tmp_uc0[14];
 
@@ -2158,8 +2160,6 @@ void DoorCheckOn(u_char mode)
     }
 
     door_open_ctrl.chk_flg = 1;
-
-    asm(""); // HACK: fixes instruction ordering (maybe some optimized out debug code?)
 }
 
 void DoorCheckOff()
@@ -2739,8 +2739,8 @@ static void DoorOpenCheckSquareArea(DOJ_SQUARE_MTN *dsmp, u_char stat_chk, u_cha
             continue;
         }
 
-        dhp = (int *)(*ddp + BASE_ADDRESS);
-        dhp = (int *)(*dhp + BASE_ADDRESS);
+        dhp = (int *)MikuPan_GetHostPointer(*ddp + BASE_ADDRESS);
+        dhp = (int *)MikuPan_GetHostPointer(*dhp + BASE_ADDRESS);
 
         ds_num = ((u_char *)dhp)[16];
 
@@ -2758,8 +2758,8 @@ static void DoorOpenCheckSquareArea(DOJ_SQUARE_MTN *dsmp, u_char stat_chk, u_cha
 
         for (; j < ds_num; j++, stp++)
         {
-            dsp = (int *)(*ddp + BASE_ADDRESS);
-            dsp = (int *)(dsp[j + 1] + BASE_ADDRESS);
+            dsp = (int *)MikuPan_GetHostPointer(*ddp + BASE_ADDRESS);
+            dsp = (int *)MikuPan_GetHostPointer(dsp[j + 1] + BASE_ADDRESS);
 
             if (PosInAreaJudgeSub(dsp, pos_x, pos_y, *stp) != 0)
             {
@@ -3087,8 +3087,8 @@ u_char DoorHitCheck(u_char *dx_max, u_char *dz_max, float *dst, float *ppos, u_c
                     return 0xff;
                 }
 
-                dhp = (int *)(*ddp + BASE_ADDRESS);
-                dhp = (int *)(*dhp + BASE_ADDRESS);
+                dhp = (int *)MikuPan_GetHostPointer(*ddp + BASE_ADDRESS);
+                dhp = (int *)MikuPan_GetHostPointer(*dhp + BASE_ADDRESS);
 
                 switch (door_wrk[j].stts)
                 {
@@ -3096,8 +3096,8 @@ u_char DoorHitCheck(u_char *dx_max, u_char *dz_max, float *dst, float *ppos, u_c
 
                     stp = &((u_char *)dhp)[17];
 
-                    dsp = (int *)(*ddp + BASE_ADDRESS);
-                    dsp = (int *)(dsp[1] + BASE_ADDRESS);
+                    dsp = (int *)MikuPan_GetHostPointer(*ddp + BASE_ADDRESS);
+                    dsp = (int *)MikuPan_GetHostPointer(dsp[1] + BASE_ADDRESS);
 
                     for (k = 0; k < div_x; k++)
                     {
@@ -3271,14 +3271,14 @@ u_char DoorHitCheck2(u_short pos_x, u_short pos_y, u_char room_id)
                     return 0;
                 }
 
-                dhp = (int *)(*ddp + BASE_ADDRESS);
-                dhp = (int *)(*dhp + BASE_ADDRESS);
+                dhp = (int *)MikuPan_GetHostPointer(*ddp + BASE_ADDRESS);
+                dhp = (int *)MikuPan_GetHostPointer(*dhp + BASE_ADDRESS);
 
                 switch(dwp->stts)
                 {
                 case 1:
-                    dsp = (int *)(*ddp + BASE_ADDRESS);
-                    dsp = (int *)(dsp[1] + BASE_ADDRESS);
+                    dsp = (int *)MikuPan_GetHostPointer(*ddp + BASE_ADDRESS);
+                    dsp = (int *)MikuPan_GetHostPointer(dsp[1] + BASE_ADDRESS);
 
                     dhp = (int *)&((char *)dhp)[17];
 
@@ -3386,14 +3386,14 @@ u_char DoorCoverCheck(u_short pos_x, short int pos_y, u_short pos_z, u_char room
                 return 0xff;
             }
 
-            dhp = (int *)(*ddp + BASE_ADDRESS);
-            dhp = (int *)(*dhp + BASE_ADDRESS);
+            dhp = (int *)MikuPan_GetHostPointer(*ddp + BASE_ADDRESS);
+            dhp = (int *)MikuPan_GetHostPointer(*dhp + BASE_ADDRESS);
 
             switch(door_wrk[j].stts)
             {
             case 1:
-                dsp = (int *)(*ddp + BASE_ADDRESS);
-                dsp = (int *)(dsp[1] + BASE_ADDRESS);
+                dsp = (int *)MikuPan_GetHostPointer(*ddp + BASE_ADDRESS);
+                dsp = (int *)MikuPan_GetHostPointer(dsp[1] + BASE_ADDRESS);
 
                 dhp = (int *)&((char *)dhp)[17];
 
@@ -3862,9 +3862,9 @@ void DoorDataRenewNext(u_char room_id)
     room_no = GetDataRoom(10, room_id);
 
     addr_si = (int *)(map_wrk.dat_adr + 10 * 4);
-    addr_si = (int *)(*addr_si + BASE_ADDRESS);
-    addr_si = (int *)(addr_si[1] + BASE_ADDRESS);
-    addr_si = (int *)(addr_si[room_no] + BASE_ADDRESS);
+    addr_si = (int *)MikuPan_GetHostPointer(*addr_si + BASE_ADDRESS);
+    addr_si = (int *)MikuPan_GetHostPointer(addr_si[1] + BASE_ADDRESS);
+    addr_si = (int *)MikuPan_GetHostPointer(addr_si[room_no] + BASE_ADDRESS);
 
     addr_uc = (u_char *)addr_si;
 
@@ -3922,10 +3922,10 @@ void DoorDataRenewNext(u_char room_id)
             }
 
             addr_si = (int *)(map_wrk.dat_adr + 10 * 4);
-            addr_si = (int *)(*addr_si + BASE_ADDRESS);
-            addr_si = (int *)(addr_si[2] + BASE_ADDRESS);
-            addr_si = (int *)(addr_si[dr_no] + BASE_ADDRESS);
-            addr_si = (int *)(*addr_si + BASE_ADDRESS);
+            addr_si = (int *)MikuPan_GetHostPointer(*addr_si + BASE_ADDRESS);
+            addr_si = (int *)MikuPan_GetHostPointer(addr_si[2] + BASE_ADDRESS);
+            addr_si = (int *)MikuPan_GetHostPointer(addr_si[dr_no] + BASE_ADDRESS);
+            addr_si = (int *)MikuPan_GetHostPointer(*addr_si + BASE_ADDRESS);
 
             while (door_wrk[no_use_dw].use != 5)
             {
@@ -3968,10 +3968,10 @@ u_char GetNextRIdFromRNoDId(u_char room_no, u_short door_id)
     room_no = GetDataRoom(10, room_id);
 
     addr_si = (int *)(map_wrk.dat_adr + 10 * 4);
-    addr_si = (int *)(*addr_si + BASE_ADDRESS);
-    addr_si = (int *)(addr_si[1] + BASE_ADDRESS);
+    addr_si = (int *)MikuPan_GetHostPointer(*addr_si + BASE_ADDRESS);
+    addr_si = (int *)MikuPan_GetHostPointer(addr_si[1] + BASE_ADDRESS);
 
-    addr_uc = (u_char *)(addr_si[room_no] + BASE_ADDRESS);
+    addr_uc = (u_char *)MikuPan_GetHostPointer(addr_si[room_no] + BASE_ADDRESS);
 
     dr_num = *addr_uc;
 
@@ -4010,15 +4010,15 @@ u_char NextRoomRenew()
         if (room_no != 0xff)
         {
             addr = (int *)map_wrk.dat_adr;
-            addr = (int *)(*addr + BASE_ADDRESS);
+            addr = (int *)MikuPan_GetHostPointer(*addr + BASE_ADDRESS);
             addr = &addr[room_no] + 1;
-            addr = (int *)(*addr + BASE_ADDRESS);
+            addr = (int *)MikuPan_GetHostPointer(*addr + BASE_ADDRESS);
 
             room_wrk.disp_no[1] = disp_no;
 
-            room_wrk.pos[1][0] = ((u_short *)(*addr + BASE_ADDRESS))[0];
-            room_wrk.pos[1][1] = ((short *)(*addr + BASE_ADDRESS))[1];
-            room_wrk.pos[1][2] = ((u_short *)(*addr + BASE_ADDRESS))[2];
+            room_wrk.pos[1][0] = ((u_short *)MikuPan_GetHostPointer(*addr + BASE_ADDRESS))[0];
+            room_wrk.pos[1][1] = ((short *)MikuPan_GetHostPointer(*addr + BASE_ADDRESS))[1];
+            room_wrk.pos[1][2] = ((u_short *)MikuPan_GetHostPointer(*addr + BASE_ADDRESS))[2];
 
             return disp_no;
         }
@@ -4123,9 +4123,9 @@ u_char* GetDoorRoomNumP()
 {
     int *addr;
 
-    addr = (int*)(((int*)map_wrk.dat_adr)[10] + BASE_ADDRESS);
-    addr = (int*)(addr[0] + BASE_ADDRESS);
-    addr = (int*)(addr[0] + BASE_ADDRESS);
+    addr = (int*)MikuPan_GetHostPointer(((int*)map_wrk.dat_adr)[10] + BASE_ADDRESS);
+    addr = (int*)MikuPan_GetHostPointer(addr[0] + BASE_ADDRESS);
+    addr = (int*)MikuPan_GetHostPointer(addr[0] + BASE_ADDRESS);
 
     return (u_char*)addr;
 }
@@ -4135,9 +4135,9 @@ u_char* GetDoorRoomNumPFloor(u_char floor)
     int *addr;
 
     addr = (int *)(GetFloorTopAddr(floor) + 10 * 4);
-    addr = (int *)(*addr + BASE_ADDRESS);
-    addr = (int *)(*addr + BASE_ADDRESS);
-    addr = (int *)(*addr + BASE_ADDRESS);
+    addr = (int *)MikuPan_GetHostPointer(*addr + BASE_ADDRESS);
+    addr = (int *)MikuPan_GetHostPointer(*addr + BASE_ADDRESS);
+    addr = (int *)MikuPan_GetHostPointer(*addr + BASE_ADDRESS);
 
     return (u_char *)addr;
 }
@@ -4146,9 +4146,9 @@ static u_short* GetDoorDoorNumP()
 {
     int *addr;
 
-    addr = (int*)(((int*)map_wrk.dat_adr)[10] + BASE_ADDRESS);
-    addr = (int*)(addr[0] + BASE_ADDRESS);
-    addr = (int*)(addr[1] + BASE_ADDRESS);
+    addr = (int*)MikuPan_GetHostPointer(((int*)map_wrk.dat_adr)[10] + BASE_ADDRESS);
+    addr = (int*)MikuPan_GetHostPointer(addr[0] + BASE_ADDRESS);
+    addr = (int*)MikuPan_GetHostPointer(addr[1] + BASE_ADDRESS);
 
     return (u_short*)addr;
 }
@@ -4170,9 +4170,9 @@ u_char* GetDoorRoomConectDataP(u_char room_id)
         if (*addr_uc == room_id)
         {
             addr_si = (int *)(map_wrk.dat_adr + 10 * 4);
-            addr_si = (int *)(addr_si[0] + BASE_ADDRESS);
-            addr_si = (int *)(addr_si[1] + BASE_ADDRESS);
-            addr_si = (int *)(addr_si[i] + BASE_ADDRESS);
+            addr_si = (int *)MikuPan_GetHostPointer(addr_si[0] + BASE_ADDRESS);
+            addr_si = (int *)MikuPan_GetHostPointer(addr_si[1] + BASE_ADDRESS);
+            addr_si = (int *)MikuPan_GetHostPointer(addr_si[i] + BASE_ADDRESS);
 
             return (u_char *)addr_si;
         }
@@ -4200,8 +4200,8 @@ static int* GetDoorDataTopP(u_short door_id)
         if (*addr_us == door_id)
         {
             addr_si = (int *)(map_wrk.dat_adr + 10 * 4);
-            addr_si = (int *)(addr_si[0] + BASE_ADDRESS);
-            addr_si = (int *)(addr_si[2] + BASE_ADDRESS);
+            addr_si = (int *)MikuPan_GetHostPointer(addr_si[0] + BASE_ADDRESS);
+            addr_si = (int *)MikuPan_GetHostPointer(addr_si[2] + BASE_ADDRESS);
             addr_si = &addr_si[i];
 
             return (int *)addr_si;
@@ -4224,8 +4224,8 @@ static int* GetDoorDataHeader(u_short door_id)
         return NULL;
     }
 
-    addr_si = (int *)(*addr_si + BASE_ADDRESS);
-    addr_si = (int *)(*addr_si + BASE_ADDRESS);
+    addr_si = (int *)MikuPan_GetHostPointer(*addr_si + BASE_ADDRESS);
+    addr_si = (int *)MikuPan_GetHostPointer(*addr_si + BASE_ADDRESS);
 
     return addr_si;
 }
@@ -4529,10 +4529,10 @@ static int GetDoorStts(DOOR_DATA_POP **dppp, u_short door_id, u_char floor)
     }
 
     addr_si0 = (int *)GetFloorTopAddr(floor);
-    addr_si0 = (int *)(addr_si0[10] + BASE_ADDRESS);
+    addr_si0 = (int *)MikuPan_GetHostPointer(addr_si0[10] + BASE_ADDRESS);
 
-    addr_si1 = (int *)(*addr_si0 + BASE_ADDRESS);
-    addr_si1 = (int *)(addr_si1[1] + BASE_ADDRESS);
+    addr_si1 = (int *)MikuPan_GetHostPointer(*addr_si0 + BASE_ADDRESS);
+    addr_si1 = (int *)MikuPan_GetHostPointer(addr_si1[1] + BASE_ADDRESS);
 
     dat_num = *addr_si1;
 
@@ -4551,10 +4551,10 @@ static int GetDoorStts(DOOR_DATA_POP **dppp, u_short door_id, u_char floor)
         return 0;
     }
 
-    addr_si1 = (int *)(addr_si0[2] + BASE_ADDRESS);
-    addr_si1 = (int *)(addr_si1[i] + BASE_ADDRESS);
+    addr_si1 = (int *)MikuPan_GetHostPointer(addr_si0[2] + BASE_ADDRESS);
+    addr_si1 = (int *)MikuPan_GetHostPointer(addr_si1[i] + BASE_ADDRESS);
 
-    *dppp = (DOOR_DATA_POP *)(*addr_si1 + BASE_ADDRESS);
+    *dppp = (DOOR_DATA_POP *)MikuPan_GetHostPointer(*addr_si1 + BASE_ADDRESS);
 
     return 1;
 }

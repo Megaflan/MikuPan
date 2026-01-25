@@ -1032,7 +1032,7 @@ static void _CalcPointB(float *len)
 
 void CalcPointLight()
 {
-    sceVu0FVECTOR len;
+    sceVu0FVECTOR len = {0};
     static float max_len = 0.0f;
 
     if (SgPointGroupNum > 0)
