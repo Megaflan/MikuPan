@@ -90,6 +90,12 @@ void IAdpcmPreLoad(ADPCM_CMD *cmd)
     int chunks = cmd->size / 0x800 / 2;
 
     iop_adpcm[0].tune_no = cmd->tune_no;
+    
+    // Prevent memleaks by clearing audio stream.
+    if (SDL_GetAudioStreamQueued(iop_adpcm[0].stream) >= cmd->size)
+    {
+        return;
+    }
 
     //info_log("adpcm read(%x, %x, %p)", cmd->first, cmd->size, &iop_adpcm[0].data);
     //info_log("p: %x", cmd->pitch);
@@ -128,10 +134,15 @@ void IAdpcmPreLoad(ADPCM_CMD *cmd)
                                      (float) cmd->pitch / (float) 0x1000);
     SDL_ResumeAudioStreamDevice(iop_adpcm[0].stream);
 
+    // prevent memleaks by ensureing data buffer is clear when we're done with it
+    if (iop_adpcm[0].data != NULL)
+    {
+        memset(iop_adpcm[0].data, 0, cmd->size);
+    }
     return;
 }
 
-void IAdpcmReadCh0() 
+void IAdpcmReadCh0()
 {
 
 }
@@ -150,6 +161,8 @@ void IAdpcmStop(ADPCM_CMD *acp)
 {
 
     u_char channel;
+
+    SDL_PauseAudioDevice(audio_dev);
 
     channel = acp->channel;
     //sceSdSetCoreAttr(iop_adpcm[channel].core | 4, 0);
@@ -194,8 +207,6 @@ void IAdpcmStop(ADPCM_CMD *acp)
     }
 
     iop_adpcm[channel].tune_no = 0;
-
-    SDL_PauseAudioDevice(audio_dev);
 }
 
 void IAdpcmMain2()

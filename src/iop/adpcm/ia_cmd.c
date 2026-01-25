@@ -81,6 +81,10 @@ void IAdpcmCmdPlay()
 
 void IAdpcmCmdStop()
 {
+
+    SDL_ClearAudioStream(iop_adpcm[0].stream);
+    SDL_PauseAudioStreamDevice(iop_adpcm[0].stream);
+
     switch (iop_adpcm[0].stat) {
     case ADPCM_STAT_NOPLAY:
         now_cmd.cmd_type = 0;
@@ -154,6 +158,10 @@ void IAdpcmCmdPause()
 
         return;
     }
+
+    SDL_PauseAudioStreamDevice(iop_adpcm[0].stream);
+    //SDL_PauseAudioDevice(audio_dev);
+
 }
 
 void IAdpcmCmdRestart()
@@ -161,6 +169,8 @@ void IAdpcmCmdRestart()
     if (now_cmd.tune_no == iop_adpcm[0].tune_no) {
         switch (iop_adpcm[0].stat) {
         case ADPCM_STAT_PAUSE:
+            SDL_ClearAudioStream(iop_adpcm[0].stream);
+            SDL_PauseAudioStreamDevice(iop_adpcm[0].stream);
             break;
         }
 
