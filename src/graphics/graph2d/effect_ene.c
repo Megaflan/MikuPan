@@ -2683,7 +2683,7 @@ void SetSwordSwitch(int sw)
 {
     sw_line.sw = sw;
 
-    if (sw_line.sw != NULL)
+    if (sw_line.sw != 0)
     {
         sw_line.num = 1;
         sw_line.top = 0;

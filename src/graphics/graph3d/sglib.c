@@ -660,11 +660,14 @@ void _NormalizeVector2(sceVu0FVECTOR v, sceVu0FVECTOR v0)
 void _ApplyRotMatrix(sceVu0FVECTOR v0, sceVu0FVECTOR v1)
 {
     sceVu0FVECTOR *wk0 = work_matrix_0;// in [vf4:vf7]
+    vec4 out = {0};
 
-    v0[0] = (wk0[0][0] * v1[0]) + (wk0[1][0] * v1[2]) + (wk0[3][0] * v1[3]);
-    v0[1] = (wk0[0][1] * v1[0]) + (wk0[1][1] * v1[2]) + (wk0[3][1] * v1[3]);
-    v0[2] = (wk0[0][2] * v1[0]) + (wk0[1][2] * v1[2]) + (wk0[3][2] * v1[3]);
-    v0[3] = (wk0[0][3] * v1[0]) + (wk0[1][3] * v1[2]) + (wk0[3][3] * v1[3]);
+    out[0] = (wk0[0][0] * v1[0]) + (wk0[1][0] * v1[2]) + (wk0[3][0] * v1[3]);
+    out[1] = (wk0[0][1] * v1[0]) + (wk0[1][1] * v1[2]) + (wk0[3][1] * v1[3]);
+    out[2] = (wk0[0][2] * v1[0]) + (wk0[1][2] * v1[2]) + (wk0[3][2] * v1[3]);
+    out[3] = (wk0[0][3] * v1[0]) + (wk0[1][3] * v1[2]) + (wk0[3][3] * v1[3]);
+
+    glm_vec4_copy(out, v0);
 }
 
 void _ApplyMatrixXYZ(sceVu0FVECTOR v0, sceVu0FMATRIX m, sceVu0FVECTOR v1)

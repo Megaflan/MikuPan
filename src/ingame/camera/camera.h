@@ -21,7 +21,7 @@ typedef struct {
 	sceVu0FMATRIX vc;
 	sceVu0FMATRIX vcv;
 
-	/// World View matrix
+	/// World -> View matrix
 	sceVu0FMATRIX wv;
 
 	/// World -> Screen matrix

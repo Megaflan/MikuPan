@@ -19,6 +19,7 @@
 
 #include <math.h>
 
+/// TODO: Adjusts These Values TO Use The Window Size
 sceVu0FVECTOR clip_volume = {1920.0f, 896.0f, 256.0f, 16777000.0f};
 static sceVu0FVECTOR clip_volumev = {320.0f, 112.0f, 0.1f, 16777000.0f};
 
@@ -520,7 +521,7 @@ int CheckBoundingBox(u_int *prim)
     //DrawBoundingBox((sceVu0FVECTOR*)&prim[4]);
 
     // Re-enable this line to have stuff render, right now, nothing is within BoundingBox
-    return 1;
+    //return 1;
 
     lcp[prim[2]].camin = 0;
 

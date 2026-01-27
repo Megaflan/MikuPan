@@ -31,7 +31,7 @@ int MikuPan_GetTextureIndex(int fnt);
 void MikuPan_SetFontTexture(int fnt);
 void MikuPan_DeleteTexture(MikuPan_TextureInfo* texture_info);
 MikuPan_TextureInfo* MikuPan_CreateGLTexture(const sceGsTex0 *tex0);
-void MikuPan_Camera(const SgCAMERA *camera);
+void MikuPan_Camera(SgCAMERA *camera);
 void MikuPan_Shutdown();
 void MikuPan_EndFrame();
 void MikuPan_SetModelTransformMatrix(sceVu0FVECTOR* m);

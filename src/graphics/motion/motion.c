@@ -15,6 +15,7 @@
 #include "graphics/motion/mime.h"
 #include "graphics/motion/motion.h"
 
+#include "cglm/call/mat4.h"
 #include "ingame/plyr/plyr_ctl.h"
 #include "main/glob.h"
 #include "mdlact.h"
@@ -1101,6 +1102,8 @@ void motInterpMatrix(sceVu0FMATRIX interp, sceVu0FMATRIX m0, sceVu0FMATRIX m1, f
 
         sceVu0UnitMatrix(m);
 
+        //glm_rotate(m, r, v);
+
         m[0][0] = v[0] * v[0] * val + cos;
         m[1][0] = v[0] * v[1] * val - v[2] * sin;
         m[2][0] = v[0] * v[2] * val + v[1] * sin;
@@ -1235,7 +1238,7 @@ void motQuaternionSlerp(sceVu0FVECTOR q, sceVu0FVECTOR q1, sceVu0FVECTOR q2, flo
 
 void LocalRotMatrixX(sceVu0FMATRIX m0, sceVu0FMATRIX m1, float rx)
 {
-    sceVu0FMATRIX rot;
+    sceVu0FMATRIX rot = {0};
 
     sceVu0UnitMatrix(rot);
 
@@ -1273,7 +1276,7 @@ void LocalRotMatrixY(sceVu0FMATRIX m0, sceVu0FMATRIX m1, float ry)
 
 void LocalRotMatrixZ(sceVu0FMATRIX m0, sceVu0FMATRIX m1, float rz)
 {
-    sceVu0FMATRIX rot;
+    sceVu0FMATRIX rot = {0};
 
     sceVu0UnitMatrix(rot);
 
@@ -1526,7 +1529,6 @@ static u_int motCheckIncludeRstPacket(u_int *mot_p)
     return (mfh->flg >> 2) & 1;
 }
 
-/// TODO: FIX THIS CODE TO 64bits SUPPORT
 static void motAddressMapping(u_int *top_addr)
 {
     MOT_ADDR_TABLE *tbl_p;

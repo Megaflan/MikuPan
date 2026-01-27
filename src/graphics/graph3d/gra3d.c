@@ -2152,7 +2152,7 @@ int CheckModelBoundingBox(sceVu0FMATRIX lwmtx, sceVu0FVECTOR *bbox)
 
     _SetMulMatrix(SgCMVtx, lwmtx);
 
-    return 1;
+    //return 1;
 
     if (clip_value_check != 0)
     {

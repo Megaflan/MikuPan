@@ -631,7 +631,7 @@ void MikuPan_SetModelTransform(unsigned int *prim)
     MikuPan_RestoreCurrentShaderProgram();
 }
 
-void MikuPan_Camera(const SgCAMERA *camera)
+void MikuPan_Camera(SgCAMERA *camera)
 {
     struct GRA3DSCRATCHPADLAYOUT *scratchpad =
         (struct GRA3DSCRATCHPADLAYOUT *) ps2_virtual_scratchpad;
@@ -657,7 +657,7 @@ void MikuPan_Camera(const SgCAMERA *camera)
 
     u_int current_program = MikuPan_GetCurrentShaderProgram();
     int viewLoc = glad_glGetUniformLocation(current_program, "view");
-    glad_glUniformMatrix4fv(viewLoc, 1, GL_FALSE, (float *) &mtx);
+    glad_glUniformMatrix4fv(viewLoc, 1, GL_FALSE, (float *) mtx);
 
     // Projection
     mat4 projection = {0};
@@ -668,18 +668,18 @@ void MikuPan_Camera(const SgCAMERA *camera)
     int projectionLoc =
         glad_glGetUniformLocation(current_program, "projection");
 
-    glad_glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, (float *) &projection);
+    glad_glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, (float *) projection);
 
     MikuPan_SetCurrentShaderProgram(BOUNDING_BOX_SHADER);
 
     viewLoc = glad_glGetUniformLocation(current_program, "view");
 
-    glad_glUniformMatrix4fv(viewLoc, 1, GL_FALSE, (float *) &mtx);
+    glad_glUniformMatrix4fv(viewLoc, 1, GL_FALSE, (float *)mtx);
 
     projectionLoc =
         glad_glGetUniformLocation(current_program, "projection");
 
-    glad_glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, (float *) &projection);
+    glad_glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, (float *) projection);
 
     MikuPan_RestoreCurrentShaderProgram();
 }

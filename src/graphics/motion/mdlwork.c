@@ -423,7 +423,7 @@ void ReleaseEneTexture(u_int work_id)
 {
     u_int *mdl_p;
     u_int mdl_no;
-    u_int offset;
+    u_int offset = 0;
     u_int i;
 
     mdl_no = ene_wrk[work_id].dat->mdl_no;
@@ -611,6 +611,12 @@ void SgdAddTexOffset(void *sgd_top, int offset)
                 }
 
                 p = GetNextProcUnitHeaderPtr(nextprim);
+
+                /// Security check, the loop would be broken in some cases
+                if (!MikuPan_IsPs2MemoryPointer((int64_t)p))
+                {
+                    break;
+                }
             }
         }
     }
