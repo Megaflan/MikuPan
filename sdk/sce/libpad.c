@@ -3,6 +3,7 @@
 #include <SDL3/SDL_gamepad.h>
 #include <SDL3/SDL_keyboard.h>
 #include <stddef.h>
+#include <stdlib.h>
 
 SDL_Gamepad *gamepad = NULL;
 

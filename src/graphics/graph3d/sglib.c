@@ -614,8 +614,6 @@ void _MulMatrix(sceVu0FMATRIX ans, sceVu0FMATRIX m0, sceVu0FMATRIX m1)
 void _SetMulMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1)
 {
     // This is the same as _MulMatrix, but it "returns"
-    sceVu0FVECTOR *wk0 = work_matrix_0;// in [vf4:vf7]
-
     glm_mat4_mul(m0, m1, work_matrix_0);
 
     //for (int i = 0; i < 4; ++i)
@@ -653,8 +651,9 @@ void _NormalizeVector(sceVu0FVECTOR v, sceVu0FVECTOR v0)
 
 void _NormalizeVector2(sceVu0FVECTOR v, sceVu0FVECTOR v0)
 {
+    float val = 1.0f / sqrtf(POW2(v0[0]) + POW2(v0[1]) + POW2(v0[2]));
     glm_vec3_normalize_to(v0, v);
-    v[3] = 0.0f;  // Preserve W
+    v[3] = val;  // Preserve W
 }
 
 void _ApplyRotMatrix(sceVu0FVECTOR v0, sceVu0FVECTOR v1)
@@ -672,7 +671,10 @@ void _ApplyRotMatrix(sceVu0FVECTOR v0, sceVu0FVECTOR v1)
 
 void _ApplyMatrixXYZ(sceVu0FVECTOR v0, sceVu0FMATRIX m, sceVu0FVECTOR v1)
 {
-    v0[0] = (m[0][0] * v1[0]) + (m[1][0] * v1[1]) + (m[2][0] * v1[2]);
-    v0[1] = (m[0][1] * v1[0]) + (m[1][1] * v1[1]) + (m[2][1] * v1[2]);
-    v0[2] = (m[0][2] * v1[0]) + (m[1][2] * v1[1]) + (m[2][2] * v1[2]);
+    vec4 out = {0};
+    out[0] = (m[0][0] * v1[0]) + (m[1][0] * v1[1]) + (m[2][0] * v1[2]);
+    out[1] = (m[0][1] * v1[0]) + (m[1][1] * v1[1]) + (m[2][1] * v1[2]);
+    out[2] = (m[0][2] * v1[0]) + (m[1][2] * v1[1]) + (m[2][2] * v1[2]);
+
+    glm_vec4_copy(out, v0);
 }

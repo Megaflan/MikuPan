@@ -280,6 +280,12 @@ struct GRA3DSCRATCHPADLAYOUT
   union GRA3DVU1MEMLAYOUT Vu1Mem;
 };
 
+struct SGDVUMESHSTREGSET
+{
+    u_int auiVifCode[3];
+};
+
+
 struct SGDVUMESHPOINTNUM
 {
     struct G3DVIF1CODE_UNPACK VifUnpack;

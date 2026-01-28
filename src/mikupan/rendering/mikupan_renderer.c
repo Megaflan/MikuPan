@@ -631,6 +631,34 @@ void MikuPan_SetModelTransform(unsigned int *prim)
     MikuPan_RestoreCurrentShaderProgram();
 }
 
+void MikuPan_RenderVertices(float *vertices, int num)
+{
+    MikuPan_SetShaderProgramWithBackup(DEFAULT_SHADER);
+
+    glad_glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+    // Optional but recommended: orphan buffer to avoid stalls
+    glad_glBufferData(GL_ARRAY_BUFFER,
+                      num * sizeof(float[3]),
+                      NULL,
+                      GL_DYNAMIC_DRAW);
+
+    // Upload new data
+    glad_glBufferSubData(GL_ARRAY_BUFFER,
+                         0,
+                         num * sizeof(float[3]),
+                         vertices);
+
+    // Draw
+    glad_glBindVertexArray(VAO);
+    glad_glDrawArrays(
+        MikuPan_IsWireframeRendering() ? GL_LINE_STRIP
+                                       : GL_TRIANGLE_STRIP,
+        0,
+        num
+    );
+}
+
 void MikuPan_Camera(SgCAMERA *camera)
 {
     struct GRA3DSCRATCHPADLAYOUT *scratchpad =
@@ -638,32 +666,28 @@ void MikuPan_Camera(SgCAMERA *camera)
 
     MikuPan_SetShaderProgramWithBackup(DEFAULT_SHADER);
 
+    // View -> camera->wv
     mat4 mtx = {0};
     vec3 center = {0};
     glm_vec3_add(camera->p, camera->zd, center);
-
-    // === Default up vector (PS2 uses Y-down) ===
     vec3 up = {0};
-
-    // === Apply roll (rotation around Z) ===
     mat4 roll = {0};
     vec3 axis = {0.0f, 0.0f, 1.0f};
     glm_mat4_identity(roll);
     glm_rotate(roll, -camera->roll, axis);
     glm_mat4_mulv3(roll, camera->yd, 1.0f, up);
-
-    // === View matrix (equivalent to sceVu0CameraMatrix) ===
     glm_lookat(camera->p, center, up, mtx);
 
-    u_int current_program = MikuPan_GetCurrentShaderProgram();
-    int viewLoc = glad_glGetUniformLocation(current_program, "view");
-    glad_glUniformMatrix4fv(viewLoc, 1, GL_FALSE, (float *) mtx);
-
-    // Projection
+    // Projection -> camera->vcv
     mat4 projection = {0};
     float aspect = (float) window_width / (float) window_height;
     glm_perspective(camera->fov, aspect, camera->nearz, camera->farz,
                     projection);
+
+    u_int current_program = MikuPan_GetCurrentShaderProgram();
+
+    int viewLoc = glad_glGetUniformLocation(current_program, "view");
+    glad_glUniformMatrix4fv(viewLoc, 1, GL_FALSE, (float *) mtx);
 
     int projectionLoc =
         glad_glGetUniformLocation(current_program, "projection");
@@ -674,7 +698,7 @@ void MikuPan_Camera(SgCAMERA *camera)
 
     viewLoc = glad_glGetUniformLocation(current_program, "view");
 
-    glad_glUniformMatrix4fv(viewLoc, 1, GL_FALSE, (float *)mtx);
+    glad_glUniformMatrix4fv(viewLoc, 1, GL_FALSE, (float *) mtx);
 
     projectionLoc =
         glad_glGetUniformLocation(current_program, "projection");
@@ -692,8 +716,7 @@ void MikuPan_RenderMeshType0x32(struct SGDPROCUNITHEADER *pVUVN,
     union SGDPROCUNITDATA *pVUVNData = (union SGDPROCUNITDATA *) &pVUVN[1];
     union SGDPROCUNITDATA *pProcData = (union SGDPROCUNITDATA *) &pPUHead[1];
 
-    struct SGDVUMESHPOINTNUM *pMeshInfo =
-        (struct SGDVUMESHPOINTNUM *) &pPUHead[4];
+    struct SGDVUMESHPOINTNUM *pMeshInfo = (struct SGDVUMESHPOINTNUM *) &pPUHead[4];
 
     struct SGDVUMESHSTDATA *sgdMeshData =
         (struct SGDVUMESHSTDATA *) ((int64_t) pVUVNData
@@ -822,20 +845,58 @@ void MikuPan_RenderMeshType0x82(unsigned int *pVUVN, unsigned int *pPUHead)
     }
 }
 
-void MikuPan_RenderMeshType0x2(unsigned int *pVUVN, unsigned int *pPUHead)
+void MikuPan_RenderMeshType0x2(struct SGDPROCUNITHEADER *pVUVN, struct SGDPROCUNITHEADER *pPUHead)
 {
+    MikuPan_SetShaderProgramWithBackup(DEFAULT_SHADER);
+
+    VUVN_PRIM* v = ((VUVN_PRIM *) &pVUVN[2]);
+
     u_int *vector_data = (u_int *) &(
         ((struct SGDPROCUNITHEADER *) pVUVN)[3]);
 
-    float* vertex = ((sceVu0FVECTOR *)MikuPan_GetHostAddress(VNBufferAddress))[0];
-    float* vertex_list = (float*)&vector_data[GET_NUM_MESH(pPUHead) + 2];
+    /// For a mesh order is SGDVUMESHPOINTNUM -> SGDVUMESHSTREGSET -> SGDVUMESHSTDATA
+    struct SGDVUMESHPOINTNUM * pMeshInfo = (struct SGDVUMESHPOINTNUM *) &pPUHead[4];
+    struct SGDVUMESHSTREGSET * sgdVuMeshStRegSet = (struct SGDVUMESHSTREGSET *) &pMeshInfo[GET_NUM_MESH(pPUHead)];
+    struct SGDVUMESHSTDATA *sgdMeshData = (struct SGDVUMESHSTDATA *)&sgdVuMeshStRegSet->auiVifCode[3];
 
-    // auto pVectorData = (_VECTORDATA  *) &s_ppuhVUVN[3];
-    // const auto pVectorInfo = GetVectorInfoPtr(sgdCurr);
-    // const auto pSVAUniqueVertex = RelOffsetToPtr<Vector4>(
-    //     sgdCurr, pVectorInfo->aAddress[SVA_UNIQUE].pvVertex);
-    // const auto pSVAUniqueNormal = RelOffsetToPtr<Vector4>(
-    //     sgdCurr, pVectorInfo->aAddress[SVA_UNIQUE].pvNormal);
-    // auto wVertex =
-    //     pSVAUniqueVertex[pVectorData[meshIndex].vIndex.uiVertexId];
+
+
+    int vertex_offset = 0;
+
+    for (int i = 0; i < GET_NUM_MESH(pPUHead); i++)
+    {
+        size_t vertexCount = pMeshInfo[i].uiPointNum;
+        size_t byteSize    = sizeof(float[3]);
+
+        glad_glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+        for (int j = 0; j < vertexCount; j++)
+        {
+            GLfloat *vertices = (GLfloat *) MikuPan_GetHostPointer(vector_data[vertex_offset + j] + 0x10);
+
+            // Optional but recommended: orphan buffer to avoid stalls
+            glad_glBufferData(GL_ARRAY_BUFFER,
+                              byteSize,
+                              NULL,
+                              GL_DYNAMIC_DRAW);
+
+            // Upload new data
+            glad_glBufferSubData(GL_ARRAY_BUFFER,
+                                 0,
+                                 byteSize,
+                                 vertices);
+        }
+
+        vertex_offset += vertexCount;
+
+
+        // Draw
+        glad_glBindVertexArray(VAO);
+        glad_glDrawArrays(
+            MikuPan_IsWireframeRendering() ? GL_LINE_STRIP
+                                           : GL_TRIANGLE_STRIP,
+            0,
+            vertexCount
+        );
+    }
 }

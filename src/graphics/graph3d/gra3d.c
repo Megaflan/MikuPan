@@ -2152,7 +2152,8 @@ int CheckModelBoundingBox(sceVu0FMATRIX lwmtx, sceVu0FVECTOR *bbox)
 
     _SetMulMatrix(SgCMVtx, lwmtx);
 
-    //return 1;
+    MikuPan_SetModelTransformMatrix(lwmtx);
+    //MikuPan_RenderBoundingBox(bbox);
 
     if (clip_value_check != 0)
     {
@@ -2595,6 +2596,9 @@ int DrawEnemy(int no)
             ManTexflush();
             SgSortUnitKind(tmpModelp,-1);
             acsClothCtrl(ani_ctrl,ani_ctrl->mpk_p,mdl_no, 0);
+
+            MikuPan_SetModelTransformMatrix(cp[manmdl_dat[mdl_no].waist_id].lwmtx);
+            DrawBoundingBox(ebox);
 
             if (motCheckTrRateMdl(mdl_no) != 0)
             {

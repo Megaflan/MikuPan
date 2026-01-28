@@ -269,7 +269,6 @@ void ReqMpegEvent(int no)
 
 int PlayMpegEvent()
 {
-    return 0;
     int i;
     int ret;
 

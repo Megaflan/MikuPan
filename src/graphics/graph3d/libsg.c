@@ -1,6 +1,8 @@
 #include "libsg.h"
+#include "cglm/vec4.h"
 #include "graphics/graph3d/sglib.h"
 #include "typedefs.h"
+
 #include <string.h>
 
 u32 g_vu0_r = 0;
@@ -239,15 +241,18 @@ void Vu0LoadMatrix(sceVu0FMATRIX m0)
 void Vu0ApplyVectorInline(sceVu0FVECTOR v0, sceVu0FVECTOR v1)
 {
     sceVu0FVECTOR *m0 = work_matrix_0;// in [vf4:vf7]
+    vec4 out = {0};
 
-    v0[0] = (m0[0][0] * v1[0]) + (m0[1][0] * v1[1]) + (m0[2][0] * v1[2])
+    out[0] = (m0[0][0] * v1[0]) + (m0[1][0] * v1[1]) + (m0[2][0] * v1[2])
             + (m0[3][0] * 1.0f);
-    v0[1] = (m0[0][1] * v1[0]) + (m0[1][1] * v1[1]) + (m0[2][1] * v1[2])
+    out[1] = (m0[0][1] * v1[0]) + (m0[1][1] * v1[1]) + (m0[2][1] * v1[2])
             + (m0[3][1] * 1.0f);
-    v0[2] = (m0[0][2] * v1[0]) + (m0[1][2] * v1[1]) + (m0[2][2] * v1[2])
+    out[2] = (m0[0][2] * v1[0]) + (m0[1][2] * v1[1]) + (m0[2][2] * v1[2])
             + (m0[3][2] * 1.0f);
-    v0[3] = (m0[0][3] * v1[0]) + (m0[1][3] * v1[1]) + (m0[2][3] * v1[2])
+    out[3] = (m0[0][3] * v1[0]) + (m0[1][3] * v1[1]) + (m0[2][3] * v1[2])
             + (m0[3][3] * 1.0f);
+
+    glm_vec4_copy(out, v0);
 }
 
 // Line 463

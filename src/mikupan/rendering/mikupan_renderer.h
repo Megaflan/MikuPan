@@ -36,8 +36,9 @@ void MikuPan_Shutdown();
 void MikuPan_EndFrame();
 void MikuPan_SetModelTransformMatrix(sceVu0FVECTOR* m);
 void MikuPan_SetModelTransform(unsigned int *prim);
+void MikuPan_RenderVertices(float* vertices, int num);
 void MikuPan_RenderMeshType0x32(struct SGDPROCUNITHEADER *pVUVN, struct SGDPROCUNITHEADER *pPUHead);
 void MikuPan_RenderMeshType0x82(unsigned int* pVUVN, unsigned int *pPUHead);
-void MikuPan_RenderMeshType0x2(unsigned int* pVUVN, unsigned int *pPUHead);
+void MikuPan_RenderMeshType0x2(struct SGDPROCUNITHEADER* pVUVN, struct SGDPROCUNITHEADER *pPUHead);
 
 #endif //MIKUPAN_SDL_RENDERER_H

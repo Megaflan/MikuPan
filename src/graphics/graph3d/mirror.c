@@ -1,4 +1,5 @@
 #include "mirror.h"
+#include "cglm/vec4.h"
 #include "common.h"
 #include "typedefs.h"
 
@@ -16,6 +17,8 @@
 #include "mikupan/rendering/mikupan_renderer.h"
 #include "os/system.h"
 
+#include <math.h>
+
 int mirror_points = 0;
 
 static int mxmax;
@@ -31,113 +34,136 @@ static float mzmin;
 
 #define SCRATCHPAD ((u_char *) ps2_virtual_scratchpad)
 
+#define VU0_CLIP_X_POS (1 << 0)
+#define VU0_CLIP_X_NEG (1 << 1)
+#define VU0_CLIP_Y_POS (1 << 2)
+#define VU0_CLIP_Y_NEG (1 << 3)
+#define VU0_CLIP_Z_POS (1 << 4)
+#define VU0_CLIP_Z_NEG (1 << 5)
+
+sceVu0FMATRIX work_mirror = {0}; // in [vf25:vf28]
+
 static inline void inline_asm__mirror_c_line_38(sceVu0FMATRIX m0)
 {
-    //asm volatile("\n\
-    //    lqc2    $vf25, 0(%0)       \n\
-    //    lqc2    $vf26, 0x10(%0)    \n\
-    //    lqc2    $vf27, 0x20(%0)    \n\
-    //    lqc2    $vf28, 0x30(%0)    \n\
-    //    ": :"r"(m0)
-    //);
+    memcpy(work_mirror, m0, sizeof(sceVu0FMATRIX));
 }
 
 static inline void inline_asm__mirror_c_line_47(sceVu0FVECTOR v0,
                                                 sceVu0FVECTOR v1)
 {
-    //asm volatile("                            \n\
-    //    lqc2            $vf13, 0(%1)          \n\
-    //    vmulax.xyzw     ACC,   $vf25, $vf13x  \n\
-    //    vmadday.xyzw    ACC,   $vf26, $vf13y  \n\
-    //    vmaddaz.xyzw    ACC,   $vf27, $vf13z  \n\
-    //    vmaddw.xyzw     $vf12, $vf28, $vf0w   \n\
-    //    sqc2            $vf12, 0(%0)          \n\
-    //    ": :"r"(v0),"r"(v1)
-    //);
+    sceVu0FVECTOR *wk = work_mirror; // in [vf25:vf28]
+    vec4 out = {0};
+
+    out[0] = (wk[0][0] * v1[0]) + (wk[1][0] * v1[1]) + (wk[2][0] * v1[2]) + (wk[3][0] *  1.0f);
+    out[1] = (wk[0][1] * v1[0]) + (wk[1][1] * v1[1]) + (wk[2][1] * v1[2]) + (wk[3][1] *  1.0f);
+    out[2] = (wk[0][2] * v1[0]) + (wk[1][2] * v1[1]) + (wk[2][2] * v1[2]) + (wk[3][2] *  1.0f);
+    out[3] = (wk[0][3] * v1[0]) + (wk[1][3] * v1[1]) + (wk[2][3] * v1[2]) + (wk[3][3] *  1.0f);
+
+    glm_vec4_copy(out, v0);
 }
 
 static inline void inline_asm__mirror_c_line_62(MNODE *nm, sceVu0FVECTOR vp)
 {
-    //asm volatile("                            \n\
-    //    lqc2            $vf13, 0(%1)          \n\
-    //    vmulax.xyzw     ACC,   $vf25, $vf13x  \n\
-    //    vmadday.xyzw    ACC,   $vf26, $vf13y  \n\
-    //    vmaddaz.xyzw    ACC,   $vf27, $vf13z  \n\
-    //    vmaddw.xyzw     $vf12, $vf28, $vf0w   \n\
-    //    sqc2            $vf13, 0(%0)          \n\
-    //    sqc2            $vf12, 0x10(%0)       \n\
-    //    ": :"r"(nm),"r"(vp)
-    //);
+    sceVu0FVECTOR *wk = work_mirror; // in [vf25:vf28]
+    sceVu0FVECTOR clip;
+
+    clip[0] = (wk[0][0] * vp[0]) + (wk[1][0] * vp[1]) + (wk[2][0] * vp[2]) + (wk[3][0] *  1.0f);
+    clip[1] = (wk[0][1] * vp[0]) + (wk[1][1] * vp[1]) + (wk[2][1] * vp[2]) + (wk[3][1] *  1.0f);
+    clip[2] = (wk[0][2] * vp[0]) + (wk[1][2] * vp[1]) + (wk[2][2] * vp[2]) + (wk[3][2] *  1.0f);
+    clip[3] = (wk[0][3] * vp[0]) + (wk[1][3] * vp[1]) + (wk[2][3] * vp[2]) + (wk[3][3] *  1.0f);
+
+    memcpy(nm->vp, vp, sizeof(sceVu0FVECTOR));
+    memcpy(nm->clip, clip, sizeof(sceVu0FVECTOR));
 }
 
 static int MirrorLineClip(float *v0, float *v1)
 {
-    int ret = 1;
+    int ret = 0;
 
-    //asm volatile("                     \n\
-    //    lqc2          $vf13, 0(%1)     \n\
-    //    lqc2          $vf14, 0(%2)     \n\
-    //    vclipw.xyz    $vf13, $vf13w    \n\
-    //    vclipw.xyz    $vf14, $vf14w    \n\
-    //    vnop                           \n\
-    //    vnop                           \n\
-    //    vnop                           \n\
-    //    vnop                           \n\
-    //    vnop                           \n\
-    //    cfc2          %0,    $vi18     \n\
-    //    ":"=r"(ret):"r"(v0),"r"(v1)
-    //);
+    if (v0[0] > +fabsf(v0[3])) ret |= VU0_CLIP_X_POS;
+    if (v0[0] < -fabsf(v0[3])) ret |= VU0_CLIP_X_NEG;
+    if (v0[1] > +fabsf(v0[3])) ret |= VU0_CLIP_Y_POS;
+    if (v0[1] < -fabsf(v0[3])) ret |= VU0_CLIP_Y_NEG;
+    if (v0[2] > +fabsf(v0[3])) ret |= VU0_CLIP_Z_POS;
+    if (v0[2] < -fabsf(v0[3])) ret |= VU0_CLIP_Z_NEG;
+
+    ret <<= 6;
+
+    if (v1[0] > +fabsf(v1[3])) ret |= VU0_CLIP_X_POS;
+    if (v1[0] < -fabsf(v1[3])) ret |= VU0_CLIP_X_NEG;
+    if (v1[1] > +fabsf(v1[3])) ret |= VU0_CLIP_Y_POS;
+    if (v1[1] < -fabsf(v1[3])) ret |= VU0_CLIP_Y_NEG;
+    if (v1[2] > +fabsf(v1[3])) ret |= VU0_CLIP_Z_POS;
+    if (v1[2] < -fabsf(v1[3])) ret |= VU0_CLIP_Z_NEG;
+
+    ret <<= 6;
 
     return ret;
 }
 
+static int work_clip;
+
+// Man, why?, just keep them in a single function...
+// I assume it's always paired with `GetClipValue`
 static inline void inline_asm__mirror_c_line_96(sceVu0FVECTOR v0)
 {
-    //asm volatile("                     \n\
-    //    lqc2          $vf13, 0(%0)     \n\
-    //    vclipw.xyz    $vf13, $vf13w    \n\
-    //    ": :"r"(v0)
-    //);
+    int ret = 0;
+
+    if (v0[0] > +fabsf(v0[3])) ret |= VU0_CLIP_X_POS;
+    if (v0[0] < -fabsf(v0[3])) ret |= VU0_CLIP_X_NEG;
+    if (v0[1] > +fabsf(v0[3])) ret |= VU0_CLIP_Y_POS;
+    if (v0[1] < -fabsf(v0[3])) ret |= VU0_CLIP_Y_NEG;
+    if (v0[2] > +fabsf(v0[3])) ret |= VU0_CLIP_Z_POS;
+    if (v0[2] < -fabsf(v0[3])) ret |= VU0_CLIP_Z_NEG;
+
+    work_clip = ret;
 }
 
 static int GetClipValue()
 {
-    int ret = 1;
-
-    //asm volatile("           \n\
-    //    vnop                 \n\
-    //    vnop                 \n\
-    //    vnop                 \n\
-    //    vnop                 \n\
-    //    vnop                 \n\
-    //    cfc2    %0, $vi18    \n\
-    //    ":"=r"(ret)
-    //);
-
-    return ret;
+    return work_clip;
 }
 
-static inline void inline_asm__mirror_c_line_120(qword base, sceVu0FVECTOR vp)
+#define FLT_TO_FIX4(_val) ((int)((_val) * 16.0f))
+static inline void inline_asm__mirror_c_line_120(Q_WORDDATA base, sceVu0FVECTOR vp)
 {
-    //asm volatile("\n\
-    //    lqc2            $vf12, 0(%1)             \n\
-    //    vmulax.xyzw     ACC,   $vf8,     $vf12x  \n\
-    //    vmadday.xyzw    ACC,   $vf9,     $vf12y  \n\
-    //    vmaddaz.xyzw    ACC,   $vf10,    $vf12z  \n\
-    //    vmaddw.xyzw     $vf14, $vf11,    $vf0w   \n\
-    //    vdiv            Q,     $vf0w,    $vf14w  \n\
-    //    vmulax.xyzw     ACC,   $vf4,     $vf12x  \n\
-    //    vmadday.xyzw    ACC,   $vf5,     $vf12y  \n\
-    //    vmaddaz.xyzw    ACC,   $vf6,     $vf12z  \n\
-    //    vmaddw.xyzw     $vf13, $vf7,     $vf12w  \n\
-    //    vwaitq                                   \n\
-    //    vmulq.xyz       $vf14, $vf14,    Q       \n\
-    //    vftoi4.xyz      $vf31, $vf14             \n\
-    //    sqc2            $vf13, 0x10(%0)          \n\
-    //    sqc2            $vf31, 0(%0)             \n\
-    //    sqc2            $vf14, 0x20(%0)          \n\
-    //    ": :"r"(base),"r"(vp)
-    //);
+    sceVu0FVECTOR *wk0 = work_matrix_0; // in [vf4:vf7]
+    sceVu0FVECTOR *wk1 = work_matrix_1; // in [vf8:vf11]
+    sceVu0FVECTOR tmp0, tmp1;
+    float r;
+
+    tmp0[0] = (wk1[0][0] * vp[0]) + (wk1[1][0] * vp[1]) + (wk1[2][0] * vp[2]) + (wk1[3][0] *  1.0f);
+    tmp0[1] = (wk1[0][1] * vp[0]) + (wk1[1][1] * vp[1]) + (wk1[2][1] * vp[2]) + (wk1[3][1] *  1.0f);
+    tmp0[2] = (wk1[0][2] * vp[0]) + (wk1[1][2] * vp[1]) + (wk1[2][2] * vp[2]) + (wk1[3][2] *  1.0f);
+    tmp0[3] = (wk1[0][3] * vp[0]) + (wk1[1][3] * vp[1]) + (wk1[2][3] * vp[2]) + (wk1[3][3] *  1.0f);
+
+    r = 1.0f / tmp0[3];
+
+    tmp0[0] *= r;
+    tmp0[1] *= r;
+    tmp0[2] *= r;
+
+    /// TODO : CHECK MORE INDEPTH THIS HERE, CAUSES CRASHES
+    //base.iv[0] = tmp0[0] * 16.0f > (float)INT_MAX ? INT_MAX - 1 : FLT_TO_FIX4(tmp0[0]);
+    //base.iv[1] = tmp0[1] * 16.0f > (float)INT_MAX ? INT_MAX - 1 : FLT_TO_FIX4(tmp0[1]);
+    //base.iv[2] = tmp0[2] * 16.0f > (float)INT_MAX ? INT_MAX - 1 : FLT_TO_FIX4(tmp0[2]);
+
+    base.fv[0] = tmp0[0] * 16.0f;
+    base.fv[1] = tmp0[1] * 16.0f;
+    base.fv[2] = tmp0[2] * 16.0f;
+
+    // Gets skipped, actually so the value should be unused as it's undefined
+    // base.i[3] = FLT_TO_FIX4(tmp0[3] * r);
+
+    base.fv[4] = (wk0[0][0] * vp[0]) + (wk0[1][0] * vp[1]) + (wk0[2][0] * vp[2]) + (wk0[3][0] * vp[3]);
+    base.fv[5] = (wk0[0][1] * vp[0]) + (wk0[1][1] * vp[1]) + (wk0[2][1] * vp[2]) + (wk0[3][1] * vp[3]);
+    base.fv[6] = (wk0[0][2] * vp[0]) + (wk0[1][2] * vp[1]) + (wk0[2][2] * vp[2]) + (wk0[3][2] * vp[3]);
+    base.fv[7] = (wk0[0][3] * vp[0]) + (wk0[1][3] * vp[1]) + (wk0[2][3] * vp[2]) + (wk0[3][3] * vp[3]);
+
+    base.fv[8]  = tmp0[0];
+    base.fv[9]  = tmp0[1];
+    base.fv[10] = tmp0[2];
+    base.fv[11] = tmp0[3];
 }
 
 int CheckMirrorModel(void *sgd_top)
@@ -249,27 +275,33 @@ void SliceMirrorPolygon(MFlipNode *fn, ClipData *cldata)
     fn->out = swap;
 }
 
+#define FIX4_TO_FLT(_val) ((_val) / 16.0f)
 static void CalcOuterProduct(float *out, int *p0)
 {
-    //asm volatile("                              \n\
-    //    lqc2           $vf12, 0(%1)             \n\
-    //    lqc2           $vf13, 0x30(%1)          \n\
-    //    lqc2           $vf14, 0x60(%1)          \n\
-    //    vitof4.xy      $vf12, $vf12             \n\
-    //    vmove.zw       $vf12, $vf0              \n\
-    //    vitof4.xy      $vf13, $vf13             \n\
-    //    vmove.zw       $vf13, $vf0              \n\
-    //    vitof4.xy      $vf14, $vf14             \n\
-    //    vmove.zw       $vf14, $vf0              \n\
-    //    vsub.xyzw      $vf12, $vf12,    $vf13   \n\
-    //    vsub.xyzw      $vf13, $vf13,    $vf14   \n\
-    //    vopmula.xyz    ACC,   $vf12,    $vf13   \n\
-    //    vopmsub.xyz    $vf12, $vf13,    $vf12   \n\
-    //    lqc2           $vf13, 0(%0)             \n\
-    //    vmulz.xyz      $vf12, $vf12,    $vf13z  \n\
-    //    sqc2           $vf12, 0(%0)             \n\
-    //    ": :"r"(out),"r"(p0)
-    //);
+    sceVu0FVECTOR tmp0, tmp1, tmp2 = {0};
+    float t;
+
+    // This can simplify further, actually, as
+    // [2] is 0 then the XY components of the product are 0
+    tmp0[0] = FIX4_TO_FLT(p0[0]) - FIX4_TO_FLT(p0[12]);
+    tmp0[1] = FIX4_TO_FLT(p0[1]) - FIX4_TO_FLT(p0[13]);
+    tmp0[2] = 0.0f;
+    tmp0[3] = 0.0f;
+
+    tmp1[0] = FIX4_TO_FLT(p0[12]) - FIX4_TO_FLT(p0[24]);
+    tmp1[1] = FIX4_TO_FLT(p0[13]) - FIX4_TO_FLT(p0[25]);
+    tmp1[2] = 0.0f;
+    tmp1[3] = 0.0f;
+
+    tmp2[0] = tmp0[1] * tmp1[2] - tmp1[1] * tmp0[2];
+    tmp2[1] = tmp0[2] * tmp1[0] - tmp1[2] * tmp0[0];
+    tmp2[2] = tmp0[0] * tmp1[1] - tmp1[0] * tmp0[1];
+
+    t = out[3];
+
+    out[0] = tmp2[0] * t;
+    out[1] = tmp2[1] * t;
+    out[2] = tmp2[2] * t;
 }
 
 void CalcScreenMirror(sceVu0FVECTOR vp0, sceVu0FVECTOR vp1, sceVu0FVECTOR vp2,
@@ -362,7 +394,7 @@ void CalcScreenMirror(sceVu0FVECTOR vp0, sceVu0FVECTOR vp1, sceVu0FVECTOR vp2,
 
         for (i = 0; i < 3; i++)
         {
-            inline_asm__mirror_c_line_120(*pbase, fn->in[i].vp);
+            inline_asm__mirror_c_line_120(*(Q_WORDDATA*)pbase, fn->in[i].vp);
             pbase += 3;
         }
 
@@ -380,7 +412,7 @@ void CalcScreenMirror(sceVu0FVECTOR vp0, sceVu0FVECTOR vp1, sceVu0FVECTOR vp2,
 
             for (i = 0; i < fn->nodes; i++)
             {
-                inline_asm__mirror_c_line_120(*pbase, fn->in[i].vp);
+                inline_asm__mirror_c_line_120(*(Q_WORDDATA*)pbase, fn->in[i].vp);
 
                 if (mxmax < pbase[0][0])
                 {
@@ -444,7 +476,7 @@ int MakeMirrorEnvironment(u_int *prim)
     sceVu0FVECTOR cp;
     float sgn;
     float *vp;
-    sceVu0FVECTOR vertex;
+    sceVu0FVECTOR vertex = {0};
 
     mzmin = 0.0f;
     mzmax = 1000000.0f;
@@ -497,6 +529,8 @@ int MakeMirrorEnvironment(u_int *prim)
                 vp += 12;
                 sgn = 1.0f;
 
+                //MikuPan_RenderVertices(vp, loops);
+
                 for (i = 0; i < loops; i++)
                 {
                     if (prim[0] != 1)
@@ -521,9 +555,8 @@ int MakeMirrorEnvironment(u_int *prim)
             }
             break;
         case 0x32:
-
-            MikuPan_RenderMeshType0x32((struct SGDPROCUNITHEADER *) vuvnprim,
-                                       (struct SGDPROCUNITHEADER *) prim);
+            //MikuPan_RenderMeshType0x32((struct SGDPROCUNITHEADER *) vuvnprim,
+            //                           (struct SGDPROCUNITHEADER *) prim);
             vp = (float *) &vuvnprim[14];
             vp = (float *) ((int64_t) vp + ((short *) vuvnprim)[5] * 12);
 
@@ -549,6 +582,8 @@ int MakeMirrorEnvironment(u_int *prim)
                 prim += 6;
                 vp += 6;
                 sgn = 1.0f;
+
+                //MikuPan_RenderVertices(vp, loops);
 
                 for (i = 0; i < loops; i++)
                 {
@@ -721,33 +756,37 @@ static inline void inline_asm__mirror_c_line_639(sceVu0FVECTOR v0,
                                                  sceVu0FVECTOR v2,
                                                  sceVu0FVECTOR v3)
 {
-    //asm volatile("                          \n\
-    //    lqc2           $vf12, 0(%1)         \n\
-    //    lqc2           $vf13, 0(%2)         \n\
-    //    lqc2           $vf14, 0(%3)         \n\
-    //    vsub.xyz       $vf12, $vf13, $vf12  \n\
-    //    vsub.xyz       $vf13, $vf14, $vf13  \n\
-    //    vopmula.xyz    ACC,   $vf12, $vf13  \n\
-    //    vopmsub.xyz    $vf12, $vf13, $vf12  \n\
-    //    sqc2           $vf12, 0(%0)         \n\
-    //    ": :"r"(v0),"r"(v1),"r"(v2),"r"(v3)
-    //);
+    sceVu0FVECTOR tmp0, tmp1;
+
+    tmp0[0] = v2[0] - v1[0];
+    tmp0[1] = v2[1] - v1[1];
+    tmp0[2] = v2[2] - v1[2];
+    tmp0[3] = v2[3] - v1[3];
+
+    tmp1[0] = v3[0] - v2[0];
+    tmp1[1] = v3[1] - v2[1];
+    tmp1[2] = v3[2] - v2[2];
+    tmp1[3] = v3[3] - v2[3];
+
+    v0[0] = tmp0[1] * tmp1[2] - tmp1[1] * tmp0[2];
+    v0[1] = tmp0[2] * tmp1[0] - tmp1[2] * tmp0[0];
+    v0[2] = tmp0[0] * tmp1[1] - tmp1[0] * tmp0[1];
 }
 
 void CalcMirrorMatrix(SgCAMERA *camera)
 {
-    sceVu0FMATRIX quat;
-    sceVu0FMATRIX tmpmat;
-    sceVu0FMATRIX newws;
-    sceVu0FMATRIX newwc;
-    sceVu0FMATRIX newwcv;
-    sceVu0FVECTOR centerpos;
-    sceVu0FVECTOR norm;
+    sceVu0FMATRIX quat = {0};
+    sceVu0FMATRIX tmpmat = {0};
+    sceVu0FMATRIX newws = {0};
+    sceVu0FMATRIX newwc = {0};
+    sceVu0FMATRIX newwcv = {0};
+    sceVu0FVECTOR centerpos = {0};
+    sceVu0FVECTOR norm = {0};
     sceVu0FVECTOR milpos[3];
-    sceVu0FVECTOR tmpvec;
-    sceVu0FVECTOR vaxis;
-    sceVu0FVECTOR qvert;
-    sceVu0FVECTOR eye;
+    sceVu0FVECTOR tmpvec = {0};
+    sceVu0FVECTOR vaxis = {0};
+    sceVu0FVECTOR qvert = {0};
+    sceVu0FVECTOR eye = {0};
     float qrot;
 
     Vu0SubVector(eye, camera->i, camera->p);
@@ -835,6 +874,8 @@ void CalcMirrorMatrix(SgCAMERA *camera)
 void MirrorDraw(SgCAMERA *camera, void *sgd_top,
                 void (*render_func)(/* parameters unknown */))
 {
+    ///TODO: Re-enable once the scratchpad address works
+    //return;
     static sceVu0IVECTOR miccolor = {0x80, 0x80, 0x80, 0x80};
     qword *pedraw_buf;
     int i;

@@ -84,7 +84,20 @@ void sceVu0MulMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1, sceVu0FMATRIX m2)
 void sceVu0InversMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1)
 {
     mat4 out = {0};
-    glm_mat4_inv(m1, out);
+    //glm_mat4_inv(m1, out);
+
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            out[i][j] = m1[j][i];
+        }
+    }
+    out[3][0] = -(out[0][0]*m1[3][0] + out[1][0]*m1[3][1] + out[2][0]*m1[3][2]);
+    out[3][1] = -(out[0][1]*m1[3][0] + out[1][1]*m1[3][1] + out[2][1]*m1[3][2]);
+    out[3][2] = -(out[0][2]*m1[3][0] + out[1][2]*m1[3][1] + out[2][2]*m1[3][2]);
+    out[3][3] = 1.0f;
+
     glm_mat4_copy(out, m0);
 }
 
