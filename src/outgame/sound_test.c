@@ -19,6 +19,7 @@
 #include "os/eeiop/adpcm/ea_dat.h"
 #include "os/eeiop/eeiop.h"
 #include "os/eeiop/eese.h"
+#include "iop/adpcm/iopadpcm.h"
 #include "outgame/mode_slct.h"
 #include "outgame/sound_test.h"
 
@@ -298,7 +299,7 @@ char SoundTestForModeSlect()
 
     if (stf.run[2] == 1)
     {
-        if (EAGetRetStat() > 5)
+        if (EAGetRetStat() > ADPCM_STAT_PRELOAD_END)
         {
             stf.run[2] = 2;
         }

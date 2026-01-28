@@ -458,7 +458,6 @@ void InGameMain()
             
             PlyrCtrlMain();
             PhotoCtrl();
-            AdpcmMapUse();
 
             if ((ingame_wrk.stts & 0x10) == 0)
             {

@@ -6,6 +6,7 @@
 #include "os/eeiop/adpcm/ea_cmd.h"
 #include "os/eeiop/adpcm/ea_dat.h"
 #include "os/eeiop/adpcm/ea_ctrl.h"
+#include "iop/adpcm/iopadpcm.h"
 
 void EAdpcmSoulMain()
 {
@@ -42,7 +43,7 @@ void EAdpcmSoulMain()
         adpcm_map.soul.mode = AMSL_MODE_REQ_WAIT1;
     break;
     case AMSL_MODE_REQ_WAIT1:
-        if (EAGetRetStat() == 1 || EAGetRetStat() == 2)
+        if (EAGetRetStat() == ADPCM_STAT_FULL_STOP || EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP)
         {
             adpcm_map.soul.mode = AMSL_MODE_REQ_WAIT2;
         }
@@ -67,7 +68,7 @@ void EAdpcmSoulMain()
         // do nothing ...
     break;
     case AMSL_MODE_REQ_STOP:
-        if (EAGetRetStat() == 1 || EAGetRetStat() == 2)
+        if (EAGetRetStat() == ADPCM_STAT_FULL_STOP || EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP)
         {
             adpcm_map.soul.use = 0;
             adpcm_map.hiso.use = 0;

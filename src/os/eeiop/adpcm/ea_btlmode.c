@@ -6,6 +6,7 @@
 #include "os/eeiop/adpcm/ea_ctrl.h"
 #include "os/eeiop/adpcm/ea_cmd.h"
 #include "os/eeiop/adpcm/ea_dat.h"
+#include "iop/adpcm/iopadpcm.h"
 
 void EAdpcmBtlmodeMain()
 {
@@ -22,7 +23,7 @@ void EAdpcmBtlmodeMain()
         adpcm_map.btlmode.mode = BTL_MODE_GAME;
     break;
     case BTL_MODE_GAME:
-        if (EAGetRetStat() == 1 || EAGetRetStat() == 2)
+        if (EAGetRetStat() == ADPCM_STAT_FULL_STOP || EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP)
         {
             adpcm_map.btlmode.mode = BTL_MODE_FAILED;
         }
@@ -31,13 +32,13 @@ void EAdpcmBtlmodeMain()
         // do nothing ...
     break;
     case BTL_MODE_CLEAR:
-        if (EAGetRetStat() > 5)
+        if (EAGetRetStat() > ADPCM_STAT_PRELOAD_END)
         {
             adpcm_map.btlmode.mode = BTL_MODE_NEXT;
         }
     break;
     case BTL_MODE_NEXT:
-        if (EAGetRetStat() == 1 || EAGetRetStat() == 2)
+        if (EAGetRetStat() == ADPCM_STAT_FULL_STOP || EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP)
         {
             adpcm_map.btlmode.mode = BTL_MODE_FAILED;
             adpcm_map.btlmode.para.file_no = -1;
@@ -69,11 +70,11 @@ u_char IsPreLoadEndAdpcmBtlmode()
 {
     if (EAGetRetTune() == adpcm_map.btlmode.para.file_no)
     {
-        if (EAGetRetStat() == -1)
+        if (EAGetRetStat() == ADPCM_STAT_ERROR)
         {
             return 0xff;
         }
-        else if (EAGetRetStat() == 5)
+        else if (EAGetRetStat() == ADPCM_STAT_PRELOAD_END)
         {
             return 1;
         }

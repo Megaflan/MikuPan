@@ -6,6 +6,7 @@
 #include "os/eeiop/adpcm/ea_ctrl.h"
 #include "os/eeiop/adpcm/ea_cmd.h"
 #include "os/eeiop/adpcm/ea_dat.h"
+#include "iop/adpcm/iopadpcm.h"
 
 #define DEFAULT_PITCH 0xFFF
 
@@ -24,20 +25,20 @@ void EAdpcmGoverMain(void)
             adpcm_map.gover.mode = GAMEOVER_WHITE_OUT; 
         break;
         case GAMEOVER_WHITE_OUT:
-            if (EAGetRetStat() == 1 || EAGetRetStat() == 2) 
+            if (EAGetRetStat() == ADPCM_STAT_FULL_STOP || EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP) 
             {
                 EAdpcmCmdPlay(0, 0, adpcm_map.gover.para.file_no, 0, adpcm_map.gover.para.vol, adpcm_map.gover.para.pan, adpcm_map.gover.para.pitch, adpcm_map.gover.para.fin_flm);
                 adpcm_map.gover.mode = GAMEOVER_LOAD_WAIT;
             }
         break;
         case GAMEOVER_LOAD_WAIT:
-            if (EAGetRetStat() > 5) 
+            if (EAGetRetStat() > ADPCM_STAT_PRELOAD_END) 
             {
                 adpcm_map.gover.mode = GAMEOVER_WHITE_IN;
             }
         break;
         case GAMEOVER_WHITE_IN:
-            if (EAGetRetStat() == 1 || EAGetRetStat() == 2) 
+            if (EAGetRetStat() == ADPCM_STAT_FULL_STOP || EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP) 
             {
                 adpcm_map.gover.use = GAMEOVER_INIT;
                 AdpcmMapCtrlInit();

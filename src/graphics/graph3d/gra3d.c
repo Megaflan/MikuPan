@@ -2595,7 +2595,7 @@ int DrawEnemy(int no)
             ManmdlSetAlpha(tmpModelp, ene_wrk[j].tr_rate);
             ManTexflush();
             SgSortUnitKind(tmpModelp,-1);
-            acsClothCtrl(ani_ctrl,ani_ctrl->mpk_p,mdl_no, 0);
+            //acsClothCtrl(ani_ctrl,ani_ctrl->mpk_p,mdl_no, 0);
 
             MikuPan_SetModelTransformMatrix(cp[manmdl_dat[mdl_no].waist_id].lwmtx);
             DrawBoundingBox(ebox);

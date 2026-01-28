@@ -6,6 +6,7 @@
 #include "os/eeiop/adpcm/ea_cmd.h"
 #include "os/eeiop/adpcm/ea_dat.h"
 #include "os/eeiop/adpcm/ea_ctrl.h"
+#include "iop/adpcm/iopadpcm.h"
 
 void EAdpcmMagatokiMain()
 {    
@@ -26,7 +27,7 @@ void EAdpcmMagatokiMain()
         adpcm_map.maga.mode = AMMG_MODE_FOUT_WAIT;
     break;
     case AMMG_MODE_FOUT_WAIT:
-        if (EAGetRetStat() != 1 && EAGetRetStat() != 2)
+        if (EAGetRetStat() != ADPCM_STAT_FULL_STOP && EAGetRetStat() != ADPCM_STAT_LOOPEND_STOP)
         {
             return;
         }
@@ -34,27 +35,27 @@ void EAdpcmMagatokiMain()
         adpcm_map.bk_para = adpcm_map.maga.para;
         adpcm_map.maga.mode = AMMG_MODE_MIN_BGM;
     case AMMG_MODE_MIN_BGM:
-        if (EAGetRetStat() > 5)
+        if (EAGetRetStat() > ADPCM_STAT_PRELOAD_END)
         {
             adpcm_map.maga.mode = AMMG_MODE_MIN_BGM_FADE;
         }
         adpcm_map.bk_para = adpcm_map.maga.para;
     break;
     case AMMG_MODE_MIN_BGM_FADE:
-        if (EAGetRetStat() == 1 || EAGetRetStat() == 2)
+        if (EAGetRetStat() == ADPCM_STAT_FULL_STOP || EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP)
         {
             adpcm_map.maga.mode = AMMG_MODE_MAGA_PLAY_WAIT;
         }
         adpcm_map.bk_para = adpcm_map.maga.para;
     break;
     case AMMG_MODE_PLAY:
-        if (EAGetRetStat() > 5) {
+        if (EAGetRetStat() > ADPCM_STAT_PRELOAD_END) {
             adpcm_map.maga.mode = AMMG_MODE_PLAYING;
         }
         adpcm_map.bk_para = adpcm_map.maga.para;
     break;
     case AMMG_MODE_PLAYING:
-        if (EAGetRetStat() == 1 || EAGetRetStat() == 2)
+        if (EAGetRetStat() == ADPCM_STAT_FULL_STOP || EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP)
         {
             adpcm_map.maga.mode = AMMG_MODE_FIRST_FOUT;
             adpcm_map.maga.para.file_no = 0;

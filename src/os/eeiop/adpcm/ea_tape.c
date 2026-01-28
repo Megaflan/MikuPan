@@ -6,6 +6,7 @@
 #include "os/eeiop/adpcm/ea_cmd.h"
 #include "os/eeiop/adpcm/ea_dat.h"
 #include "os/eeiop/adpcm/ea_ctrl.h"
+#include "iop/adpcm/iopadpcm.h"
 
 void EAdpcmTapeMain()
 {    
@@ -16,7 +17,7 @@ void EAdpcmTapeMain()
         adpcm_map.tape.mode = AMTP_MODE_REQ_WAIT_STOP;
     break;
     case AMTP_MODE_REQ_WAIT_STOP:
-        if (EAGetRetStat() == 1 || EAGetRetStat() == 2)
+        if (EAGetRetStat() == ADPCM_STAT_FULL_STOP || EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP)
         {
             adpcm_map.m_flg = 2;
             EAdpcmCmdPlay(0, 0, adpcm_map.tape.para.file_no, 0, adpcm_map.tape.para.vol, adpcm_map.tape.para.pan, adpcm_map.tape.para.pitch, adpcm_map.tape.para.fin_flm);
@@ -25,13 +26,13 @@ void EAdpcmTapeMain()
         }
     break;
     case AMTP_MODE_REQ_PLAY:
-        if (EAGetRetStat() > 5)
+        if (EAGetRetStat() > ADPCM_STAT_PRELOAD_END)
         {
             adpcm_map.tape.mode = AMTP_MODE_REQ_PLAYING;
         }
     break;
     case AMTP_MODE_REQ_STOP:
-        if (EAGetRetStat() == 1 || EAGetRetStat() == 2)
+        if (EAGetRetStat() == ADPCM_STAT_FULL_STOP || EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP)
         {
             adpcm_map.tape.use = 0;
             adpcm_map.gdead.use = 0;
@@ -42,7 +43,7 @@ void EAdpcmTapeMain()
         }
     break;
     case AMTP_MODE_REQ_PLAYING:
-        if (EAGetRetStat() == 2)
+        if (EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP)
         {
             adpcm_map.tape.use = 0;
             adpcm_map.gdead.use = 0;

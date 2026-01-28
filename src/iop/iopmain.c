@@ -4,6 +4,7 @@
 #include "iop/adpcm/iopadpcm.h"
 #include "mikupan/mikupan_logging_c.h"
 #include "os/eeiop/eeiop.h"
+#include "iop/se/iopse.h"
 
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_timer.h>
@@ -117,23 +118,22 @@ void *IopDrvFunc(unsigned int command, void *data, int size)
     {
         icp = data;
 
-        //se_start_flg = 0;
-        //se_stop_flg = 0;
+        se_start_flg = 0;
+        se_stop_flg = 0;
 
         for (i = 0; i < (size / sizeof(*icp)); i++)
         {
-            if (icp->cmd_no >= IC_SE_INIT
-                && icp->cmd_no <= IC_SE_QUIT)
+            if (icp->cmd_no >= IC_SE_INIT && icp->cmd_no <= IC_SE_QUIT)
             {
-                //ISeCmd(icp);
+                ISeCmd(icp);
             }
             else if (icp->cmd_no >= IC_CDVD_INIT
-                && icp->cmd_no <= IC_CDVD_BREAK)
+                     && icp->cmd_no <= IC_CDVD_BREAK)
             {
                 ICdvdCmd(icp);
             }
             else if (icp->cmd_no >= IC_ADPCM_INIT
-                && icp->cmd_no <= IC_ADPCM_QUIT)
+                     && icp->cmd_no <= IC_ADPCM_QUIT)
             {
                 IAdpcmCmd(icp);
             }
@@ -148,7 +148,7 @@ void *IopDrvFunc(unsigned int command, void *data, int size)
         //    sceSdSetSwitch(SD_S_KOFF | SD_CORE_1, se_stop_flg);
     }
 
-    //ICdvdTransSeEnd();
+    ICdvdTransSeEnd();
     return &iop_stat;
 }
 
@@ -169,7 +169,7 @@ static void IopInitDevice()
     {
         const char *driver = SDL_GetCurrentAudioDriver();
         info_log("Audio Driver: %s", driver ? driver : "(null)");
-        
+
         spec.channels = 2;
         spec.format = SDL_AUDIO_S16;
         spec.freq = 48000;
@@ -190,7 +190,7 @@ static void IopInitDevice()
 
     //sceSdInit(0);
     ICdvdInit(0);
-    //ISeInit(0);
+    ISeInit(0);
     IAdpcmInit(0);
 }
 
@@ -207,7 +207,7 @@ static SDLCALL int IopMain(void *data)
         // The thread was originally woken up by an IOP timer handler
         SDL_DelayNS(4167000);
 
-        //ISeMain();
+        ISeMain();
         ICdvdMain();
         IAdpcmMain2();
     }
@@ -218,5 +218,6 @@ static SDLCALL int IopMain(void *data)
 void IopShutDown()
 {
     request_shutdown = 1;
+    CloseAudio();
     SDL_WaitThread(iop_sys_ctrl.thread, NULL);
 }

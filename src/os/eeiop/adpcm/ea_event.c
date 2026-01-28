@@ -6,6 +6,7 @@
 #include "os/eeiop/adpcm/ea_cmd.h"
 #include "os/eeiop/adpcm/ea_dat.h"
 #include "os/eeiop/adpcm/ea_ctrl.h"
+#include "iop/adpcm/iopadpcm.h"
 
 void EAdpcmEventMain()
 {    
@@ -43,7 +44,7 @@ void EAdpcmEventMain()
         {
             adpcm_map.event.para.start_flm--;
         }
-        if (EAGetRetStat() == 1 || EAGetRetStat() == 2)
+        if (EAGetRetStat() == ADPCM_STAT_FULL_STOP || EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP)
         {
             if (adpcm_map.event.para.start_flm == 0) {
                 adpcm_map.m_flg = 2;
@@ -54,14 +55,14 @@ void EAdpcmEventMain()
         }
     break;
     case AMEV_MODE_REQ_PLAY:
-        if (EAGetRetStat() > 5)
+        if (EAGetRetStat() > ADPCM_STAT_PRELOAD_END)
         {
             adpcm_map.event.mode = AMEV_MODE_REQ_PLAYING;
         }
         adpcm_map.mvol = 0xfff;
     break;
     case AMEV_MODE_REQ_PLAYING:
-        if (EAGetRetStat() == 1 || EAGetRetStat() == 2)
+        if (EAGetRetStat() == ADPCM_STAT_FULL_STOP || EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP)
         {
             adpcm_map.event.use = 0;
             adpcm_map.autog.use = 0;
