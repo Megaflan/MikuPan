@@ -316,6 +316,11 @@ void LoadTRI2Files(u_int *prim)
 
         GsUpload(&tri2->gsli, (u_char*)&tri2[1]);
 
+        //uint8_t* img = (uint8_t*)&tri2[1];
+        //sceGsLoadImage* image_load = (sceGsLoadImage*)&img[tri2->gsli.giftag1.NLOOP * 0x10];
+        //uint8_t* image_color_data = (uint8_t*)(&image_load[1]);
+        //GsUpload(image_load, image_color_data);
+
         AppendDmaTag((int64_t)prim, tri2size + 1);
 
         prim = (u_int *)((int64_t)prim + 0x10 + (u_int)tri2size * 0x10);

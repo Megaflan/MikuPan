@@ -367,7 +367,7 @@ int PlayMpegEvent()
             EiMain();
 
 
-            *(int *)REG_DMAC_CTRL &= ~D_CTRL_RELE_M; // yeah ...
+            //*(int *)REG_DMAC_CTRL &= ~D_CTRL_RELE_M; // yeah ...
 
             MovieInitWrk();
 
@@ -380,6 +380,7 @@ int PlayMpegEvent()
 
 u_int movie(char *name)
 {
+    return controller_val;
     static int count = 0;
 
     sceGsSyncPath(0, 0);
@@ -549,6 +550,7 @@ static int isAudioOK()
 
 void initMov(char *bsfilename)
 {
+    return;
     ThreadParam th_param;
     void *val;
 

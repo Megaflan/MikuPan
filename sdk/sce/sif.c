@@ -2,6 +2,7 @@
 
 int sceSifDmaStat(unsigned int id)
 {
+    return -1;
 }
 
 unsigned int sceSifSetDma(sceSifDmaData* sdd, int len)

@@ -687,7 +687,7 @@ void ShadowMeshDataVU(u_int *prim)
         case 0x32:
             if (mtype == 0x32)
             {
-                MikuPan_RenderMeshType0x32((struct SGDPROCUNITHEADER *)vuvnprim, (struct SGDPROCUNITHEADER *)prim);
+                //MikuPan_RenderMeshType0x32((struct SGDPROCUNITHEADER *)vuvnprim, (struct SGDPROCUNITHEADER *)prim);
             }
 
             AppendDmaTag((u_int) & ((u_char *) vuvnprim)[16],

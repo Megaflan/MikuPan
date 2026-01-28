@@ -395,7 +395,8 @@ void SetVUMeshData(u_int *prim)
             break;
         case 2:
             read_p = SetVUVNData(vuvnprim);
-            MikuPan_RenderMeshType0x2(vuvnprim, prim);
+            MikuPan_RenderMeshType0x2((struct SGDPROCUNITHEADER*)vuvnprim, (struct SGDPROCUNITHEADER*)prim);
+            //MikuPan_RenderVertices((int64_t)getObjWrk() + 0x20, 20);
 
             read_p[0] = 0x14000000 | ((u_int) DRAWTYPE2 >> 3);
             read_p[1] = 0x17000000;
