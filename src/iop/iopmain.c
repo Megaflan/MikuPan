@@ -77,19 +77,30 @@ static void IopInitDevice()
 {
     SDL_AudioSpec spec;
 
-    SDL_Init(SDL_INIT_AUDIO);
-    spec.channels = 2;
-    spec.format = SDL_AUDIO_S16;
-    spec.freq = 48000;
-
-    audio_dev = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &spec);
-
-    if (!audio_dev)
+    if (!SDL_Init(SDL_INIT_AUDIO))
     {
-        info_log("%s", SDL_GetError());
+        info_log("Failed to initialize SDL audio subsystem: %s", SDL_GetError());
+        info_log("Continuing without audio support");
+        audio_dev = 0;
     }
+    else
+    {
+        spec.channels = 2;
+        spec.format = SDL_AUDIO_S16;
+        spec.freq = 48000;
 
-    SDL_ResumeAudioDevice(audio_dev);
+        audio_dev = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &spec);
+
+        if (!audio_dev)
+        {
+            info_log("Failed to open audio device: %s", SDL_GetError());
+            info_log("Continuing without audio support");
+        }
+        else
+        {
+            SDL_ResumeAudioDevice(audio_dev);
+        }
+    }
 
     //sceSdInit(0);
     ICdvdInit(0);
