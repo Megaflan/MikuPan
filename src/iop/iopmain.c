@@ -115,22 +115,25 @@ void *IopDrvFunc(unsigned int command, void *data, int size)
     }
     else if (command == ICM_REQ)
     {
-        icp = (IOP_COMMAND *)data;
+        icp = data;
 
         //se_start_flg = 0;
         //se_stop_flg = 0;
 
-        for (i = 0; i < (size / (int)sizeof(*icp)); i++)
+        for (i = 0; i < (size / sizeof(*icp)); i++)
         {
-            if (icp->cmd_no >= IC_SE_INIT && icp->cmd_no <= IC_SE_QUIT)
+            if (icp->cmd_no >= IC_SE_INIT
+                && icp->cmd_no <= IC_SE_QUIT)
             {
                 //ISeCmd(icp);
             }
-            else if (icp->cmd_no >= IC_CDVD_INIT && icp->cmd_no <= IC_CDVD_BREAK)
+            else if (icp->cmd_no >= IC_CDVD_INIT
+                && icp->cmd_no <= IC_CDVD_BREAK)
             {
                 ICdvdCmd(icp);
             }
-            else if (icp->cmd_no >= IC_ADPCM_INIT && icp->cmd_no <= IC_ADPCM_QUIT)
+            else if (icp->cmd_no >= IC_ADPCM_INIT
+                && icp->cmd_no <= IC_ADPCM_QUIT)
             {
                 IAdpcmCmd(icp);
             }
