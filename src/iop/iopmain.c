@@ -159,9 +159,6 @@ static void IopInitDevice(void)
     SDL_AudioSpec spec;
     SDL_zero(spec);
 
-    // Verbose ayuda a ver por qué falla audio en máquinas de dev
-    SDL_SetLogPriorities(SDL_LOG_PRIORITY_VERBOSE);
-
     if (!SDL_Init(SDL_INIT_AUDIO))
     {
         info_log("Failed to initialize SDL audio subsystem: %s", SDL_GetError());
@@ -172,6 +169,9 @@ static void IopInitDevice(void)
     }
     else
     {
+        const char *driver = SDL_GetCurrentAudioDriver();
+        info_log("Audio Driver: %s", driver ? driver : "(null)");
+        
         spec.channels = 2;
         spec.format   = SDL_AUDIO_S16;
         spec.freq     = 48000;
