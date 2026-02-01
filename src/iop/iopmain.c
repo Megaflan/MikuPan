@@ -19,8 +19,8 @@ static int request_shutdown = 0;
 
 SDL_AudioDeviceID audio_dev;
 
-static void IopInitDevice(void);
-static int IopInitMain(void);
+static void IopInitDevice();
+static int IopInitMain();
 static SDLCALL int IopMain(void *data);
 
 static int IsRealAudioDriver(const char *drv)
@@ -28,13 +28,11 @@ static int IsRealAudioDriver(const char *drv)
     if (!drv) return 0;
 
 #if defined(_WIN32)
-    // Windows backends habituales
     return (SDL_strcasecmp(drv, "wasapi") == 0 ||
             SDL_strcasecmp(drv, "directsound") == 0 ||
             SDL_strcasecmp(drv, "winmm") == 0);
 
 #elif defined(__linux__)
-    // Linux backends habituales
     return (SDL_strcasecmp(drv, "pipewire") == 0 ||
             SDL_strcasecmp(drv, "pulseaudio") == 0 ||
             SDL_strcasecmp(drv, "alsa") == 0 ||
@@ -42,22 +40,19 @@ static int IsRealAudioDriver(const char *drv)
             SDL_strcasecmp(drv, "sndio") == 0);
 
 #elif defined(__APPLE__)
-    // macOS backend habitual
     return (SDL_strcasecmp(drv, "coreaudio") == 0);
 
 #else
-    // Otros: si no es dummy/disk, lo consideramos potencialmente real
     return (SDL_strcasecmp(drv, "dummy") != 0 &&
             SDL_strcasecmp(drv, "disk")  != 0);
 #endif
 }
 
-static void LogSDLAudioDiagnostics(void)
+static void LogSDLAudioDiagnostics()
 {
     const int n = SDL_GetNumAudioDrivers();
     int has_real_driver = 0;
 
-    // Solo imprimimos los drivers disponibles cuando NO hay ningún backend "real"
     for (int i = 0; i < n; i++) {
         const char *drv = SDL_GetAudioDriver(i);
         if (IsRealAudioDriver(drv)) {
@@ -111,10 +106,10 @@ void *IopDrvFunc(unsigned int command, void *data, int size)
         IopInitDevice();
 
         iop_mv.vol = 0x3FFF;
-        // sceSdSetParam(SD_P_MVOLL | SD_CORE_0, iop_mv.vol);
-        // sceSdSetParam(SD_P_MVOLR | SD_CORE_0, iop_mv.vol);
-        // sceSdSetParam(SD_P_MVOLL | SD_CORE_1, iop_mv.vol);
-        // sceSdSetParam(SD_P_MVOLR | SD_CORE_1, iop_mv.vol);
+        //sceSdSetParam(SD_P_MVOLL | SD_CORE_0, iop_mv.vol);
+        //sceSdSetParam(SD_P_MVOLR | SD_CORE_0, iop_mv.vol);
+        //sceSdSetParam(SD_P_MVOLL | SD_CORE_1, iop_mv.vol);
+        //sceSdSetParam(SD_P_MVOLR | SD_CORE_1, iop_mv.vol);
 
         IopInitMain();
     }
@@ -122,14 +117,14 @@ void *IopDrvFunc(unsigned int command, void *data, int size)
     {
         icp = (IOP_COMMAND *)data;
 
-        // se_start_flg = 0;
-        // se_stop_flg = 0;
+        //se_start_flg = 0;
+        //se_stop_flg = 0;
 
         for (i = 0; i < (size / (int)sizeof(*icp)); i++)
         {
             if (icp->cmd_no >= IC_SE_INIT && icp->cmd_no <= IC_SE_QUIT)
             {
-                // ISeCmd(icp);
+                //ISeCmd(icp);
             }
             else if (icp->cmd_no >= IC_CDVD_INIT && icp->cmd_no <= IC_CDVD_BREAK)
             {
@@ -144,17 +139,17 @@ void *IopDrvFunc(unsigned int command, void *data, int size)
             icp++;
         }
 
-        // if (se_start_flg)
-        //     sceSdSetSwitch(SD_S_KON | SD_CORE_1, se_start_flg);
-        // if (se_stop_flg)
-        //     sceSdSetSwitch(SD_S_KOFF | SD_CORE_1, se_stop_flg);
+        //if (se_start_flg)
+        //    sceSdSetSwitch(SD_S_KON | SD_CORE_1, se_start_flg);
+        //if (se_stop_flg)
+        //    sceSdSetSwitch(SD_S_KOFF | SD_CORE_1, se_stop_flg);
     }
 
-    // ICdvdTransSeEnd();
+    //ICdvdTransSeEnd();
     return &iop_stat;
 }
 
-static void IopInitDevice(void)
+static void IopInitDevice()
 {
     SDL_AudioSpec spec;
     SDL_zero(spec);
@@ -173,8 +168,8 @@ static void IopInitDevice(void)
         info_log("Audio Driver: %s", driver ? driver : "(null)");
         
         spec.channels = 2;
-        spec.format   = SDL_AUDIO_S16;
-        spec.freq     = 48000;
+        spec.format = SDL_AUDIO_S16;
+        spec.freq = 48000;
 
         audio_dev = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &spec);
 
@@ -190,13 +185,13 @@ static void IopInitDevice(void)
         }
     }
 
-    // sceSdInit(0);
+    //sceSdInit(0);
     ICdvdInit(0);
-    // ISeInit(0);
+    //ISeInit(0);
     IAdpcmInit(0);
 }
 
-static int IopInitMain(void)
+static int IopInitMain()
 {
     iop_sys_ctrl.thread = SDL_CreateThread(IopMain, "IOP", NULL);
     return 0;
@@ -204,14 +199,12 @@ static int IopInitMain(void)
 
 static SDLCALL int IopMain(void *data)
 {
-    (void)data;
-
     while (!request_shutdown)
     {
         // The thread was originally woken up by an IOP timer handler
         SDL_DelayNS(4167000);
 
-        // ISeMain();
+        //ISeMain();
         ICdvdMain();
         IAdpcmMain2();
     }
@@ -219,7 +212,7 @@ static SDLCALL int IopMain(void *data)
     return 0;
 }
 
-void IopShutDown(void)
+void IopShutDown()
 {
     request_shutdown = 1;
     SDL_WaitThread(iop_sys_ctrl.thread, NULL);
