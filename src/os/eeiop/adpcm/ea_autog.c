@@ -9,6 +9,7 @@
 #include "os/eeiop/se_cmd.h"
 #include "os/eeiop/adpcm/ea_cmd.h"
 #include "os/eeiop/adpcm/ea_ctrl.h"
+#include "iop/adpcm/iopadpcm.h"
 
 static void EadpcmUpdateAutog(ADPCM_TUNE_PARAM *atpp);
 static void EAdpcmAutogParaSet(ADPCM_TUNE_PARAM *atpp);
@@ -95,7 +96,7 @@ void EAdpcmAutogMain()
         adpcm_map.autog.count = 0;
     break;
     case AMAG_MODE_REQ_WAIT_STOP:
-        if (EAGetRetStat() == 1 || EAGetRetStat() == 2)
+        if (EAGetRetStat() == ADPCM_STAT_FULL_STOP || EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP)
         {
             EadpcmUpdateAutog(&adpcm_map.autog.para);
             adpcm_map.mpara = adpcm_map.autog.para;
@@ -123,7 +124,7 @@ void EAdpcmAutogMain()
         }
     break;
     case AMAG_MODE_REQ_PLAY:
-        if (EAGetRetStat() == 2)
+        if (EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP)
         {
             EAdpcmCmdPos(0, adpcm_map.mpara.file_no, 0, 0x280, 0xfff);
             adpcm_map.autog.use = 0;
@@ -145,7 +146,7 @@ void EAdpcmAutogMain()
         adpcm_map.mvol = 0xfff;
     break;
     case AMAG_MODE_END:
-        if (EAGetRetStat() == 1 || EAGetRetStat() == 2)
+        if (EAGetRetStat() == ADPCM_STAT_FULL_STOP || EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP)
         {
             adpcm_map.autog.mode = AMAG_MODE_PRE_FADE_OUT;
             adpcm_map.autog.use = 0;

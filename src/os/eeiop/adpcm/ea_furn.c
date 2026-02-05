@@ -6,6 +6,7 @@
 #include "os/eeiop/adpcm/ea_dat.h"
 #include "os/eeiop/adpcm/ea_ctrl.h"
 #include "os/eeiop/adpcm/ea_cmd.h"
+#include "iop/adpcm/iopadpcm.h"
 
 #include "graphics/graph3d/sglib.h"
 #include "os/eeiop/se_cmd.h"
@@ -44,7 +45,7 @@ void EAdpcmFurnMain()
         adpcm_map.furn.mode = AMFR_MODE_REQ_WAIT_STOP;
     break;
     case AMFR_MODE_REQ_WAIT_STOP:
-        if (EAGetRetStat() == 1 || EAGetRetStat() == 2)
+        if (EAGetRetStat() == ADPCM_STAT_FULL_STOP || EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP)
         {
             adpcm_map.mpara = adpcm_map.furn.para;
             EAdpcmFurnParaSet(&adpcm_map.mpara);
@@ -63,7 +64,7 @@ void EAdpcmFurnMain()
         adpcm_map.furn.mode = AMFR_MODE_END;
     break;
     case AMFR_MODE_END:
-        if (EAGetRetStat() == 1 || EAGetRetStat() == 2)
+        if (EAGetRetStat() == ADPCM_STAT_FULL_STOP || EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP)
         {
             adpcm_map.furn.mode = AMFR_MODE_PRE_FADE_OUT;
             adpcm_map.furn.use = 0;
