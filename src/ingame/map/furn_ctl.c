@@ -157,7 +157,7 @@ int FurnSetFurnWork(FURN_DATA_POP *fdpp, int fw_no, u_char msn_no, u_char use, u
 
         FurnEfctSet(fwp);
         mimChodoSetWork(fwp->id,fwp->room_id);
-        //acsRopeSetWork(fwp->id);
+        acsRopeSetWork(fwp->id);
         acsChodoSetWork(fwp->id);
 
         fact_type = furn_dat[fwp->id].fact_no;

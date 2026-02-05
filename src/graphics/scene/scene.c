@@ -1197,7 +1197,7 @@ void SceneDrawManMdl(SCENE_CTRL *sc, u_int mdl_id)
     sceVu0RotMatrixX(cp->matrix, cp->matrix, PI);
     CalcCoordinate(cp, hs->blocks - 1);
     FodSetMyLight(&fc->fod_light, sam->prefix, sc->cam->zd);
-    //acsClothCtrl(&sam->mdl_anm, sam->mdl_anm.mpk_p, sam->mdl_no, 0);
+    acsClothCtrl(&sam->mdl_anm, sam->mdl_anm.mpk_p, sam->mdl_no, 0);
 
     if (sam->ene_efct != NULL)
     {

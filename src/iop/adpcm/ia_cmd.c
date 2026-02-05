@@ -112,7 +112,9 @@ void IAdpcmCmdStop()
         case ADPCM_STAT_LTRANS:
         case ADPCM_STAT_RTRANS:
         case ADPCM_STAT_PAUSE:
-            // Nasties here precious. This codesies causes the stop flags to get ignored, yes it does ... precious
+            // The below doesn't seem to get unset even with most of the original code in place.
+            // Was this set elsewhere on the IOP? Anyway's lets keep it commented out for now.
+            // Tends to cause issues with the stop command not being recieved otherwise.
             /*if (iop_adpcm[0].fade_mode != ADPCM_FADE_OUT_STOP)
             {
                 if (now_cmd.fade_flm)
