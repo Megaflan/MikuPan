@@ -458,9 +458,9 @@ void RebuildTRI2Files(u_int *prim)
         tsize = tsize / 32;
     }
 
-    if (next_pointer - (u_int)start_vif_code < tsize * 0x2000 + 0x180)
+    if (next_pointer - (int64_t)start_vif_code < tsize * 0x2000 + 0x180)
     {
-        printf("Not Enough Memory %d %d\n", next_pointer - (u_int)start_vif_code, tsize * 0x2000 + 0x180);
+        info_log("Not Enough Memory %lld %d\n", next_pointer - (int64_t)start_vif_code, tsize * 0x2000 + 0x180);
         return;
     }
 
@@ -568,12 +568,12 @@ void LoadTextureAnimation(u_int *prim)
         tnum = pta->AnmCnt;
     }
 
-    prim = (u_int *)((int)&prim[4] + (pta->pads / 4) * 4);
+    prim = (u_int *)((int64_t)&prim[4] + (pta->pads / 4) * 4);
 
     for (i = 0; i < tnum; i++)
     {
         tri2size = *(u_short *)&prim[3];
-        prim = (u_int *)((u_int)&prim[4] + tri2size * 16);
+        prim = (u_int *)((int64_t)&prim[4] + tri2size * 16);
     }
 
     tri2size = *(u_short *)&prim[3];

@@ -269,6 +269,12 @@ void acsInitRopeSub(u_int work_id, u_int furn_id, u_int type)
             sceVu0SubVector(d, current[id0].p, current[id1].p);
             r0 = SgSqrtf(sceVu0InnerProduct(d, d));
             dr = rope->spring[i].ldef;
+
+            if ( r0 == 0.0f )
+            {
+                r0 = 2.0f;
+            }
+
             sceVu0ScaleVector(force, d, ((dr - r0) * 0.5f) / r0);
             sceVu0AddVector(current[id0].p, current[id0].p, force);
             sceVu0SubVector(current[id1].p, current[id1].p, force);
@@ -610,6 +616,12 @@ void acsMoveRope(ROPE_CTRL *rope, SgCOORDUNIT *cp, COLLISION_DAT *collision, sce
         sceVu0SubVector(d, current[id0].p, current[id1].p);
         r0 = SgSqrtf(sceVu0InnerProduct(d, d));
         dr = rope->spring[i].ldef;
+
+        if ( r0 == 0.0f )
+        {
+            r0 = 2.0f;
+        }
+
         sceVu0ScaleVector(force, d, ((dr - r0) * 0.5f) / r0);
         sceVu0AddVector(current[id0].p, current[id0].p, force);
         sceVu0SubVector(current[id1].p, current[id1].p, force);
@@ -724,7 +736,7 @@ u_int* acsInitCloth(CLOTH_CTRL *cloth_top, u_int *mpk_p, u_int *top_addr, u_int 
 
         ph = GetFileInPak(mpk_p, cloth->cdat->sgd_id);
         //vtx = (sceVu0FVECTOR *)ph->pUniqList[2];
-        vtx = &((sceVu0FVECTOR *)MikuPan_GetHostPointer(ph->pUniqList))[2];
+        vtx = &((sceVu0FVECTOR *)MikuPan_GetHostPointer(ph->pUniqList))[4];
 
         if (dat->type == 0)
         {
@@ -976,7 +988,7 @@ void acsClothCtrl(ANI_CTRL* ani_ctrl, u_int* mpk_p, u_int mdl_no, u_char scene_f
 
         ph = GetFileInPak(mpk_p, cdat->sgd_id);
         //vtx = (sceVu0FVECTOR*)ph->pUniqList[2];
-        vtx = &((sceVu0FVECTOR *)MikuPan_GetHostPointer(ph->pUniqList))[2];
+        vtx = &((sceVu0FVECTOR *)MikuPan_GetHostPointer(ph->pUniqList))[4];
 
         if (scene_flg != 0)
         {

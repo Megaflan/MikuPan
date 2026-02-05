@@ -35,11 +35,6 @@ enum GHOST_SE_ID {
     SE_GHOST_ID_MAX = 27
 };
 
-enum CDVD_SE_TRANS_STATUS {
-    CDVD_SE_NOCMD = 0,
-    CDVD_SE_WAIT = 1,
-    CDVD_SE_FINISHED = 2
-};
 
 typedef struct { // 0x10
     /* 0x0 */ unsigned int adrs;

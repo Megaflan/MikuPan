@@ -1410,10 +1410,13 @@ void Kagu027Control(void *sgd_top)
 
     hs = (HeaderSection *)sgd_top;
 
-    matp = hs->matp;
-    phead = hs->phead;
+    //matp = hs->matp;
+    //phead = hs->phead;
 
-    while ((u_int)matp < (u_int)phead)
+    matp = GetMatP(hs);
+    phead = GetPHead(hs);
+
+    while ((int64_t)matp < (int64_t)phead)
     {
         if (strncmp("sha_", matp->name, 4) == 0)
         {

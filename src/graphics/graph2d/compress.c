@@ -444,7 +444,7 @@ float CompressFile(u_short *input, char *output, u_int max_tmp, char quality)
     u_int size;
     u_short *top;
     u_short *addr;
-    u_int tmp;
+    int64_t tmp;
 
     ((int*)output)[2] = 0;
     ((int*)output)[1] = 1;
@@ -468,7 +468,7 @@ float CompressFile(u_short *input, char *output, u_int max_tmp, char quality)
         bit_file.mask = 0x80;
         bit_file.rack = 0;
         
-        ((int *)output)[i + 4] = bit_file.file - output;
+        ((int *)output)[i + 4] = (int)((int64_t)bit_file.file - (int64_t)output);
 
         addr = top;
         
@@ -491,17 +491,17 @@ float CompressFile(u_short *input, char *output, u_int max_tmp, char quality)
         OutputCode(&bit_file, 1);
 
         bit_file.file++;
-        tmp = (u_int)bit_file.file;
+        tmp = (int64_t)bit_file.file;
         
-        if (((u_int)tmp & 0xf) != 0) 
+        if (((int64_t)tmp & 0xf) != 0)
         {
-            tmp = (u_int)bit_file.file + (16 - ((u_int)tmp & 0xf));
+            tmp = (int64_t)bit_file.file + (16 - ((int64_t)tmp & 0xf));
         }
 
         bit_file.file = (char *)tmp;
     }
 
-    size = tmp - (int)output;
+    size = (int)((int64_t)tmp - (int64_t)output);
     *(u_int *)output = size;
     
     return (float)size / max_tmp;
@@ -576,7 +576,7 @@ void ExpandFile(char *input, u_short *output2)
         {
             output = top;
             
-            bit_file.file = (char *)((int)in_header[i + 4] + (int)input);
+            bit_file.file = (char *)((int)in_header[i + 4] + (int64_t)input);
             bit_file.mask = 0x80;
             bit_file.rack = 0;
             

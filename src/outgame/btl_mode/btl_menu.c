@@ -780,7 +780,7 @@ void StageGhostLoadReq()
 
         LoadReq(edp[ene_no].mdl_no + M000_MIKU_MDL, load_mdl_addr[i]);
         LoadEneDmgTex(edp[ene_no].mdl_no,
-                      (u_int *) (load_mot_addr[i] + ENE_DMG_TEX_BASE_ADDRESS));
+                      (u_int *) MikuPan_GetHostPointer(load_mot_addr[i] + ENE_DMG_TEX_BASE_ADDRESS));
 
         LoadReq(edp[ene_no].anm_no + M000_MIKU_ANM, load_mot_addr[i]);
 

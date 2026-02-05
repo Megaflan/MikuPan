@@ -201,9 +201,9 @@ static void GetSGDLightDataPointer(int room_no, u_int **amb_p, u_int **infinite_
         *infinite_p = NULL;
         *amb_p = NULL;
         
-        prim = (u_int *)room_addr_tbl[room_no].lit_data[6];
+        prim = (u_int *)MikuPan_GetHostPointer(room_addr_tbl[room_no].lit_data[6]);
         
-        while (*prim != NULL)
+        while (*prim != 0)
         {
             if (prim[1] == 11)
             {
@@ -224,7 +224,8 @@ static void GetSGDLightDataPointer(int room_no, u_int **amb_p, u_int **infinite_
                 }
             }
             
-            prim = (u_int*)*prim;
+            //prim = (u_int*)*prim;
+            prim = GetNextProcUnitHeaderPtr(prim);
         }
     }
 }
