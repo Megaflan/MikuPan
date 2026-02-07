@@ -48,6 +48,8 @@ int sceGsSetDefStoreImage(sceGsStoreImage* sp, short sbp, short sbw, short spsm,
 
 int sceGsExecStoreImage(sceGsStoreImage* sp, u_long128* dstaddr)
 {
+
+    GsUpload((sceGsLoadImage*)&sp->giftag, (unsigned char *)dstaddr);
     return 1;
 }
 

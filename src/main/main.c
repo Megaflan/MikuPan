@@ -20,6 +20,7 @@
 #define SDL_MAIN_USE_CALLBACKS 1  /* use the callbacks instead of main() */
 #include "mikupan/ui/mikupan_ui_c.h"
 #include "iop/iopmain.h"
+#include "iop/adpcm/iopadpcm.h"s
 #include "mikupan/gs/texture_manager_c.h"
 #include "os/eeiop/se_cmd.h"
 
@@ -165,7 +166,7 @@ void CallSoftReset()
     {
         EiMain();
 
-        //if (EAGetRetStat() == 1 || EAGetRetStat() == 2)
+        if (EAGetRetStat() == ADPCM_STAT_FULL_STOP || EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP)
         {
             EAdpcmCmdInit(1);
             break;

@@ -513,7 +513,7 @@ void SetString(float x, float y, char *fmt, ...)
                     flag = 1;
                 break;
                 case 'c':
-                    sprintf(cwo, "%c", va_arg(ap, char));
+                    sprintf(cwo, "%c", va_arg(ap, int));
                     len = strlen(cwo);
                     if (len < n)
                     {
@@ -630,7 +630,7 @@ void SetString2(int pri, float x, float y, int type, u_char r, u_char g, u_char 
                     flag = 1;
                 break;
                 case 'c':
-                    sprintf(cwo, "%c", va_arg(ap, char));
+                    sprintf(cwo, "%c", va_arg(ap, int));
                     len = strlen(cwo);
                     if (len < n)
                     {

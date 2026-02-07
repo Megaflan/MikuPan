@@ -7,6 +7,7 @@
 #include "os/eeiop/adpcm/ea_cmd.h"
 #include "os/eeiop/adpcm/ea_dat.h"
 #include "os/eeiop/adpcm/ea_ctrl.h"
+#include "iop/adpcm/iopadpcm.h"
 #include "graphics/graph3d/sglib.h"
 #include "os/eeiop/se_cmd.h"
 #include "common/ul_math.h"
@@ -93,7 +94,7 @@ void EAdpcmGhostMain()
         break;
         case AMG_MODE_REQ_WAIT_STOP:
             // Line 126
-            if (EAGetRetStat() == 1 || EAGetRetStat() == 2) 
+            if (EAGetRetStat() == ADPCM_STAT_FULL_STOP || EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP) 
             {                
                 // Line 129
                 adpcm_map.mpara = adpcm_map.ghost.para;   
@@ -128,7 +129,7 @@ void EAdpcmGhostMain()
         break;
         case AMG_MODE_END:
             // Line 160
-            if (EAGetRetStat() == 1 || EAGetRetStat() == 2) 
+            if (EAGetRetStat() == ADPCM_STAT_FULL_STOP || EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP) 
             {
                 // Line 162
                 adpcm_map.ghost.mode = AMG_MODE_PRE_FADE_OUT;

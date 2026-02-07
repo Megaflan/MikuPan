@@ -765,7 +765,7 @@ int MoviePlay(int scene_no)
     AdpcmReturnFromMovie();
     EiMain();
 
-    *(int *)REG_DMAC_CTRL &= ~D_CTRL_RELE_M; // yeah ...
+    //*(int *)REG_DMAC_CTRL &= ~D_CTRL_RELE_M; // yeah ...
 
     MovieInitWrk();
 

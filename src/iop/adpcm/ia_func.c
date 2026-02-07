@@ -2,15 +2,15 @@
 
 #include "iop/se/iopse.h"
 
-//#include "libsd.h"
+#include <stdlib.h>
+
 #include "memory.h"
 #include "os/system.h"
 #include "ee/eekernel.h"
 #include "iop/iopmain.h"
 #include "iop/se/iopse.h"
-
-// TO DO: Refactor with SDL_MIXER, or something similarish
-
+#include "SDL3/SDL_thread.h"
+#include "mikupan/mikupan_memory.h"
 
 void GetPosCalc(ADPCM_POS_CALC* calcp);
 
@@ -19,50 +19,36 @@ static int IAdpcmMakeThread(u_char channel);
 void IaInitDev(u_char channel)
 {
     memset(&iop_adpcm[channel], 0, sizeof(IOP_ADPCM));
+   AdpcmIopBuf[channel] = (void*)malloc(266240);
+   AdpcmSpuBuf[0] = (s16*)MikuPan_GetHostPointer(0x1F3740);
+   AdpcmSpuBuf[1] = (s16*)MikuPan_GetHostPointer(0x1F6780);
 
-    while (IAdpcmMakeThread(channel))
-        ;
-
-   // AdpcmIopBuf[channel] = (u_char*)AllocSysMemory(0, 266240, 0);
-   /* if (!AdpcmIopBuf[channel]) {
-        while (1)
-            ;
-    }
-
-    if (channel == 0) {
-        AdpcmSpuBuf[0] = (u_char*)0x1F3740;
-        iop_adpcm[0].core = 0;
-        iop_adpcm[0].vl = 0;
-        iop_adpcm[0].vr = 2;
-    } else {
-        AdpcmSpuBuf[1] = (u_char*)0x1F6780;
-        iop_adpcm[1].core = 1;
-        iop_adpcm[1].vl = 44;
-        iop_adpcm[1].vr = 46;
-    } */
 }
 
 static int IAdpcmMakeThread(u_char channel)
 {
-    ThreadParam param;
+    SDL_AudioSpec spec;        
+    spec.channels = 2;
+    spec.format = SDL_AUDIO_S16;
+    spec.freq = 48000;
+    
+    info_log("Adpcm Thread unused \n");
 
-    param.attr = 0x2000000;
-
-    if (channel == 0)
-        param.entry = IAdpcmReadCh0;
-    else
-        param.entry = IAdpcmReadCh1;
-
-    param.initPriority = 31;
-    param.stackSize = 2048;
-    param.option = 0;
-    iop_adpcm[channel].thread_id = CreateThread(&param);
-    if (iop_adpcm[channel].thread_id > 0) {
-        StartThread(iop_adpcm[channel].thread_id, 0);
+    /*if (channel == 0)
+    {
+        iop_adpcm[0].thread = SDL_CreateThread(IAdpcmReadCh0, "Core 0", NULL);
+        iop_adpcm[0].stream = SDL_CreateAudioStream(&spec, NULL);
+        SDL_BindAudioStream(audio_dev, iop_adpcm[0].stream);
         return 0;
-    } else {
-        return 1;
     }
+    else
+    {
+        iop_adpcm[1].thread = SDL_CreateThread(IAdpcmReadCh0, "Core 1", NULL);
+        iop_adpcm[1].stream = SDL_CreateAudioStream(&spec, NULL);
+        SDL_BindAudioStream(audio_dev, iop_adpcm[1].stream);
+        return 1;
+    }*/
+    return 0;
 }
 
 void IaInitEffect()
@@ -72,16 +58,22 @@ void IaInitEffect()
 
 void IaInitVolume()
 {
-    /*sceSdSetParam(SD_P_MVOLL | SD_CORE_0, iop_mv.vol);
-    sceSdSetParam(SD_P_MVOLR | SD_CORE_0, iop_mv.vol);
-    sceSdSetSwitch(SD_S_VMIXL | SD_CORE_0, 0xFFFFFFu);
-    sceSdSetSwitch(SD_S_VMIXR | SD_CORE_0, 0xFFFFFFu);
-    sceSdSetSwitch(SD_S_VMIXEL | SD_CORE_0, 0);
-    sceSdSetSwitch(SD_S_VMIXER | SD_CORE_0, 0);
-    sceSdSetParam(SD_VP_VOLL | SD_VOICE(0) | SD_CORE_0, 0);
-    sceSdSetParam(SD_VP_VOLR | SD_VOICE(0) | SD_CORE_0, 0);
-    sceSdSetParam(SD_VP_VOLL | SD_VOICE(1) | SD_CORE_0, 0);
-    sceSdSetParam(SD_VP_VOLR | SD_VOICE(1) | SD_CORE_0, 0);*/
+    float ll = iop_adpcm[0].vol_ll / 16383.0f;
+    float lr = iop_adpcm[0].vol_lr / 16383.0f;
+    float rl = iop_adpcm[0].vol_rl / 16383.0f;
+    float rr = iop_adpcm[0].vol_rr / 16383.0f;
+
+    float left  = ll + rl;
+    float right = lr + rr;
+
+    float gain = (left + right) * 0.5f;
+
+    float pan = 0.0f;
+    if (left + right > 0.0001f)
+        pan = (right - left) / (left + right);
+
+    SDL_SetAudioStreamGain(iop_adpcm[0].stream, gain);
+    //SDL_SetAudioStreamPan(iop_adpcm[0].stream, pan);
 }
 
 void IaDbgMemoryCheck()
@@ -174,7 +166,7 @@ void IaSetWrkFadeMode(u_char channel, u_char mode, u_short target_vol, int fade_
 void IaSetWrkFadeInit(u_char channel)
 {
     iop_adpcm[channel].count = 0;
-    iop_adpcm[channel].fade_mode = 0;
+    iop_adpcm[channel].fade_mode = ADPCM_FADE_NO;
     iop_adpcm[channel].fade_flm = 0;
     iop_adpcm[channel].target_vol = iop_adpcm[channel].vol;
 }
@@ -223,6 +215,6 @@ static void IaSetStopBlock(u_char channel)
 
 void IaSetMasterVol(u_short mvol)
 {
-    //sceSdSetParam(SD_P_MVOLL, mvol & 0x3FFF);
-    //sceSdSetParam(SD_P_MVOLR, mvol & 0x3FFF);
+    float gain = ((float)(mvol & 0x3FFF) / 0x3FFF) * 0.5f;
+    SDL_SetAudioStreamGain(iop_adpcm[0].stream, gain);
 }

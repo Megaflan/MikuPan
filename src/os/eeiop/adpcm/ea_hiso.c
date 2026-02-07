@@ -6,6 +6,7 @@
 #include "os/eeiop/adpcm/ea_cmd.h"
 #include "os/eeiop/adpcm/ea_dat.h"
 #include "os/eeiop/adpcm/ea_ctrl.h"
+#include "iop/adpcm/iopadpcm.h"
 
 void AdpcmPlayHiso(int file_no, int fade_flm)
 {
@@ -140,7 +141,7 @@ void EAdpcmHisoMain()
         adpcm_map.hiso.count = 0;
     break;
     case AMHS_MODE_REQ_WAIT_STOP:
-        if (EAGetRetStat() == 1 || EAGetRetStat() == 2)
+        if (EAGetRetStat() == ADPCM_STAT_FULL_STOP || EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP)
         {
             adpcm_map.m_flg = 2;
             EAdpcmCmdPlay(0, 0, adpcm_map.hiso.para.file_no, 0, adpcm_map.hiso.para.vol, adpcm_map.hiso.para.pan, adpcm_map.hiso.para.pitch, 0);
@@ -164,7 +165,7 @@ void EAdpcmHisoMain()
         }
     break;
     case AMHS_MODE_REQ_PLAY:
-        if (EAGetRetStat() == 2)
+        if (EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP)
         {
             adpcm_map.hiso.use = 0;
         }
@@ -177,7 +178,7 @@ void EAdpcmHisoMain()
         adpcm_map.mvol = 0xfff;
     break;
     case AMHS_MODE_END:
-        if (EAGetRetStat() == 1 || EAGetRetStat() == 2)
+        if (EAGetRetStat() == ADPCM_STAT_FULL_STOP || EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP)
         {
             adpcm_map.hiso.mode = AMHS_MODE_PRE_FADE_OUT;
             adpcm_map.hiso.use = 0;

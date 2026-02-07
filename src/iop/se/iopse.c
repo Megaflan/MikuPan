@@ -1,12 +1,13 @@
 #include "iopse.h"
 
-#include "adpcm/iopadpcm.h"
-#include "iopmain.h"
+#include "iop/adpcm/iopadpcm.h"
+#include "iop/iopmain.h"
 
-#include "libsd.h"
+#include "SDL3/SDL_audio.h"
 #include "os/eeiop/eeiop.h"
-#include "sdmacro.h"
+//#include "sdmacro.h"
 #include "stdio.h"
+#include "enums.h"
 
 u_int snd_buf_top[] = {
     0x5400,
@@ -74,7 +75,7 @@ static void SeSetMix(int core_id, int v_no, char mix_mode);
 
 void ISeInit(int mode)
 {
-    sceSdEffectAttr r_attr;
+    //sceSdEffectAttr r_attr;
     SE_WRK_SET* swsp;
     int i;
 
@@ -86,10 +87,17 @@ void ISeInit(int mode)
         swsp->prm_no = -1;
         swsp->v_no = i;
         swsp->buf_no = 0;
-        SeSetSeWrk(swsp);
+        //SeSetSeWrk(swsp);
+
+        SDL_AudioSpec spec;        
+        spec.channels = 2;
+        spec.format = SDL_AUDIO_S16;
+        spec.freq = 48000;
+
+        swsp->stream = SDL_CreateAudioStream(&spec, NULL);
     }
 
-    sceSdSetParam(SD_P_MVOLL | SD_CORE_1, iop_mv.vol);
+    /*sceSdSetParam(SD_P_MVOLL | SD_CORE_1, iop_mv.vol);
     sceSdSetParam(SD_P_MVOLR | SD_CORE_1, iop_mv.vol);
     sceSdSetAddr(SD_A_EEA | SD_CORE_1, 0x1FFFFFu);
     sceSdSetCoreAttr(3u, 1u);
@@ -107,7 +115,7 @@ void ISeInit(int mode)
     sceSdSetSwitch(SD_S_VMIXEL | SD_CORE_1, 0xFFFFFFu);
     sceSdSetSwitch(SD_S_VMIXER | SD_CORE_1, 0xFFFFFFu);
     sceSdSetParam(SD_P_EVOLL | SD_CORE_1, 0x2FFFu);
-    sceSdSetParam(SD_P_EVOLR | SD_CORE_1, 0x2FFFu);
+    sceSdSetParam(SD_P_EVOLR | SD_CORE_1, 0x2FFFu);*/
 
     if (!mode) {
         se_start_point.btlhit = -1;
@@ -152,7 +160,7 @@ static void ISeEndCheck()
 
     svsp = GetSeVstat(0);
     for (i = 0; i < 2; ++i) {
-        core_flg[i] = sceSdGetSwitch(i | SD_S_ENDX);
+        //core_flg[i] = sceSdGetSwitch(i | SD_S_ENDX);
         for (j = 0; j < 24; ++j) {
             if (24 * i + j >= 24 && 24 * i + j < 48) {
                 if (((core_flg[i] >> j) & 1) != 0 && svsp->status == 1)
@@ -161,7 +169,7 @@ static void ISeEndCheck()
             }
         }
 
-        sceSdSetSwitch(i | SD_S_ENDX, 0);
+        //sceSdSetSwitch(i | SD_S_ENDX, 0);
     }
 }
 
@@ -250,7 +258,7 @@ static int ISePlay(IOP_COMMAND* icp)
     vn = swsp->v_no + 24;
 
     if (vn >= 0 && vn < 24) {
-        sceSdSetSwitch(SD_S_KON | SD_CORE_0, 1 << vn);
+        //sceSdSetSwitch(SD_S_KON | SD_CORE_0, 1 << vn);
         if ((swsp->param->attribute & 0x100) != 0)
             GetSeVstat(swsp->v_no)->status = 2;
         else
@@ -289,7 +297,7 @@ static void ISeStop(IOP_COMMAND* icp)
         svp->status = 0;
         swsp->prm_no = -1;
         swsp->param = 0;
-        sceSdSetSwitch(SD_S_KOFF | SD_CORE_0, 1 << vn);
+        //sceSdSetSwitch(SD_S_KOFF | SD_CORE_0, 1 << vn);
         GetSeVstat(swsp->v_no)->status = 0;
 
         return;
@@ -318,7 +326,7 @@ static void ISeVol(IOP_COMMAND* icp)
     vn = swsp->v_no + 24;
     candv = CidAndVnum(vn, 1);
     swsp->pitch = swsp->param->pitch * icp->data2 / 4096;
-    sceSdSetParam(candv | 0x200, swsp->pitch);
+    //sceSdSetParam(candv | 0x200, swsp->pitch);
 }
 
 static void ISeEfctVol(IOP_COMMAND* icp)
@@ -326,8 +334,8 @@ static void ISeEfctVol(IOP_COMMAND* icp)
     u_short evol;
 
     evol = icp->data1 & 0xffff;
-    sceSdSetParam(SD_P_EVOLL | SD_CORE_1, evol);
-    sceSdSetParam(SD_P_EVOLR | SD_CORE_1, evol);
+    //sceSdSetParam(SD_P_EVOLL | SD_CORE_1, evol);
+    //sceSdSetParam(SD_P_EVOLR | SD_CORE_1, evol);
 }
 
 static void ISePitch(IOP_COMMAND* icp)
@@ -344,7 +352,7 @@ static void ISePitch(IOP_COMMAND* icp)
     vn = swsp->v_no + 24;
     candv = CidAndVnum(vn, 1);
     swsp->pitch = swsp->param->pitch * icp->data2 / 4096;
-    sceSdSetParam(candv | SD_VP_PITCH, swsp->pitch);
+    //sceSdSetParam(candv | SD_VP_PITCH, swsp->pitch);
 }
 
 static void ISeAllStop(IOP_COMMAND* icp)
@@ -387,9 +395,9 @@ static void ISePos(IOP_COMMAND* icp)
     swsp = GetSeWrkSetP(icp->data1);
     SeChangeSetDataPos(swsp, icp);
     candv = CidAndVnum(swsp->v_no + 24, 1);
-    sceSdSetParam(candv | SD_VP_VOLL, swsp->vol_l);
-    sceSdSetParam(candv | SD_VP_VOLR, swsp->vol_r);
-    sceSdSetParam(candv | SD_VP_PITCH, swsp->pitch);
+    //sceSdSetParam(candv | SD_VP_VOLL, swsp->vol_l);
+    //sceSdSetParam(candv | SD_VP_VOLR, swsp->vol_r);
+    //sceSdSetParam(candv | SD_VP_PITCH, swsp->pitch);
 }
 
 static void SeChangeSetDataPlay(SE_WRK_SET* swsp, IOP_COMMAND* icp)
@@ -644,12 +652,12 @@ static void SeSetSeWrk(SE_WRK_SET* swsp)
 
     num = swsp->v_no;
     candv = CidAndVnum(num + 24, 1);
-    sceSdSetAddr(candv | SD_VA_SSA, GetSeAdrs(swsp->prm_no) + snd_buf_top[swsp->buf_no]);
+    /*sceSdSetAddr(candv | SD_VA_SSA, GetSeAdrs(swsp->prm_no) + snd_buf_top[swsp->buf_no]);
     sceSdSetParam(candv | SD_VP_ADSR1, swsp->adsr1);
     sceSdSetParam(candv | SD_VP_ADSR2, swsp->adsr2);
     sceSdSetParam(candv | SD_VP_VOLL, swsp->vol_l);
     sceSdSetParam(candv | SD_VP_VOLR, swsp->vol_r);
-    sceSdSetParam(candv | SD_VP_PITCH, swsp->pitch);
+    sceSdSetParam(candv | SD_VP_PITCH, swsp->pitch);*/
     SeSetMix(1, swsp->v_no, swsp->param->efct);
 }
 
@@ -657,7 +665,7 @@ static void SeSetMix(int core_id, int v_no, char mix_mode)
 {
     u_int reg;
 
-    if ((mix_mode & 1) != 0) {
+   /*if ((mix_mode & 1) != 0) {
         reg = sceSdGetSwitch(core_id | SD_S_VMIXL);
         reg |= 1 << v_no;
         sceSdSetSwitch(core_id | SD_S_VMIXL, reg);
@@ -691,7 +699,7 @@ static void SeSetMix(int core_id, int v_no, char mix_mode)
         reg = sceSdGetSwitch(core_id | SD_S_VMIXER);
         reg &= ~(1 << v_no);
         sceSdSetSwitch(core_id | SD_S_VMIXER, reg);
-    }
+    }*/
 }
 
 static int CidAndVnum(int voice_num, int voice_sift)
@@ -711,8 +719,12 @@ u_int SeGetSndBufTop(int pos)
 }
 
 void SeSetMasterVol(u_short mvol)
-{
-    sceSdSetParam(SD_P_MVOLL | SD_CORE_1, mvol & 0x3FFF);
-    sceSdSetParam(SD_P_MVOLR | SD_CORE_1, mvol & 0x3FFF);
+{    
+    SE_WRK_SET* swsp;
+    swsp = GetSeWrkSetP(0);
+
+    float gain = ((float)(mvol & 0x3FFF) / 0x3FFF) * 0.5f;
+    SDL_SetAudioStreamGain(swsp->stream, gain);
+
 }
 

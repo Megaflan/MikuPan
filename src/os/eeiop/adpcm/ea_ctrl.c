@@ -20,6 +20,7 @@
 #include "os/eeiop/adpcm/ea_gameover.h"
 #include "os/eeiop/adpcm/ea_btlmode.h"
 #include "os/eeiop/eeiop.h"
+#include "iop/adpcm/iopadpcm.h"
 
 ADPCM_MAP adpcm_map = {0};
 static u_char fout_flg;
@@ -57,7 +58,6 @@ void AdpcmMapCtrlInit()
 void AdpcmMapUse()
 {
     adpcm_map.map.use = 1;
-    AdpcmMapCtrl(); // Hack
 }
 
 void AdpcmMapNoUse(void)
@@ -238,8 +238,7 @@ void EAdpcmFadeOut(u_short fout_flm)
 
 u_char IsEndAdpcmFadeOut()
 {
-    return 1;
-    if (EAGetRetStat() == 1 || EAGetRetStat() == 2)
+    if (EAGetRetStat() == ADPCM_STAT_FULL_STOP || EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP)
     {
         return 1;
     }

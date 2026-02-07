@@ -6,6 +6,7 @@
 #include "os/eeiop/adpcm/ea_cmd.h"
 #include "os/eeiop/adpcm/ea_dat.h"
 #include "os/eeiop/adpcm/ea_ctrl.h"
+#include "iop/adpcm/iopadpcm.h"
 
 void EAdpcmShinkanMain()
 {
@@ -38,7 +39,7 @@ void EAdpcmShinkanMain()
         adpcm_map.shinkan.mode = AMSH_MODE_REQ_WAIT_STOP;
     break;
     case AMSH_MODE_REQ_WAIT_STOP:
-        if (EAGetRetStat() != 1 && EAGetRetStat() != 2)
+        if (EAGetRetStat() != ADPCM_STAT_FULL_STOP && EAGetRetStat() != ADPCM_STAT_LOOPEND_STOP)
         {
             return;
         }
@@ -47,21 +48,21 @@ void EAdpcmShinkanMain()
         adpcm_map.shinkan.mode = AMSH_MODE_REQ_PLAY;
     break;
     case AMSH_MODE_REQ_PLAY:
-        if (EAGetRetStat() > 5)
+        if (EAGetRetStat() > ADPCM_STAT_PRELOAD_END)
         {
             adpcm_map.shinkan.mode = AMSH_MODE_REQ_PLAYING;
         }
         adpcm_map.bk_para = adpcm_map.shinkan.para;
     break;
     case AMSH_MODE_REQ_PLAYING:
-        if (EAGetRetStat() == 1 || EAGetRetStat() == 2)
+        if (EAGetRetStat() == ADPCM_STAT_FULL_STOP || EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP)
         {
             adpcm_map.shinkan.mode = AMSH_MODE_END;
         }
         adpcm_map.bk_para = adpcm_map.shinkan.para;
     break;
     case AMSH_MODE_REQ_STOP_REQ:
-        if (EAGetRetStat() > 5)
+        if (EAGetRetStat() > ADPCM_STAT_PRELOAD_END)
         {
             EAdpcmCmdStop(0, 0, 30);
             adpcm_map.shinkan.mode = AMSH_MODE_REQ_STOP_WAIT;
@@ -70,7 +71,7 @@ void EAdpcmShinkanMain()
         adpcm_map.bk_para = adpcm_map.shinkan.para;
     break;
     case AMSH_MODE_REQ_STOP_WAIT:
-        if (EAGetRetStat() == 1 || EAGetRetStat() == 2)
+        if (EAGetRetStat() == ADPCM_STAT_FULL_STOP || EAGetRetStat() == ADPCM_STAT_LOOPEND_STOP)
         {
             adpcm_map.shinkan.mode = AMSH_MODE_END;
             adpcm_map.event.use = 0;

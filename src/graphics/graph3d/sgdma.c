@@ -14,6 +14,7 @@
 #include "graphics/graph3d/sglib.h"
 #include "graphics/graph3d/sgsu.h"
 #include "mikupan/gs/gs_server_c.h"
+#include "mikupan/mikupan_logging_c.h"
 #include "mikupan/mikupan_types.h"
 
 #define REG_VIF1_STAT        ((volatile u_int *)(0x10003c00))
@@ -345,7 +346,7 @@ void LoadTRI2Files(u_int *prim)
 
 void RebuildTRI2Files(u_int *prim)
 {
-    u_int next_pointer;
+    int64_t next_pointer;
     int tnum;
     int pads;
     int tri2size;
@@ -365,7 +366,7 @@ void RebuildTRI2Files(u_int *prim)
     sceGsStoreImage spi;
 
     fprim = prim;
-    next_pointer = prim[0];
+    next_pointer = (int64_t)GetNextProcUnitHeaderPtr(prim);
     tnum = prim[2];
     pads = prim[3];
     maxaddr = 0;
@@ -458,9 +459,9 @@ void RebuildTRI2Files(u_int *prim)
         tsize = tsize / 32;
     }
 
-    if (next_pointer - (u_int)start_vif_code < tsize * 0x2000 + 0x180)
+    if (next_pointer - (int64_t)start_vif_code < tsize * 0x2000 + 0x180)
     {
-        printf("Not Enough Memory %d %d\n", next_pointer - (u_int)start_vif_code, tsize * 0x2000 + 0x180);
+        info_log("Not Enough Memory %lld %d\n", next_pointer - (int64_t)start_vif_code, tsize * 0x2000 + 0x180);
         return;
     }
 
@@ -568,12 +569,12 @@ void LoadTextureAnimation(u_int *prim)
         tnum = pta->AnmCnt;
     }
 
-    prim = (u_int *)((int)&prim[4] + (pta->pads / 4) * 4);
+    prim = (u_int *)((int64_t)&prim[4] + (pta->pads / 4) * 4);
 
     for (i = 0; i < tnum; i++)
     {
         tri2size = *(u_short *)&prim[3];
-        prim = (u_int *)((u_int)&prim[4] + tri2size * 16);
+        prim = (u_int *)((int64_t)&prim[4] + tri2size * 16);
     }
 
     tri2size = *(u_short *)&prim[3];

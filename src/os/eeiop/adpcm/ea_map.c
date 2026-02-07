@@ -6,6 +6,7 @@
 #include "os/eeiop/adpcm/ea_dat.h"
 #include "os/eeiop/adpcm/ea_ctrl.h"
 #include "os/eeiop/adpcm/ea_cmd.h"
+#include "iop/adpcm/iopadpcm.h"
 
 #include "os/eeiop/sd_room.h"
 #include "main/glob.h"
@@ -13,15 +14,11 @@
 static int EAGetNowMapFileNo();
 static u_short EAGetNowMapBgmVol();
 
-static u_char IsPlaying; // hack
-
 void EAdpcmMapMain()
 {
     int file_no;
     static int wait_cnt;
 
-    if (!IsPlaying)
-    {
     if (adpcm_map.mode != ADPCM_MODE_MAP)
     {
         adpcm_map.mode = ADPCM_MODE_MAP;
@@ -55,7 +52,6 @@ void EAdpcmMapMain()
             adpcm_map.map.para.pan = 0x280;
             adpcm_map.map.para.pitch = 0xfff;
             EAdpcmCmdPlay(0, 1, adpcm_map.map.para.file_no, adpcm_map.map.para.count, adpcm_map.map.para.vol, 0x280, 0xfff, 0x96);
-            IsPlaying = 1;
         }
         else
         {
@@ -64,12 +60,11 @@ void EAdpcmMapMain()
             adpcm_map.map.para.pan = 0x280;
             adpcm_map.map.para.pitch = 0xfff;
             EAdpcmCmdPlay(0, 1, adpcm_map.map.para.file_no, 0, adpcm_map.map.para.vol, 0x280, 0xfff, 0);
-            IsPlaying = 1;
         }
     }
     else if (adpcm_map.map.stop != 0)
     {
-        if (EAGetRetStat() != 1 && EAGetRetStat() != 2)
+        if (EAGetRetStat() != ADPCM_STAT_FULL_STOP && EAGetRetStat() != ADPCM_STAT_LOOPEND_STOP)
         {
             return;
         }
@@ -89,7 +84,6 @@ void EAdpcmMapMain()
             adpcm_map.map.para.pan = 0x280;
             adpcm_map.map.para.pitch = 0xfff;
             EAdpcmCmdPlay(0, 1, adpcm_map.map.para.file_no, adpcm_map.map.para.count, adpcm_map.map.para.vol, 0x280, 0xfff, 0x96);
-            IsPlaying = 1;
         }
         else
         {
@@ -98,7 +92,6 @@ void EAdpcmMapMain()
             adpcm_map.map.para.pan = 0x280;
             adpcm_map.map.para.pitch = 0xfff;
             EAdpcmCmdPlay(0, 1, adpcm_map.map.para.file_no, 0, adpcm_map.map.para.vol, 0x280, 0xfff, 0);
-            IsPlaying = 1;
         }
     }
     else
@@ -115,7 +108,6 @@ void EAdpcmMapMain()
             adpcm_map.map.stop = ADPCM_MODE_MAP;
         }
     }
-}
 }
 
 static int EAGetNowMapFileNo()
