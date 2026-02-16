@@ -1,6 +1,8 @@
 #include "libmc.h"
 #include "mikupan/mikupan_file_c.h"
 #include "mikupan/mikupan_logging_c.h"
+#include "typedefs.h"
+#include <stddef.h>
 
 int sceMcInit()
 {

@@ -1,15 +1,30 @@
+#include "photo.h"
 #include "common.h"
 
-INCLUDE_ASM(const s32, "ingame/photo/photo", PhotoScoreCount);
+long int PhotoScoreCount()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/photo", SubjectScoreCount);
+int SubjectScoreCount(SUBJECT_WRK *sj)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/photo", SpecialPhotoMakeJudge);
+int SpecialPhotoMakeJudge()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/photo", AddPhotoData);
+void AddPhotoData()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/photo", GetSavePhotoNo);
+int GetSavePhotoNo()
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/photo", DeletePhotoData);
+void DeletePhotoData(u_char no)
+{
+}
 
-INCLUDE_ASM(const s32, "ingame/photo/photo", GetRecordSubject);
+void GetRecordSubject(PICTURE_WRK *pic)
+{
+}
