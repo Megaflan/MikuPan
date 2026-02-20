@@ -75,13 +75,13 @@ void MikuPan_InitPipeline()
     MikuPan_SetBufferAttributeInfo(
         &curr_pipeline->buffers[0].attributes[0],
         4, 0,
-        sizeof(float[8]), 0);
+        sizeof(float[2][4]), 0);
 
     /// NORMALS ATTRIBUTE
     MikuPan_SetBufferAttributeInfo(
         &curr_pipeline->buffers[0].attributes[1],
         4, 1,
-        sizeof(float[8]), sizeof(float[4]));
+        sizeof(float[2][4]), sizeof(float[4]));
 
     /// BUFFER 2: UVs
     /// TEXCOORD ATTRIBUTE

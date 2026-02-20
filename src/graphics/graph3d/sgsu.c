@@ -285,12 +285,14 @@ u_int *SetVUVNData(u_int *prim)
     vp += 2;
     prim += 12;
 
+    void* bak = vp;
     for (i = 0; i < vh->vnum; i++, vp += 2, prim += 2)
     {
         copy_skinned_data(vp, (float *) MikuPan_GetHostPointer(prim[0]), (float *) MikuPan_GetHostPointer(prim[1]));
     }
 
-    return (u_int *) vp;
+    return (u_int *) bak;
+    //return (u_int *) vp;
 }
 
 u_int *SetVUVNDataPost(u_int *prim)
@@ -397,8 +399,7 @@ void SetVUMeshData(u_int *prim)
             break;
         case 2:
             read_p = SetVUVNData(vuvnprim);
-            MikuPan_RenderMeshType0x2((struct SGDPROCUNITHEADER*)vuvnprim, (struct SGDPROCUNITHEADER*)prim);
-            //MikuPan_RenderVertices((int64_t)getObjWrk() + 0x20, 20);
+            MikuPan_RenderMeshType0x2((struct SGDPROCUNITHEADER*)vuvnprim, (struct SGDPROCUNITHEADER*)prim, (float*)read_p);
 
             read_p[0] = 0x14000000 | ((u_int) DRAWTYPE2 >> 3);
             read_p[1] = 0x17000000;
@@ -817,7 +818,7 @@ void SgSortUnit(void *sgd_top, int pnum)
 
     if (((u_int) lcp & 0xf) != 0)
     {
-        printf("SgSortUnit Data broken. %x lcp %x\n", sgd_top, lcp);
+        info_log("SgSortUnit Data broken. %x lcp %x", sgd_top, lcp);
         return;
     }
 

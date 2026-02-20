@@ -690,11 +690,10 @@ void MikuPan_SetModelTransform(unsigned int *prim)
     glm_mat4_identity(rot);
     glm_mat4_copy(lcp[prim[1]].workm, m);
 
-    //sceVu0RotMatrix(rot, rot, lcp[prim[1]].rot);
+    sceVu0RotMatrix(rot, rot, lcp[prim[1]].rot);
     sceVu0RotMatrixZ(rot, rot, lcp[prim[1]].rot[2]);
     sceVu0RotMatrixX(rot, rot, lcp[prim[1]].rot[0]);
     sceVu0RotMatrixY(rot, rot, lcp[prim[1]].rot[1]);
-
     glm_mul(m, rot, m);
 
     for (int i = 0; i < MAX_SHADER_PROGRAMS; i++)
@@ -997,15 +996,11 @@ void MikuPan_RenderMeshType0x82(unsigned int *pVUVN, unsigned int *pPUHead)
 }
 
 void MikuPan_RenderMeshType0x2(struct SGDPROCUNITHEADER *pVUVN,
-                               struct SGDPROCUNITHEADER *pPUHead)
+                               struct SGDPROCUNITHEADER *pPUHead, float* vertices)
 {
-    return;
-    MikuPan_SetShaderProgramWithBackup(MESH_0x12_SHADER);
+    MikuPan_SetShaderProgramWithBackup(MESH_0x2_SHADER);
     MikuPan_PipelineInfo* pipeline = MikuPan_GetPipelineInfo(POSITION4_NORMAL4_UV);
-
-    VUVN_PRIM *v = ((VUVN_PRIM *) &pVUVN[2]);
-
-    u_int *vector_data = (u_int *) &(((struct SGDPROCUNITHEADER *) pVUVN)[3]);
+    VUVN_PRIM *v = ((VUVN_PRIM *) &((int*)pVUVN)[2]);
 
     struct SGDVUMESHPOINTNUM *pMeshInfo =
         (struct SGDVUMESHPOINTNUM *) &pPUHead[4];
@@ -1015,18 +1010,7 @@ void MikuPan_RenderMeshType0x2(struct SGDPROCUNITHEADER *pVUVN,
         (struct SGDVUMESHSTDATA *) &sgdVuMeshStRegSet->auiVifCode[3];
     union SGDPROCUNITDATA *pProcData = (union SGDPROCUNITDATA *) &pPUHead[1];
 
-    sceGsTex0 *mesh_tex_reg = (sceGsTex0 *) ((int64_t) pProcData + 0x28);
-
-    if (pProcData->VUMeshData.GifTag.NREG != 6)
-    {
-        //return;
-        //mesh_tex_reg = (sceGsTex0 *) ((int64_t) pProcData + 0x18);
-    }
-
-    if (mesh_tex_reg->PSM == 48 /* PSMZ32 */)
-    {
-        return;
-    }
+    sceGsTex0 *mesh_tex_reg = (sceGsTex0 *) ((int64_t) pProcData + 0x18);
 
     MikuPan_TextureInfo *texture_info = MikuPan_GetTextureInfo(mesh_tex_reg);
 
@@ -1048,27 +1032,25 @@ void MikuPan_RenderMeshType0x2(struct SGDPROCUNITHEADER *pVUVN,
 
     glad_glBindVertexArray(pipeline->vao);
 
-    int vertex_offset = 0;
-
     for (int i = 0; i < GET_NUM_MESH(pPUHead); i++)
     {
-        size_t vertexCount = pMeshInfo[i].uiPointNum;
-        size_t byteSize = vertexCount * sizeof(float[4]);
+        int vertexCount = pMeshInfo[i].uiPointNum;
 
         glad_glBindBuffer(GL_ARRAY_BUFFER, pipeline->buffers[0].id);
+        glad_glBufferSubData(GL_ARRAY_BUFFER, 0, vertexCount * pipeline->buffers[0].attributes[0].stride, vertices);
 
-        for (int j = 0; j < vertexCount; j++)
-        {
-            GLfloat *vertices =
-                (GLfloat *) MikuPan_GetHostPointer(vector_data[i]);
+        glad_glBindBuffer(GL_ARRAY_BUFFER, pipeline->buffers[1].id);
+        glad_glBufferSubData(
+            GL_ARRAY_BUFFER,
+            pipeline->buffers[1].attributes[0].offset,
+            vertexCount * pipeline->buffers[1].attributes[0].stride,
+            sgdMeshData->astData);
 
-            // Upload new data
-            glad_glBufferSubData(GL_ARRAY_BUFFER, vertex_offset, byteSize, vertices);
-        }
+        vertices = &vertices[vertexCount * 4 * 2];
 
-        vertex_offset += vertexCount;
+        sgdMeshData = (struct SGDVUMESHSTDATA *) &sgdMeshData
+                          ->astData[vertexCount];
 
-        // Draw
         glad_glDrawArrays(MikuPan_IsWireframeRendering() ? GL_LINE_STRIP
                                                          : GL_TRIANGLE_STRIP,
                           0, vertexCount);

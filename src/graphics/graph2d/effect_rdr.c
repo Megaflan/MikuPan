@@ -688,10 +688,10 @@ void SetRoomDirecPazzEne()
 
 void SetRDSmoke()
 {
-    ef_smoke_addr[0] = SetEffects(26, 2, ef_smoke_pos11);
-    ef_smoke_addr[1] = SetEffects(26, 2, ef_smoke_pos12);
-    ef_smoke_addr[2] = SetEffects(26, 2, ef_smoke_pos13);
-    ef_smoke_addr[3] = SetEffects(26, 2, ef_smoke_pos14);
+    ef_smoke_addr[0] = SetEffects(EF_SMOKE, 2, ef_smoke_pos11);
+    ef_smoke_addr[1] = SetEffects(EF_SMOKE, 2, ef_smoke_pos12);
+    ef_smoke_addr[2] = SetEffects(EF_SMOKE, 2, ef_smoke_pos13);
+    ef_smoke_addr[3] = SetEffects(EF_SMOKE, 2, ef_smoke_pos14);
 }
 
 void ResetRDSmoke()
@@ -731,7 +731,7 @@ void SetRDSunshine(int n)
     if (sunshine[n].adr == NULL)
     {
         sunshine[n].adr = SetEffects(
-            31, 2,
+            EF_SUNSHINE, 2,
             sunshine[n].lpos, &sunshine[n],
             sunshine[n].brot, sunshine[n].power,
             sunshine[n].ww, sunshine[n].hh,

@@ -934,39 +934,39 @@ void EffectZSort()
 
         switch (ec->dat.uc8[0])
         {
-            case 23:
+            case EF_FIRE:
                 SetFire(ec);
             break;
-            case 24:
+            case EF_FIRE2:
                 SetFire2(ec);
             break;
-            case 20:
+            case EF_HALO:
                 SetHalo(ec);
             break;
-            case 21:
-            case 22:
+            case EF_RIPPLE:
+            case EF_RIPPLE2:
                 SetRipple(ec);
             break;
-            case 27:
-            case 39:
+            case EF_PDEFORM:
+            case EF_ENEIN:
                 SetPartsDeform(ec);
             break;
-            case 30:
+            case EF_WATERDROP:
                 SetWaterdrop(ec);
             break;
-            case 31:
+            case EF_SUNSHINE:
                 SetSunshine(ec);
             break;
-            case 25:
+            case EF_TORCH:
                 SetTorch(ec);
             break;
-            case 26:
+            case EF_SMOKE:
                 SetSmoke(ec);
             break;
-            case 33:
+            case EF_ENEFACE:
                 SetEneFace(ec);
             break;
-            case 34:
+            case EF_FACESPIRIT:
                 SetFaceSpirit(ec);
             break;
         }
