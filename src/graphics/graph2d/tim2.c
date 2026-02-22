@@ -1592,17 +1592,12 @@ void* DrawAllMes_P2(int64_t ret_addr)
 
     SortMessagePacket();
 
-    /// If not there packets never get sent back and no text renders
-    //MakeFontTexSendPacket();
-
     if (nmdpri >= 1)
     {
         for (i = 0; i < nmdpri - 1; i++)
         {
             n = draw_mpri[i][1];
             m = draw_mpri[i+1][1];
-
-            //ReadAllPackets(&mpbuf[n]);
 
             s = mpbuf[n].us16[0];
             mpbuf[n].uc8[3] = 0x20;
@@ -1613,8 +1608,6 @@ void* DrawAllMes_P2(int64_t ret_addr)
         n = draw_mpri[nmdpri-1][1];
 
         s = mpbuf[n].us16[0];
-
-        //ReadAllPackets(&mpbuf[n]);
 
         /// Sets the final message packet
         if (ret_addr != 0)
@@ -1680,13 +1673,12 @@ void LoadSprFileToMainD(int no, int64_t addr)
 
 void SetSprFile(int64_t addr)
 {
-    addr = MikuPan_GetHostAddress(addr);
-
     SetSprFile2(addr, 0);
 }
 
 void SetSprFile2(int64_t addr, u_int offset)
 {
+    addr = MikuPan_GetHostAddress(addr);
     MakeTim2ClutDirect3(addr, -1, -1, offset);
 }
 

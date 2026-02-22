@@ -2,6 +2,7 @@
 #include "typedefs.h"
 #include "gra3d.h"
 
+#include "cglm/call/mat4.h"
 #include "enums.h"
 
 #include <stdlib.h>
@@ -729,17 +730,16 @@ void SetLWS(SgCOORDUNIT *cp, SgCAMERA *camera)
     if (cp->parent == 0)
     {
         sceVu0CopyMatrix(cp->lwmtx, cp->matrix);
-        //sceVu0MulMatrix(cp->workm, camera->ws, cp->lwmtx);
-        sceVu0CopyMatrix(cp->workm, cp->lwmtx);
-
+        sceVu0MulMatrix(cp->workm, camera->ws, cp->lwmtx);
+        //sceVu0CopyMatrix(cp->workm, cp->lwmtx);
         cp->flg = 1;
     }
     else
     {
         SetLWS(GetCoordPParent(cp), camera);
         sceVu0MulMatrix(cp->lwmtx, GetCoordPParent(cp)->lwmtx, cp->matrix);
-        //sceVu0MulMatrix(cp->workm, camera->ws, cp->lwmtx);
-        sceVu0CopyMatrix(cp->workm, cp->lwmtx);
+        sceVu0MulMatrix(cp->workm, camera->ws, cp->lwmtx);
+        //sceVu0CopyMatrix(cp->workm, cp->lwmtx);
 
         cp->flg = 1;
     }
@@ -2158,7 +2158,7 @@ int CheckModelBoundingBox(sceVu0FMATRIX lwmtx, sceVu0FVECTOR *bbox)
     _SetMulMatrix(SgCMVtx, lwmtx);
 
     MikuPan_SetModelTransformMatrix(lwmtx);
-    //MikuPan_RenderBoundingBox(bbox);
+    DrawBoundingBox(bbox);
 
     if (clip_value_check != 0)
     {
@@ -2222,7 +2222,7 @@ int CheckModelBoundingBox(sceVu0FMATRIX lwmtx, sceVu0FVECTOR *bbox)
         }
     }
 
-    _SetMulMatrix(SgWSMtx,lwmtx);
+    _SetMulMatrix(SgWSMtx, lwmtx);
 
     Vu0ApplyVectorInline(tmpvec[0], bbox[0]);
     Vu0ApplyVectorInline(tmpvec[1], bbox[1]);
@@ -2359,9 +2359,6 @@ void DrawGirl(int in_mirror)
         ManTexflush();
         SgSortUnitKind(hs, -1);
         DrawGirlSubObj(ani_mdl[0].mpk_p, 0x7f);
-
-        MikuPan_SetModelTransformMatrix(cp->lwmtx);
-        DrawBoundingBox(girlbox);
 
         if (in_mirror != 0 || plyr_wrk.mode != 1)
         {
@@ -2602,8 +2599,8 @@ int DrawEnemy(int no)
             SgSortUnitKind(tmpModelp,-1);
             acsClothCtrl(ani_ctrl,ani_ctrl->mpk_p,mdl_no, 0);
 
-            MikuPan_SetModelTransformMatrix(cp[manmdl_dat[mdl_no].waist_id].lwmtx);
-            DrawBoundingBox(ebox);
+            //MikuPan_SetModelTransformMatrix(cp[manmdl_dat[mdl_no].waist_id].lwmtx);
+            //DrawBoundingBox(ebox);
 
             if (motCheckTrRateMdl(mdl_no) != 0)
             {

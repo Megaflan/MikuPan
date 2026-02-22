@@ -18,6 +18,7 @@
 #include "main/glob.h"
 #include "mikupan/mikupan_utils.h"
 #include "mikupan_pipeline.h"
+#include "sce/libvu0.h"
 
 #include <glad/gl.h>
 
@@ -36,12 +37,18 @@ mat4 WorldView = {0};
 
 SDL_AppResult MikuPan_Init()
 {
+#ifdef SDL_PLATFORM_LINUX
+    setenv("SDL_VIDEO_WAYLAND_WMCLASS", "MikuPan", 0);
+    setenv("SDL_VIDEO_X11_WMCLASS",     "MikuPan", 0);
+#endif
+
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
                         SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 32);
+    SDL_SetAppMetadata("MikuPan", "1.0", "MikuPan");
 
     if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD | SDL_INIT_JOYSTICK
                   | SDL_INIT_HAPTIC))
@@ -50,7 +57,6 @@ SDL_AppResult MikuPan_Init()
         return SDL_APP_FAILURE;
     }
 
-    SDL_SetAppMetadata("MikuPan", "1.0", "mikupan");
     SDL_SetHint(SDL_HINT_MAIN_CALLBACK_RATE, "60");
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -67,11 +73,19 @@ SDL_AppResult MikuPan_Init()
     window = SDL_CreateWindow("MikuPan", window_width, window_height,
                               SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 
-    if (window == NULL)
+    if (window == nullptr)
     {
         info_log(SDL_GetError());
         return SDL_APP_FAILURE;
     }
+
+    SDL_Surface* iconSurface = SDL_LoadBMP("shaders/angry_noise_sae.bmp");
+    if (!SDL_SetWindowIcon(window, iconSurface))
+    {
+        info_log(SDL_GetError());
+    }
+
+    SDL_DestroySurface(iconSurface);
 
     SDL_GLContext gl_context = SDL_GL_CreateContext(window);
 
@@ -654,16 +668,19 @@ void MikuPan_SetModelTransformMatrix(sceVu0FVECTOR *m)
 
 void MikuPan_SetModelTransform(unsigned int *prim)
 {
-    mat4 m = {0};
-    mat4 rot = {0};
-    glm_mat4_identity(rot);
-    glm_mat4_copy(lcp[prim[1]].workm, m);
+    mat4 model= {0};
+    SgCOORDUNIT* cp = &lcp[prim[1]];
+    glm_mat4_copy(cp->lwmtx, model);
 
-    //sceVu0RotMatrix(rot, rot, lcp[prim[1]].rot);
-    //sceVu0RotMatrixX(rot, rot, lcp[prim[1]].rot[0]);
-    //sceVu0RotMatrixY(rot, rot, lcp[prim[1]].rot[1]);
-    //sceVu0RotMatrixZ(rot, rot, lcp[prim[1]].rot[2]);
-    //glm_mul(m, rot, m);
+    //glm_rotate_z(model, lcp[prim[1]].rot[2], model);
+    //glm_rotate_x(model, lcp[prim[1]].rot[0], model);
+    //glm_rotate_y(model, 3.1415926f, model);
+    //const float PI = 3.1415926f;
+    //sceVu0RotMatrixX(model, cp->lwmtx, PI);
+    //float grot = cp->rot[1] + PI > PI ? (cp->rot[1] + PI) - 6.2831855f : cp->rot[1] + PI;
+    //sceVu0RotMatrixY(model, model, grot);
+    //sceVu0RotMatrixX(model, model, cp->rot[0]);
+    //sceVu0RotMatrixZ(model, model, cp->rot[2]);
 
     for (int i = 0; i < MAX_SHADER_PROGRAMS; i++)
     {
@@ -672,7 +689,7 @@ void MikuPan_SetModelTransform(unsigned int *prim)
         u_int current_program = MikuPan_GetCurrentShaderProgram();
         glad_glUniformMatrix4fv(
             glad_glGetUniformLocation(current_program, "model"), 1, GL_FALSE,
-            (float *) m);
+            (float *) model);
     }
 }
 

@@ -13,7 +13,8 @@ int sceMcSync(int mode, int *cmd, int *result)
 {
     if (cmd != NULL)
     {
-        *cmd = 1;
+        *cmd = 0;
+        *result = 0;
     }
 
     return 1;
@@ -36,6 +37,9 @@ int sceMcMkdir(int port, int slot, const char *name)
 
 int sceMcGetInfo(int port, int slot, int *type, int *free, int *format)
 {
+    *type = 2;
+    *free = 1000000;
+    *format = 1;
     return 0;
 }
 
@@ -56,8 +60,8 @@ int sceMcClose(int fd)
 
 int sceMcOpen(int port, int slot, const char *name, int mode)
 {
-    info_log("CARD NAME: %s\n", name);
-    return 1;
+    info_log("CARD NAME: %s", name);
+    return 0;
 }
 
 int sceMcGetDir(int port, int slot, const char *name, unsigned mode, int maxent,

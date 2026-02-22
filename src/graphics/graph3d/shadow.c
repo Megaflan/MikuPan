@@ -1070,6 +1070,11 @@ void AssignShadow(void *sgd_top, int except_num)
 
     hs = (HeaderSection *) sgd_top;
 
+    if (hs->VersionID != 0x1050)
+    {
+        return;
+    }
+
     ccahe.cache_on = -1;
     lcp = GetCoordP(hs);
     blocksm = hs->blocks;

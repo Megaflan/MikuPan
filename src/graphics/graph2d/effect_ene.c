@@ -3910,7 +3910,7 @@ void LoadEneDmgTex(int no, u_int *addr)
         {
             edmg_tex_wrk[i].tex_no = texno;
             edmg_tex_wrk[i].mdl_no = no + count;
-            edmg_tex_wrk[i].addr = (uint64_t)addr;
+            edmg_tex_wrk[i].addr = MikuPan_GetHostAddress((int)addr);
 
             if (no != 42)
             {

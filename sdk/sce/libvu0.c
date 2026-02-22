@@ -398,7 +398,7 @@ void sceVu0DivVectorXYZ(sceVu0FVECTOR v0, sceVu0FVECTOR v1, float q)
         return;
     }
 
-    glm_vec4_divs(v1, q, v0);
+    glm_vec3_divs(v1, q, v0);
 }
 
 void sceVu0ClampVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1, float min, float max)
