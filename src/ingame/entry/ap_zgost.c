@@ -19,20 +19,15 @@
 #include "graphics/motion/mdlwork.h"
 #include "graphics/motion/motion.h"
 // #include "graphics/graph2d/effect_ene.h" // LoadEneDmgTex
+#include "ap_fgost.h"
 #include "graphics/graph2d/effect.h"
 #include "graphics/graph2d/effect_ene.h"
 #include "graphics/graph3d/load3d.h"
+#include "sce/libvu0.h"
 
 ZHOUR_WRK zh_wrk = {0};
 
-#define ANIM_MODEL_TYPE_8_ADDRESS_0 0xc80000
-#define ANIM_MODEL_TYPE_8_ADDRESS_1 0xd00000
 
-#define ANIM_MODEL_TYPE_9_ADDRESS_0 0xa30000
-#define ENE_DMG_TEX_TYPE_9_ADDRESS_0 0xac8000
-
-#define ANIM_MODEL_TYPE_9_ADDRESS_1 0xae0000
-#define ENE_DMG_TEX_TYPE_9_ADDRESS_1 0xb78000
 
 #ifdef BUILD_EU_VERSION
 #define TYPE_8_MDL_FILE_NO_OFFSET 47

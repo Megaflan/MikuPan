@@ -8,6 +8,7 @@ endif()
 
 if(WIN32)
     set(CMAKE_EXE_LINKER_FLAGS "-static")
+    set(APP_ICON_RESOURCE_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/extern/icon.rc")
 endif()
 
 set(BUILD_SHARED_LIBS OFF)
