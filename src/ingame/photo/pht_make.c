@@ -21,11 +21,13 @@
 #include "ingame/menu/ig_menu.h"
 #include "ingame/menu/ig_rank.h"
 #include "ingame/photo/photo.h"
-// #include "ingame/plyr/plyr_ctl.h" // FModeScreenEffect
+#include "ingame/plyr/plyr_ctl.h" // FModeScreenEffect
 #include "main/glob.h"
 
 #define INCLUDING_FROM_PHT_MAKE_C
 #include "ingame/map/furn_ctl.h"// SetFurnAttrEve
+
+#include <string.h>
 #undef INCLUDING_FROM_PHT_MAKE_C
 
 SPRT_DAT hintdat[] = {
@@ -1705,13 +1707,13 @@ void CopyScreenToBuffer(int addr, int szfl, int mx, int my, int mw, int mh)
 
     if (szfl != 0)
     {
-        *(int *) addr = 0x18000;
+        *(int *) MikuPan_GetHostAddress(addr) = 0x18000;
 
-        data_o = (short *) (addr + 16);
+        data_o = (short *) (MikuPan_GetHostAddress(addr) + 16);
     }
     else
     {
-        data_o = (short *) addr;
+        data_o = (short *) MikuPan_GetHostAddress(addr);
     }
 
     LocalCopyLtoB2(0, ((sys_wrk.count + 1) & 1)
@@ -1824,11 +1826,11 @@ void DrawPhotoBuffer(u_int pri, int addr, int szfl, int x, int y, int szw,
 
     if (szfl != 0)
     {
-        data_i = (u_long128 *) (addr + 16);
+        data_i = (u_long128 *) MikuPan_GetHostAddress(addr + 16);
     }
     else
     {
-        data_i = (u_long128 *) addr;
+        data_i = (u_long128 *) MikuPan_GetHostAddress(addr);
     }
 
     sceGsSetDefLoadImage(&gs_limage, 0x2780, dbw, 2, 0, 0, dbw * 64, mszh);
@@ -1882,7 +1884,7 @@ void CompressData(int addri, int addro, int n)
 
     one_size = 0xd350;
 
-    value = SlideEncode((u_char *) addri, (u_char *) addri + 0x18010, 0x18010);
+    value = SlideEncode((u_char *) MikuPan_GetHostAddress(addri), (u_char *) MikuPan_GetHostAddress(addri + 0x18010), 0x18010);
 
     if (value > 0.549f)
     {
@@ -1890,9 +1892,9 @@ void CompressData(int addri, int addro, int n)
 
         while (1)
         {
-            memset((void *) (addri + 0x18010), 0xff, 0x18010);
+            memset((void *) MikuPan_GetHostAddress(addri + 0x18010), 0xff, 0x18010);
 
-            value = CompressFile((u_short *) addri, (char *) (addri + 0x18010),
+            value = CompressFile((u_short *) MikuPan_GetHostAddress(addri), (char *) MikuPan_GetHostAddress(addri + 0x18010),
                                  0x18010, quality);
 
             quality++;
@@ -1904,7 +1906,7 @@ void CompressData(int addri, int addro, int n)
 
             if (quality >= 5)
             {
-                addr = (u_int *) (addri + 0x18010);
+                addr = (u_int *) MikuPan_GetHostAddress(addri + 0x18010);
                 addr[1] = 2;
 
                 break;
@@ -1912,7 +1914,7 @@ void CompressData(int addri, int addro, int n)
         }
     }
 
-    memcpy((void *) (addro + one_size * n), (void *) (addri + 0x18010),
+    memcpy((void *) MikuPan_GetHostAddress(addro + one_size * n), (void *) MikuPan_GetHostAddress(addri + 0x18010),
            one_size);
 }
 
@@ -1924,22 +1926,22 @@ void UncompressData(int addri, int n, int addro)
 
     one_size = 0xd350;
 
-    base = (u_char *) (addri + n * one_size);
+    base = (u_char *) MikuPan_GetHostAddress(addri + n * one_size);
     type = *(int *) (base + 4);
 
     switch (type)
     {
         case 0:
-            SlideDecode(base, (u_char *) addro);
+            SlideDecode(base, (u_char *) MikuPan_GetHostAddress(addro));
 
             photo_expand.cnt = 0;
             photo_expand.sta = 1;
             break;
         case 1:
-            ExpandFile((char *) base, (u_short *) addro);
+            ExpandFile((char *) base, (u_short *) MikuPan_GetHostAddress(addro));
             break;
         case 2:
-            memset((void *) addro, 0, 0x18010);
+            memset((void *) MikuPan_GetHostAddress(addro), 0, 0x18010);
 
             photo_expand.cnt = 0;
             photo_expand.sta = 1;
@@ -2060,8 +2062,8 @@ void CopyPhoto(int addri, int ni, int addro, int no)
 
     one_size = 54096;
 
-    data_i = (short int *) ((ni * one_size) + addri);
-    data_o = (short int *) ((no * one_size) + addro);
+    data_i = (short int *) MikuPan_GetHostAddress((ni * one_size) + addri);
+    data_o = (short int *) MikuPan_GetHostAddress((no * one_size) + addro);
 
     for (i = 0; i < one_size / 2; i++, data_i++, data_o++)
     {
@@ -2078,8 +2080,8 @@ void CopySPhoto(int addri, int ni, int addro, int no)
 
     one_size = 2560;
 
-    data_i = (short int *) ((ni * one_size) + addri);
-    data_o = (short int *) ((no * one_size) + addro);
+    data_i = (short int *) MikuPan_GetHostAddress((ni * one_size) + addri);
+    data_o = (short int *) MikuPan_GetHostAddress((no * one_size) + addro);
 
     for (i = 0; i < one_size / 2; i++, data_i++, data_o++)
     {
@@ -2225,8 +2227,8 @@ void DrawPhotoHinttex2(u_int sw, u_int pri, int num)
     f = sd->alpha * 0.25f;
     pos = (f - alp) * 4.0f / f;
 
-    MakeTim2ClutDirect4(0x1e90000, 0, -1, -1, 0);
-    MakeTim2ClutDirect4(0x1e90000, 1, -1, -1, 0);
+    MakeTim2ClutDirect4(MikuPan_GetHostAddress(0x1e90000), 0, -1, -1, 0);
+    MakeTim2ClutDirect4(MikuPan_GetHostAddress(0x1e90000), 1, -1, -1, 0);
 
     CopySprDToSpr(&ds, sd);
 

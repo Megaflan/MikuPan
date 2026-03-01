@@ -45,6 +45,8 @@ void IngameAlbumDisp(u_char csr, u_char csr_top, u_char mode, char is_outgame)
 
 u_char* GetSubjectNameAddr(u_short kind, u_short no, u_short show)
 {
+    char* aa = "jebfgksjhbkjlse";
+    return aa;
 }
 
 u_char TimeIsMoney(u_char hexhex)
