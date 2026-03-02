@@ -1,5 +1,5 @@
 #include "mikupan_file.h"
-#include "gs/texture_manager.h"
+#include "gs/mikupan_texture_manager.h"
 #include "mikupan_logging.h"
 #include "spdlog/spdlog.h"
 #include <algorithm>

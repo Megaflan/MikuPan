@@ -62,6 +62,8 @@ void LoadRareEneTex()
 
 void DrawRareEne_Sub(int mno, int dno, sceVu0FVECTOR pos, int tblno, int ani, int al)
 {
+    /// TODO: Fix crash that occurs in this function
+    return;
     unsigned char alp;
     int a;
     int b;

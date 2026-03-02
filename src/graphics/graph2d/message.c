@@ -11,14 +11,14 @@
 
 #include "ee/eestruct.h"
 
-#include "main/glob.h"
-#include "mc/mc_main.h"
-#include "ingame/plyr/plyr_ctl.h"
-#include "graphics/graph2d/tim2.h"
 #include "graphics/graph2d/effect.h"
 #include "graphics/graph2d/effect_sub.h"
+#include "graphics/graph2d/tim2.h"
+#include "ingame/plyr/plyr_ctl.h"
+#include "main/glob.h"
+#include "mc/mc_main.h"
 #include "mikupan/gs/gs_server_c.h"
-#include "mikupan/gs/texture_manager_c.h"
+#include "mikupan/gs/mikupan_texture_manager_c.h"
 #include "mikupan/rendering/mikupan_renderer.h"
 #ifdef BUILD_EU_VERSION
 #include "graphics/graph2d/subtitles.h"

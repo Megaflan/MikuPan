@@ -18,10 +18,10 @@
 #include "mikupan/rendering/mikupan_renderer.h"
 
 #define SDL_MAIN_USE_CALLBACKS 1  /* use the callbacks instead of main() */
-#include "mikupan/ui/mikupan_ui_c.h"
-#include "iop/iopmain.h"
 #include "iop/adpcm/iopadpcm.h"
-#include "mikupan/gs/texture_manager_c.h"
+#include "iop/iopmain.h"
+#include "mikupan/gs/mikupan_texture_manager_c.h"
+#include "mikupan/ui/mikupan_ui_c.h"
 #include "os/eeiop/se_cmd.h"
 
 #include <SDL3/SDL.h>

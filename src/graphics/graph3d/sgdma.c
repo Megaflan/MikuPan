@@ -59,7 +59,7 @@ void ClearDMATrans()
 
     sceDevVif1Reset();
 
-    printf("wait\n");
+    info_log("wait");
 }
 
 void CheckDMATrans()

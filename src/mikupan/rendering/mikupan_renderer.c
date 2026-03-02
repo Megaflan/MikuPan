@@ -8,7 +8,7 @@
 #include "graphics/graph3d/sglight.h"
 #include "graphics/graph3d/sgsu.h"
 #include "mikupan/gs/gs_server_c.h"
-#include "mikupan/gs/texture_manager_c.h"
+#include "mikupan/gs/mikupan_texture_manager_c.h"
 #include "mikupan/mikupan_logging_c.h"
 #include "mikupan/ui/mikupan_ui_c.h"
 #include "mikupan_shader.h"
@@ -53,7 +53,7 @@ SDL_AppResult MikuPan_Init()
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 16);
+    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 2);
 
     info_log("Loading SDL_GameControllerDB");
 
@@ -196,17 +196,16 @@ void MikuPan_SetTexture(sceGsTex0 *tex0)
         texture_info = MikuPan_CreateGLTexture(tex0);
     }
 
-    glad_glActiveTexture(GL_TEXTURE0);
-
     if (texture_info != NULL)
     {
+        glad_glActiveTexture(GL_TEXTURE0);
         glad_glBindTexture(GL_TEXTURE_2D, texture_info->id);
     }
 }
 
 void MikuPan_Render2DTexture(DISP_SPRT *sprite)
 {
-    if (!IsFirstUploadDone())
+    if (!MikuPan_IsFirstUploadDone())
     {
         return;
     }
@@ -763,16 +762,13 @@ void MikuPan_RenderMeshType0x32(struct SGDPROCUNITHEADER *pVUVN,
             vertexCount * pipeline->buffers[1].attributes[0].stride,
             sgdMeshData->astData);
 
-        u_int loc = glad_glGetUniformLocation(current_program, "aNormal");
-
         if (GET_MESH_TYPE(pPUHead) == 0x32)
         {
+            u_int loc = glad_glGetUniformLocation(current_program, "aNormal");
             glad_glUniform3fv(loc, 1, (float *) normals);
         }
 
-        /// LIGHT DIRECTION
-        loc = glad_glGetUniformLocation(current_program, "uLighDirection");
-        glad_glUniform3fv(loc, 1, (float *) plyr_wrk.mylight.parallel[0].direction);
+        //info_log("Mesh render vertex count %d", pVMCD->VifUnpack.NUM);
 
         glad_glDrawArrays(MikuPan_GetRenderMode(), 0, vertexCount);
 

@@ -51,10 +51,12 @@ u_char* GetSubjectNameAddr(u_short kind, u_short no, u_short show)
 
 u_char TimeIsMoney(u_char hexhex)
 {
+    return 0;
 }
 
 u_char MoneyIsTime(u_char time)
 {
+    return 0;
 }
 
 void OutGameInitPhoto()
@@ -63,9 +65,11 @@ void OutGameInitPhoto()
 
 int isPhotoEnd()
 {
+    return 1;
 }
 
 float GetPhtDispAlpha()
 {
+    return 0.5f;
 }
 #endif

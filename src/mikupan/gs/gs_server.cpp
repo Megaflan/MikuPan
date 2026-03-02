@@ -1,6 +1,6 @@
 #include "gs_server.h"
 
-#include "texture_manager.h"
+#include "mikupan_texture_manager.h"
 
 extern "C" {
 #include "common/utility.h"
@@ -277,7 +277,7 @@ void GsUpload(sceGsLoadImage *image_load, unsigned char *image)
                   (int) image_load->trxreg.RRW,
                   (int) image_load->trxreg.RRH);
 
-    FirstUploadDone();
+    MikuPan_FirstUploadDone();
 
     switch ((PixelStorageFormat) image_load->bitbltbuf.DPSM)
     {
@@ -313,7 +313,7 @@ void GsUpload(sceGsLoadImage *image_load, unsigned char *image)
 
 unsigned char *DownloadGsTexture(sceGsTex0 *tex0)
 {
-    if (!IsFirstUploadDone())
+    if (!MikuPan_IsFirstUploadDone())
     {
         return nullptr;
     }
