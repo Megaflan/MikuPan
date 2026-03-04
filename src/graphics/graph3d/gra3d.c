@@ -2159,7 +2159,7 @@ int CheckModelBoundingBox(sceVu0FMATRIX lwmtx, sceVu0FVECTOR *bbox)
     tmpvec = (sceVu0FVECTOR *)&ps2_virtual_scratchpad[0x620];
     ed = (sceVu0FVECTOR *)&ps2_virtual_scratchpad[0x6a0]; // `ed[i]` can be replaced with `tmpvec[8+i]`
 
-    _SetMulMatrix(*(sceVu0FMATRIX*)MikuPan_GetWorldScreenMatrix(), lwmtx);
+    _SetMulMatrix(*(sceVu0FMATRIX*)MikuPan_GetWorldClipView(), lwmtx);
     //_SetMulMatrix(SgCMVtx, lwmtx);
 
     MikuPan_SetModelTransformMatrix(lwmtx);

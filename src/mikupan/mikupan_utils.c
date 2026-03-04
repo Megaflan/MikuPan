@@ -90,3 +90,26 @@ void MikuPan_FixUV(float* uv, int num)
         }
     }
 }
+
+void MikuPan_SetTriangleIndex(int *triangle_index, int vertex_count, int vertex_offset, int mesh_offset)
+{
+    for (int j = 0; j < vertex_count; j++)
+    {
+        triangle_index[vertex_offset + j + mesh_offset] = vertex_offset + j;
+    }
+
+    triangle_index[vertex_offset + mesh_offset + vertex_count] = -1;
+}
+
+unsigned int *MikuPan_GetNextUnpackAddr(unsigned int *prim)
+{
+    while (1)
+    {
+        if ((*prim & 0x60000000) == 0x60000000)
+        {
+            return prim;
+        }
+
+        prim++;
+    }
+}

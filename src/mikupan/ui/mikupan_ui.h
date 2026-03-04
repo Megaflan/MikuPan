@@ -46,5 +46,6 @@ extern "C"
     int MikuPan_IsMesh0x32Rendering();
     int MikuPan_IsMesh0x12Rendering();
     int MikuPan_IsMesh0x2Rendering();
+    float* MikuPan_GetLightColor();
 }
 #endif //MIKUPAN_IMGUI_WINDOW_H

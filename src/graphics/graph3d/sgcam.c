@@ -139,7 +139,7 @@ void SgSetRefCamera(SgCAMERA *camera)
     SgSetClipMtx(camera->wc);
     SgSetClipVMtx(camera->wcv);
 
-    MikuPan_Camera(camera);
+    MikuPan_SetupCamera((MikuPan_Camera*)camera);
 }
 
 void SetViewScreenClipMatrixOrtho(SgCAMERA *camera, float scrz)
@@ -415,10 +415,10 @@ int CheckBoundingBox(u_int *prim)
 
     lcp[prim[2]].camin = 0;
 
-    asm_1__CheckBoundingBox(*(sceVu0FMATRIX*)MikuPan_GetWorldScreenMatrix(), SgCMtx, lcp[prim[2]].lwmtx);
+    asm_1__CheckBoundingBox(*(sceVu0FMATRIX*)MikuPan_GetWorldClipView(), SgCMtx, lcp[prim[2]].lwmtx);
     //asm_1__CheckBoundingBox(SgCMVtx, SgCMtx, lcp[prim[2]].lwmtx);
 
-    MikuPan_SetModelTransform(&prim[1]);
+    MikuPan_SetModelTransformMatrix(lcp[prim[2]].lwmtx);
     DrawBoundingBox((sceVu0FVECTOR*)&prim[4]);
 
     // Re-enable this line to have stuff render, right now, nothing is within BoundingBox

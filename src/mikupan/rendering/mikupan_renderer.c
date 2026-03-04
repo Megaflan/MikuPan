@@ -4,8 +4,6 @@
 #include "SDL3/SDL_init.h"
 #include "cglm/cglm.h"
 #include "graphics/graph2d/message.h"
-#include "graphics/graph3d/sgcam.h"
-#include "graphics/graph3d/sglight.h"
 #include "graphics/graph3d/sgsu.h"
 #include "mikupan/gs/gs_server_c.h"
 #include "mikupan/gs/mikupan_texture_manager_c.h"
@@ -15,30 +13,38 @@
 #include <stdlib.h>
 
 #define GLAD_GL_IMPLEMENTATION
-#include "main/glob.h"
+#include "graphics/graph3d/sglib.h"
 #include "mikupan/mikupan_utils.h"
 #include "mikupan_pipeline.h"
+
 #include <glad/gl.h>
 
 int window_width = 640;
 int window_height = 448;
 int vertex_index[1024 * 1024] = {0};
+int state_changes = 0;
+int draw_calls = 0;
 
 SDL_Window *window = NULL;
 MikuPan_TextureInfo *fnt_texture[6] = {0};
 MikuPan_TextureInfo *curr_fnt_texture = NULL;
 
-mat4 WorldScreen = {0};
+/// SgCMVtx or camera->wcv
+mat4 WorldClipView = {0};
+
+/// camera->wv
 mat4 WorldView = {0};
 mat4 projection = {0};
 
+/// camera->vc
+mat4 ViewClip = {0};
+
+/// SgCMtx or camera->wc
+mat4 WorldClip = {0};
+
 SDL_AppResult MikuPan_Init()
 {
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 32);
+    MikuPan_SetupOpenGLContext();
     SDL_SetAppMetadata("MikuPan", "1.0", "MikuPan");
 
     info_log("Initializing SDL");
@@ -52,13 +58,7 @@ SDL_AppResult MikuPan_Init()
 
     //SDL_SetHint(SDL_HINT_MAIN_CALLBACK_RATE, "60");
 
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    //SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8);
+    MikuPan_SetupOpenGLContext();
 
     info_log("Loading SDL_GameControllerDB");
 
@@ -101,13 +101,23 @@ SDL_AppResult MikuPan_Init()
 
     info_log("GLad version loaded %d", gladLoadGLLoader((void*)SDL_GL_GetProcAddress));
 
-    glad_glDepthMask(GL_TRUE);
-
     MikuPan_InitUi(window, gl_context);
     MikuPan_InitShaders();
     MikuPan_InitPipeline();
+    MikuPan_Setup3D();
 
     return SDL_APP_CONTINUE;
+}
+
+void MikuPan_SetupOpenGLContext()
+{
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 }
 
 void MikuPan_Clear()
@@ -137,6 +147,25 @@ int MikuPan_GetWindowHeight()
 int MikuPan_GetRenderMode()
 {
     return MikuPan_IsWireframeRendering() ? GL_LINE_STRIP : GL_TRIANGLE_STRIP;
+}
+
+void MikuPan_SetupAmbientLighting()
+{
+    for (int i = 0; i < MAX_SHADER_PROGRAMS; i++)
+    {
+        u_int curr = MikuPan_SetCurrentShaderProgram(i);
+
+        glad_glUniform3fv(
+            glad_glGetUniformLocation(curr, "lightColor"),
+            1,
+            TAmbient
+            /* MikuPan_GetLightColor() */
+            /* TAmbient */);
+
+        glad_glUniform1f(
+            glad_glGetUniformLocation(curr, "ambientStrength"),
+            1.0f);
+    }
 }
 
 void MikuPan_RenderSetDebugValues()
@@ -230,23 +259,8 @@ void MikuPan_Render2DTexture(DISP_SPRT *sprite)
     src_rect.x = (float) sprite->u;
     src_rect.y = (float) sprite->v;
 
-    if (sprite->scw != 1.0f)
-    {
-        src_rect.w = (float) sprite->w * sprite->scw;
-    }
-    else
-    {
-        src_rect.w = (float) sprite->w;
-    }
-
-    if (sprite->sch != 1.0f)
-    {
-        src_rect.h = (float) sprite->h * sprite->sch;
-    }
-    else
-    {
-        src_rect.h = (float) sprite->h;
-    }
+    src_rect.w = (float) sprite->w;
+    src_rect.h = (float) sprite->h;
 
     dst_rect.x = (float) sprite->x;
     dst_rect.y = (float) sprite->y;
@@ -254,8 +268,7 @@ void MikuPan_Render2DTexture(DISP_SPRT *sprite)
     dst_rect.w = (float) sprite->w;
     dst_rect.h = (float) sprite->h;
 
-    MikuPan_RenderSprite(src_rect, dst_rect, sprite->r, sprite->g, sprite->b,
-                         sprite->alpha, sprite->rot, sprite->att & 0x2, sprite->att & 0x1, texture_info);
+    MikuPan_RenderSprite(src_rect, dst_rect, sprite->r, sprite->g, sprite->b, sprite->alpha, texture_info);
 }
 
 int MikuPan_GetTextureIndex(int fnt)
@@ -290,8 +303,7 @@ void MikuPan_Render2DMessage(DISP_SPRT *sprite)
     dst_rect.w = (float) sprite->w;
     dst_rect.h = (float) sprite->h;
 
-    MikuPan_RenderSprite(src_rect, dst_rect, sprite->r, sprite->g, sprite->b,
-                         sprite->alpha, sprite->rot, sprite->att & 0x2, sprite->att & 0x1, curr_fnt_texture);
+    MikuPan_RenderSprite(src_rect, dst_rect, sprite->r, sprite->g, sprite->b, sprite->alpha, curr_fnt_texture);
 }
 
 void MikuPan_RenderSquare(float x1, float y1, float x2, float y2,
@@ -451,7 +463,7 @@ void MikuPan_RenderBoundingBox(sceVu0FVECTOR *vertices)
 }
 
 void MikuPan_RenderSprite(MikuPan_Rect src, MikuPan_Rect dst, u_char r,
-                          u_char g, u_char b, u_char a, float rotation, bool flipX, bool flipY,
+                          u_char g, u_char b, u_char a,
                           MikuPan_TextureInfo *texture_info)
 {
     if (texture_info == NULL)
@@ -478,20 +490,6 @@ void MikuPan_RenderSprite(MikuPan_Rect src, MikuPan_Rect dst, u_char r,
     float v0 = (src.y / texH) + halfV;
     float u1 = ((src.x + dst.w) / texW) - halfU;
     float v1 = ((src.y + dst.h) / texH) - halfV;
-
-    if (flipX == 1)
-    {
-        float tmp = u0;
-        u0 = u1;
-        u1 = tmp;
-    }
-
-    if (flipY == 1)
-    {
-        float tmp = v0;
-        v0 = v1;
-        v1 = tmp;
-    }
 
     float vertices[6][4] =
     {
@@ -558,10 +556,7 @@ void MikuPan_RenderSprite3D(sceGsTex0 *tex, float* buffer)
     glad_glBindVertexArray(pipeline->vao);
     MikuPan_SetTexture(tex);
 
-    MikuPan_SetRenderState2D();
-
-    glad_glEnable(GL_DEPTH_TEST);
-    glad_glDepthFunc(GL_LEQUAL);
+    MikuPan_SetRenderStateSprite3D();
 
     glad_glBindBuffer(GL_ARRAY_BUFFER, pipeline->buffers[0].id);
     glad_glBufferSubData(GL_ARRAY_BUFFER, 0, pipeline->buffers[0].buffer_length, buffer);
@@ -583,9 +578,9 @@ void MikuPan_SetupFntTexture()
     curr_fnt_texture = fnt_texture[0];
 }
 
-float* MikuPan_GetWorldScreenMatrix()
+float* MikuPan_GetWorldClipView()
 {
-    return (float*)&WorldScreen;
+    return (float*)&WorldClipView;
 }
 
 void MikuPan_SetWeightedMesh(int value)
@@ -593,9 +588,15 @@ void MikuPan_SetWeightedMesh(int value)
     MikuPan_SetUniform1iToAllShaders(value, "isWeighted");
 }
 
-void MikuPan_SetWorldScreen()
+void MikuPan_SetWorldClipView()
 {
-    MikuPan_SetModelTransformMatrix(WorldScreen);
+    MikuPan_SetModelTransformMatrix(WorldClipView);
+}
+
+void MikuPan_SetModelTransformMatrix(sceVu0FVECTOR *m)
+{
+    state_changes++;
+    MikuPan_SetUniformMatrix4fvToAllShaders((float*)m, "model");
 }
 
 void MikuPan_SetFontTexture(int fnt)
@@ -625,44 +626,61 @@ void MikuPan_Shutdown()
 
 void MikuPan_EndFrame()
 {
+    info_log("Total state changes and draw calls this frame: %d, %d", state_changes, draw_calls);
+    draw_calls = 0;
+    state_changes = 0;
     MikuPan_DrawUi();
     MikuPan_RenderUi();
     SDL_GL_SwapWindow(window);
 }
 
-void MikuPan_SetModelTransformMatrix(sceVu0FVECTOR *m)
-{
-    MikuPan_SetUniformMatrix4fvToAllShaders((float*)m, "model");
-}
-
-void MikuPan_SetModelTransform(unsigned int *prim)
-{
-    SgCOORDUNIT* cp = &lcp[prim[1]];
-    MikuPan_SetModelTransformMatrix(cp->lwmtx);
-}
-
-void MikuPan_Camera(SgCAMERA *camera)
+void MikuPan_SetupCamera(MikuPan_Camera *mikupan_camera)
 {
     // View -> camera->wv
     vec3 center = {0};
-    glm_vec3_add(camera->p, camera->zd, center);
+    glm_vec3_add(mikupan_camera->p, mikupan_camera->zd, center);
     vec3 up = {0};
     mat4 roll = {0};
     vec3 axis = {0.0f, 0.0f, 1.0f};
     glm_mat4_identity(roll);
-    glm_rotate(roll, -camera->roll, axis);
-    glm_mat4_mulv3(roll, camera->yd, 1.0f, up);
-    glm_lookat(camera->p, center, up, WorldView);
+    glm_rotate(roll, -mikupan_camera->roll, axis);
+    glm_mat4_mulv3(roll, mikupan_camera->yd, 1.0f, up);
+    glm_lookat(mikupan_camera->p, center, up, WorldView);
 
     // Projection -> camera->vcv
     float aspect = (float) window_width / (float) window_height;
-    glm_perspective(camera->fov, aspect, 10.0f, camera->farz,
-                    projection);
+    glm_perspective(mikupan_camera->fov, aspect, 10.0f, mikupan_camera->farz, projection);
 
-    glm_mat4_mul(projection, WorldView, WorldScreen);
 
+    glm_mat4_mul(projection, WorldView, WorldClipView);
     MikuPan_SetUniformMatrix4fvToAllShaders((float*)WorldView, "view");
     MikuPan_SetUniformMatrix4fvToAllShaders((float*)projection, "projection");
+
+    float nearz = mikupan_camera->nearz;
+    float farz  = mikupan_camera->farz;
+
+    float gs_width  = 4096.0f;
+    float gs_height = 4096.0f;
+
+    float scaleX = window_width  / gs_width;
+    float scaleY = window_height / gs_height;
+
+    mat4 vc;
+    glm_mat4_identity(vc);
+
+    vc[0][0] = (((nearz + nearz) * mikupan_camera->ax) / (gs_width)) * scaleX;
+    vc[1][1] = (((nearz + nearz) * mikupan_camera->ay) / (gs_height)) * scaleY;
+
+    vc[2][2] = (farz + nearz) / (farz - nearz);
+    vc[2][3] = 1.0f;
+
+    vc[3][2] = ((farz * nearz) * -2.0f) / (farz - nearz);
+    vc[3][3] = 0.0f;
+
+    glm_mat4_mul(vc, WorldView, WorldClip);
+
+    SgSetClipMtx(WorldClip);
+    SgSetClipVMtx(WorldClipView);
 }
 
 void MikuPan_Setup3D()
@@ -681,7 +699,7 @@ void MikuPan_SetupMirrorMtx(float* mtx)
     glm_mat4_make(mtx, m);
     glm_mat4_mul(WorldView, m, out);
 
-    glm_mat4_mul(projection, out, WorldScreen);
+    glm_mat4_mul(projection, out, WorldClipView);
 
     MikuPan_SetUniformMatrix4fvToAllShaders((float*)out, "view");
 }
@@ -689,6 +707,8 @@ void MikuPan_SetupMirrorMtx(float* mtx)
 void MikuPan_RenderMeshType0x32(struct SGDPROCUNITHEADER *pVUVN,
                                 struct SGDPROCUNITHEADER *pPUHead)
 {
+    MikuPan_SetupAmbientLighting();
+
     MikuPan_PipelineInfo* pipeline;
     if (GET_MESH_TYPE(pPUHead) == 0x32 && MikuPan_IsMesh0x32Rendering())
     {
@@ -748,10 +768,7 @@ void MikuPan_RenderMeshType0x32(struct SGDPROCUNITHEADER *pVUVN,
     glad_glBindBuffer(GL_ARRAY_BUFFER, pipeline->buffers[1].id);
     int vertex_offset = 0;
 
-    glad_glEnable(GL_PRIMITIVE_RESTART);
-    glad_glPrimitiveRestartIndex(0xFFFFFFFF);
-
-
+    MikuPan_SetTriangleStripRestart();
 
     if (GET_NUM_MESH(pPUHead) * pVUVN->VUVNDesc.sNumVertex * 4 > (1024 * 1024))
     {
@@ -760,17 +777,11 @@ void MikuPan_RenderMeshType0x32(struct SGDPROCUNITHEADER *pVUVN,
 
     for (int i = 0; i < GET_NUM_MESH(pPUHead); i++)
     {
-        pVMCD = (struct _SGDVUMESHCOLORDATA *) GetNextUnpackAddr((u_int *) pVMCD);
+        pVMCD = (struct _SGDVUMESHCOLORDATA *) MikuPan_GetNextUnpackAddr((u_int *) pVMCD);
         int vertex_count = pVMCD->VifUnpack.NUM;
 
-        for (int j = 0; j < vertex_count; j++)
-        {
-            vertex_index[vertex_offset + j + i] = vertex_offset + j;
-        }
-
-        vertex_index[vertex_offset + vertex_count + i] = 0xFFFFFFFF;
-
         MikuPan_FixUV((float*)&sgdMeshData->astData, vertex_count);
+        MikuPan_SetTriangleIndex(vertex_index, vertex_count, vertex_offset, i);
 
         glad_glBufferSubData(
             GL_ARRAY_BUFFER,
@@ -787,14 +798,12 @@ void MikuPan_RenderMeshType0x32(struct SGDPROCUNITHEADER *pVUVN,
             glad_glUniform3fv(loc, 1, (float *) normals);
         }
 
-        //glad_glDrawArrays(MikuPan_GetRenderMode(), vertex_offset, vertex_count);
-
         vertex_offset += vertex_count;
         sgdMeshData = (struct SGDVUMESHSTDATA *) &sgdMeshData->astData[vertex_count];
         pVMCD = (struct _SGDVUMESHCOLORDATA *) &pVMCD->avColor[vertex_count];
     }
 
-    //glad_glDrawArrays(MikuPan_GetRenderMode(), 0, pVUVN->VUVNDesc.sNumVertex);
+    draw_calls++;
     glad_glDrawElements(MikuPan_GetRenderMode(), pVUVN->VUVNDesc.sNumVertex + GET_NUM_MESH(pPUHead), GL_UNSIGNED_INT, vertex_index);
 }
 
@@ -805,11 +814,14 @@ void MikuPan_RenderMeshType0x82(unsigned int *pVUVN, unsigned int *pPUHead)
         return;
     }
 
+    MikuPan_SetupAmbientLighting();
+
     struct SGDVUVNDATA_PRESET *pVUVNData = (struct SGDVUVNDATA_PRESET *) &(((struct SGDPROCUNITHEADER *) pVUVN)[1]);
     struct SGDVUMESHPOINTNUM *pMeshInfo = (struct SGDVUMESHPOINTNUM *) &(((struct SGDPROCUNITHEADER *) pPUHead)[4]);
     union SGDPROCUNITDATA *pProcData = (union SGDPROCUNITDATA *) &(((struct SGDPROCUNITHEADER *) pPUHead)[1]);
     struct SGDVUMESHSTREGSET* sgdVuMeshStRegSet = (struct SGDVUMESHSTREGSET *) &pMeshInfo[GET_NUM_MESH(pPUHead)];
     struct SGDVUMESHSTDATA* sgdMeshData = (struct SGDVUMESHSTDATA *) &sgdVuMeshStRegSet->auiVifCode[3];
+    VUVN_PRIM *v = ((VUVN_PRIM *) &((int*)pVUVN)[2]);
 
     MikuPan_SetShaderProgramWithBackup(MESH_0x12_SHADER);
     MikuPan_PipelineInfo* pipeline = MikuPan_GetPipelineInfo(POSITION3_NORMAL3_UV);
@@ -818,34 +830,39 @@ void MikuPan_RenderMeshType0x82(unsigned int *pVUVN, unsigned int *pPUHead)
     sceGsTex0 *mesh_tex_reg = (sceGsTex0 *) ((int64_t) pProcData + 0x18);
     MikuPan_SetTexture(mesh_tex_reg);
 
-    int vertexOffset = 0;
+    int vertex_offset = 0;
 
     MikuPan_SetRenderState3D();
 
+    glad_glBindBuffer(GL_ARRAY_BUFFER, pipeline->buffers[0].id);
+    glad_glBufferSubData(GL_ARRAY_BUFFER, 0, v->vnum * sizeof(struct SGDMESHVERTEXDATA_TYPE2), pVUVNData->avt2);
+
+    glad_glBindBuffer(GL_ARRAY_BUFFER, pipeline->buffers[1].id);
+
     for (int i = 0; i < GET_NUM_MESH(pPUHead); i++)
     {
-        int vertexCount = pMeshInfo[i].uiPointNum;
+        int vertex_count = pMeshInfo[i].uiPointNum;
 
-        if (vertexCount == 0)
+        if (vertex_count == 0)
         {
             continue;
         }
 
-        MikuPan_FixUV((float*)&sgdMeshData->astData, vertexCount);
+        MikuPan_FixUV((float*)&sgdMeshData->astData, vertex_count);
+        MikuPan_SetTriangleIndex(vertex_index, vertex_count, vertex_offset, i);
 
-        glad_glBindBuffer(GL_ARRAY_BUFFER, pipeline->buffers[0].id);
-        glad_glBufferSubData(GL_ARRAY_BUFFER, 0, vertexCount * sizeof(struct SGDMESHVERTEXDATA_TYPE2), &pVUVNData->avt2[vertexOffset]);
+        glad_glBufferSubData(
+            GL_ARRAY_BUFFER,
+            pipeline->buffers[1].attributes[0].stride * vertex_offset,
+            vertex_count * sizeof(float[2]),
+            sgdMeshData->astData);
 
-        glad_glBindBuffer(GL_ARRAY_BUFFER, pipeline->buffers[1].id);
-        glad_glBufferSubData(GL_ARRAY_BUFFER, 0, vertexCount * sizeof(float[2]),
-                             sgdMeshData->astData);
-
-        glad_glDrawArrays(MikuPan_GetRenderMode(), 0, vertexCount);
-
-
-        sgdMeshData = (struct SGDVUMESHSTDATA *) &sgdMeshData->astData[vertexCount];
-        vertexOffset += vertexCount;
+        sgdMeshData = (struct SGDVUMESHSTDATA *) &sgdMeshData->astData[vertex_count];
+        vertex_offset += vertex_count;
     }
+
+    draw_calls++;
+    glad_glDrawElements(MikuPan_GetRenderMode(), v->nnum + GET_NUM_MESH(pPUHead), GL_UNSIGNED_INT, vertex_index);
 }
 
 void MikuPan_RenderMeshType0x2(struct SGDPROCUNITHEADER *pVUVN,
@@ -856,6 +873,7 @@ void MikuPan_RenderMeshType0x2(struct SGDPROCUNITHEADER *pVUVN,
         return;
     }
 
+    MikuPan_SetupAmbientLighting();
     MikuPan_SetShaderProgramWithBackup(MESH_0x2_SHADER);
     MikuPan_PipelineInfo* pipeline = MikuPan_GetPipelineInfo(POSITION4_NORMAL4_UV);
     VUVN_PRIM *v = ((VUVN_PRIM *) &((int*)pVUVN)[2]);
@@ -886,8 +904,7 @@ void MikuPan_RenderMeshType0x2(struct SGDPROCUNITHEADER *pVUVN,
 
     int vertex_offset = 0;
 
-    glad_glEnable(GL_PRIMITIVE_RESTART);
-    glad_glPrimitiveRestartIndex(0xFFFFFFFF);
+    MikuPan_SetTriangleStripRestart();
 
     if (GET_NUM_MESH(pPUHead) * pVUVN->VUVNDesc.sNumVertex * 4 > (1024 * 1024))
     {
@@ -900,12 +917,7 @@ void MikuPan_RenderMeshType0x2(struct SGDPROCUNITHEADER *pVUVN,
 
         MikuPan_FixUV((float*)&sgdMeshData->astData, vertex_count);
 
-        for (int j = 0; j < vertex_count; j++)
-        {
-            vertex_index[vertex_offset + j + i] = vertex_offset + j;
-        }
-
-        vertex_index[vertex_offset + vertex_count + i] = 0xFFFFFFFF;
+        MikuPan_SetTriangleIndex(vertex_index, vertex_count, vertex_offset, i);
 
         glad_glBufferSubData(
             GL_ARRAY_BUFFER,
@@ -913,13 +925,10 @@ void MikuPan_RenderMeshType0x2(struct SGDPROCUNITHEADER *pVUVN,
             vertex_count * pipeline->buffers[1].attributes[0].stride,
             sgdMeshData->astData);
 
-        //glad_glDrawArrays(MikuPan_GetRenderMode(), vertex_offset, vertex_count);
-
-        sgdMeshData = (struct SGDVUMESHSTDATA *) &sgdMeshData
-                          ->astData[vertex_count];
+        sgdMeshData = (struct SGDVUMESHSTDATA *) &sgdMeshData->astData[vertex_count];
         vertex_offset += vertex_count;
     }
 
-    //glad_glDrawArrays(MikuPan_GetRenderMode(), 0, v->nnum);
+    draw_calls++;
     glad_glDrawElements(MikuPan_GetRenderMode(), v->nnum + GET_NUM_MESH(pPUHead), GL_UNSIGNED_INT, vertex_index);
 }

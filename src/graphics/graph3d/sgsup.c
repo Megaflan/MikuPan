@@ -211,8 +211,10 @@ void DrawBoundingBox(sceVu0FVECTOR *box)
 
         ((u_long *) datap)[0] =
             SCE_GIF_SET_TAG(4, eop, SCE_GS_TRUE, 100, SCE_GIF_PACKED, 2);
-        ((long *) datap)[1] =
-            0 | SCE_GS_RGBAQ << (4 * 0) | SCE_GS_XYZF2 << (4 * 1);
+
+        ((long *) datap)[1] = 0 |
+            SCE_GS_RGBAQ << (4 * 0) |
+            SCE_GS_XYZF2 << (4 * 1);
 
         datap += 4;
 
@@ -570,7 +572,8 @@ u_int *GetModelGroupPacket(void *sgd_top)
 
     hs = (HeaderSection *) sgd_top;
 
-    pk = (u_int *) hs->primitives;
+    pk = GetTopProcUnitHeaderPtr(hs, 0);
+    //pk = (u_int *) hs->primitives;
 
     if (pk == NULL)
     {
@@ -584,7 +587,8 @@ u_int *GetModelGroupPacket(void *sgd_top)
             return pk;
         }
 
-        pk = (u_int *) *pk;
+        pk = GetNextProcUnitHeaderPtr(pk);
+        //pk = (u_int *) *pk;
     }
 
     return NULL;

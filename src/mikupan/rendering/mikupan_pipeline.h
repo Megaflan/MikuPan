@@ -11,5 +11,7 @@ MikuPan_PipelineInfo* MikuPan_GetPipelineInfo(enum MikuPan_PipelineType pipeline
 void MikuPan_SetRenderState3D();
 void MikuPan_SetRenderState3DMirror();
 void MikuPan_SetRenderState2D();
+void MikuPan_SetRenderStateSprite3D();
+void MikuPan_SetTriangleStripRestart();
 
 #endif//MIKUPAN_MIKUPAN_PIPELINE_H

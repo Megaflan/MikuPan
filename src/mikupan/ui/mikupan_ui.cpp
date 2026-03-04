@@ -34,6 +34,8 @@ bool show_mesh_0x32 = true;
 bool show_mesh_0x12 = true;
 bool show_mesh_0x2 = true;
 
+float light_color[3] = { 1.0f, 1.0f, 1.0f };
+
 FrameTimeGraph::FrameTimeGraph(int max_samples, float ms_scale) : max_samples_(std::max(8, max_samples)), ms_scale_(ms_scale)
 {
     times_.reserve(max_samples_);
@@ -298,6 +300,11 @@ void MikuPan_UiMenuBar()
                     MikuPan_RequestFlushTextureCache();
                 }
 
+                if (ImGui::SliderFloat3("Light Color", light_color, 0.0f, 1.0f, "%.3f"))
+                {
+
+                }
+
                 ImGui::EndMenu();
             }
 
@@ -338,7 +345,13 @@ int MikuPan_IsMesh0x12Rendering()
 {
     return show_mesh_0x12;
 }
+
 int MikuPan_IsMesh0x2Rendering()
 {
     return show_mesh_0x2;
+}
+
+float* MikuPan_GetLightColor()
+{
+    return light_color;
 }

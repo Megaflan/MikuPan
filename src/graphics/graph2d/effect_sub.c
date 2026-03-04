@@ -985,7 +985,7 @@ void Set3DPosTexure(sceVu0FMATRIX wlm, DRAW_ENV *de, int texno, float w, float h
     //sceVu0MulMatrix(slm, SgWSMtx, wlm);
     //sceVu0RotTransPersN(ivec, slm, ppos, 4, 1);
 
-    sceVu0MulMatrix(slm, *(sceVu0FMATRIX*)MikuPan_GetWorldScreenMatrix(), wlm);
+    sceVu0MulMatrix(slm, *(sceVu0FMATRIX*)MikuPan_GetWorldClipView(), wlm);
     sceVu0RotTransPersNF(ivec, slm, ppos, 4, 1);
 
     tx0 = effdat[texno + monochrome_mode].tex0;
@@ -2820,7 +2820,6 @@ void LocalCopyBtoL_Sub(int no, int type, int addr) {
         pbuf[ndpkt].ul64[1] = SCE_GS_TRXDIR;
         ndpkt++;
 
-        // pbuf[ndpkt].ul64[0] = nloop | 0x1800000000008000;
         pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(nloop, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_IMAGE, 1);
         pbuf[ndpkt].ul64[1] = SCE_GIF_PACKED_AD;
         ndpkt++;

@@ -784,7 +784,7 @@ void SubFire1(EFFECT_CONT *ec)
     sceVu0RotMatrixX(wlm, wlm, PI);
     sceVu0RotMatrixY(wlm, wlm, rot_y);
     sceVu0TransMatrix(wlm, wlm, vpos);
-    sceVu0MulMatrix(slm, *(sceVu0FMATRIX*)MikuPan_GetWorldScreenMatrix(), wlm);
+    sceVu0MulMatrix(slm, *(sceVu0FMATRIX*)MikuPan_GetWorldClipView(), wlm);
     //sceVu0MulMatrix(slm, SgWSMtx, wlm);
 
     w = 0;
@@ -3587,7 +3587,7 @@ void SetDust(EFFECT_CONT *ec)
         sceVu0RotMatrixX(wlm, wlm, rot_x);
         sceVu0RotMatrixY(wlm, wlm, rot_y);
         sceVu0TransMatrix(wlm, wlm, wpos);
-        sceVu0MulMatrix(slm, *(sceVu0FMATRIX*)MikuPan_GetWorldScreenMatrix(), wlm);
+        sceVu0MulMatrix(slm, *(sceVu0FMATRIX*)MikuPan_GetWorldClipView(), wlm);
         //sceVu0MulMatrix(slm, SgWSMtx, wlm);
 
         w = 0;
@@ -3655,7 +3655,7 @@ void SetDust(EFFECT_CONT *ec)
         sceVu0RotMatrixX(wlm, wlm, rot_x);
         sceVu0RotMatrixY(wlm, wlm, rot_y);
         sceVu0TransMatrix(wlm, wlm, wpos);
-        sceVu0MulMatrix(slm, *(sceVu0FMATRIX*)MikuPan_GetWorldScreenMatrix(), wlm);
+        sceVu0MulMatrix(slm, *(sceVu0FMATRIX*)MikuPan_GetWorldClipView(), wlm);
         //sceVu0MulMatrix(slm, SgWSMtx, wlm);
 
         w = 0;
@@ -4362,7 +4362,7 @@ void RunLeafSub(EFF_LEAF *lep)
         }
 
         sceVu0TransMatrix(wlm, wlm, wpos);
-        sceVu0MulMatrix(slm, *(sceVu0FMATRIX*)MikuPan_GetWorldScreenMatrix(), wlm);
+        sceVu0MulMatrix(slm, *(sceVu0FMATRIX*)MikuPan_GetWorldClipView(), wlm);
         //sceVu0MulMatrix(slm, SgWSMtx, wlm);
 
         for (j = 0, w = 0; j < 5; j++)
@@ -5528,7 +5528,7 @@ void SetSky()
         cpos[2] = camera.p[2] + ((camera.i[2] - camera.p[2]) * length) / l;
         cpos[3] = 1.0f;
 
-        sceVu0RotTransPersF(ivec, *(sceVu0FMATRIX*)MikuPan_GetWorldScreenMatrix(), cpos, 0);
+        sceVu0RotTransPersF(ivec, *(sceVu0FMATRIX*)MikuPan_GetWorldClipView(), cpos, 0);
         //sceVu0RotTransPers(ivec, SgWSMtx, cpos, 0);
 
         clip = 0;

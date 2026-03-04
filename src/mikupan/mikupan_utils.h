@@ -11,7 +11,8 @@
 void MikuPan_ConvertPs2ScreenCoordToNDCMaintainAspectRatio(float* out, float screen_width, float screen_height, float x, float y);
 float MikuPan_ConvertScaleColor(unsigned char color_fragment);
 unsigned char MikuPan_GamePadAxisToPS2(int sdl_axis, int deadzone);
-void MikuPan_GetPS2Viewport(int width, int height,
-    float *vx, float *vy, float *vw, float *vh, float *scale);
+void MikuPan_GetPS2Viewport(int width, int height, float *vx, float *vy, float *vw, float *vh, float *scale);
 void MikuPan_FixUV(float* uv, int num);
+void MikuPan_SetTriangleIndex(int* triangle_index, int vertex_count, int vertex_offset, int mesh_offset);
+unsigned int *MikuPan_GetNextUnpackAddr(unsigned int *prim);
 #endif//MIKUPAN_MIKUPAN_UTILS_H

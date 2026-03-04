@@ -6,6 +6,8 @@ out vec4 FragColor;
 
 uniform sampler2D uTexture;
 uniform int renderNormals;
+uniform vec3 lightColor;
+uniform float ambientStrength;
 
 void main()
 {
@@ -16,13 +18,14 @@ void main()
         discard;
     }
 
+    vec3 ambient = ambientStrength * lightColor;
+
     if (renderNormals == 1)
     {
         FragColor = normalize(vNormal);
     }
     else
     {
-
-        FragColor = vec4(tex.rgb, tex.a);
+        FragColor = tex * vec4(ambient, 1.0f);
     }
 }
