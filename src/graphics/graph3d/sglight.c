@@ -804,11 +804,11 @@ void SetSpotGroup(sceVu0FMATRIX wlmtx)
 void SetLightData(SgCOORDUNIT *cp0, SgCOORDUNIT *cp1)
 {
     int i;
-    sceVu0FMATRIX tmp;
+    sceVu0FMATRIX tmp = {0};
     sceVu0FMATRIX tmp2;
-    sceVu0FVECTOR tmpv;
+    sceVu0FVECTOR tmpv = {0};
     sceVu0FVECTOR tmpv2;
-    sceVu0FVECTOR scale;
+    sceVu0FVECTOR scale = {0};
 
     if (cp1 == NULL)
     {
@@ -1579,7 +1579,7 @@ void SetPreRenderTYPE2(int gloops, u_int *prim)
 
                 if (dbg_flg != 0)
                 {
-                    printf("%f %f %f\n", pcol[0], pcol[1], pcol[2]);
+                    info_log("%f %f %f", pcol[0], pcol[1], pcol[2]);
                 }
 
                 ((float *) prim)[0] = pcol[0];
@@ -1696,13 +1696,13 @@ void SetPreRenderMeshData(u_int *prim)
 
     switch (mtype)
     {
-        case 16:
+        case 0x10:
             SetPreRenderTYPE0(gloops, prim);
             break;
-        case 18:
+        case 0x12:
             SetPreRenderTYPE2(gloops, prim);
             break;
-        case 50:
+        case 0x32:
             SetPreRenderTYPE2F(gloops, prim);
             break;
     }
@@ -2034,8 +2034,6 @@ void ClearPreRenderMeshData(u_int *prim)
             break;
         case 0x12:
         case 0x32:
-            //MikuPan_RenderMeshType0x32((struct SGDPROCUNITHEADER *) vuvnprim, (struct SGDPROCUNITHEADER *) prim);
-
             for (j = 0; j < gloops; j++)
             {
                 prim = GetNextUnpackAddr(prim);

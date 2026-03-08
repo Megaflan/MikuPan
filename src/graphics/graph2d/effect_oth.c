@@ -9,19 +9,22 @@
 #include "ee/eestruct.h"
 #include "sce/libvu0.h"
 
-#include "os/eeiop/eese.h"
-#include "os/eeiop/cdvd/eecdvd.h"
-#include "main/glob.h"
+#include "graphics/graph2d/effect.h"
+#include "graphics/graph2d/effect_obj.h"
+#include "graphics/graph2d/effect_sub.h"
+#include "graphics/graph2d/tim2.h"
+#include "graphics/graph2d/tim2_new.h"
+#include "graphics/graph3d/libsg.h"
+#include "graphics/graph3d/sglib.h"
+#include "ingame/enemy/ene_ctl.h"
 #include "ingame/ig_glob.h"
 #include "ingame/menu/sp_menu.h"
 #include "ingame/plyr/unit_ctl.h"
-#include "ingame/enemy/ene_ctl.h"
-#include "graphics/graph2d/tim2.h"
-#include "graphics/graph2d/tim2_new.h"
-#include "graphics/graph3d/sglib.h"
-#include "graphics/graph2d/effect.h"
-#include "graphics/graph2d/effect_sub.h"
-#include "graphics/graph2d/effect_obj.h"
+#include "main/glob.h"
+#include "mikupan/mikupan_utils.h"
+#include "mikupan/rendering/mikupan_renderer.h"
+#include "os/eeiop/cdvd/eecdvd.h"
+#include "os/eeiop/eese.h"
 
 int stop_lf = 0;
 
@@ -474,28 +477,54 @@ void SetEffSQTex(int n, float *v, int tp, float w, float h, u_char r, u_char g, 
     pbuf[ndpkt++].ul64[1] = SCE_GS_TEST_1;
 
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, 340, SCE_GIF_PACKED, 3);
+
     pbuf[ndpkt++].ul64[1] = 0 \
-        | SCE_GS_RGBAQ << (4 * 0)
-        | SCE_GS_UV    << (4 * 1)
+        | SCE_GS_UV << (4 * 0)
+        | SCE_GS_RGBAQ    << (4 * 1)
         | SCE_GS_XYZF2 << (4 * 2);
+
+    float* buf = (float*)&pbuf[ndpkt];
 
     for (i = 0; i < 4; i++)
     {
-        pbuf[ndpkt].ui32[0] = rr;
-        pbuf[ndpkt].ui32[1] = gg;
-        pbuf[ndpkt].ui32[2] = bb;
-        pbuf[ndpkt++].ui32[3] = a;
+        pbuf[ndpkt].fl32[0] = (float)(i % 2 ? tw - 8 : 8) / tw;
+        pbuf[ndpkt].fl32[1] = (float)(i / 2 ? th - 8 : 8) / th;
+        pbuf[ndpkt].fl32[2] = 0;
+        pbuf[ndpkt++].fl32[3] = 0;
 
-        pbuf[ndpkt].ui32[0] = i % 2 ? tw - 8 : 8;
-        pbuf[ndpkt].ui32[1] = i / 2 ? th - 8 : 8;
-        pbuf[ndpkt].ui32[2] = 0;
-        pbuf[ndpkt++].ui32[3] = 0;
+        pbuf[ndpkt].fl32[0] = MikuPan_ConvertScaleColor(rr);
+        pbuf[ndpkt].fl32[1] = MikuPan_ConvertScaleColor(gg);
+        pbuf[ndpkt].fl32[2] = MikuPan_ConvertScaleColor(bb);
+        pbuf[ndpkt++].fl32[3] = MikuPan_ConvertScaleColor(a);
 
-        pbuf[ndpkt].ui32[0] = (int)(xx[i % 2] * 16.0f);
-        pbuf[ndpkt].ui32[1] = (int)(yy[i / 2] * 16.0f);
-        pbuf[ndpkt].ui32[2] = (int)(v[2] * 16.0f);
-        pbuf[ndpkt++].ui32[3] = i > 1 ? 0 : 0x8000;
+        pbuf[ndpkt].fl32[0] = ((float)(xx[i % 2] - 2048.0f) / 2048.0f) * 2.0f - 1.0f;
+        pbuf[ndpkt].fl32[1] = 1.0f - ((float)(yy[i / 2] - 2048.0f) / 2048.0f) * 2.0f;
+        pbuf[ndpkt].fl32[2] = 0.0f;
+        //pbuf[ndpkt].fl32[2] = (float)(v[2] - 2048.0f) / 2048.0f;
+        pbuf[ndpkt++].fl32[3] = 1.0f;
     }
+
+    MikuPan_RenderSprite3D((sceGsTex0*)&tx0, buf);
+
+    //pbuf[ndpkt++].ul64[1] = 0 \
+    //    | SCE_GS_RGBAQ << (4 * 0)
+    //    | SCE_GS_UV    << (4 * 1)
+    //    | SCE_GS_XYZF2 << (4 * 2);
+    //for (i = 0; i < 4; i++)
+    //{
+    //    pbuf[ndpkt].ui32[0] = rr;
+    //    pbuf[ndpkt].ui32[1] = gg;
+    //    pbuf[ndpkt].ui32[2] = bb;
+    //    pbuf[ndpkt++].ui32[3] = a;
+    //    pbuf[ndpkt].ui32[0] = i % 2 ? tw - 8 : 8;
+    //    pbuf[ndpkt].ui32[1] = i / 2 ? th - 8 : 8;
+    //    pbuf[ndpkt].ui32[2] = 0;
+    //    pbuf[ndpkt++].ui32[3] = 0;
+    //    pbuf[ndpkt].ui32[0] = (int)(xx[i % 2] * 16.0f);
+    //    pbuf[ndpkt].ui32[1] = (int)(yy[i / 2] * 16.0f);
+    //    pbuf[ndpkt].ui32[2] = (int)(v[2] * 16.0f);
+    //    pbuf[ndpkt++].ui32[3] = i > 1 ? 0 : 0x8000;
+    //}
 }
 
 void SetEffSQITex(int n, int *v, int tp, float w, float h, u_char r, u_char g, u_char b, u_char a)
@@ -615,7 +644,8 @@ void SubFire1(EFFECT_CONT *ec)
     sceVu0FMATRIX wlm;
     sceVu0FMATRIX slm;
     sceVu0IVECTOR ipos;
-    sceVu0IVECTOR ivec[4];
+    sceVu0FVECTOR ivec[4];
+    //sceVu0IVECTOR ivec[4];
     sceVu0FVECTOR vpos;
     sceVu0FVECTOR vtw[4];
     sceVu0FVECTOR wpos[4] = {
@@ -754,13 +784,15 @@ void SubFire1(EFFECT_CONT *ec)
     sceVu0RotMatrixX(wlm, wlm, PI);
     sceVu0RotMatrixY(wlm, wlm, rot_y);
     sceVu0TransMatrix(wlm, wlm, vpos);
-    sceVu0MulMatrix(slm, SgWSMtx, wlm);
+    sceVu0MulMatrix(slm, *(sceVu0FMATRIX*)MikuPan_GetWorldClipView(), wlm);
+    //sceVu0MulMatrix(slm, SgWSMtx, wlm);
 
     w = 0;
 
     for (i = 0; i < 4; i++)
     {
-        sceVu0RotTransPers(ivec[i], slm, wpos[i], 0);
+        sceVu0RotTransPersF(ivec[i], slm, wpos[i], 0);
+        //sceVu0RotTransPers(ivec[i], slm, wpos[i], 0);
 
         if (0x8000 < ivec[i][0] - 0x4000U)
         {
@@ -832,23 +864,43 @@ void SubFire1(EFFECT_CONT *ec)
             | SCE_GS_UV    << (4 * 1)
             | SCE_GS_XYZF2 << (4 * 2);
 
+        float* buf = (float*)&pbuf[ndpkt];
+
         for (i = 0; i < 4; i++)
         {
-            pbuf[ndpkt].ui32[0] = mr;
-            pbuf[ndpkt].ui32[1] = mg;
-            pbuf[ndpkt].ui32[2] = mb;
-            pbuf[ndpkt++].ui32[3] = arate * 96.0f;
+            pbuf[ndpkt].fl32[0] = (float)(i % 2 ? tw - 8 : 8) / (float)tw;
+            pbuf[ndpkt].fl32[1] = (float)(i / 2 ? th - 8 : 8) / (float)th;
+            pbuf[ndpkt].fl32[2] = 0;
+            pbuf[ndpkt++].fl32[3] = 0;
 
-            pbuf[ndpkt].ui32[0] = i % 2 ? tw - 8 : 8;
-            pbuf[ndpkt].ui32[1] = i / 2 ? th - 8 : 8;
-            pbuf[ndpkt].ui32[2] = 0;
-            pbuf[ndpkt++].ui32[3] = 0;
+            pbuf[ndpkt].fl32[0] = (float)mr/128.0f;
+            pbuf[ndpkt].fl32[1] = (float)mg/128.0f;
+            pbuf[ndpkt].fl32[2] = (float)mb/128.0f;
+            pbuf[ndpkt++].fl32[3] = (arate * 96.0f)/128.0f;
 
-            pbuf[ndpkt].ui32[0] = ivec[i][0];
-            pbuf[ndpkt].ui32[1] = ivec[i][1];
-            pbuf[ndpkt].ui32[2] = ec->z;
-            pbuf[ndpkt++].ui32[3] = i > 1 ? 0 : 0x8000;
+            pbuf[ndpkt].fl32[0] = ivec[i][0];
+            pbuf[ndpkt].fl32[1] = ivec[i][1];
+            pbuf[ndpkt].fl32[2] = ivec[i][2];
+            pbuf[ndpkt++].fl32[3] = 1.0f;
         }
+
+        MikuPan_RenderSprite3D((sceGsTex0*)&tx0, buf);
+
+        //for (i = 0; i < 4; i++)
+        //{
+        //    pbuf[ndpkt].ui32[0] = mr;
+        //    pbuf[ndpkt].ui32[1] = mg;
+        //    pbuf[ndpkt].ui32[2] = mb;
+        //    pbuf[ndpkt++].ui32[3] = arate * 96.0f;
+        //    pbuf[ndpkt].ui32[0] = i % 2 ? tw - 8 : 8;
+        //    pbuf[ndpkt].ui32[1] = i / 2 ? th - 8 : 8;
+        //    pbuf[ndpkt].ui32[2] = 0;
+        //    pbuf[ndpkt++].ui32[3] = 0;
+        //    pbuf[ndpkt].ui32[0] = ivec[i][0];
+        //    pbuf[ndpkt].ui32[1] = ivec[i][1];
+        //    pbuf[ndpkt].ui32[2] = ec->z;
+        //    pbuf[ndpkt++].ui32[3] = i > 1 ? 0 : 0x8000;
+        //}
     }
 
     if (ec->dat.uc8[1] & 1)
@@ -1911,7 +1963,7 @@ void* GetTorchPartAddr(void *addr, int type, int lifetime)
         {
             if (torch_particle[i].flag == 0)
             {
-                printf("Set Torch work no = [%d]\n", i);
+                info_log("Set Torch work no = [%d]", i);
                 SetPartInit(&torch_particle[i], type, lifetime);
                 ret = &torch_particle[i];
                 n = 1;
@@ -3142,9 +3194,9 @@ void SetSunshine(EFFECT_CONT *ec)
     float fx; float fy; float fz;
     float l;
     float add;
-    sceVu0FMATRIX wlm;
-    sceVu0FMATRIX slm;
-    sceVu0FVECTOR wpos;
+    sceVu0FMATRIX wlm = {0};
+    sceVu0FMATRIX slm = {0};
+    sceVu0FVECTOR wpos = {0};
     sceVu0FVECTOR base_pos = {22875.0f, -457.0f, 8676.0f, 1.0f};
     sceVu0FVECTOR mpos[6] = {
         {0.0f, -120.0f, -92.0f, 1.0f},
@@ -3154,6 +3206,7 @@ void SetSunshine(EFFECT_CONT *ec)
         {-5.0f, -5.0f, 0.0f, 1.0f},
         {-5.0f, +5.0f, 0.0f, 1.0f}
     };
+
     EFF_SUNSHINE eff_ray[6];
     Q_WORDDATA pbh[1024];
 #ifdef MATCHING_DECOMP
@@ -3285,7 +3338,7 @@ void SetSunshine(EFFECT_CONT *ec)
         {
             sceVu0RotTransPers(eff_ray[i].ipos[j], slm, eff_ray[i].fpos[j], 1);
 
-            eff_ray[i].tq[j].fl32 = 1.0f / eff_ray[i].ipos[j][3];
+            eff_ray[i].tq[j].fl32 = 1.0f / (eff_ray[i].ipos[j][3] == 0 ? 1.0f : (float)eff_ray[i].ipos[j][3]);
             eff_ray[i].ts[j].fl32 = eff_ray[i].ts[j].fl32 * eff_ray[i].tq[j].fl32;
             eff_ray[i].tt[j].fl32 = eff_ray[i].tt[j].fl32 * eff_ray[i].tq[j].fl32;
 
@@ -3534,27 +3587,29 @@ void SetDust(EFFECT_CONT *ec)
         sceVu0RotMatrixX(wlm, wlm, rot_x);
         sceVu0RotMatrixY(wlm, wlm, rot_y);
         sceVu0TransMatrix(wlm, wlm, wpos);
-        sceVu0MulMatrix(slm, SgWSMtx, wlm);
+        sceVu0MulMatrix(slm, *(sceVu0FMATRIX*)MikuPan_GetWorldClipView(), wlm);
+        //sceVu0MulMatrix(slm, SgWSMtx, wlm);
 
         w = 0;
 
         for (i = 0; i < 4; i++)
         {
-            sceVu0RotTransPers(eff_dust[n].ivec[i], slm, ppos[i], 0);
+            //sceVu0RotTransPers(eff_dust[n].ivec[i], slm, ppos[i], 0);
+            sceVu0RotTransPersF(eff_dust[n].ivec[i], slm, ppos[i], 0);
 
             if (eff_dust[n].ivec[i][0] < 0x4000 || eff_dust[n].ivec[i][0] > 0xc000)
             {
-                w = 1;
+                //w = 1;
             }
 
             if (eff_dust[n].ivec[i][1] < 0x4000 || eff_dust[n].ivec[i][1] > 0xc000)
             {
-                w = 1;
+                //w = 1;
             }
 
             if (eff_dust[n].ivec[i][2] < 0xff || eff_dust[n].ivec[i][2] > 0x00ffffff)
             {
-                w = 1;
+                //w = 1;
             }
         }
 
@@ -3600,27 +3655,29 @@ void SetDust(EFFECT_CONT *ec)
         sceVu0RotMatrixX(wlm, wlm, rot_x);
         sceVu0RotMatrixY(wlm, wlm, rot_y);
         sceVu0TransMatrix(wlm, wlm, wpos);
-        sceVu0MulMatrix(slm, SgWSMtx, wlm);
+        sceVu0MulMatrix(slm, *(sceVu0FMATRIX*)MikuPan_GetWorldClipView(), wlm);
+        //sceVu0MulMatrix(slm, SgWSMtx, wlm);
 
         w = 0;
 
         for (i = 0; i < 4; i++)
         {
-            sceVu0RotTransPers(eff_dust[n].ivec[i], slm, ppos[i], 0);
+            //sceVu0RotTransPers(eff_dust[n].ivec[i], slm, ppos[i], 0);
+            sceVu0RotTransPersF(eff_dust[n].ivec[i], slm, ppos[i], 0);
 
             if (eff_dust[n].ivec[i][0] < 0x4000 || eff_dust[n].ivec[i][0] > 0xc000)
             {
-                w = 1;
+                //w = 1;
             }
 
             if (eff_dust[n].ivec[i][1] < 0x4000 || eff_dust[n].ivec[i][1] > 0xc000)
             {
-                w = 1;
+                //w = 1;
             }
 
             if (eff_dust[n].ivec[i][2] < 0xff || eff_dust[n].ivec[i][2] > 0x00ffffff)
             {
-                w = 1;
+                //w = 1;
             }
         }
 
@@ -3691,23 +3748,43 @@ void SetDust(EFFECT_CONT *ec)
                     | SCE_GS_UV    << (4 * 1)
                     | SCE_GS_XYZF2 << (4 * 2);
 
+            float* buf = (float*)&pbuf[ndpkt];
+
             for (i = 0; i < 4; i++)
             {
-                pbuf[ndpkt].ui32[0] = mr;
-                pbuf[ndpkt].ui32[1] = mg;
-                pbuf[ndpkt].ui32[2] = mb;
-                pbuf[ndpkt++].ui32[3] = eff_dust[k].alp;
+                pbuf[ndpkt].fl32[0] = (float)((i & 1) != 0 ? tw - 8 : 8) / (float)tw;
+                pbuf[ndpkt].fl32[1] = (float)((i / 2) != 0 ? th - 8 : 8) / (float)th;
+                pbuf[ndpkt].fl32[2] = 0;
+                pbuf[ndpkt++].fl32[3] = 0;
 
-                pbuf[ndpkt].ui32[0] = (i & 1) != 0 ? tw - 8 : 8;
-                pbuf[ndpkt].ui32[1] = (i / 2) != 0 ? th - 8 : 8;
-                pbuf[ndpkt].ui32[2] = 0;
-                pbuf[ndpkt++].ui32[3] = 0;
+                pbuf[ndpkt].fl32[0] = MikuPan_ConvertScaleColor(mr);
+                pbuf[ndpkt].fl32[1] = MikuPan_ConvertScaleColor(mg);
+                pbuf[ndpkt].fl32[2] = MikuPan_ConvertScaleColor(mb);
+                pbuf[ndpkt++].fl32[3] = MikuPan_ConvertScaleColor(eff_dust[k].alp);
 
-                pbuf[ndpkt].ui32[0] = eff_dust[k].ivec[i][0];
-                pbuf[ndpkt].ui32[1] = eff_dust[k].ivec[i][1];
-                pbuf[ndpkt].ui32[2] = eff_dust[k].ivec[i][2];
-                pbuf[ndpkt++].ui32[3] = i > 1 ? 0 : 0x8000;
+                pbuf[ndpkt].fl32[0] = eff_dust[k].ivec[i][0];
+                pbuf[ndpkt].fl32[1] = eff_dust[k].ivec[i][1];
+                pbuf[ndpkt].fl32[2] = eff_dust[k].ivec[i][2];
+                pbuf[ndpkt++].fl32[3] = 1.0f;
             }
+
+            MikuPan_RenderSprite3D((sceGsTex0*)&tx0, buf);
+
+            //for (i = 0; i < 4; i++)
+            //{
+            //    pbuf[ndpkt].ui32[0] = mr;
+            //    pbuf[ndpkt].ui32[1] = mg;
+            //    pbuf[ndpkt].ui32[2] = mb;
+            //    pbuf[ndpkt++].ui32[3] = eff_dust[k].alp;
+            //    pbuf[ndpkt].ui32[0] = (i & 1) != 0 ? tw - 8 : 8;
+            //    pbuf[ndpkt].ui32[1] = (i / 2) != 0 ? th - 8 : 8;
+            //    pbuf[ndpkt].ui32[2] = 0;
+            //    pbuf[ndpkt++].ui32[3] = 0;
+            //    pbuf[ndpkt].ui32[0] = eff_dust[k].ivec[i][0];
+            //    pbuf[ndpkt].ui32[1] = eff_dust[k].ivec[i][1];
+            //    pbuf[ndpkt].ui32[2] = eff_dust[k].ivec[i][2];
+            //    pbuf[ndpkt++].ui32[3] = i > 1 ? 0 : 0x8000;
+            //}
         }
 
         pbuf[c].ui32[0] = ndpkt + DMAend - c - 1;
@@ -3811,7 +3888,7 @@ void SetWaterdrop(EFFECT_CONT *ec)
 
                 SetEffects(0x16, 8, 1, (u_int)(vu0Rand() * 16.0f) + 8, 0x20, 0x20, 0x30, 0.3f, 4.5f, wwpos[wwcnt], dummy_rot, 2);
 
-                if (plyr_wrk.pr_info.room_no == 23)
+                if (plyr_wrk.pr_info.room_no == R023_IKESU)
                 {
                     SeStartPosEventFlame(plyr_wrk.pr_info.room_no, 0, wwpos[wwcnt], 0, 0x1000, 0x1000);
                 }
@@ -3834,7 +3911,7 @@ void SetWaterdrop(EFFECT_CONT *ec)
 
                 SetEffects(0x16, 8, 0x81, 0x10, 0x40, 0, 0, 0.002f, 0.3f, wwpos[wwcnt], dummy_rot, 1);
 
-                if (plyr_wrk.pr_info.room_no == 1 || plyr_wrk.pr_info.room_no == 26)
+                if (plyr_wrk.pr_info.room_no == R001_FUSUMA || plyr_wrk.pr_info.room_no == RO26_OYASHIRO)
                 {
                     SeStartPosEventFlame(plyr_wrk.pr_info.room_no, 0x0, wwpos[wwcnt], 0, 0x1000, 0x1000);
                 }
@@ -3864,7 +3941,7 @@ void SetWaterdrop(EFFECT_CONT *ec)
             {
                 SetEffects(0x16, 8, 1, (u_int)(vu0Rand() * 16.0f) + 8, 0x20, 0x20, 0x30, 0.3f, 4.5f, wwpos[wwcnt], dummy_rot, 2);
             }
-            if (plyr_wrk.pr_info.room_no == 0x17)
+            if (plyr_wrk.pr_info.room_no == R023_IKESU)
             {
                 SeStartPosEventFlame(plyr_wrk.pr_info.room_no, 0, wwpos[wwcnt], 0, 0x1000, 0x1000);
             }
@@ -4011,7 +4088,7 @@ void SetDustLeaf(sceVu0FVECTOR pos, int type)
 
     if (type == 0)
     {
-        if (plyr_wrk.pr_info.room_no == 21)
+        if (plyr_wrk.pr_info.room_no == R021_URANIWA)
         {
             mr = rgb1[0];
             mg = rgb1[1];
@@ -4186,7 +4263,8 @@ void RunLeafSub(EFF_LEAF *lep)
     u_long tx0;
     float rot_x;
     float rot_y;
-    sceVu0IVECTOR ivec[16][5];
+    //sceVu0IVECTOR ivec[16][5];
+    sceVu0FVECTOR ivec[16][5];
     sceVu0FMATRIX wlm;
     sceVu0FMATRIX slm;
     sceVu0FVECTOR bpos;
@@ -4284,11 +4362,13 @@ void RunLeafSub(EFF_LEAF *lep)
         }
 
         sceVu0TransMatrix(wlm, wlm, wpos);
-        sceVu0MulMatrix(slm, SgWSMtx, wlm);
+        sceVu0MulMatrix(slm, *(sceVu0FMATRIX*)MikuPan_GetWorldClipView(), wlm);
+        //sceVu0MulMatrix(slm, SgWSMtx, wlm);
 
         for (j = 0, w = 0; j < 5; j++)
         {
-            sceVu0RotTransPers(ivec[i][j], slm, ppos[lep->type][j], 0);
+            //sceVu0RotTransPers(ivec[i][j], slm, ppos[lep->type][j], 0);
+            sceVu0RotTransPersF(ivec[i][j], slm, ppos[lep->type][j], 0);
 
             if (ivec[i][j][0] < 0x4000 || ivec[i][j][0] > 0xc000)
             {
@@ -4385,7 +4465,7 @@ void RunLeafSub(EFF_LEAF *lep)
         {
             k = so[j];
 
-            if (disp[k] != 0)
+            //if (disp[k] != 0)
             {
                 pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 1, 1, 0, 1, 0, 1, 0, 0), SCE_GIF_PACKED, 3);
                 pbuf[ndpkt++].ul64[1] = 0 \
@@ -4406,23 +4486,44 @@ void RunLeafSub(EFF_LEAF *lep)
                     bb = elo[k].b;
                 }
 
+                float* buf = (float*)&pbuf[ndpkt];
                 for (i = 0; i < 4; i++)
                 {
-                    pbuf[ndpkt].ui32[0] = rr;
-                    pbuf[ndpkt].ui32[1] = gg;
-                    pbuf[ndpkt].ui32[2] = bb;
-                    pbuf[ndpkt++].ui32[3] = elo[k].a;
+                    pbuf[ndpkt].fl32[0] = (float)(i & 1 ? tw - 8 : 8) / (float)tw;
+                    pbuf[ndpkt].fl32[1] = (float)(i / 2 ? th - 8 : 8) / (float)th;
+                    pbuf[ndpkt].fl32[2] = 0;
+                    pbuf[ndpkt++].fl32[3] = 1.0f;
 
-                    pbuf[ndpkt].ui32[0] = i & 1 ? tw - 8 : 8;
-                    pbuf[ndpkt].ui32[1] = i / 2 ? th - 8 : 8;
-                    pbuf[ndpkt].ui32[2] = 0;
-                    pbuf[ndpkt++].ui32[3] = 0;
+                    pbuf[ndpkt].fl32[0] = MikuPan_ConvertScaleColor(rr);
+                    pbuf[ndpkt].fl32[1] = MikuPan_ConvertScaleColor(bb);
+                    pbuf[ndpkt].fl32[2] = MikuPan_ConvertScaleColor(gg);
+                    pbuf[ndpkt++].fl32[3] = MikuPan_ConvertScaleColor(elo[k].a);
 
-                    pbuf[ndpkt].ui32[0] = ivec[k][i][0];
-                    pbuf[ndpkt].ui32[1] = ivec[k][i][1];
-                    pbuf[ndpkt].ui32[2] = ivec[k][i][2];
-                    pbuf[ndpkt++].ui32[3] = i > 1 ? 0 : 0x8000;
+                    pbuf[ndpkt].fl32[0] = ivec[k][i][0];
+                    pbuf[ndpkt].fl32[1] = ivec[k][i][1];
+                    pbuf[ndpkt].fl32[2] = ivec[k][i][2];
+                    pbuf[ndpkt++].fl32[3] = 1.0f;
                 }
+
+                MikuPan_RenderSprite3D((sceGsTex0*)&tx0, buf);
+
+                //for (i = 0; i < 4; i++)
+                //{
+                //    pbuf[ndpkt].ui32[0] = rr;
+                //    pbuf[ndpkt].ui32[1] = gg;
+                //    pbuf[ndpkt].ui32[2] = bb;
+                //    pbuf[ndpkt++].ui32[3] = elo[k].a;
+                //
+                //    pbuf[ndpkt].ui32[0] = i & 1 ? tw - 8 : 8;
+                //    pbuf[ndpkt].ui32[1] = i / 2 ? th - 8 : 8;
+                //    pbuf[ndpkt].ui32[2] = 0;
+                //    pbuf[ndpkt++].ui32[3] = 0;
+                //
+                //    pbuf[ndpkt].ui32[0] = ivec[k][i][0];
+                //    pbuf[ndpkt].ui32[1] = ivec[k][i][1];
+                //    pbuf[ndpkt].ui32[2] = ivec[k][i][2];
+                //    pbuf[ndpkt++].ui32[3] = i > 1 ? 0 : 0x8000;
+                //}
             }
         }
     }
@@ -5135,7 +5236,7 @@ void SetCanal()
 {
     int i;
 
-    if (plyr_wrk.pr_info.room_no == 23)
+    if (plyr_wrk.pr_info.room_no == R023_IKESU)
     {
         for (i = 0; i < 3; i++)
         {
@@ -5313,7 +5414,7 @@ void SetFirefly()
     sceVu0FMATRIX mtx;
     FIREFLY *ffp;
 
-    if (plyr_wrk.pr_info.room_no == 22)
+    if (plyr_wrk.pr_info.room_no == R022_NAKASU)
     {
         if (stop_effects == 0 && wait == 0)
         {
@@ -5381,7 +5482,8 @@ void SetSky()
     float fx;
     float fz;
     float l;
-    sceVu0IVECTOR ivec;
+    sceVu0FVECTOR ivec;
+    //sceVu0IVECTOR ivec;
     sceVu0FVECTOR cpos;
     sceVu0FVECTOR rot;
     float length;
@@ -5411,9 +5513,9 @@ void SetSky()
     sc_speed = 6.0f;
 
     if (
-        plyr_wrk.pr_info.room_no == 0x10 || plyr_wrk.pr_info.room_no == 0x16 ||
-        plyr_wrk.pr_info.room_no == 0x15 || plyr_wrk.pr_info.room_no == 0x18 ||
-        plyr_wrk.pr_info.room_no == 0x26 || plyr_wrk.pr_info.room_no == 0x19
+        plyr_wrk.pr_info.room_no == R016_NAKANIWA || plyr_wrk.pr_info.room_no == R022_NAKASU ||
+        plyr_wrk.pr_info.room_no == R021_URANIWA || plyr_wrk.pr_info.room_no == R024_TSUKIMI ||
+        plyr_wrk.pr_info.room_no == R038_TYOUBOU || plyr_wrk.pr_info.room_no == R025_SANDO
     )
     {
         fx = (camera.i[0] - camera.p[0]) * (camera.i[0] - camera.p[0]);
@@ -5426,7 +5528,8 @@ void SetSky()
         cpos[2] = camera.p[2] + ((camera.i[2] - camera.p[2]) * length) / l;
         cpos[3] = 1.0f;
 
-        sceVu0RotTransPers(ivec, SgWSMtx, cpos, 0);
+        sceVu0RotTransPersF(ivec, *(sceVu0FMATRIX*)MikuPan_GetWorldClipView(), cpos, 0);
+        //sceVu0RotTransPers(ivec, SgWSMtx, cpos, 0);
 
         clip = 0;
 
@@ -5444,7 +5547,7 @@ void SetSky()
             clip = 1;
         }
 
-        if (!clip)
+        //if (!clip)
         {
             GetTrgtRot(camera.p, camera.i, rot, 2);
 
@@ -5462,7 +5565,7 @@ void SetSky()
             y2 = ivec[1] - (hline * 16);
 
             { // MACRO ?
-            sceVu0IVECTOR ivec;
+            sceVu0IVECTOR ivec = {0};
             ((float *)ivec)[0] = height;
             ((float *)ivec)[1] = height + 639.0f;
             _ftoi4(ivec, (float *)ivec);
@@ -5510,26 +5613,31 @@ void SetSky()
                 | SCE_GS_UV    << (4 * 3)
                 | SCE_GS_XYZF2 << (4 * 4);
 
+            /// RGBA
             pbuf[ndpkt].ui32[0] = 0x40;
             pbuf[ndpkt].ui32[1] = 0x40;
             pbuf[ndpkt].ui32[2] = 0x40;
             pbuf[ndpkt++].ui32[3] = 0x80;
 
+            /// UV
             pbuf[ndpkt].ui32[0] = u1;
             pbuf[ndpkt].ui32[1] = 0;
             pbuf[ndpkt].ui32[2] = 0;
             pbuf[ndpkt++].ui32[3] = 0;
 
+            /// XYZF2
             pbuf[ndpkt].ui32[0] = x1;
             pbuf[ndpkt].ui32[1] = y1;
             pbuf[ndpkt].ui32[2] = 0;
             pbuf[ndpkt++].ui32[3] = 0x8000;
 
+            /// UV
             pbuf[ndpkt].ui32[0] = u2;
             pbuf[ndpkt].ui32[1] = hline * 16;
             pbuf[ndpkt].ui32[2] = 0;
             pbuf[ndpkt++].ui32[3] = 0;
 
+            /// XYZF2
             pbuf[ndpkt].ui32[0] = x2;
             pbuf[ndpkt].ui32[1] = y2;
             pbuf[ndpkt].ui32[2] = 0;
@@ -5588,7 +5696,7 @@ void SetPond()
     far = 5500.0f;
     near = 2000.0f;
 
-    if (plyr_wrk.pr_info.room_no != 22 || EnemyUseJudge(0) != 0)
+    if (plyr_wrk.pr_info.room_no != R022_NAKASU || EnemyUseJudge(0) != 0)
     {
         return;
     }
@@ -5812,7 +5920,7 @@ void SetHaze_Pond()
     static HAZE_NUMS hn[10];
     long v2;
 
-    if ((plyr_wrk.pr_info.room_no != 0x16 && plyr_wrk.pr_info.room_no != 0x10) || realtime_scene_flg != 0 || init_haze_pond == 0)
+    if ((plyr_wrk.pr_info.room_no != R022_NAKASU && plyr_wrk.pr_info.room_no != R016_NAKANIWA) || realtime_scene_flg != 0 || init_haze_pond == 0)
     {
         return;
     }
@@ -6955,31 +7063,31 @@ void SetSaveCameraLamp()
     float pos1 = 128.0f;
     float pos2 = 20.0f;
 
-    if (plyr_wrk.pr_info.room_no == 0)
+    if (plyr_wrk.pr_info.room_no == R000_GENKAN)
     {
         n = 0;
     }
-    else if (plyr_wrk.pr_info.room_no == 15)
+    else if (plyr_wrk.pr_info.room_no == R015_KOUJI)
     {
         n = 1;
     }
-    else if (plyr_wrk.pr_info.room_no == 21)
+    else if (plyr_wrk.pr_info.room_no == R021_URANIWA)
     {
         n = 2;
     }
-    else if (plyr_wrk.pr_info.room_no == 41)
+    else if (plyr_wrk.pr_info.room_no == R041_HIKAE)
     {
         n = 3;
     }
-    else if (plyr_wrk.pr_info.room_no == 6)
+    else if (plyr_wrk.pr_info.room_no == R006_HAKONIWA)
     {
         n = 4;
     }
-    else if (plyr_wrk.pr_info.room_no == 14)
+    else if (plyr_wrk.pr_info.room_no == R014)
     {
         n = 5;
     }
-    else if (plyr_wrk.pr_info.room_no == 31)
+    else if (plyr_wrk.pr_info.room_no == R031)
     {
         n = 6;
     }

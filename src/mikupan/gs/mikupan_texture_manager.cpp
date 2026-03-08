@@ -1,4 +1,4 @@
-#include "texture_manager.h"
+#include "mikupan_texture_manager.h"
 
 extern "C"
 {
@@ -33,12 +33,12 @@ u_char* MikuPan_GetTexturePixelBuffer(sceGsTex0* tex0)
     return nullptr;
 }
 
-void FirstUploadDone()
+void MikuPan_FirstUploadDone()
 {
     first_upload_done = true;
 }
 
-bool IsFirstUploadDone()
+bool MikuPan_IsFirstUploadDone()
 {
     return first_upload_done;
 }
@@ -69,6 +69,11 @@ void MikuPan_FlushTextureCache()
     mikupan_render_texture_atlas.clear();
 
     request_texture_cache_flush = false;
+}
+
+int MikuPan_IsTextureCacheFlushRequested()
+{
+    return request_texture_cache_flush;
 }
 
 void MikuPan_RequestFlushTextureCache()

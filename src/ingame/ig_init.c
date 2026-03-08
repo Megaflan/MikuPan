@@ -6,16 +6,18 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "main/glob.h"
+#include "graphics/graph2d/effect_scr.h"
+#include "graphics/graph3d/load3d.h"
+#include "graphics/motion/mdlwork.h"
 #include "ingame/camera/camera.h"
-#include "ingame/event/ev_load.h"
-#include "ingame/map/map_area.h"
-#include "ingame/entry/entry.h"
-#include "ingame/entry/ap_rgost.h"
 #include "ingame/entry/ap_fgost.h"
 #include "ingame/entry/ap_ggost.h"
-#include "graphics/graph2d/effect_scr.h"
-#include "graphics/motion/mdlwork.h"
+#include "ingame/entry/ap_rgost.h"
+#include "ingame/entry/entry.h"
+#include "ingame/event/ev_load.h"
+#include "ingame/ig_glob.h"
+#include "ingame/map/map_area.h"
+#include "main/glob.h"
 #include "os/eeiop/cdvd/eecdvd.h"
 #include "os/fileload.h"
 
@@ -29,17 +31,6 @@ typedef struct {
 } LOAD_START_WRK;
 
 LOAD_START_WRK load_start_wrk = {0};
-
-FLY_WRK fly_wrk[10];
-/* data 30ea70 */ FURN_WRK furn_wrk[60];
-/* data 3169f0 */ FURN_EFCT fefct_wrk[60];
-/* data 317cb0 */ ITEM_DISP_WRK item_dsp_wrk[2][16];
-/* data 3180b0 */ u_char ene_cam_req_checker[50];
-/* data 3180e8 */ FURN_ATTR_FLG furn_attr_flg[500];
-/* data 319088 */ DOOR_STTS_KEEP door_keep[300];
-/* sdata 356f00 */ u_char ep_sensor[3];
-/* sdata 356f04 */ int disp3d_room_req;
-/* sdata 356f08 */ int disp3d_furn_req;
 
 void InitCamera()
 {

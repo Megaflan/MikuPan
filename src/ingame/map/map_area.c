@@ -5,11 +5,11 @@
 
 #include "graphics/graph3d/load3d.h"
 #include "ingame/entry/ap_fgost.h"
-//#include "ingame/ig_glob.h" // Circular include
+#include "ingame/ig_glob.h"
 #include "ingame/map/door_ctl.h"
 #include "ingame/map/furn_ctl.h"
 #include "ingame/map/map_area.h"
-//#include "main/glob.h" // Circular include
+#include "main/glob.h"
 
 u_char area_dat[11][6] = {
     {   0,   1,   2,   3,   8,  38 },
@@ -289,20 +289,20 @@ int AreaRoomAllLoad(u_char area_no)
     return 0;
 }
 
-int GetEmptyRoomAddr()
+int64_t GetEmptyRoomAddr()
 {
     int i;
 
     if (sys_wrk.game_mode != GAME_MODE_INGAME)
     {
-        return ROOM_DATA_ADDRESS;
+        return MikuPan_GetHostAddress(ROOM_DATA_ADDRESS);
     }
 
     for (i = 0; i < 2; i++)
     {
         if (plyr_wrk.pr_info.room_no != area_wrk.room[i])
         {
-            return i * ROOM_DATA_SIZE + ROOM_DATA_ADDRESS;
+            return MikuPan_GetHostAddress(i * ROOM_DATA_SIZE + ROOM_DATA_ADDRESS);
         }
     }
 

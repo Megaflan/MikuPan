@@ -14,6 +14,7 @@
 #include "graphics/graph3d/sglib.h"
 #include "graphics/graph3d/sgsu.h"
 #include "mikupan/gs/gs_server_c.h"
+#include "mikupan/gs/mikupan_texture_manager_c.h"
 #include "mikupan/mikupan_logging_c.h"
 #include "mikupan/mikupan_types.h"
 
@@ -59,7 +60,7 @@ void ClearDMATrans()
 
     sceDevVif1Reset();
 
-    printf("wait\n");
+    info_log("wait");
 }
 
 void CheckDMATrans()
@@ -308,6 +309,21 @@ void LoadTRI2Files(u_int *prim)
     /// SGDTRI2FILEHEADER
     prim = (u_int *)((int64_t)prim + 0x10 + (pads / 4) * 4);
 
+    /// New code added to check if the texture has already been uploaded once
+    //if (MikuPan_IsTextureCacheFlushRequested() == 1)
+    //{
+    //    prim[0] = 0;
+    //    return;
+    //}
+    //else if (prim[0] == 1)
+    //{
+    //    return;
+    //}
+    //else
+    //{
+    //    prim[0] = 1;
+    //}
+
     prim[2] = 0x11000000;
 
     for (i = 0; i < tnum; i++)
@@ -317,10 +333,14 @@ void LoadTRI2Files(u_int *prim)
 
         GsUpload(&tri2->gsli, (u_char*)&tri2[1]);
 
-        //uint8_t* img = (uint8_t*)&tri2[1];
-        //sceGsLoadImage* image_load = (sceGsLoadImage*)&img[tri2->gsli.giftag1.NLOOP * 0x10];
-        //uint8_t* image_color_data = (uint8_t*)(&image_load[1]);
-        //GsUpload(image_load, image_color_data);
+        /// Need to upload the clut data too, only if it is not PSMCT32
+        if (tri2->gsli.bitbltbuf.DPSM != 0 /* PSMCT32 */)
+        {
+            uint8_t* img = (uint8_t*)&tri2[1];
+            sceGsLoadImage* image_load = (sceGsLoadImage*)&img[tri2->gsli.giftag1.NLOOP * 0x10];
+            uint8_t* image_color_data = (uint8_t*)(&image_load[1]);
+            GsUpload(image_load, image_color_data);
+        }
 
         AppendDmaTag((int64_t)prim, tri2size + 1);
 
@@ -363,7 +383,7 @@ void RebuildTRI2Files(u_int *prim)
     u_int tsize;
     u_int vtsize;
     qword *base;
-    sceGsStoreImage spi;
+    sceGsStoreImage spi = {0};
 
     fprim = prim;
     next_pointer = (int64_t)GetNextProcUnitHeaderPtr(prim);
@@ -377,6 +397,10 @@ void RebuildTRI2Files(u_int *prim)
     {
         return;
     }
+
+    /// PC port does not need to reconvert textures for a more efficient
+    /// GS Upload
+    return;
 
     InitialDmaBuffer();
 
@@ -392,6 +416,11 @@ void RebuildTRI2Files(u_int *prim)
         FlushModel(0);
 
         search_addr = prim + 4;
+
+        SGDTRI2FILEHEADER * tri2 = (SGDTRI2FILEHEADER *) prim;
+
+        info_log("Packet TRi2 archive request buffer %x %d", (int)tri2->gsli.bitbltbuf.DBP, (int) tri2->gsli.bitbltbuf.DPSM);
+        GsUpload(&tri2->gsli, (u_char*)&tri2[1]);
 
         while (((uint64_t)search_addr - (uint64_t)(prim)) / 16 < tri2size - 8)
         {
@@ -461,7 +490,7 @@ void RebuildTRI2Files(u_int *prim)
 
     if (next_pointer - (int64_t)start_vif_code < tsize * 0x2000 + 0x180)
     {
-        info_log("Not Enough Memory %lld %d\n", next_pointer - (int64_t)start_vif_code, tsize * 0x2000 + 0x180);
+        info_log("Not Enough Memory %lld %d", next_pointer - (int64_t)start_vif_code, tsize * 0x2000 + 0x180);
         return;
     }
 
@@ -471,7 +500,7 @@ void RebuildTRI2Files(u_int *prim)
     {
         vtsize = tsize < 0x40 ? tsize : 0x3f;
 
-        sceGsSetDefStoreImage(&spi, minaddr, 1, 0, 0, 0, 0x40, vtsize * 32);
+        sceGsSetDefStoreImage(&spi, minaddr, 1, 0, 0, 0, 0x40, vtsize * 0x20);
         FlushCache(0);
         sceGsExecStoreImage(&spi, (u_long128 *)&start_vif_code[28]);
         sceGsSyncPath(0, 0);

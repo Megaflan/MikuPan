@@ -276,7 +276,7 @@ int FloatGhostBattleEnd()
     ap_wrk.fg_mode = 1;
     ap_wrk.fg_ap = 0;
 
-    // missing return!!
+    return 1;
 }
 
 int FloatGhostEscapeEnd()
@@ -284,7 +284,7 @@ int FloatGhostEscapeEnd()
     ap_wrk.fg_mode = 1;
     ap_wrk.fg_ap = 700;
 
-    // missing return!!
+    return 1;
 }
 
 void FloatGhostLoadReq()
@@ -342,10 +342,10 @@ int FloatGhostLoadMain()
         FGTransInit();
     case FG_LOAD_SE_TRANS:
         SeFGhostTransCtrl();
-        //if (IsEndFgTrans() == 0)
-        //{
-        //    break;
-        //}
+        if (IsEndFgTrans() == 0)
+        {
+            break;
+        }
         fg_load_wrk.mode = FG_LOAD_MODE_END;
     case FG_LOAD_MODE_END:
         return 1;

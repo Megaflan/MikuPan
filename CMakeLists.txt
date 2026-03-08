@@ -8,7 +8,10 @@ endif()
 
 if(WIN32)
     set(CMAKE_EXE_LINKER_FLAGS "-static")
+    set(APP_ICON_RESOURCE_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/extern/icon.rc")
 endif()
+
+set(BUILD_SHARED_LIBS OFF)
 
 list(PREPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/MikuPan)
@@ -18,7 +21,8 @@ include(imgui)
 include(spdlog)
 include(cglm)
 
-set(MIKUPAN_SOURCES "src/mikupan/mikupan_file.cpp"
+set(MIKUPAN_SOURCES
+        "src/mikupan/mikupan_file.cpp"
         "src/common/ul_math.c"
         "src/common/utility.c"
         "src/edit/test_2d.c"
@@ -105,6 +109,7 @@ set(MIKUPAN_SOURCES "src/mikupan/mikupan_file.cpp"
         "src/ingame/map/map_htck.c"
         "src/ingame/map/rotd_ctl.c"
         "src/ingame/menu/gameover.c"
+        "src/ingame/ig_glob.c"
         "src/ingame/menu/ig_album.c"
         "src/ingame/menu/ig_camra.c"
         "src/ingame/menu/ig_file.c"
@@ -217,7 +222,7 @@ set(MIKUPAN_SOURCES "src/mikupan/mikupan_file.cpp"
         src/mikupan/rendering/mikupan_shader.c
         src/mikupan/gs/gs_server.cpp
         src/mikupan/gs/gs_server.h
-        src/mikupan/gs/texture_manager.cpp
+        src/mikupan/gs/mikupan_texture_manager.cpp
         src/mikupan/mikupan_logging.cpp
         extern/imgui_toggle/imgui_toggle.cpp
         extern/imgui_toggle/imgui_toggle_palette.cpp
@@ -226,14 +231,17 @@ set(MIKUPAN_SOURCES "src/mikupan/mikupan_file.cpp"
         src/graphics/graph3d/libsg.c
         extern/glad/src/gl.c
         src/ingame/map/find_dat.c
+        src/mikupan/rendering/mikupan_pipeline.c
+        src/mikupan/mikupan_utils.c
+        src/ingame/map/furn_spe/fsla_dat.c
 )
 
-add_executable(MikuPan ${MIKUPAN_SOURCES})
+add_executable(MikuPan ${MIKUPAN_SOURCES} ${APP_ICON_RESOURCE_WINDOWS})
 
-target_include_directories(MikuPan PRIVATE "sdk/" "src" "resources/" "extern/" "extern/glad/include/" ${SDL3_INCLUDE_DIR})
+target_include_directories(MikuPan PRIVATE "sdk/" "src" "extern/" "extern/glad/include/" ${SDL3_INCLUDE_DIR})
 
 target_link_libraries(MikuPan PRIVATE m imgui SDL3::SDL3 spdlog::spdlog cglm)
 
 add_custom_command(TARGET MikuPan POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/shaders $<TARGET_FILE_DIR:MikuPan>/shaders
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/resources $<TARGET_FILE_DIR:MikuPan>/resources
 )

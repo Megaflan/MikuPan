@@ -10,6 +10,8 @@
 
 #define __u_char_defined
 
+#include <stdint.h>
+
 typedef long s_long;
 typedef short s_short;
 typedef char s_char;
@@ -51,5 +53,18 @@ typedef union {
 	sceVu0FVECTOR fv;
 	sceVu0IVECTOR iv;
 } Q_WORDDATA;
+
+typedef union
+{
+    u_char *pu8;
+    u_short *pu16;
+    u_int *pu32;
+    u_long *pu64;
+    s_char *ps8;
+    s_short *ps16;
+    int *ps32;
+    s_long *ps64;
+    int64_t wrk;
+} P_INT;
 
 #endif /* TYPEDEFS_H */

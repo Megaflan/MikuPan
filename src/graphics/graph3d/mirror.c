@@ -1,4 +1,5 @@
 #include "mirror.h"
+#include "cglm/mat4.h"
 #include "cglm/vec4.h"
 #include "common.h"
 #include "typedefs.h"
@@ -144,13 +145,13 @@ static inline void inline_asm__mirror_c_line_120(Q_WORDDATA base, sceVu0FVECTOR 
     tmp0[2] *= r;
 
     /// TODO : CHECK MORE INDEPTH THIS HERE, CAUSES CRASHES
-    //base.iv[0] = tmp0[0] * 16.0f > (float)INT_MAX ? INT_MAX - 1 : FLT_TO_FIX4(tmp0[0]);
-    //base.iv[1] = tmp0[1] * 16.0f > (float)INT_MAX ? INT_MAX - 1 : FLT_TO_FIX4(tmp0[1]);
-    //base.iv[2] = tmp0[2] * 16.0f > (float)INT_MAX ? INT_MAX - 1 : FLT_TO_FIX4(tmp0[2]);
+    base.iv[0] = FLT_TO_FIX4(tmp0[0]);
+    base.iv[1] = FLT_TO_FIX4(tmp0[1]);
+    base.iv[2] = FLT_TO_FIX4(tmp0[2]);
 
-    base.fv[0] = tmp0[0] * 16.0f;
-    base.fv[1] = tmp0[1] * 16.0f;
-    base.fv[2] = tmp0[2] * 16.0f;
+    //base.fv[0] = tmp0[0] * 16.0f;
+    //base.fv[1] = tmp0[1] * 16.0f;
+    //base.fv[2] = tmp0[2] * 16.0f;
 
     // Gets skipped, actually so the value should be unused as it's undefined
     // base.i[3] = FLT_TO_FIX4(tmp0[3] * r);
@@ -192,6 +193,8 @@ int CheckMirrorModel(void *sgd_top)
         //prim = (u_int *)prim[0];
         prim = GetNextProcUnitHeaderPtr(prim);
     }
+
+    return 0;
 }
 
 static inline void inline_asm__mirror_c_line_207(MNODE *dst, MNODE *src)
@@ -504,6 +507,7 @@ int MakeMirrorEnvironment(u_int *prim)
     switch (mtype)
     {
         case 0x12:
+            MikuPan_RenderMeshType0x32((SGDPROCUNITHEADER*)vuvnprim, (SGDPROCUNITHEADER*)prim);
             vp = (float *) &vuvnprim[14];
 
             for (j = 0; j < gloops; j++)
@@ -529,8 +533,6 @@ int MakeMirrorEnvironment(u_int *prim)
                 vp += 12;
                 sgn = 1.0f;
 
-                //MikuPan_RenderVertices(vp, loops);
-
                 for (i = 0; i < loops; i++)
                 {
                     if (prim[0] != 1)
@@ -555,8 +557,7 @@ int MakeMirrorEnvironment(u_int *prim)
             }
             break;
         case 0x32:
-            //MikuPan_RenderMeshType0x32((struct SGDPROCUNITHEADER *) vuvnprim,
-            //                           (struct SGDPROCUNITHEADER *) prim);
+            MikuPan_RenderMeshType0x32((SGDPROCUNITHEADER *) vuvnprim, (SGDPROCUNITHEADER *) prim);
             vp = (float *) &vuvnprim[14];
             vp = (float *) ((int64_t) vp + ((short *) vuvnprim)[5] * 12);
 
@@ -583,8 +584,6 @@ int MakeMirrorEnvironment(u_int *prim)
                 vp += 6;
                 sgn = 1.0f;
 
-                //MikuPan_RenderVertices(vp, loops);
-
                 for (i = 0; i < loops; i++)
                 {
                     if (prim[0] != 1)
@@ -610,10 +609,12 @@ int MakeMirrorEnvironment(u_int *prim)
             break;
     }
 
-    if (disp_flg == 0)
-    {
-        return 0;
-    }
+    /// Removed code because modern PCs are strong enough to render entire room
+    /// in the mirror
+    //if (disp_flg == 0)
+    //{
+    //    return 0;
+    //}
 
     mxmax += 16;
     mxmin -= 16;
@@ -689,7 +690,7 @@ void MirrorPrim(u_int *prim)
 int PreMirrorPrim(SgCAMERA *camera, u_int *prim)
 {
     sceVu0FMATRIX tmpmat;
-    int mir_flag;
+    int mir_flag = 0;
 
     if (prim == NULL)
     {
@@ -710,22 +711,23 @@ int PreMirrorPrim(SgCAMERA *camera, u_int *prim)
                            *(sceVu0FMATRIX *) &SCRATCHPAD[0x430]);
                 Vu0LoadMatrix(tmpmat);
 
-                inline_asm__mirror_c_line_38(
-                    *(sceVu0FMATRIX *) &SCRATCHPAD[0xd0]);
+                inline_asm__mirror_c_line_38(*(sceVu0FMATRIX *) &SCRATCHPAD[0xd0]);
                 _SetRotTransPersMatrix(*(sceVu0FMATRIX *) &SCRATCHPAD[0x90]);
 
                 return MakeMirrorEnvironment(prim);
-                break;
             case 3:
-                Vu0CopyMatrix(*(sceVu0FMATRIX *) &SCRATCHPAD[0x430],
-                              lcp[prim[2]].lwmtx);
-                _MulMatrix(*(sceVu0FMATRIX *) &SCRATCHPAD[0x90], SgWSMtx,
-                           *(sceVu0FMATRIX *) &SCRATCHPAD[0x430]);
+                Vu0CopyMatrix(*(sceVu0FMATRIX *) &SCRATCHPAD[0x430], lcp[prim[2]].lwmtx);
+                _MulMatrix(*(sceVu0FMATRIX *) &SCRATCHPAD[0x90], SgWSMtx, *(sceVu0FMATRIX *) &SCRATCHPAD[0x430]);
                 break;
             case 4:
                 mir_flag = CheckBoundingBox(prim);
-                _MulMatrix(*(sceVu0FMATRIX *) &SCRATCHPAD[0xd0], SgCMVtx,
-                           *(sceVu0FMATRIX *) &SCRATCHPAD[0x430]);
+
+                if (mir_flag == 0)
+                {
+                    return 0;
+                }
+
+                _MulMatrix(*(sceVu0FMATRIX *) &SCRATCHPAD[0xd0], SgCMVtx, *(sceVu0FMATRIX *) &SCRATCHPAD[0x430]);
                 break;
         }
 
@@ -845,7 +847,10 @@ void CalcMirrorMatrix(SgCAMERA *camera)
 
     sceVu0UnitMatrix(tmpmat);
 
-    tmpmat[2][2] = -1.0f;
+    /// Flipping Z axis
+    //tmpmat[2][2] = -1.0f;
+    tmpmat[1][1] = -1.0f;
+    //tmpmat[0][0] = -1.0f;
 
     GetMatrixRotateAxis(quat, vaxis, qrot);
     _MulMatrix(tmpmat, tmpmat, quat);
@@ -874,8 +879,6 @@ void CalcMirrorMatrix(SgCAMERA *camera)
 void MirrorDraw(SgCAMERA *camera, void *sgd_top,
                 void (*render_func)(/* parameters unknown */))
 {
-    ///TODO: Re-enable once the scratchpad address works
-    //return;
     static sceVu0IVECTOR miccolor = {0x80, 0x80, 0x80, 0x80};
     qword *pedraw_buf;
     int i;
@@ -897,9 +900,7 @@ void MirrorDraw(SgCAMERA *camera, void *sgd_top,
 
     num = CheckMirrorModel(sgd_top);
 
-    if (num == 0
-        || PreMirrorPrim(camera, (u_int *) GetTopProcUnitHeaderPtr(hs, num))
-               == 0)
+    if (num == 0 || PreMirrorPrim(camera, (u_int *) GetTopProcUnitHeaderPtr(hs, num)) == 0)
     {
         CalcMirrorMatrix(camera);
         return;
@@ -1035,6 +1036,8 @@ void MirrorRender(SgCAMERA *camera,
     SgSetRefCamera(&mir_camera);
     CalcMirrorMatrix(camera);
 
+    MikuPan_SetupMirrorMtx((float*)mir_mtx);
+
     sceVu0MulMatrix(mir_camera.ws, mir_camera.ws, mir_mtx);
     sceVu0MulMatrix(mir_camera.wc, mir_camera.wc, mir_mtx);
     sceVu0MulMatrix(mir_camera.wcv, mir_camera.wcv, mir_mtx);
@@ -1059,4 +1062,6 @@ void MirrorRender(SgCAMERA *camera,
 
     SetVF2Register(rreg);
     SgSetRefCamera(camera);
+
+    MikuPan_Setup3D();
 }

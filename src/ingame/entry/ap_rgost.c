@@ -13,6 +13,8 @@
 #include "ingame/map/map_area.h"
 #include "ingame/map/map_ctrl.h"
 
+#include <string.h>
+
 RGOST_DSP_WRK rg_dsp_wrk[3] = {0};
 RGOST_WRK rg_wrk[200] = {0};
 
@@ -448,6 +450,9 @@ void SetRareGhostDispAlpha(int wrk_no, int rg_no)
         alp_no = rg_end_dat[rg_dat[rg_no].end].alp_no;
         rg_alp = rg_alp_end[alp_no];
     break;
+    default:
+            alp_no = rg_end_dat[rg_dat[rg_no].end].alp_no;
+            rg_alp = rg_alp_end[alp_no];
     }
 
     if (count == 0)

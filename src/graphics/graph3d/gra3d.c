@@ -2,6 +2,7 @@
 #include "typedefs.h"
 #include "gra3d.h"
 
+#include "cglm/call/mat4.h"
 #include "enums.h"
 
 #include <stdlib.h>
@@ -475,6 +476,11 @@ void ScenePrerender()
 
     disp_room = room_wrk.disp_no[1];
 
+    if (disp_room >= 64)
+    {
+        return;
+    }
+
     if (disp_room != 0xff || room_addr_tbl[disp_room].near_sgd == NULL)
     {
         SgReadLights(room_addr_tbl[disp_room].near_sgd, room_addr_tbl[disp_room].lit_data, ambient, ilights, 3, plights, 16, slights, 16);
@@ -489,7 +495,6 @@ void ScenePrerender()
 
         if (tmpModelp != NULL)
         {
-
             SgClearPreRender(tmpModelp, -1);
             SgPreRender(tmpModelp, -1);
         }
@@ -730,7 +735,7 @@ void SetLWS(SgCOORDUNIT *cp, SgCAMERA *camera)
     {
         sceVu0CopyMatrix(cp->lwmtx, cp->matrix);
         sceVu0MulMatrix(cp->workm, camera->ws, cp->lwmtx);
-
+        //sceVu0CopyMatrix(cp->workm, cp->lwmtx);
         cp->flg = 1;
     }
     else
@@ -738,6 +743,7 @@ void SetLWS(SgCOORDUNIT *cp, SgCAMERA *camera)
         SetLWS(GetCoordPParent(cp), camera);
         sceVu0MulMatrix(cp->lwmtx, GetCoordPParent(cp)->lwmtx, cp->matrix);
         sceVu0MulMatrix(cp->workm, camera->ws, cp->lwmtx);
+        //sceVu0CopyMatrix(cp->workm, cp->lwmtx);
 
         cp->flg = 1;
     }
@@ -856,8 +862,8 @@ void gra3dInitFirst()
     runit_mtx[1][1] = 25.0f;
     runit_mtx[2][2] = 25.0f;
 
-    SgSetPacketBuffer(MikuPan_GetHostAddress(OBJ_WRK_ADDRESS), 0x17830, tag_buffer, 0x1800);
-    SgSetVNBuffer((sceVu0FVECTOR *)MikuPan_GetHostAddress(VNBufferAddress), 4000);
+    SgSetPacketBuffer(MikuPan_GetHostPointer(OBJ_WRK_ADDRESS), 0x17830, tag_buffer, 0x1800);
+    SgSetVNBuffer((sceVu0FVECTOR *)MikuPan_GetHostPointer(VNBufferAddress), 4000);
 
     SgInit3D();
     objInit();
@@ -2066,7 +2072,7 @@ void gra3dDraw()
         {
             SetWScissorBox(disp_room);
 
-            if (disp_room != 8 || !(plyr_wrk.move_box.pos[1] > -300.0f))
+            if (disp_room != R008_KAIROU || !(plyr_wrk.move_box.pos[1] > -300.0f))
             {
                 MirrorDraw(&camera, room_addr_tbl[disp_room].near_sgd, SceneSortUnit);
 
@@ -2084,7 +2090,7 @@ void gra3dDraw()
         {
             if (
                 ((HeaderSection *)room_addr_tbl[disp_room].near_sgd)->kind & 2 &&
-                disp_room != 26 && disp3d_mirror != 0
+                disp_room != RO26_OYASHIRO && disp3d_mirror != 0
             )
             {
                 MirrorDraw(&camera, room_addr_tbl[disp_room].near_sgd, SceneSortUnit);
@@ -2153,10 +2159,14 @@ int CheckModelBoundingBox(sceVu0FMATRIX lwmtx, sceVu0FVECTOR *bbox)
     tmpvec = (sceVu0FVECTOR *)&ps2_virtual_scratchpad[0x620];
     ed = (sceVu0FVECTOR *)&ps2_virtual_scratchpad[0x6a0]; // `ed[i]` can be replaced with `tmpvec[8+i]`
 
-    _SetMulMatrix(SgCMVtx, lwmtx);
+    _SetMulMatrix(*(sceVu0FMATRIX*)MikuPan_GetWorldClipView(), lwmtx);
+    //_SetMulMatrix(SgCMVtx, lwmtx);
 
     MikuPan_SetModelTransformMatrix(lwmtx);
-    //MikuPan_RenderBoundingBox(bbox);
+    DrawBoundingBox(bbox);
+
+    /// Enabling makes it so the model is always drawn
+    //return 1;
 
     if (clip_value_check != 0)
     {
@@ -2220,7 +2230,7 @@ int CheckModelBoundingBox(sceVu0FMATRIX lwmtx, sceVu0FVECTOR *bbox)
         }
     }
 
-    _SetMulMatrix(SgWSMtx,lwmtx);
+    _SetMulMatrix(SgWSMtx, lwmtx);
 
     Vu0ApplyVectorInline(tmpvec[0], bbox[0]);
     Vu0ApplyVectorInline(tmpvec[1], bbox[1]);
@@ -2357,9 +2367,6 @@ void DrawGirl(int in_mirror)
         ManTexflush();
         SgSortUnitKind(hs, -1);
         DrawGirlSubObj(ani_mdl[0].mpk_p, 0x7f);
-
-        MikuPan_SetModelTransformMatrix(cp->lwmtx);
-        DrawBoundingBox(girlbox);
 
         if (in_mirror != 0 || plyr_wrk.mode != 1)
         {
@@ -2599,9 +2606,6 @@ int DrawEnemy(int no)
             ManTexflush();
             SgSortUnitKind(tmpModelp,-1);
             acsClothCtrl(ani_ctrl,ani_ctrl->mpk_p,mdl_no, 0);
-
-            MikuPan_SetModelTransformMatrix(cp[manmdl_dat[mdl_no].waist_id].lwmtx);
-            DrawBoundingBox(ebox);
 
             if (motCheckTrRateMdl(mdl_no) != 0)
             {

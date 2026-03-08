@@ -3,6 +3,7 @@
 #include "typedefs.h"
 
 #include "ee/eestruct.h"
+#include "sce/libgraph.h"
 #include "sce/libvu0.h"
 
 #include "graphics/graph3d/libsg.h"
@@ -1070,6 +1071,11 @@ void AssignShadow(void *sgd_top, int except_num)
 
     hs = (HeaderSection *) sgd_top;
 
+    if (hs->VersionID != 0x1050)
+    {
+        return;
+    }
+
     ccahe.cache_on = -1;
     lcp = GetCoordP(hs);
     blocksm = hs->blocks;
@@ -1488,11 +1494,10 @@ void CalcShadowMatrix(ShadowHandle *shandle, sceVu0FVECTOR center, float ax,
 
 static void _ftoi0(int *out, float *in)
 {
-    //asm volatile ("\n\
-    //    lqc2    $vf12,0(%0) \n\
-    //    vftoi0.xyzw $vf12xyzw,$vf12xyzw \n\
-    //    sqc2    $vf12,0(%1) \n\
-    //": :"r"(in),"r"(out));
+    out[0] = (int)in[0];
+    out[1] = (int)in[1];
+    out[2] = (int)in[2];
+    out[3] = (int)in[3];
 }
 
 void CalcShadowHeight(sceVu0FVECTOR *bbox)

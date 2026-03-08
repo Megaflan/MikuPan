@@ -1,6 +1,8 @@
 #include "common.h"
 #include "furn_spe.h"
 #include "typedefs.h"
+#include <stdint.h>
+#include "mikupan/mikupan_memory.h"
 
 #define BASE_ADDRESS 0x7f8000
 
@@ -38,7 +40,7 @@ u_char *FSpeGetTopAddr(u_short fact_no)
     }
 
     addr = (u_int *) MikuPan_GetHostPointer(BASE_ADDRESS + 4 * 4);
-    addr = (u_int *)MikuPan_GetHostPointer(*addr + BASE_ADDRESS);
+    addr = (u_int *) MikuPan_GetHostPointer(*addr + BASE_ADDRESS);
 
-    return (u_char *) addr[fact_no];
+    return (u_char *) MikuPan_GetHostPointer(addr[fact_no]);
 }

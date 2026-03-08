@@ -1,5 +1,5 @@
-#include "common.h"
 #include "typedefs.h"
+#include "common.h"
 #include "enums.h"
 #include "main.h"
 #include <string.h>
@@ -18,10 +18,10 @@
 #include "mikupan/rendering/mikupan_renderer.h"
 
 #define SDL_MAIN_USE_CALLBACKS 1  /* use the callbacks instead of main() */
-#include "mikupan/ui/mikupan_ui_c.h"
+#include "iop/adpcm/iopadpcm.h"
 #include "iop/iopmain.h"
-#include "iop/adpcm/iopadpcm.h"s
-#include "mikupan/gs/texture_manager_c.h"
+#include "mikupan/gs/mikupan_texture_manager_c.h"
+#include "mikupan/ui/mikupan_ui_c.h"
 #include "os/eeiop/se_cmd.h"
 
 #include <SDL3/SDL.h>
@@ -34,14 +34,11 @@
 
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
 {
-//#if _DEBUG
-
+#ifdef DEBUG
     fenv_t env;
     fegetenv(&env);
-
     env.__control_word &= ~(FE_DIVBYZERO | FE_INVALID | FE_OVERFLOW | FE_UNDERFLOW);
     fesetenv(&env);
-
     /* Enable SSE exceptions */
     unsigned int mxcsr = _mm_getcsr();
     mxcsr &= ~(
@@ -49,10 +46,8 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
         _MM_MASK_INVALID |
         _MM_MASK_OVERFLOW
     );
-
     _mm_setcsr(mxcsr);
-
-//#endif
+#endif
 
     SDL_AppResult result = MikuPan_Init();
     MikuPan_InitPs2Memory();
@@ -126,7 +121,12 @@ SDL_AppResult SDL_AppIterate(void *appstate)
 void SDL_AppQuit(void *appstate, SDL_AppResult result)
 {
     IopShutDown();
-    MikuPan_ShutDownUi();
+
+    if (result == SDL_APP_SUCCESS)
+    {
+        MikuPan_ShutDownUi();
+    }
+
     MikuPan_Shutdown();
 }
 

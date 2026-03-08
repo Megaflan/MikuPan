@@ -243,8 +243,10 @@ void CalcVertexBuffer(u_int *prim)
 
     for (i = 0; i < vli->list_num; i++)
     {
-        load_matrix_0(lcp[vli->lists[i].cn0].workm);
-        load_matrix_1(lcp[vli->lists[i].cn1].workm);
+        load_matrix_0(lcp[vli->lists[i].cn0].lwmtx);
+        load_matrix_1(lcp[vli->lists[i].cn1].lwmtx);
+        //load_matrix_0(lcp[vli->lists[i].cn0].workm);
+        //load_matrix_1(lcp[vli->lists[i].cn1].workm);
 
         for (j = 0; j < vli->lists[i].vIdx; j++, vpd += 1, vps += 2)
         {
@@ -260,8 +262,10 @@ void CalcVertexBuffer(u_int *prim)
 
     for (i = 0; i < vli->list_num; i++)
     {
-        load_matrix_0(lcp[vli->lists[i].cn0].workm);
-        load_matrix_1(lcp[vli->lists[i].cn1].workm);
+        load_matrix_0(lcp[vli->lists[i].cn0].lwmtx);
+        load_matrix_1(lcp[vli->lists[i].cn1].lwmtx);
+        //load_matrix_0(lcp[vli->lists[i].cn0].workm);
+        //load_matrix_1(lcp[vli->lists[i].cn1].workm);
 
         for (j = 0; j < vli->lists[i].vIdx; j++, vpd += 1, vps += 2)
         {
@@ -285,12 +289,14 @@ u_int *SetVUVNData(u_int *prim)
     vp += 2;
     prim += 12;
 
+    void* bak = vp;
     for (i = 0; i < vh->vnum; i++, vp += 2, prim += 2)
     {
         copy_skinned_data(vp, (float *) MikuPan_GetHostPointer(prim[0]), (float *) MikuPan_GetHostPointer(prim[1]));
     }
 
-    return (u_int *) vp;
+    //return (u_int *) vp;
+    return (u_int *) bak;
 }
 
 u_int *SetVUVNDataPost(u_int *prim)
@@ -309,11 +315,18 @@ u_int *SetVUVNDataPost(u_int *prim)
     vp += 2;
     prim += 12;
 
+    void* bak = vp;
+
+    cn = (char *) MikuPan_GetHostPointer(prim[0]);
+    load_matrix_0(lcp[cn[0x1c]].lwmtx);
+    load_matrix_1(lcp[cn[0x1d]].lwmtx);
+    //load_matrix_0(lcp[cn[0x1c]].workm);
+    //load_matrix_1(lcp[cn[0x1d]].workm);
+
     switch (vh->vtype)
     {
         case 2:
-
-            if (MikuPan_GetHostAddress(lphead->pWeightedList) != 0)
+            if (lphead->pWeightedList != 0)
             {
                 for (i = 0; i < vh->vnum; i++, vp += 2, prim += 2)
                 {
@@ -322,11 +335,6 @@ u_int *SetVUVNDataPost(u_int *prim)
             }
             else
             {
-                cn = (char *) MikuPan_GetHostPointer(prim[0]);
-
-                load_matrix_0(lcp[cn[0x1c]].workm);
-                load_matrix_1(lcp[cn[0x1d]].workm);
-
                 for (i = 0; i < vh->vnum; vp += 2, prim += 2, i++)
                 {
                     calc_skinned_data(vp, (float *) MikuPan_GetHostPointer(prim[0]), (float *) MikuPan_GetHostPointer(prim[1]));
@@ -334,7 +342,7 @@ u_int *SetVUVNDataPost(u_int *prim)
             }
             break;
         case 3:
-            if (MikuPan_GetHostAddress(lphead->pWeightedList) != 0)
+            if (lphead->pWeightedList != 0)
             {
                 for (i = 0; i < vh->vnum; i++, vp += 2, prim += 2)
                 {
@@ -345,10 +353,6 @@ u_int *SetVUVNDataPost(u_int *prim)
             {
                 for (i = 0; i < vh->vnum; i++, vp += 2, prim += 2)
                 {
-                    cn = (char *) MikuPan_GetHostPointer(prim[0]);
-
-                    load_matrix_0(lcp[cn[0x1c]].workm);
-                    load_matrix_1(lcp[cn[0x1d]].workm);
                     calc_skinned_data(vp, (float *) MikuPan_GetHostPointer(prim[0]), (float *) MikuPan_GetHostPointer(prim[1]));
                 }
             }
@@ -360,17 +364,16 @@ u_int *SetVUVNDataPost(u_int *prim)
             }
     }
 
-    //MikuPan_RenderVertices((float*) getObjWrk(), vh->vnum);
-
-    return (u_int *) vp;
+    //return (u_int *) vp;
+    return (u_int *) bak;
 }
 
 void printTEX0(sceGsTex0 *tex0)
 {
-    info_log("TBP0 %x TBW %d PSM %x TW %d TH %d TCC %d\n", tex0->TBP0,
+    info_log("TBP0 %x TBW %d PSM %x TW %d TH %d TCC %d", tex0->TBP0,
              tex0->TBW, tex0->PSM, tex0->TW, tex0->TH, tex0->TCC);
 
-    info_log("TFX %d CBP %x CPSM %x CSM %d CSA %d CLD %x\n", tex0->TFX,
+    info_log("TFX %d CBP %x CPSM %x CSM %d CSA %d CLD %x", tex0->TFX,
              tex0->CBP, tex0->CPSM, tex0->CSM, tex0->CSA, tex0->CLD);
 }
 
@@ -397,8 +400,7 @@ void SetVUMeshData(u_int *prim)
             break;
         case 2:
             read_p = SetVUVNData(vuvnprim);
-            MikuPan_RenderMeshType0x2((struct SGDPROCUNITHEADER*)vuvnprim, (struct SGDPROCUNITHEADER*)prim);
-            //MikuPan_RenderVertices((int64_t)getObjWrk() + 0x20, 20);
+            MikuPan_RenderMeshType0x2((SGDPROCUNITHEADER*)vuvnprim, (SGDPROCUNITHEADER*)prim, (float*)read_p);
 
             read_p[0] = 0x14000000 | ((u_int) DRAWTYPE2 >> 3);
             read_p[1] = 0x17000000;
@@ -410,6 +412,7 @@ void SetVUMeshData(u_int *prim)
             FlushModel(0);
             break;
         case 0x80:
+            //MikuPan_RenderMeshType0x82(vuvnprim, prim);
             AppendDmaTag((u_int) &prim[4], prim[2]);
             AppendDmaTag((u_int) & ((u_char *) vuvnprim)[16],
                          ((u_char *) vuvnprim)[12]);
@@ -456,7 +459,7 @@ void SetVUMeshData(u_int *prim)
             break;
 
         default:
-            printf("Illegal Packet %d\n", mtype);
+            info_log("Illegal Packet %d", mtype);
             break;
     }
 }
@@ -473,6 +476,10 @@ void SetVUMeshDataPost(u_int *prim)
         case 0:
             read_p = SetVUVNDataPost(vuvnprim);
 
+            //MikuPan_SetWeightedMesh(1);
+            //MikuPan_RenderMeshType0x2((SGDPROCUNITHEADER*)vuvnprim, (SGDPROCUNITHEADER*)prim, (float*)read_p);
+            //MikuPan_SetWeightedMesh(0);
+
             read_p[0] = 0x14000000 | ((u_int) DRAWTYPE0 >> 3);
             read_p[1] = 0x17000000;
             read_p[2] = 0x11000000;
@@ -484,6 +491,10 @@ void SetVUMeshDataPost(u_int *prim)
             break;
         case 2:
             read_p = SetVUVNDataPost(vuvnprim);
+
+            MikuPan_SetWeightedMesh(1);
+            MikuPan_RenderMeshType0x2((void*)vuvnprim, (void*)prim, (float*)read_p);
+            MikuPan_SetWeightedMesh(0);
 
             read_p[0] = 0x14000000 | ((u_int) DRAWTYPE2W >> 3);
             read_p[1] = 0x17000000;
@@ -508,7 +519,7 @@ void SetVUMeshDataPost(u_int *prim)
             FlushModel(0);
             break;
         default:
-            printf("Illegal Packet %d\n", mtype);
+            info_log("Illegal Packet %d", mtype);
             break;
     }
 }
@@ -676,6 +687,7 @@ int write_coord = 0;
 
 void AppendVUProgTag(u_int *prog)
 {
+    return;
     while (((SgSourceChainTag *) prog)->ID
            != 7) /* so long as it's not DmaEnd */
     {
@@ -816,7 +828,7 @@ void SgSortUnit(void *sgd_top, int pnum)
 
     if (((u_int) lcp & 0xf) != 0)
     {
-        printf("SgSortUnit Data broken. %x lcp %x\n", sgd_top, lcp);
+        info_log("SgSortUnit Data broken. %x lcp %x", sgd_top, lcp);
         return;
     }
 
@@ -883,27 +895,11 @@ void SgSortUnitKind(void *sgd_top, int num)
 
 void _SetLWMatrix0(sceVu0FMATRIX m0)
 {
-    //__asm__ volatile ("\n\
-    //    lqc2    $vf4,0(%0)\n\
-    //    lqc2    $vf5,0x10(%0)\n\
-    //    lqc2    $vf6,0x20(%0)\n\
-    //    lqc2    $vf7,0x30(%0)\n\
-    //    ": :"r"(m0)
-    //);
-
     memcpy(work_matrix_0, m0, sizeof(sceVu0FMATRIX));
 }
 
 void _SetLWMatrix1(sceVu0FMATRIX m0)
 {
-    //__asm__ volatile ("\n\
-    //    lqc2    $vf8,0(%0)\n\
-    //    lqc2    $vf9,0x10(%0)\n\
-    //    lqc2    $vf10,0x20(%0)\n\
-    //    lqc2    $vf11,0x30(%0)\n\
-    //    ": :"r"(m0)
-    //);
-
     memcpy(work_matrix_1, m0, sizeof(sceVu0FMATRIX));
 }
 

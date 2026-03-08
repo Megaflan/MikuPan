@@ -9,20 +9,21 @@
 #include "sce/libvu0.h"
 
 // #include "os/pad.h"
-#include "mikupan/mikupan_memory.h"
-#include "os/system.h"
-#include "main/glob.h"
-#include "ingame/ig_init.h"
 #include "common/ul_math.h"
+#include "graphics/graph2d/effect_oth.h"
 #include "graphics/graph2d/sprt.h"
 #include "graphics/graph2d/tim2.h"
-#include "graphics/graph2d/effect_oth.h"
 #include "graphics/graph2d/tim2_new.h"
+#include "graphics/graph3d/libsg.h"
 #include "graphics/graph3d/sgdma.h"
 #include "graphics/graph3d/sglib.h"
-#include "graphics/graph3d/libsg.h"
+#include "ingame/ig_init.h"
+#include "main/glob.h"
 #include "mikupan/gs/gs_server_c.h"
+#include "mikupan/mikupan_memory.h"
 #include "mikupan/rendering/mikupan_renderer.h"
+#include "os/pad.h"
+#include "os/system.h"
 
 typedef struct {
 	int screen_flag;
@@ -49,9 +50,9 @@ static u_long128 *bufz;
 
 void InitEffectSub()
 {
-    buf = (u_long128 *)EFFECT_ADDRESS;
-    buf2 = (u_long128 *)0x01F1C000;
-    bufz = (u_long128 *)0x05000000;
+    buf = (u_long128 *)MikuPan_GetHostPointer(EFFECT_ADDRESS);
+    buf2 = (u_long128 *)MikuPan_GetHostPointer(0x01F1C000);
+    bufz = (u_long128 *)MikuPan_GetHostPointer(0x05000000);
     vib1_time = 0;
     vib2_time = 0;
     vib2_pow = 0;
@@ -226,7 +227,6 @@ void SetSquare2s(int pri, float x1, float y1, float x4, float y4, u_char r1, u_c
 
     float w = x4 - x1;
     float h = y4 - y1;
-    // x, y, x + w, y, x, y + h, x + w, y + h
     //MikuPan_RenderSquare(x1, y1, 0, 0, 0, 0, x4, y4, r1, g1, b1, a);
     
     pbuf[ndpkt].ul128 = (u_long128)0;
@@ -956,7 +956,8 @@ void Set3DPosTexure(sceVu0FMATRIX wlm, DRAW_ENV *de, int texno, float w, float h
 	u_int clpz2 = 0xffffff;
 	u_long tx0;
 	sceVu0FMATRIX slm;
-	sceVu0IVECTOR ivec[4];
+	//sceVu0IVECTOR ivec[4] = {0};
+	sceVu0FVECTOR ivec[4] = {0};
 	sceVu0FVECTOR ppos[4] = {
         { -1.0f, 1.0f, 0.0f, 1.0f },
         { 1.0f, 1.0f, 0.0f, 1.0f },
@@ -967,11 +968,11 @@ void Set3DPosTexure(sceVu0FMATRIX wlm, DRAW_ENV *de, int texno, float w, float h
         1.0f, 2.0f, 4.0f, 8.0f, 16.0f,
         32.0f, 64.0f, 128.0f, 256.0f, 512.0f, 1024.f,
     };
-	float stq[2] = { 0.01f, 0.99f };
+	float stq[2] = { 0.0f, 1.0f };
 	U32DATA ts[4];
 	U32DATA tt[4];
 	U32DATA tq[4];
-    
+
 
     for (i = 0; i < 4; i++)
     {
@@ -980,10 +981,13 @@ void Set3DPosTexure(sceVu0FMATRIX wlm, DRAW_ENV *de, int texno, float w, float h
         ppos[i][2] = 0.0f;
         ppos[i][3] = 1.0f;
     }
-    
-    sceVu0MulMatrix(slm, SgWSMtx, wlm);
-    sceVu0RotTransPersN(ivec , slm, ppos, 4, 1);
-    
+
+    //sceVu0MulMatrix(slm, SgWSMtx, wlm);
+    //sceVu0RotTransPersN(ivec, slm, ppos, 4, 1);
+
+    sceVu0MulMatrix(slm, *(sceVu0FMATRIX*)MikuPan_GetWorldClipView(), wlm);
+    sceVu0RotTransPersNF(ivec, slm, ppos, 4, 1);
+
     tx0 = effdat[texno + monochrome_mode].tex0;
     tw = effdat[texno + monochrome_mode].w;
     th = effdat[texno + monochrome_mode].h;
@@ -1018,13 +1022,18 @@ void Set3DPosTexure(sceVu0FMATRIX wlm, DRAW_ENV *de, int texno, float w, float h
         {
             w = 1.0f;
         }
-        
+
+        if (ivec[i][3] == 0)
+        {
+            ivec[i][3] = 1.0f;
+        }
+
         tq[i].fl32 = 1.0f / ivec[i][3];
         ts[i].fl32 = (tw * stq[i % 2] * tq[i].fl32) / twoby[log_2(tw)];
         tt[i].fl32 = (th * stq[i / 2] * tq[i].fl32) / twoby[log_2(th)];
     }
     
-    if (w == 0.0f)
+    //if (w == 0.0f)
     {
         Reserve2DPacket(0x1000);
 
@@ -1059,24 +1068,31 @@ void Set3DPosTexure(sceVu0FMATRIX wlm, DRAW_ENV *de, int texno, float w, float h
             | SCE_GS_ST    << (4 * 0) 
             | SCE_GS_RGBAQ << (4 * 1) 
             | SCE_GS_XYZF2 << (4 * 2);
-        
+
+        float* render_buffer = (float*)&pbuf[ndpkt];
+
         for (i = 0; i < 4; i++)
         {            
-            pbuf[ndpkt].ui32[0] = ts[i].ui32;
-            pbuf[ndpkt].ui32[1] = tt[i].ui32;
-            pbuf[ndpkt].ui32[2] = tq[i].ui32;
-            pbuf[ndpkt++].ui32[3] = 0.0f;
+            pbuf[ndpkt].fl32[0] = stq[i % 2];
+            pbuf[ndpkt].fl32[1] = stq[i % 2];
+            pbuf[ndpkt].fl32[2] = 0.0f;
+            pbuf[ndpkt++].fl32[3] = 0.0f;
             
-            pbuf[ndpkt].ui32[0] = r;
-            pbuf[ndpkt].ui32[1] = g;
-            pbuf[ndpkt].ui32[2] = b;
-            pbuf[ndpkt++].ui32[3] = a;
-            
-            pbuf[ndpkt].ui32[0] = ivec[i][0];
-            pbuf[ndpkt].ui32[1] = ivec[i][1];
-            pbuf[ndpkt].ui32[2] = ivec[i][2] * 16;
-            pbuf[ndpkt++].ui32[3] = (i <= 1) ? 0x8000 : 0;
+            pbuf[ndpkt].fl32[0] = (float)r/255.0f;
+            pbuf[ndpkt].fl32[1] = (float)g/255.0f;
+            pbuf[ndpkt].fl32[2] = (float)b/255.0f;
+            pbuf[ndpkt++].fl32[3] = (float)a/255.0f;
+
+            pbuf[ndpkt].fl32[0] = (float)ivec[i][0];
+            pbuf[ndpkt].fl32[1] = (float)ivec[i][1];
+            pbuf[ndpkt].fl32[2] = (float)ivec[i][2];
+            pbuf[ndpkt++].fl32[3] = 1.0f;
+
+            //pbuf[ndpkt].ui32[2] = ppos[i][2] * 16;
+            //pbuf[ndpkt++].ui32[3] = (i <= 1) ? 0x8000 : 0;
         }
+
+        MikuPan_RenderSprite3D((sceGsTex0*)&tx0, render_buffer);
         
         pbuf[bak].ui32[0] = ndpkt + DMAend - bak - 1;
     }
@@ -1556,6 +1572,8 @@ void SetTexDirectS2(int pri, SPRITE_DATA *sd, DRAW_ENV *de, int type)
     s.w = sd->size_w;
     s.h = sd->size_h;
     s.rot = sd->angle;
+    s.scw = sd->scale_w;
+    s.sch = sd->scale_h;
 
     MikuPan_Render2DTexture(&s);
     //s.alpha = de->alpha;
@@ -1744,6 +1762,31 @@ void SetTexDirect2(int pri, SPRITE_DATA *sd, DRAW_ENV *de, sceVu0FVECTOR *v)
         Change.CSA = 0;
         Change.CLD = 0;
     }
+
+    DISP_SPRT s = {0};
+    s.tex0 = *(u_long*)&sd->g_GsTex0;
+    s.r = sd->r;
+    s.g = sd->g;
+    s.b = sd->b;
+    s.alpha = sd->alpha;
+    s.x = mx + 320;
+    s.y = my + 224;
+
+    int min_u_clamp = (mclu>>4) & 0xffff;
+    int max_u_clamp = (mclu>>24) & 0xffff;
+
+    int min_v_clamp = (mclv>>4) & 0xffff;
+    int max_v_clamp = (mclv>>24) & 0xffff;
+
+    s.u = min_u_clamp; //min_u_clamp + ((rand() / RAND_MAX) * max_u_clamp);
+    s.v = min_v_clamp; //min_v_clamp + ((rand() / RAND_MAX) * max_v_clamp);
+    s.w = sd->size_w;
+    s.h = sd->size_h;
+    s.rot = sd->angle;
+    s.scw = sd->scale_w;
+    s.sch = sd->scale_h;
+
+    MikuPan_Render2DTexture(&s);
 
     Reserve2DPacket(pri);
     
@@ -2001,7 +2044,7 @@ void SetTexDirect(SPRITE_DATA *sd, int atype)
         Change.CLD = 0;
     }
 
-    DISP_SPRT s;
+    DISP_SPRT s = {0};
     s.tex0 = *(u_long*)&sd->g_GsTex0;
     s.r = sd->r;
     s.g = sd->g;
@@ -2009,6 +2052,8 @@ void SetTexDirect(SPRITE_DATA *sd, int atype)
     s.alpha = sd->alpha;
     s.x = mx + 320;
     s.y = my + 224;
+    s.scw = sd->scale_w;
+    s.sch = sd->scale_h;
 
     s.u = 8;
     s.v = 8;
@@ -2268,9 +2313,8 @@ void CaptureScreen(u_int addr)
 
 void DrawScreen(u_int pri, u_int addr, u_char r, u_char g, u_char b, u_char a)
 {
-    DISP_SPRT ds;
-    
-    
+    DISP_SPRT ds = {0};
+
     SPRT_DAT sd =
     {
         .tex0 = 0,
@@ -2479,7 +2523,7 @@ void CheckPointDepth(PP_JUDGE *ppj)
     };
 	float fr_f;
 	static sceGsStoreImage gs_simage1;
-	Q_WORDDATA q;
+	Q_WORDDATA q = {0};
 	int n1;
 	int n2;
 	u_int ui;
@@ -2776,7 +2820,6 @@ void LocalCopyBtoL_Sub(int no, int type, int addr) {
         pbuf[ndpkt].ul64[1] = SCE_GS_TRXDIR;
         ndpkt++;
 
-        // pbuf[ndpkt].ul64[0] = nloop | 0x1800000000008000;
         pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(nloop, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_IMAGE, 1);
         pbuf[ndpkt].ul64[1] = SCE_GIF_PACKED_AD;
         ndpkt++;

@@ -7,9 +7,6 @@
 // RAND_MAX = (2**31-1)
 #define RAND_MAX 2147483647
 
-// /usr/local/sce/ee/gcc/src/newlib/libm/math/s_isnan.c
-// int isnan(double x);
-
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
@@ -32,7 +29,6 @@
 #include "os/eeiop/cdvd/eecdvd.h"
 #include "outgame/btl_mode/btl_mode.h"
 #include "mikupan/rendering/mikupan_renderer.h"
-
 #include <mikupan/mikupan_memory.h>
 
 typedef struct { // 0x28
@@ -530,7 +526,7 @@ void SubFocus(/* a0 4 */ int ef)
     SetTexDirectS(0x200, &sd, 0);
 }
 
-void SetFocus(/* s0 16 */ EFFECT_CONT *ec)
+void SetFocus1(/* s0 16 */ EFFECT_CONT *ec)
 {
     if (ec->dat.uc8[2] == 0 || eff_focus.flow != 3)
     {
@@ -2831,7 +2827,7 @@ void SubDither3(/* s0 16 */ int type, /* f27 65 */ float alp, /* f28 66 */ float
     sceVu0CopyVector(old_cam_i, camera.i);
     
     
-    if (isnan(tx) || isnan(ty) || isnan(otx) || isnan(oty))
+    if (isnan(tx) || isnan(ty) || isnan(otx) || isnan(oty) || isinf(tx) || isinf(ty) || isinf(otx) || isinf(oty))
     {
         mvx = 0.0f;
         mvy = 0.0f;
@@ -3734,26 +3730,6 @@ u_char SubNowLoading(/* a0 4 */ int fl, /* 0x3440(sp) */ int num, /* f12 50 */ f
         pbuf[ndpkt].ui32[1] = vtiw[j][1]; // Line 4929
         pbuf[ndpkt].ui32[2] = vtiw[j][2]; // Line 4930
         pbuf[ndpkt++].ui32[3] = k <= 2 ? 0x8000 : 0; // Line 4931
-
-        //DISP_SPRT s;
-        //s.tex0 = *(u_long*)&tex0;
-        //s.r = 0x80;
-        //s.g = 0x80;
-        //s.b = 0x80;
-        //s.alpha = (u_char)(alpha1[i] * c);
-        //s.x = vtiw[i][0];
-        //s.y = vtiw[i][1];
-        //s.u = tx[i];
-        //s.v = ty[i];
-        //s.w = 512;
-        //s.h = 256;
-        //MikuPan_Render2DTexture(&s);
-        //(u_char)(alpha1[j] * c);
-        //s.x = vtiw[j][0];
-        //s.y = vtiw[j][1];
-        //s.u = tx[j];
-        //s.v = ty[j];
-        //MikuPan_Render2DTexture(&s);
     }
     
     pbuf[bak].ui32[0] = ndpkt + DMAend - bak - 1; // Line 4933

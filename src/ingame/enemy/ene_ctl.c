@@ -3,6 +3,8 @@
 #include "enums.h"
 #include "ene_ctl.h"
 
+#include "move_ctl.h"
+
 #include <string.h>
 
 #include "sce/libvu0.h"
@@ -16,6 +18,7 @@
 #include "os/eeiop/adpcm/ea_ghost.h"
 #include "os/eeiop/adpcm/ea_autog.h"
 #include "ingame/entry/entry.h"
+#include "ingame/ig_glob.h"
 #include "ingame/entry/ap_bgost.h"
 #include "ingame/entry/ap_dgost.h"
 #include "ingame/entry/ap_fgost.h"
@@ -30,25 +33,26 @@
 #include "ingame/map/map_htck.h"
 #include "ingame/map/map_ctrl.h"
 
-#include "data/jene_dat0.h"      // ENE_DAT jene_dat0[];
-#include "data/aene_info_dat0.h" // AENE_INFO_DAT aene_info_dat0[];
-#include "data/fly_dat.h"        // FLY_DATA fly_dat[];
-#include "data/jene_dat1.h"      // ENE_DAT jene_dat1[];
-#include "data/fene_dat1.h"      // ENE_DAT fene_dat1[];
-#include "data/aene_info_dat1.h" // AENE_INFO_DAT aene_info_dat1[];
-#include "data/jene_dat2.h"      // ENE_DAT jene_dat2[];
-#include "data/fene_dat2.h"      // ENE_DAT fene_dat2[];
-#include "data/aene_info_dat2.h" // AENE_INFO_DAT aene_info_dat2[];
-#include "data/jene_dat3.h"      // ENE_DAT jene_dat3[];
-#include "data/fene_dat3.h"      // ENE_DAT fene_dat3[];
-#include "data/aene_info_dat3.h" // AENE_INFO_DAT aene_info_dat3[];
-#include "data/jene_dat4.h"      // ENE_DAT jene_dat4[];
-#include "data/fene_dat4.h"      // ENE_DAT fene_dat4[];
-#include "data/aene_info_dat4.h" // AENE_INFO_DAT aene_info_dat4[];
-#include "data/jene_dat.h"       // ENE_DAT *jene_dat[];
-#include "data/fene_dat.h"       // ENE_DAT *fene_dat[];
-#include "data/aene_info_dat.h"  // AENE_INFO_DAT *aene_info_dat[];
+#include "data/aene_info_dat.h" // AENE_INFO_DAT *aene_info_dat[];
+#include "data/aene_info_dat0.h"// AENE_INFO_DAT aene_info_dat0[];
+#include "data/aene_info_dat1.h"// AENE_INFO_DAT aene_info_dat1[];
+#include "data/aene_info_dat2.h"// AENE_INFO_DAT aene_info_dat2[];
+#include "data/aene_info_dat3.h"// AENE_INFO_DAT aene_info_dat3[];
+#include "data/aene_info_dat4.h"// AENE_INFO_DAT aene_info_dat4[];
+#include "data/fene_dat.h"      // ENE_DAT *fene_dat[];
+#include "data/fene_dat1.h"     // ENE_DAT fene_dat1[];
+#include "data/fene_dat2.h"     // ENE_DAT fene_dat2[];
+#include "data/fene_dat3.h"     // ENE_DAT fene_dat3[];
+#include "data/fene_dat4.h"     // ENE_DAT fene_dat4[];
+#include "data/fly_dat.h"       // FLY_DATA fly_dat[];
+#include "data/jene_dat.h"      // ENE_DAT *jene_dat[];
+#include "data/jene_dat0.h"     // ENE_DAT jene_dat0[];
+#include "data/jene_dat1.h"     // ENE_DAT jene_dat1[];
+#include "data/jene_dat2.h"     // ENE_DAT jene_dat2[];
+#include "data/jene_dat3.h"     // ENE_DAT jene_dat3[];
+#include "data/jene_dat4.h"     // ENE_DAT jene_dat4[];
 #include "graphics/graph2d/effect_ene.h"
+#include "graphics/graph3d/gra3d.h"
 #include "graphics/motion/mdlwork.h"
 #include "ingame/entry/ap_zgost.h"
 #include "ingame/event/ev_main.h"
@@ -1031,18 +1035,18 @@ void EneActSet(ENE_WRK *ew, u_char act_no)
 {
     MOVE_BOX *mb;
 
-    u_long v0, v1; // not in STAB
-    u_long t3;     // not in STAB but trivial to remove (keeping it for symmetry)
+    int64_t v0, v1; // not in STAB
+    int64_t t3;     // not in STAB but trivial to remove (keeping it for symmetry)
 
     mb = &ew->move_box;
 
     ew->act_no = act_no;
-    mb->comm_add_top = ADDRESS;
+    mb->comm_add_top = MikuPan_GetHostAddress(ADDRESS);
 
-    v1 = (u_int)((u_long)(ew->type) * 2 + ADDRESS);
-    v0 = ((ADDRESS | (((u_char *)MikuPan_GetHostPointer((u_int)v1))[0] | (((u_char *)MikuPan_GetHostPointer((u_int)v1))[1] << 8)))) + (u_long)(ew->dat_no * 2);
-    v1 = ((ADDRESS | (((u_char *)MikuPan_GetHostPointer((u_int)v0))[0] | (((u_char *)MikuPan_GetHostPointer((u_int)v0))[1] << 8)))) + (u_long)(    act_no * 2);
-    t3 = ((ADDRESS | (((u_char *)MikuPan_GetHostPointer((u_int)v1))[0] | (((u_char *)MikuPan_GetHostPointer((u_int)v1))[1] << 8))));
+    v1 = (int64_t)MikuPan_GetHostAddress((u_long)(ew->type) * 2 + ADDRESS);
+    v0 = (int64_t)MikuPan_GetHostAddress((ADDRESS | (((u_char *)((int64_t)v1))[0] | (((u_char *)((int64_t)v1))[1] << 8)))) + (int64_t)(ew->dat_no * 2);
+    v1 = (int64_t)MikuPan_GetHostAddress((ADDRESS | (((u_char *)((int64_t)v0))[0] | (((u_char *)((int64_t)v0))[1] << 8)))) + (int64_t)(    act_no * 2);
+    t3 = (int64_t)MikuPan_GetHostAddress((ADDRESS | (((u_char *)((int64_t)v1))[0] | (((u_char *)((int64_t)v1))[1] << 8))));
 
     mb->comm_add.wrk = t3;
     mb->pos_no = 0;
@@ -1071,15 +1075,15 @@ void EneActSet(ENE_WRK *ew, u_char act_no)
 
 void EneBlinkDataSet(ENE_WRK *ew)
 {
-    u_long v0, v1; // not in STAB
-    u_long a3;     // not in STAB but trivial to remove (keeping it for symmetry)
+    int64_t v0, v1; // not in STAB
+    int64_t a3;     // not in STAB but trivial to remove (keeping it for symmetry)
 
-    ew->bcomm_add_top = ADDRESS;
+    ew->bcomm_add_top = MikuPan_GetHostAddress(ADDRESS);
 
-    v1 = (u_int)((u_long)(ew->type) * 2 + ADDRESS);
-    v0 = ((ADDRESS | (((u_char *)MikuPan_GetHostPointer((u_int)v1))[0] | (((u_char *)MikuPan_GetHostPointer((u_int)v1))[1] << 8)))) + (u_long)(ew->dat_no * 2);
-    v1 = ((ADDRESS | (((u_char *)MikuPan_GetHostPointer((u_int)v0))[0] | (((u_char *)MikuPan_GetHostPointer((u_int)v0))[1] << 8))));
-    a3 = ((ADDRESS | (((u_char *)MikuPan_GetHostPointer((u_int)v1))[0] | (((u_char *)MikuPan_GetHostPointer((u_int)v1))[1] << 8))));
+    v1 = (int64_t)MikuPan_GetHostAddress((ew->type) * 2 + ADDRESS);
+    v0 = MikuPan_GetHostAddress((ADDRESS | (((u_char *)((int64_t)v1))[0] | (((u_char *)((int64_t)v1))[1] << 8)))) + (int64_t)(ew->dat_no * 2);
+    v1 = MikuPan_GetHostAddress((ADDRESS | (((u_char *)((int64_t)v0))[0] | (((u_char *)((int64_t)v0))[1] << 8))));
+    a3 = MikuPan_GetHostAddress((ADDRESS | (((u_char *)((int64_t)v1))[0] | (((u_char *)((int64_t)v1))[1] << 8))));
 
     ew->bcomm_add.wrk = a3;
     ew->bpos_no = 0;
@@ -1088,16 +1092,16 @@ void EneBlinkDataSet(ENE_WRK *ew)
 
 void EneARatioDataSet(ENE_WRK *ew, u_char anime_no)
 {
-    u_long v0, v1, v2; // not in STAB
-    u_long a3;         // not in STAB but trivial to remove (keeping it for symmetry)
+    int64_t v0, v1, v2; // not in STAB
+    int64_t a3;         // not in STAB but trivial to remove (keeping it for symmetry)
 
     ew->acomm_add_top = ADDRESS;
 
-    v0 = (u_int)((u_long)(ew->type) * 2 + ADDRESS);
-    v1 = ((ADDRESS | (((u_char *)MikuPan_GetHostPointer((u_int)v0))[0] | (((u_char *)MikuPan_GetHostPointer((u_int)v0))[1] << 8)))) + (u_long)(ew->dat_no * 2);
-    v2 = ((ADDRESS | (((u_char *)MikuPan_GetHostPointer((u_int)v1))[0] | (((u_char *)MikuPan_GetHostPointer((u_int)v1))[1] << 8)))) + (u_long)(             2);
-    v0 = ((ADDRESS | (((u_char *)MikuPan_GetHostPointer((u_int)v2))[0] | (((u_char *)MikuPan_GetHostPointer((u_int)v2))[1] << 8)))) + (u_long)(  anime_no * 2);
-    a3 = ((ADDRESS | (((u_char *)MikuPan_GetHostPointer((u_int)v0))[0] | (((u_char *)MikuPan_GetHostPointer((u_int)v0))[1] << 8))));
+    v0 = (int64_t)MikuPan_GetHostAddress((ew->type) * 2 + ADDRESS);
+    v1 = MikuPan_GetHostAddress((ADDRESS | (((u_char *)((int64_t)v0))[0] | (((u_char *)((int64_t)v0))[1] << 8)))) + (u_long)(ew->dat_no * 2);
+    v2 = MikuPan_GetHostAddress((ADDRESS | (((u_char *)((int64_t)v1))[0] | (((u_char *)((int64_t)v1))[1] << 8)))) + (u_long)(             2);
+    v0 = MikuPan_GetHostAddress((ADDRESS | (((u_char *)((int64_t)v2))[0] | (((u_char *)((int64_t)v2))[1] << 8)))) + (u_long)(  anime_no * 2);
+    a3 = MikuPan_GetHostAddress((ADDRESS | (((u_char *)((int64_t)v0))[0] | (((u_char *)((int64_t)v0))[1] << 8))));
 
     ew->acomm_add.wrk = a3;
     ew->apos_no = 0;

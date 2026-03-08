@@ -23,15 +23,17 @@
 #include "graphics/graph3d/libsg.h"
 // #include "graphics/graph3d/gra3d.h" // RequestSpirit needs to be undeclared
 
+#include "data/enedmg_fileno_tbl.h"// static int enedmg_fileno_tbl[][2];
+#include "data/enedmg_texno_tbl.h" // static SPRT_DAT enedmg_texno_tbl[];
+#include "data/eto_light.h"        // static sceVu0FVECTOR eto_light[5];
+#include "data/eto_rgb.h"          // static u_char eto_rgb[5][3];
 #include "effect_oth.h"
-#include "data/enedmg_fileno_tbl.h" // static int enedmg_fileno_tbl[][2];
-#include "data/enedmg_texno_tbl.h"  // static SPRT_DAT enedmg_texno_tbl[];
-#include "data/eto_light.h"         // static sceVu0FVECTOR eto_light[5];
-#include "data/eto_rgb.h"           // static u_char eto_rgb[5][3];
+#include "enums.h"
+#include "graphics/graph3d/gra3d.h"
 
 static sceVu0FVECTOR reserve_lig;
 static sceVu0FVECTOR spos[96];
-static u_int enedmg_tex_addr[4];
+static int64_t enedmg_tex_addr[4];
 static NEW_PERTICLE new_perticle[44];
 
 #define PI 3.1415927f
@@ -3686,7 +3688,7 @@ void SetEneSeal(EFFECT_CONT *ec)
         ec->fw[0] = 1.0f;
         ec->fw[1] = 0.0f;
 
-        spr_fire = SetEffects(0x19, 2, 1, &bpos[eneno], &ec->fw[0], &ec->fw[1]);
+        spr_fire = SetEffects(EF_TORCH, 2, 1, &bpos[eneno], &ec->fw[0], &ec->fw[1]);
 
         eff_filament_off = inifl = 1;
 
@@ -3909,7 +3911,7 @@ void LoadEneDmgTex(int no, u_int *addr)
         {
             edmg_tex_wrk[i].tex_no = texno;
             edmg_tex_wrk[i].mdl_no = no + count;
-            edmg_tex_wrk[i].addr = (uint64_t)addr;
+            edmg_tex_wrk[i].addr = (int64_t)addr;
 
             if (no != 42)
             {

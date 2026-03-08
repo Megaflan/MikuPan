@@ -13,12 +13,12 @@ extern "C"
 {
     void MikuPan_AddTexture(sceGsTex0 *tex0, MikuPan_TextureInfo* texture_info);
     MikuPan_TextureInfo* MikuPan_GetTextureInfo(sceGsTex0* tex0);
-
     u_char* MikuPan_GetTexturePixelBuffer(sceGsTex0* tex0);
     void MikuPan_AddTexturePixelBuffer(sceGsTex0* tex0, unsigned char *img);
 
-    void FirstUploadDone();
-    bool IsFirstUploadDone();
+    int MikuPan_IsTextureCacheFlushRequested();
+    void MikuPan_FirstUploadDone();
+    bool MikuPan_IsFirstUploadDone();
     void MikuPan_FlushTextureCache();
     void MikuPan_RequestFlushTextureCache();
 }

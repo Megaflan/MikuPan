@@ -9,12 +9,13 @@ GLuint backup_current_program = 0;
 u_int shader_list[MAX_SHADER_PROGRAMS] = {0};
 
 const char* shader_file_name[MAX_SHADER_PROGRAMS][2] = {
-    {"./shaders/default.vert", "./shaders/default.frag"},
-    {"./shaders/mesh_0x12.vert", "./shaders/mesh_0x12.frag"},
-    {"./shaders/ui_sprite.vert", "./shaders/ui_sprite.frag"},
-    {"./shaders/untextured_sprite.vert", "./shaders/untextured_sprite.frag"},
-    {"./shaders/simple_textured.vert", "./shaders/simple_textured.frag"},
-    {"./shaders/bounding_box.vert", "./shaders/bounding_box.frag"}
+    {"./resources/shaders/mesh_0x12.vert",          "./resources/shaders/textured_mesh_lighted.frag"},
+    {"./resources/shaders/mesh_0x2.vert",           "./resources/shaders/textured_mesh_lighted.frag"},
+    {"./resources/shaders/ui_sprite.vert",          "./resources/shaders/ui_sprite.frag"},
+    {"./resources/shaders/untextured_sprite.vert",  "./resources/shaders/untextured_sprite.frag"},
+    {"./resources/shaders/bounding_box.vert",       "./resources/shaders/untextured_sprite.frag"},
+    {"./resources/shaders/sprite_3D.vert",          "./resources/shaders/sprite_3D.frag"},
+    {"./resources/shaders/skybox.vert",             "./resources/shaders/skybox.frag"}
 };
 
 int MikuPan_InitShaders()
@@ -86,16 +87,16 @@ void MikuPan_RestoreCurrentShaderProgram()
     glad_glUseProgram(backup_current_program);
 }
 
-void MikuPan_SetCurrentShaderProgram(int shader_program)
+u_int MikuPan_SetCurrentShaderProgram(int shader_program)
 {
     if (shader_program >= MAX_SHADER_PROGRAMS)
     {
-        return;
+        return -1;
     }
 
     current_program = shader_list[shader_program];
-
     glad_glUseProgram(current_program);
+    return current_program;
 }
 
 void MikuPan_SetShaderProgramWithBackup(int shader_program)
@@ -107,4 +108,25 @@ void MikuPan_SetShaderProgramWithBackup(int shader_program)
 u_int MikuPan_GetCurrentShaderProgram()
 {
     return current_program;
+}
+
+void MikuPan_SetUniformMatrix4fvToAllShaders(float *mat, char *name)
+{
+    for (int i = 0; i < MAX_SHADER_PROGRAMS; i++)
+    {
+        glad_glUniformMatrix4fv(
+            glad_glGetUniformLocation(MikuPan_SetCurrentShaderProgram(i), name),
+            1, GL_FALSE,
+            (float *) mat);
+    }
+}
+
+void MikuPan_SetUniform1iToAllShaders(int value, char *name)
+{
+    for (int i = 0; i < MAX_SHADER_PROGRAMS; i++)
+    {
+        glad_glUniform1i(
+            glad_glGetUniformLocation(MikuPan_SetCurrentShaderProgram(i), name),
+            value);
+    }
 }

@@ -37,6 +37,9 @@
 #include "os/eeiop/eese.h"
 #include "os/pad.h"
 
+#include <stdlib.h>
+#include <string.h>
+
 sceVu0FVECTOR special_furn_pos[] = {
     { 34885.0f, -4800.0f, 46059.0f, 1.0f },
     { 15101.0f, -1300.0f, 11048.0f, 1.0f },
@@ -231,7 +234,6 @@ int SearchFActWrkIDFromFurnID(u_short furn_id)
     {
         if (f_act_wrk[i].state != ST_FACT_VACANT && f_act_wrk[i].furn_id == furn_id)
         {
-
             return i;
         }
     }
@@ -505,7 +507,7 @@ int SetFurnActData(FURN_ACT_WRK *fawp, u_char fact_no)
     u_short temp;
     u_char *pointer;
 
-    pointer = MikuPan_GetHostPointer(FSpeGetTopAddr(fact_no));
+    pointer = FSpeGetTopAddr(fact_no);
 
     fawp->attribute = *pointer;
 

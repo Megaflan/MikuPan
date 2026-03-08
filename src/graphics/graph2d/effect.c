@@ -352,7 +352,7 @@ void *SetEffects(int id, int fl, ...)
         ec->dat.fl32[3] = va_arg(ap, double);
         ec->dat.uc8[3] = (u_char) va_arg(ap, int);
         ec->dat.uc8[4] = (u_char) va_arg(ap, int);
-        
+
         if (fl & 4)
         {
             ec->in = va_arg(ap, u_int);
@@ -405,7 +405,7 @@ void *SetEffects(int id, int fl, ...)
         ec->dat.uc8[2] = (u_char) va_arg(ap, int);
         ec->dat.uc8[3] = (u_char) va_arg(ap, int);
         ec->dat.uc8[4] = 0;
-        
+
         if (fl & 4)
         {
             ec->flow = (ec->in == 0 ? (ec->keep == 0 ? ec->out != 0 ? 2 : 3 : 1) : 0);
@@ -478,7 +478,7 @@ void *SetEffects(int id, int fl, ...)
         ec->dat.uc8[1] = fl;
         ec->dat.uc8[2] = (u_char) va_arg(ap, int);
         ec->dat.uc8[3] = (u_char) va_arg(ap, int);
-        
+
         if (fl & 4)
         {
             ec->in = va_arg(ap, u_int);
@@ -570,11 +570,11 @@ void *SetEffects(int id, int fl, ...)
         ec->dat.uc8[6] = (u_char) va_arg(ap, int);
         ec->dat.uc8[7] = (u_char) va_arg(ap, int);
         ec->dat.fl32[3] = va_arg (ap, double);
-        
+
         if (ec->flow == 3)
         {
             float r;
-            
+
             // inlined from effect.h
             r = vu0Rand();
             // end of inlined section
@@ -599,7 +599,7 @@ void *SetEffects(int id, int fl, ...)
         ec->dat.uc8[7] = (u_char) va_arg(ap, int);
         ec->dat.fl32[3] = va_arg (ap, double);
         ec->fw[0] = va_arg (ap, double);
-        
+
         if (ec->flow == 3)
         {
             float r;
@@ -619,7 +619,6 @@ void *SetEffects(int id, int fl, ...)
         ec->dat.uc8[2] = (u_char) va_arg(ap, int);
         ec->pnt[0] = va_arg(ap, void *);
         ec->dat.uc8[3] = (u_char) va_arg(ap, int);
-        ec->dat.uc8[4] = (u_char) va_arg(ap, int);
         ec->dat.uc8[5] = (u_char) va_arg(ap, int);
         ec->dat.fl32[2] = va_arg(ap, double);
         ec->dat.uc8[6] = (u_char) va_arg(ap, int);
@@ -647,7 +646,7 @@ void *SetEffects(int id, int fl, ...)
         ec->dat.fl32[3] = va_arg (ap, double);
         ec->pnt[0] = va_arg (ap, void *);
         ec->pnt[1] = va_arg (ap, void *);
-        
+
         if (fl & 8)
         {
             ec->dat.uc8[7] = (u_char) va_arg(ap, int);
@@ -672,7 +671,7 @@ void *SetEffects(int id, int fl, ...)
         ec->pnt[4] = va_arg (ap, void *);
         ec->pnt[5] = NULL;
         ec->pnt[5] = va_arg (ap, void *);
-        
+
         if (fl & 4)
         {
             ec->flow = (ec->in == 0 ? (ec->keep == 0 ? ec->out != 0 ? 2 : 3 : 1) : 0);
@@ -691,7 +690,7 @@ void *SetEffects(int id, int fl, ...)
         ec->keep = va_arg(ap, u_int);
         ec->out = va_arg (ap, u_int);
         ec->max = 100;
-        
+
         if (fl & 4)
         {
             ec->flow = (ec->in == 0 ? (ec->keep == 0 ? ec->out != 0 ? 2 : 3 : 1) : 0);
@@ -935,39 +934,39 @@ void EffectZSort()
 
         switch (ec->dat.uc8[0])
         {
-            case 23:
+            case EF_FIRE:
                 SetFire(ec);
             break;
-            case 24:
+            case EF_FIRE2:
                 SetFire2(ec);
             break;
-            case 20:
+            case EF_HALO:
                 SetHalo(ec);
             break;
-            case 21:
-            case 22:
+            case EF_RIPPLE:
+            case EF_RIPPLE2:
                 SetRipple(ec);
             break;
-            case 27:
-            case 39:
+            case EF_PDEFORM:
+            case EF_ENEIN:
                 SetPartsDeform(ec);
             break;
-            case 30:
+            case EF_WATERDROP:
                 SetWaterdrop(ec);
             break;
-            case 31:
+            case EF_SUNSHINE:
                 SetSunshine(ec);
             break;
-            case 25:
+            case EF_TORCH:
                 SetTorch(ec);
             break;
-            case 26:
+            case EF_SMOKE:
                 SetSmoke(ec);
             break;
-            case 33:
+            case EF_ENEFACE:
                 SetEneFace(ec);
             break;
-            case 34:
+            case EF_FACESPIRIT:
                 SetFaceSpirit(ec);
             break;
         }
@@ -1070,10 +1069,10 @@ void EffectZSort2()
 
         switch (ec->dat.uc8[0])
         {
-        case 40:
+        case EF_ENEOUT:
             SetEneSeal(ec);
         break;
-        case 28:
+        case EF_ENEFIRE:
             SetEneFire(ec);
         break;
         }
@@ -1199,7 +1198,6 @@ void ResetEffectScrBuffer(int eno)
 
 void EffectControl(int no)
 {
-    return;
     static int fl;
     static void *ecw[3];
     EFFECT_CONT *ecm;
@@ -1336,7 +1334,7 @@ void EffectControl(int no)
         
         if (ecm[7].dat.uc8[0] == 7)
         {
-            SetFocus(&ecm[7]);
+            SetFocus1(&ecm[7]);
         }
         
         RunFocus(&ecm[7]);
@@ -1403,8 +1401,6 @@ void EffectControl(int no)
     }
     return;
 }
-
-
 
 void SetBlurOff()
 {

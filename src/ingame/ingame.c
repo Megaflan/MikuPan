@@ -3,27 +3,27 @@
 #include "enums.h"
 #include "ingame.h"
 
-#include "mikupan/mikupan_memory.h"
-#include "main/glob.h" // *
-#include "mc/mc_main.h"
-#include "ingame/map/furn_ctl.h" //
+#include "enemy/ene_ctl.h"
+#include "graphics/graph3d/gra3d.h"//
+#include "ig_glob.h"
 #include "ingame/entry/entry.h"
 #include "ingame/event/ev_main.h"
-#include "ingame/map/map_ctrl.h"
-#include "ingame/map/map_ctrl.h"
-#include "os/eeiop/eese.h"
+#include "ingame/event/wan_soul.h"//
 #include "ingame/ig_init.h"
-#include "os/eeiop/adpcm/ea_ctrl.h"
-#include "ingame/menu/ig_menu.h"
-#include "graphics/graph3d/gra3d.h" //
-#include "outgame/btl_mode/btl_mode.h"
+#include "ingame/map/door_ctl.h"
 #include "ingame/map/find_ctl.h"
+#include "ingame/map/furn_ctl.h"//
+#include "ingame/map/map_ctrl.h"
+#include "ingame/menu/ig_menu.h"
 #include "ingame/photo/pht_main.h"
-#include "ingame/map/door_ctl.h"
-#include "ingame/map/door_ctl.h"
-#include "ingame/event/wan_soul.h" //
+#include "main/glob.h"// *
+#include "mc/mc_main.h"
+#include "mikupan/mikupan_memory.h"
+#include "os/eeiop/adpcm/ea_ctrl.h"
+#include "os/eeiop/eese.h"
 #include "os/eeiop/se_ev.h"
 #include "os/key_cnf.h"
+#include "outgame/btl_mode/btl_mode.h"
 #include <string.h>
 
 #include "entry/ap_pgost.h"
@@ -45,10 +45,11 @@
 #include "menu/gameover.h"
 #include "menu/ig_spd_menu.h"
 #include "menu/item.h"
+#include "menu/item_get.h"
 #include "menu/pause.h"
 #include "menu/sp_menu.h"
-#include "os/key_cnf.h"
 #include "os/eeiop/cdvd/eecdvd.h"
+#include "os/key_cnf.h"
 #include "plyr/time_ctl.h"
 
 int start_msn = 0;

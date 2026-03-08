@@ -5,6 +5,7 @@
 
 #include <stddef.h>
 #include <stdlib.h>
+#include <string.h>
 
 void sceGsSetDefDBuff(sceGsDBuff* dp, short psm, short w, short h, short ztest, short zpsm, short clear)
 {
@@ -44,12 +45,38 @@ int sceGsSwapDBuff(sceGsDBuff* db, int id)
 int sceGsSetDefStoreImage(sceGsStoreImage* sp, short sbp, short sbw, short spsm, short x, short y, short w, short h)
 {
     return 1;
+    memset(sp, 0, sizeof(sceGsStoreImage));
+
+    /// Setting up the BITBLTBUF tag
+    sp->bitbltbuf.SBP = sbp;
+    sp->bitbltbuf.SBW = sbw;
+    sp->bitbltbuf.SPSM = spsm;
+    sp->bitbltbufaddr = SCE_GS_BITBLTBUF;
+
+    /// Setting up the TRXPOS tag
+    sp->trxpos.DSAX = x;
+    sp->trxpos.DSAY = y;
+    sp->trxdiraddr = SCE_GS_TRXPOS;
+
+    /// Setting up the TRXREG tag
+    sp->trxreg.RRW = w;
+    sp->trxreg.RRH = h;
+    sp->trxregaddr = SCE_GS_TRXREG;
+
+    /// Setting up the TRXDIR tag
+    sp->trxdir.XDR = 0;
+    sp->trxdiraddr = SCE_GS_TRXDIR;
+
+    sp->finishaddr = SCE_GS_FINISH;
+
+    return 1;
 }
 
 int sceGsExecStoreImage(sceGsStoreImage* sp, u_long128* dstaddr)
 {
-
-    GsUpload((sceGsLoadImage*)&sp->giftag, (unsigned char *)dstaddr);
+    //GsUpload((sceGsLoadImage*)&sp->giftag, (unsigned char *)dstaddr);
+    //memcpy(dstaddr, sp, sizeof(sceGsStoreImage));
+    //GsStore(sp, (unsigned char*)dstaddr);
     return 1;
 }
 

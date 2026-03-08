@@ -1,6 +1,6 @@
 #include "gs_server.h"
 
-#include "texture_manager.h"
+#include "mikupan_texture_manager.h"
 
 extern "C" {
 #include "common/utility.h"
@@ -12,7 +12,7 @@ extern "C" {
 
 GS::GSHelper gsHelper;
 
-int GetBlockIdPSMCT32(int block, int x, int y)
+int __attribute__((optimize("O3"))) GetBlockIdPSMCT32(int block, int x, int y)
 {
     const int block_y = (y >> 3) & 0x03;
     const int block_x = (x >> 3) & 0x07;
@@ -20,7 +20,7 @@ int GetBlockIdPSMCT32(int block, int x, int y)
            + GS::kBlockTablePSMCT32[(block_y << 3) | block_x];
 }
 
-int GetPixelAddressPSMCT32(int block, int width, int x, int y)
+int __attribute__((optimize("O3"))) GetPixelAddressPSMCT32(int block, int width, int x, int y)
 {
     const int page = (block >> 5) + (y >> 5) * width + (x >> 6);
     const int column_base = ((y >> 1) & 0x03) << 4;
@@ -34,7 +34,7 @@ int GetPixelAddressPSMCT32(int block, int width, int x, int y)
     return (addr << 2) & 0x003FFFFC;
 }
 
-int GetBlockIdPSMT8(int block, int x, int y)
+int __attribute__((optimize("O3"))) GetBlockIdPSMT8(int block, int x, int y)
 {
     const int block_y = (y >> 4) & 0x03;
     const int block_x = (x >> 4) & 0x07;
@@ -42,7 +42,7 @@ int GetBlockIdPSMT8(int block, int x, int y)
            + GS::kBlockTablePSMT8[(block_y << 3) | block_x];
 }
 
-int GetPixelAddressPSMT8(int block, int width, int x, int y)
+int __attribute__((optimize("O3"))) GetPixelAddressPSMT8(int block, int width, int x, int y)
 {
     const int page = (block >> 5) + (y >> 6) * (width >> 1) + (x >> 7);
     const int column_y = y & 0x0F;
@@ -54,7 +54,7 @@ int GetPixelAddressPSMT8(int block, int width, int x, int y)
     return addr;
 }
 
-int GetBlockIdPSMT4(int block, int x, int y)
+int  __attribute__((optimize("O3"))) GetBlockIdPSMT4(int block, int x, int y)
 {
     const int block_base = ((y >> 6) & 0x01) << 4;
     const int block_y = (y >> 4) & 0x03;
@@ -63,7 +63,7 @@ int GetBlockIdPSMT4(int block, int x, int y)
            + GS::kBlockTablePSMT4[(block_y << 2) | block_x];
 }
 
-int GetPixelAddressPSMT4(int block, int width, int x, int y)
+int __attribute__((optimize("O3"))) GetPixelAddressPSMT4(int block, int width, int x, int y)
 {
     const int page = ((block >> 5) + (y >> 7) * (width >> 1) + (x >> 7));
     const int column_y = y & 0x0F;
@@ -80,10 +80,11 @@ GS::GSHelper::GSHelper()
     mem_.resize(4 * 1024 * 1024);// 4 MB
 }
 
-void GS::GSHelper::UploadPSMCT32(int dbp, int dbw, int dsax, int dsay, int rrw,
+void __attribute__((optimize("O3"))) GS::GSHelper::UploadPSMCT32(int dbp, int dbw, int dsax, int dsay, int rrw,
                                  int rrh, const uint8_t *inbuf)
 {
     int src_addr = 0;
+
     for (int y = dsay; y < dsay + rrh; ++y)
     {
         for (int x = dsax; x < dsax + rrw; ++x)
@@ -98,10 +99,11 @@ void GS::GSHelper::UploadPSMCT32(int dbp, int dbw, int dsax, int dsay, int rrw,
     }
 }
 
-void GS::GSHelper::UploadPSMT8(int dbp, int dbw, int dsax, int dsay, int rrw,
+void __attribute__((optimize("O3"))) GS::GSHelper::UploadPSMT8(int dbp, int dbw, int dsax, int dsay, int rrw,
                                int rrh, const uint8_t *inbuf)
 {
     int src_addr = 0;
+
     for (int y = dsay; y < dsay + rrh; ++y)
     {
         for (int x = dsax; x < dsax + rrw; ++x)
@@ -112,30 +114,29 @@ void GS::GSHelper::UploadPSMT8(int dbp, int dbw, int dsax, int dsay, int rrw,
     }
 }
 
-void GS::GSHelper::UploadPSMT4(int dbp, int dbw, int dsax, int dsay, int rrw,
+void __attribute__((optimize("O3"))) GS::GSHelper::UploadPSMT4(int dbp, int dbw, int dsax, int dsay, int rrw,
                                int rrh, const uint8_t *inbuf)
 {
     int src_addr = 0;
+
     for (int y = dsay; y < dsay + rrh; ++y)
     {
         for (int x = dsax; x < dsax + rrw; ++x)
         {
             const int addr = GetPixelAddressPSMT4(dbp, dbw, x, y);
-            const int src_nibble =
-                (inbuf[src_addr >> 1] >> ((src_addr & 0x01) << 2)) & 0x0F;
-            mem_[addr >> 1] =
-                (src_nibble << ((addr & 0x01) << 2))
-                | (mem_[addr >> 1] & (0xF0 >> ((addr & 0x01) << 2)));
+            const int src_nibble = (inbuf[src_addr >> 1] >> ((src_addr & 0x01) << 2)) & 0x0F;
+            mem_[addr >> 1] = (src_nibble << ((addr & 0x01) << 2)) | (mem_[addr >> 1] & (0xF0 >> ((addr & 0x01) << 2)));
             src_addr++;
         }
     }
 }
 
-std::vector<uint8_t> GS::GSHelper::DownloadPSMCT32(int dbp, int dbw, int dsax,
+std::vector<uint8_t> __attribute__((optimize("O3"))) GS::GSHelper::DownloadPSMCT32(int dbp, int dbw, int dsax,
                                                    int dsay, int rrw, int rrh)
 {
     std::vector<uint8_t> outbuf(rrw * rrh * 4);
     int dst_addr = 0;
+
     for (int y = dsay; y < dsay + rrh; ++y)
     {
         for (int x = dsax; x < dsax + rrw; ++x)
@@ -148,39 +149,38 @@ std::vector<uint8_t> GS::GSHelper::DownloadPSMCT32(int dbp, int dbw, int dsax,
             dst_addr += 0x04;
         }
     }
+
     return outbuf;
 }
 
-std::vector<uint8_t> GS::GSHelper::DownloadPSMT8(int dbp, int dbw, int dsax,
+std::vector<uint8_t> __attribute__((optimize("O3"))) GS::GSHelper::DownloadPSMT8(int dbp, int dbw, int dsax,
                                                  int dsay, int rrw, int rrh)
 {
     // Not implemented
     return std::vector<uint8_t>();
 }
 
-std::vector<uint8_t> GS::GSHelper::DownloadPSMT4(int dbp, int dbw, int dsax,
+std::vector<uint8_t> __attribute__((optimize("O3"))) GS::GSHelper::DownloadPSMT4(int dbp, int dbw, int dsax,
                                                  int dsay, int rrw, int rrh)
 {
     // Not implemented
     return std::vector<uint8_t>();
 }
 
-std::vector<uint8_t> GS::GSHelper::DownloadImagePSMT8(int dbp, int dbw,
+std::vector<uint8_t> __attribute__((optimize("O3"))) GS::GSHelper::DownloadImagePSMT8(int dbp, int dbw,
                                                       int dsax, int dsay,
                                                       int rrw, int rrh, int cbp,
                                                       int cbw, char alpha_reg)
 {
     std::vector<uint8_t> outbuf(rrw * rrh * 4);
     int dst_addr = 0;
+
     for (int y = dsay; y < dsay + rrh; ++y)
     {
         for (int x = dsax; x < dsax + rrw; ++x)
         {
             const int addr = GetPixelAddressPSMT8(dbp, dbw, x, y);
             const int clut_index = mem_[addr];
-
-            //int cx = clut_index % 16;
-            //int cy = clut_index / 16;
 
             int cy = (clut_index & 0xE0) >> 4;
             int cx = clut_index & 0x07;
@@ -193,6 +193,7 @@ std::vector<uint8_t> GS::GSHelper::DownloadImagePSMT8(int dbp, int dbw,
             outbuf[dst_addr + 0x00] = mem_[p + 0x00];
             outbuf[dst_addr + 0x01] = mem_[p + 0x01];
             outbuf[dst_addr + 0x02] = mem_[p + 0x02];
+
             if (alpha_reg >= 0)
             {
                 outbuf[dst_addr + 0x03] = alpha_reg;
@@ -202,13 +203,15 @@ std::vector<uint8_t> GS::GSHelper::DownloadImagePSMT8(int dbp, int dbw,
                 const char src_alpha = mem_[p + 0x03];
                 outbuf[dst_addr + 0x03] = src_alpha;
             }
+
             dst_addr += 4;
         }
     }
+
     return outbuf;
 }
 
-std::vector<uint8_t> GS::GSHelper::DownloadImagePSMT4(int dbp, int dbw,
+std::vector<uint8_t> __attribute__((optimize("O3"))) GS::GSHelper::DownloadImagePSMT4(int dbp, int dbw,
                                                       int dsax, int dsay,
                                                       int rrw, int rrh, int cbp,
                                                       int cbw, int csa,
@@ -216,13 +219,13 @@ std::vector<uint8_t> GS::GSHelper::DownloadImagePSMT4(int dbp, int dbw,
 {
     std::vector<uint8_t> outbuf(rrw * rrh * 4);
     int dst_addr = 0;
+
     for (int y = dsay; y < dsay + rrh; ++y)
     {
         for (int x = dsax; x < dsax + rrw; ++x)
         {
             const int addr = GetPixelAddressPSMT4(dbp, dbw, x, y);
-            const int clut_index =
-                (mem_[addr >> 1] >> ((addr & 0x01) << 2)) & 0x0F;
+            const int clut_index = (mem_[addr >> 1] >> ((addr & 0x01) << 2)) & 0x0F;
 
             const int cy = ((clut_index >> 3) & 0x01) + (csa & 0x0E);
             const int cx = (clut_index & 0x07) + ((csa & 0x01) << 3);
@@ -231,6 +234,7 @@ std::vector<uint8_t> GS::GSHelper::DownloadImagePSMT4(int dbp, int dbw,
             outbuf[dst_addr + 0x00] = mem_[p + 0x00];
             outbuf[dst_addr + 0x01] = mem_[p + 0x01];
             outbuf[dst_addr + 0x02] = mem_[p + 0x02];
+
             if (alpha_reg >= 0)
             {
                 outbuf[dst_addr + 0x03] = alpha_reg;
@@ -238,12 +242,13 @@ std::vector<uint8_t> GS::GSHelper::DownloadImagePSMT4(int dbp, int dbw,
             else
             {
                 const char src_alpha = mem_[p + 0x03];
-                outbuf[dst_addr + 0x03] =
-                    src_alpha;// >= 0 ? (src_alpha << 1) : 0xFF;
+                outbuf[dst_addr + 0x03] = src_alpha;// >= 0 ? (src_alpha << 1) : 0xFF;
             }
+
             dst_addr += 4;
         }
     }
+    
     return outbuf;
 }
 
@@ -252,16 +257,36 @@ void GS::GSHelper::Clear()
     memset(mem_.data(), 0, mem_.size() * sizeof(char));
 }
 
+void GsStore(sceGsStoreImage* image_store, unsigned char* outbuf)
+{
+    spdlog::debug("GS store request for SBP {:#x} SPSM {} X: {} Y: {}",
+                  (int)image_store->bitbltbuf.SBP,
+                  (int)image_store->bitbltbuf.SPSM,
+                  (int)image_store->trxreg.RRW,
+                  (int)image_store->trxreg.RRH);
+
+    const int sbp  = image_store->bitbltbuf.SBP;
+    const int sbw  = image_store->bitbltbuf.SBW;
+    const int ssax = image_store->trxpos.SSAX;
+    const int ssay = image_store->trxpos.SSAY;
+    const int rrw  = image_store->trxreg.RRW;
+    const int rrh  = image_store->trxreg.RRH;
+    //memcpy(outbuf, &gsHelper.mem_.data()[GetPixelAddressPSMCT32(sbp, sbw, 0, 0)], rrh * rrw * 4);
+}
+
 void GsUpload(sceGsLoadImage *image_load, unsigned char *image)
 {
-    spdlog::debug("GS upload request for DBP {:#x} DPSM {} ",
-                  (unsigned long long) image_load->bitbltbuf.DBP,
-                  (unsigned long long) image_load->bitbltbuf.DPSM);
+    spdlog::debug("GS upload request for DBP {:#x} DPSM {} X: {} Y: {}",
+                  (int) image_load->bitbltbuf.DBP,
+                  (int) image_load->bitbltbuf.DPSM,
+                  (int) image_load->trxreg.RRW,
+                  (int) image_load->trxreg.RRH);
 
-    FirstUploadDone();
+    MikuPan_FirstUploadDone();
 
     switch ((PixelStorageFormat) image_load->bitbltbuf.DPSM)
     {
+        case PSMZ32:
         case PSMCT32:
             gsHelper.UploadPSMCT32(
                 image_load->bitbltbuf.DBP, image_load->bitbltbuf.DBW,
@@ -285,7 +310,7 @@ void GsUpload(sceGsLoadImage *image_load, unsigned char *image)
             break;
         }
         default:
-            spdlog::debug("Texture Transfer Upload Info: DPSM {:#x}",
+            spdlog::info("Texture Transfer Upload Info FAILED: DPSM {:#x}",
                           (int) image_load->bitbltbuf.DPSM);
             break;
     }
@@ -293,7 +318,7 @@ void GsUpload(sceGsLoadImage *image_load, unsigned char *image)
 
 unsigned char *DownloadGsTexture(sceGsTex0 *tex0)
 {
-    if (!IsFirstUploadDone())
+    if (!MikuPan_IsFirstUploadDone())
     {
         return nullptr;
     }
@@ -317,10 +342,12 @@ unsigned char *DownloadGsTexture(sceGsTex0 *tex0)
 
     switch (tex0->PSM)
     {
+        case PSMZ32:
         case PSMCT32:
             img = gsHelper.DownloadPSMCT32(tex0->TBP0, tex0->TBW, 0, 0, width,
                                            height);
             break;
+
         case PSMT4:
             img = gsHelper.DownloadImagePSMT4(tex0->TBP0, tex0->TBW, 0, 0,
                                               width, height, tex0->CBP,
@@ -359,6 +386,7 @@ unsigned char *DownloadGsTexture(sceGsTex0 *tex0)
         {
             auto pixel = (RGBA *) &rawPixel[(i * width + k)];
             pixel->a = AdjustAlpha(pixel->a);
+
             image_data[(i * width + k)] = *(unsigned int *) pixel;
         }
     }

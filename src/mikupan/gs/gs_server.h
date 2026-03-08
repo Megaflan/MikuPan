@@ -133,7 +133,7 @@ class GSHelper
     void Clear();
 
    private:
-    std::vector<char> mem_;
+    std::vector<char> mem_ = std::vector<char> (4 * 1024 * 1024);
 };
 }// namespace GS
 
@@ -142,6 +142,7 @@ extern GS::GSHelper gsHelper;
 extern "C" {
 void GsUpload(sceGsLoadImage *image_load, unsigned char *image);
 unsigned char *DownloadGsTexture(sceGsTex0 *tex0);
+void GsStore(sceGsStoreImage *image_store, unsigned char *outbuf);
 }
 
 // Texture *DownloadGsTexture(sceGsTex0* pMeshTexReg);

@@ -1,100 +1,35 @@
 #ifndef INGAME_ENEMY_ENE_CTL_H
 #define INGAME_ENEMY_ENE_CTL_H
 
+#include "ene_types.h"
+#include "ingame/ig_glob_types.h"
+#include "main/glob_types.h"
 #include "typedefs.h"
 
-typedef struct {
-	u_int attr1;
-	u_short dst_gthr;
-	u_char way_gthr;
-	u_char atk_ptn;
-	u_char wspd;
-	u_char rspd;
-	u_short hp;
-	u_short atk_rng;
-	u_short hit_rng;
-	u_short chance_rng;
-	short int hit_adjx;
-	u_short atk_p;
-	u_short atk_h;
-	u_char atk;
-	u_char atk_tm;
-	u_short mdl_no;
-	u_short anm_no;
-	u_int se_no;
-	u_int adpcm_no;
-	int dead_adpcm;
-	u_short point_base;
-	u_char hint_pic;
-	u_char aura_alp;
-	u_char area[6];
-	u_short dir;
-	u_short px;
-	short int py;
-	u_short pz;
-} ENE_DAT;
-
-typedef struct {
-	u_char dat_no;
-	u_char soul_no;
-	u_short dir;
-	u_short px;
-	short int py;
-	u_short pz;
-	u_short adpcm_tm;
-	int adpcm_no;
-	u_short rng;
-	u_short mdl_no;
-	u_short anm_no;
-	u_short point_base;
-	u_int se_no;
-	int se_foot;
-} AENE_INFO_DAT;
-
-typedef struct {
-	u_short dmg;
-	u_short hit_rng;
-	u_short mdl_no;
-	u_short cond;
-} FLY_DATA;
-
-typedef struct {
-	int flow;
-	float rrad[64];
-	float rrotx[64];
-	float rroty[64];
-	float racc[64];
-	float rbrk[64];
-	u_char rscl[64];
-} SPAWAY;
-
-// extern ENE_DAT jene_dat0[0];
-// extern AENE_INFO_DAT aene_info_dat0[0];
-// extern FLY_DATA fly_dat[0];
-// extern ENE_DAT jene_dat1[0];
-// extern ENE_DAT fene_dat1[0];
-// extern AENE_INFO_DAT aene_info_dat1[0];
-// extern ENE_DAT jene_dat2[0];
-// extern ENE_DAT fene_dat2[0];
-// extern AENE_INFO_DAT aene_info_dat2[0];
-// extern ENE_DAT jene_dat3[0];
-// extern ENE_DAT fene_dat3[0];
-// extern AENE_INFO_DAT aene_info_dat3[0];
-// extern ENE_DAT jene_dat4[0];
-// extern ENE_DAT fene_dat4[0];
-// extern AENE_INFO_DAT aene_info_dat4[0];
+extern ENE_DAT jene_dat0[];
+extern AENE_INFO_DAT aene_info_dat0[];
+extern FLY_DATA fly_dat[];
+extern ENE_DAT jene_dat1[];
+extern ENE_DAT fene_dat1[];
+extern AENE_INFO_DAT aene_info_dat1[];
+extern ENE_DAT jene_dat2[];
+extern ENE_DAT fene_dat2[];
+extern AENE_INFO_DAT aene_info_dat2[];
+extern ENE_DAT jene_dat3[];
+extern ENE_DAT fene_dat3[];
+extern AENE_INFO_DAT aene_info_dat3[];
+extern ENE_DAT jene_dat4[];
+extern ENE_DAT fene_dat4[];
+extern AENE_INFO_DAT aene_info_dat4[];
 extern ENE_DAT *jene_dat[];
 extern ENE_DAT *fene_dat[];
-// extern AENE_INFO_DAT *aene_info_dat[0];
+extern AENE_INFO_DAT *aene_info_dat[];
 extern u_char req_dmg_ef[3];
 extern int ene_dead_load;
 extern int ene_dead_mode;
-// extern int erootd0[20][3];
-// extern int erootd1[20][3];
-// extern int erootd2[20][3];
-// extern u_char er_max_tbl[3];
-
-#include "ingame/ig_glob.h"
+extern int erootd0[20][3];
+extern int erootd1[20][3];
+extern int erootd2[20][3];
 
 void EneCtrlMain();
 void EneEntryChk(u_char no);
@@ -149,4 +84,4 @@ int EnemyUseJudge(u_char ene_type);
 int ZeroGhostBattleJudge();
 void EneAdpcmPlayChk(ENE_WRK *ew);
 
-#endif // INGAME_ENEMY_ENE_CTL_H
+#endif// INGAME_ENEMY_ENE_CTL_H
